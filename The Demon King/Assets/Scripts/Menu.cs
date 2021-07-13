@@ -53,11 +53,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-           Debug.Log(roomList[0].PlayerCount);
-    }
+
 
     // changes the currently visible screen
     void SetScreen(GameObject screen)
@@ -185,22 +181,21 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             button.SetActive(false);
 
         // display all current rooms in the master server
-        for (int i = 0; i < roomList.Count; ++i)
+        for (int x = 0; x < roomList.Count; ++x)
         {
             // get or create the button object
-            GameObject button = i >= roomButtons.Count ? CreateRoomButton() : roomButtons[i];
+            GameObject button = x >= roomButtons.Count ? CreateRoomButton() : roomButtons[x];
 
             button.SetActive(true);
 
             // set the room name and player count texts
-            button.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = roomList[i].Name;
-            button.transform.Find("PlayerCountText").GetComponent<TextMeshProUGUI>().text = roomList[i].PlayerCount + " / " + roomList[i].MaxPlayers;
-
+            button.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = roomList[x].Name;
+            button.transform.Find("PlayerCountText").GetComponent<TextMeshProUGUI>().text = roomList[x].PlayerCount + " / " + roomList[x].MaxPlayers;
 
             // set the button Onclick event
             Button buttonComp = button.GetComponent<Button>();
 
-            string roomName = roomList[i].Name;
+            string roomName = roomList[x].Name;
 
             buttonComp.onClick.RemoveAllListeners();
             buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
@@ -217,27 +212,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         UpdateLobbyBrowserUI();
     }
 
-    public override void OnRoomListUpdate(List<RoomInfo> allRoomsList)
+    public override void OnRoomListUpdate(List<RoomInfo> allRooms)
     {
-        foreach (var roomInfo in allRoomsList)
+        roomList.Clear();
+        foreach (RoomInfo roomInfo in allRooms)
         {
-            Debug.Log(allRoomsList[0].PlayerCount);
-
-            if (roomInfo.RemovedFromList)
-                roomList.Remove(FindRoom(roomInfo.Name));
-            else if (FindRoom(roomInfo.Name) == null)
-                roomList.Add(roomInfo);
+            roomList.Add(roomInfo);
         }
-    }
-
-    RoomInfo FindRoom(string name)
-    {
-        for (int i = 0; i < roomList.Count; i++)
-        {
-            if (roomList[i].Name == name)
-                return roomList[i];
-        }
-
-        return null;
+        roomList = allRooms;
     }
 }
