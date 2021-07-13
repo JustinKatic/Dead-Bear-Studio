@@ -25,7 +25,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster ()
     {
-        PhotonNetwork.JoinLobby();
     }
 
     // creates a new room of the requested room name

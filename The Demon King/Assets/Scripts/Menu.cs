@@ -102,6 +102,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // called when the "Find Room" button has been pressed
     public void OnFindRoomButton()
     {
+        PhotonNetwork.JoinLobby();
         SetScreen(lobbyBrowserScreen);
     }
 
@@ -202,9 +203,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
     }
 
+    // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
-        NetworkManager.instance.JoinRoom(roomName);
+        PhotonNetwork.JoinRoom(roomName);      
     }
 
     public void OnRefreshButton()
@@ -212,13 +214,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         UpdateLobbyBrowserUI();
     }
 
+
     public override void OnRoomListUpdate(List<RoomInfo> allRooms)
     {
+        Debug.Log("UPDATING ROOMLIST");
+
         roomList.Clear();
-        foreach (RoomInfo roomInfo in allRooms)
-        {
+        foreach (RoomInfo roomInfo in allRooms)     
             roomList.Add(roomInfo);
-        }
+        
         roomList = allRooms;
     }
+
+    
 }
