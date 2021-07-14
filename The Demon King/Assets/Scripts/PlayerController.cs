@@ -48,6 +48,12 @@ public class PlayerController : MonoBehaviourPun
         //Get value from input system for directional movement
         input = playerInput.CharacterInputs.Move.ReadValue<Vector2>();
 
+    }
+    private void FixedUpdate()
+    {
+        if (!photonView.IsMine)
+            return;
+
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
         animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
         animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
@@ -55,7 +61,6 @@ public class PlayerController : MonoBehaviourPun
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
-
     }
 
 
@@ -77,7 +82,7 @@ public class PlayerController : MonoBehaviourPun
         else
         {
             animator = GetComponent<Animator>();
-            mainCamera = GetComponentInChildren<Camera>();
+            mainCamera = Camera.main;
             //GameUI.instance.Initialize(this);
         }
     }
