@@ -36,7 +36,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
 
-
         // enable the cursor since we hide it when we play the game
         Cursor.lockState = CursorLockMode.None;
 
@@ -102,7 +101,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // called when the "Find Room" button has been pressed
     public void OnFindRoomButton()
     {
-        PhotonNetwork.JoinLobby();
         SetScreen(lobbyBrowserScreen);
     }
 
@@ -166,7 +164,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     // LOBBY BROWSER SCREEN
-
     GameObject CreateRoomButton()
     {
         GameObject buttonObj = Instantiate(roomButtonPrefab, roomListContainer.transform);
@@ -175,19 +172,77 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         return buttonObj;
     }
 
+
+
     void UpdateLobbyBrowserUI()
     {
+        //// disable all room buttons
+        //foreach (GameObject button in roomButtons)
+        //    Destroy(button);
+
+        //roomButtons.Clear();
+
+        //// display all current rooms in the master server
+        //for (int x = 0; x < roomList.Count; ++x)
+        //{
+        //    // get or create the button object
+        //    GameObject button = CreateRoomButton();
+
+        //    // set the room name and player count texts
+        //    button.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = roomList[x].Name;
+        //    button.transform.Find("PlayerCountText").GetComponent<TextMeshProUGUI>().text = roomList[x].PlayerCount + " / " + roomList[x].MaxPlayers;
+
+        //    // set the button Onclick event
+        //    Button buttonComp = button.GetComponent<Button>();
+
+        //    string roomName = roomList[x].Name;
+
+        //    buttonComp.onClick.RemoveAllListeners();
+        //    buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
+        //}
+    }
+
+    // joins a room of the requested room name
+    public void OnJoinRoomButton(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public void OnRefreshButton()
+    {
+        UpdateLobbyBrowserUI();
+    }
+
+
+
+    public override void OnRoomListUpdate(List<RoomInfo> allRooms)
+    {
+        Debug.Log("UPDATING ROOMLIST");
+
+        foreach (RoomInfo roomInfo in allRooms)
+        {
+            if (roomInfo.RemovedFromList)
+                roomList.Remove(FindRoom(roomInfo.Name));
+            else if (FindRoom(roomInfo.Name) == null)
+                roomList.Add(roomInfo);
+            else
+            {
+                roomList.Remove(FindRoom(roomInfo.Name));
+                roomList.Add(roomInfo);
+            }    
+        }
+
         // disable all room buttons
         foreach (GameObject button in roomButtons)
-            button.SetActive(false);
+            Destroy(button);
+
+        roomButtons.Clear();
 
         // display all current rooms in the master server
         for (int x = 0; x < roomList.Count; ++x)
         {
             // get or create the button object
-            GameObject button = x >= roomButtons.Count ? CreateRoomButton() : roomButtons[x];
-
-            button.SetActive(true);
+            GameObject button = CreateRoomButton();
 
             // set the room name and player count texts
             button.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = roomList[x].Name;
@@ -203,28 +258,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
     }
 
-    // joins a room of the requested room name
-    public void OnJoinRoomButton(string roomName)
+    RoomInfo FindRoom(string name)
     {
-        PhotonNetwork.JoinRoom(roomName);      
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            if (roomList[i].Name == name)
+                return roomList[i];
+        }
+
+        return null;
     }
-
-    public void OnRefreshButton()
-    {
-        UpdateLobbyBrowserUI();
-    }
-
-
-    public override void OnRoomListUpdate(List<RoomInfo> allRooms)
-    {
-        Debug.Log("UPDATING ROOMLIST");
-
-        roomList.Clear();
-        foreach (RoomInfo roomInfo in allRooms)     
-            roomList.Add(roomInfo);
-        
-        roomList = allRooms;
-    }
-
-    
 }
