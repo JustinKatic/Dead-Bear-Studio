@@ -65,9 +65,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         // activate the requested screen
         screen.SetActive(true);
-
-        if (screen == lobbyBrowserScreen)
-            UpdateLobbyBrowserUI();
     }
 
     // called when the "Back" button gets pressed
@@ -171,48 +168,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         return buttonObj;
     }
-
-
-
-    void UpdateLobbyBrowserUI()
-    {
-        //// disable all room buttons
-        //foreach (GameObject button in roomButtons)
-        //    Destroy(button);
-
-        //roomButtons.Clear();
-
-        //// display all current rooms in the master server
-        //for (int x = 0; x < roomList.Count; ++x)
-        //{
-        //    // get or create the button object
-        //    GameObject button = CreateRoomButton();
-
-        //    // set the room name and player count texts
-        //    button.transform.Find("RoomNameText").GetComponent<TextMeshProUGUI>().text = roomList[x].Name;
-        //    button.transform.Find("PlayerCountText").GetComponent<TextMeshProUGUI>().text = roomList[x].PlayerCount + " / " + roomList[x].MaxPlayers;
-
-        //    // set the button Onclick event
-        //    Button buttonComp = button.GetComponent<Button>();
-
-        //    string roomName = roomList[x].Name;
-
-        //    buttonComp.onClick.RemoveAllListeners();
-        //    buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
-        //}
-    }
+  
 
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
         PhotonNetwork.JoinRoom(roomName);
     }
-
-    public void OnRefreshButton()
-    {
-        UpdateLobbyBrowserUI();
-    }
-
 
 
     public override void OnRoomListUpdate(List<RoomInfo> allRooms)
