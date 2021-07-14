@@ -1915,9 +1915,8 @@ GameObject:
   - component: {fileID: 1937018729003094521}
   - component: {fileID: 1937018729003094515}
   - component: {fileID: 1937018729003094519}
-  - component: {fileID: 540385886619865938}
-  - component: {fileID: 2451462685972815351}
   - component: {fileID: 1522354652541372666}
+  - component: {fileID: 8543471442678258642}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1957,7 +1956,7 @@ Animator:
   m_Avatar: {fileID: 9000000, guid: 2dc7b382d25903545b405802eb2198ab, type: 3}
   m_Controller: {fileID: 9100000, guid: 1bf5b4210dc274541b9d7e1371badd1e, type: 2}
   m_CullingMode: 1
-  m_UpdateMode: 1
+  m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
@@ -1977,8 +1976,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   id: 0
-  moveSpeed: 1
+  jumpHeight: 3
+  gravity: 20
+  stepDown: 0.3
+  airControl: 2.5
+  pushPower: 2
+  groundSpeed: 1.2
   turnSpeed: 15
+  jumpDamp: 0.5
 --- !u!114 &1937018729003094515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2024,42 +2029,12 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 1
     Name: InputY
-  - Type: 1
+  - Type: 4
     SynchronizeType: 1
-    Name: MoveSpeed
+    Name: isJumping
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!136 &540385886619865938
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937018729003094520}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &2451462685972815351
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937018729003094520}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &1522354652541372666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2093,6 +2068,24 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
+--- !u!143 &8543471442678258642
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937018729003094520}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 1.59
+  m_Radius: 0.2
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!1 &1937018729003094522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,7 +2203,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3745922281781720449}
-  m_LocalRotation: {x: 0.3519327, y: 0.011880943, z: -0.004467483, w: 0.93593925}
+  m_LocalRotation: {x: 0.3519327, y: 0.0118809445, z: -0.004467483, w: 0.93593925}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2287,7 +2280,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3789287126360123843}
-  m_LocalRotation: {x: 0.3617845, y: 0.01183306, z: -0.004592502, w: 0.9321754}
+  m_LocalRotation: {x: 0.3617845, y: 0.011833047, z: -0.004592497, w: 0.9321754}
   m_LocalPosition: {x: 0.29961205, y: 4.3859816, z: -3.1706753}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2393,8 +2386,8 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
-  m_BlendUpdateMethod: 1
+  m_UpdateMethod: 0
+  m_BlendUpdateMethod: 0
   m_DefaultBlend:
     m_Style: 1
     m_Time: 2
