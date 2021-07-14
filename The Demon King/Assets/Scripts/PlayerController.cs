@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +16,31 @@ public class PlayerController : MonoBehaviourPun
     public float turnSpeed = 15;
     Animator animator;
     Camera mainCamera;
+    CharacterController playerInput;
+
 
     Vector2 input;
 
     public Player photonPlayer;
+    PhotonView PV;
+
+    private void Awake()
+    {
+        //Get my phoneView
+        PV = GetComponent<PhotonView>();
+        //If not mine dont continue
+        if (!PV.IsMine)
+            return;
+        animator = GetComponent<Animator>();
+        
+        animator.SetFloat("MoveSpeed", moveSpeed);
+        mainCamera = Camera.main;
+        playerInput = new CharacterController();
+        animator = GetComponent<Animator>();
+
+
+
+    }
 
 
     private void Update()
@@ -26,8 +48,8 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        input.x = Input.GetAxis("Horizontal");
-        input.y = Input.GetAxis("Vertical");
+        //Get value from input system for directional movement
+        input = playerInput.CharacterInputs.Move.ReadValue<Vector2>();
 
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
         animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
