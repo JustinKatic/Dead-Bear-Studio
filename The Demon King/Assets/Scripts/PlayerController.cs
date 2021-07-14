@@ -32,14 +32,11 @@ public class PlayerController : MonoBehaviourPun
         if (!PV.IsMine)
             return;
         animator = GetComponent<Animator>();
-        
+
         animator.SetFloat("MoveSpeed", moveSpeed);
         mainCamera = Camera.main;
         playerInput = new CharacterController();
         animator = GetComponent<Animator>();
-
-
-
     }
 
 
@@ -83,6 +80,19 @@ public class PlayerController : MonoBehaviourPun
             mainCamera = GetComponentInChildren<Camera>();
             //GameUI.instance.Initialize(this);
         }
+    }
+
+    private void OnEnable()
+    {
+        if (photonView.IsMine)
+            playerInput.CharacterInputs.Enable();
+
+    }
+
+    private void OnDisable()
+    {
+        if (photonView.IsMine)
+            playerInput.CharacterInputs.Disable();
     }
 
 }
