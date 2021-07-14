@@ -7,13 +7,10 @@ using System.Linq;
 
 public class GameManager : MonoBehaviourPun
 {
-    public float postGameTime;
-
     [Header("Players")]
     public string playerPrefabLocation;
     public PlayerController[] players;
     public Transform[] spawnPoints;
-    public int alivePlayers;
 
     private int playersInGame;
 
@@ -28,7 +25,6 @@ public class GameManager : MonoBehaviourPun
     void Start ()
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
-        alivePlayers = players.Length;
 
         photonView.RPC("ImInGame", RpcTarget.AllBuffered);
     }
@@ -71,11 +67,5 @@ public class GameManager : MonoBehaviourPun
         }
 
         return null;
-    }
-
-
-    void GoBackToMenu ()
-    {
-        NetworkManager.instance.ChangeScene("Menu");
     }
 }

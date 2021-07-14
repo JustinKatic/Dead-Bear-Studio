@@ -18,6 +18,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public Button createRoomButton;
     public Button findRoomButton;
 
+    [Header("Create Room Screen")]
+    public Button createNewRoomButton;
+
     [Header("Lobby")]
     public TextMeshProUGUI playerListText;
     public TextMeshProUGUI roomInfoText;
@@ -79,15 +82,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnPlayerNameValueChanged(TMP_InputField playerNameInput)
     {
         PhotonNetwork.NickName = playerNameInput.text;
+
+        createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+        findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
     }
 
-    // called when we connect to the master server
-    public override void OnConnectedToMaster()
-    {
-        // enable the menu buttons once we connect to the server
-        createRoomButton.interactable = true;
-        findRoomButton.interactable = true;
-    }
 
     // called when the "Create Room" button has been pressed
     public void OnCreateRoomButton()
@@ -102,6 +101,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     // CREATE ROOM SCREEN
+    public void OnPlayerRoomValueChanged(TMP_InputField playerRoomNameInput)
+    {
+        createNewRoomButton.interactable = !string.IsNullOrEmpty(playerRoomNameInput.text);
+    }
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
@@ -148,6 +151,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
 
+
         // tell everyone to load into the Game scene
         NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, "Game");
     }
@@ -168,7 +172,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         return buttonObj;
     }
-  
+
 
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
@@ -191,7 +195,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             {
                 roomList.Remove(FindRoom(roomInfo.Name));
                 roomList.Add(roomInfo);
-            }    
+            }
         }
 
         // disable all room buttons
