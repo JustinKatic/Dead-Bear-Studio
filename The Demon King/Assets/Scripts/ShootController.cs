@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class HeavyProjectile : MonoBehaviour
+public class ShootController : MonoBehaviourPun
 {
     private LineRenderer lineRenderer;
 
@@ -13,24 +15,32 @@ public class HeavyProjectile : MonoBehaviour
     public float timeBetweenPoints = .1f;
     public float blastPower = 5;
     public float shootYAngle;
+    public int damage;
 
     private Vector3 shootAngle;
     public GameObject heavyProjectile;
     public Transform shotPoint;
     public GameObject recticle;
 
-   [HideInInspector] public bool isAiming = false;
+    [HideInInspector] public bool isAiming = false;
 
     // The physics layer that will cause the line to stop being drawn
     public LayerMask collidableLayers;
+    private PlayerController player;
 
-    void Start()
+    private Camera cam;
+
+    void Awake()
     {
+        player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
     }
 
     private void Update()
     {
+        if (!photonView.IsMine)
+            return;
+
         if (isAiming)
         {
             Aim();
@@ -41,17 +51,28 @@ public class HeavyProjectile : MonoBehaviour
     {
         if (isAiming)
         {
-            GameObject createdCannonball = Instantiate(heavyProjectile, shotPoint.position, shotPoint.rotation);
-            createdCannonball.GetComponent<Rigidbody>().velocity = shootAngle * blastPower;
+            player.photonView.RPC("SpawnHeavyProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, shootAngle, blastPower);
         }
-        
+    }
+
+    [PunRPC]
+    void SpawnHeavyProjectile(Vector3 pos, Vector3 dir, Vector3 shootDir, float power)
+    {
+        GameObject createdHeavyProjectile = Instantiate(heavyProjectile, pos, Quaternion.identity);
+        createdHeavyProjectile.transform.forward = dir;
+
+        HeavyProjectileController projectileSctipt = createdHeavyProjectile.GetComponent<HeavyProjectileController>();
+
+        projectileSctipt.Initialize(damage, player.id, player.photonView.IsMine);
+        projectileSctipt.rb.velocity = shootDir * power;
+        Debug.Log(projectileSctipt.rb.velocity);
     }
 
     public void Aim()
     {
         lineRenderer.enabled = true;
         recticle.SetActive(false);
-        
+
         shootAngle = new Vector3(shotPoint.transform.forward.x, shotPoint.transform.forward.y + shootYAngle, shotPoint.transform.forward.z);
 
         lineRenderer.positionCount = numPoints;

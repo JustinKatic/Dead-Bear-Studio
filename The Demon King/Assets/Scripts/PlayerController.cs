@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviourPun
     CharacterInputs CharacterInputs;
     CharacterController cc;
 
-    private HeavyProjectile heavyProjectile;
+    private ShootController shootController;
 
     Vector3 rootMotion;
 
@@ -46,7 +46,12 @@ public class PlayerController : MonoBehaviourPun
 
     private void Awake()
     {
-        CharacterInputs = new CharacterInputs();
+        if (photonView.IsMine)
+        {
+            CharacterInputs = new CharacterInputs();
+        }
+
+        shootController = GetComponent<ShootController>();
     }
 
     [PunRPC]
@@ -69,15 +74,15 @@ public class PlayerController : MonoBehaviourPun
             animator = GetComponent<Animator>();
             mainCamera = Camera.main;
             jumpVelovity = Mathf.Sqrt(2 * gravity * jumpHeight);
-            
-            heavyProjectile = GetComponent<HeavyProjectile>();
+
+
 
             CharacterInputs.Player.Jump.performed += OnJump;
             CharacterInputs.Player.Shoot.performed += OnShoot;
             CharacterInputs.Player.Aim.performed += OnAim;
 
             CharacterInputs.Player.Aim.canceled += OnAimCancelled;
-            
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             //GameUI.instance.Initialize(this);
@@ -86,18 +91,17 @@ public class PlayerController : MonoBehaviourPun
 
     private void OnAimCancelled(InputAction.CallbackContext obj)
     {
-        heavyProjectile.AimCancelled();
+        shootController.AimCancelled();
     }
 
     private void OnAim(InputAction.CallbackContext obj)
     {
-        
-       heavyProjectile.Aim();
+        shootController.Aim();
     }
 
     private void OnShoot(InputAction.CallbackContext obj)
     {
-        heavyProjectile.Shoot();
+        shootController.Shoot();
     }
 
     private void OnJump(InputAction.CallbackContext obj)
@@ -117,7 +121,7 @@ public class PlayerController : MonoBehaviourPun
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
         animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
         animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
-        
+
     }
     private void FixedUpdate()
     {
@@ -178,7 +182,7 @@ public class PlayerController : MonoBehaviourPun
     private void OnEnable()
     {
         if (photonView.IsMine)
-            
+
             CharacterInputs.Player.Enable();
 
     }
@@ -233,5 +237,5 @@ public class PlayerController : MonoBehaviourPun
         // Apply the push
         body.velocity = pushDir * pushPower;
     }
-    
+
 }
