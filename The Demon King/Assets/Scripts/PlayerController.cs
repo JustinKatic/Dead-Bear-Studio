@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviourPun
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
-
     }
 
     private void UpdateOnGround()
@@ -148,6 +147,8 @@ public class PlayerController : MonoBehaviourPun
             animator = GetComponent<Animator>();
             mainCamera = Camera.main;
             jumpVelovity = Mathf.Sqrt(2 * gravity * jumpHeight);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
             //GameUI.instance.Initialize(this);
         }
     }
