@@ -5,6 +5,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using Cinemachine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviourPun
 {
@@ -33,6 +34,8 @@ public class PlayerController : MonoBehaviourPun
     CharacterInputs CharacterInputs;
     CharacterController cc;
 
+    private HeavyProjectile heavyProjectile;
+
     Vector3 rootMotion;
 
 
@@ -43,18 +46,65 @@ public class PlayerController : MonoBehaviourPun
 
     private void Awake()
     {
-        //Get my phoneView
-        PV = GetComponent<PhotonView>();
-        //If not mine dont continue
-        if (!PV.IsMine)
-            return;
-        animator = GetComponent<Animator>();
-
-        //animator.SetFloat("MoveSpeed", moveSpeed);
-        mainCamera = Camera.main;
         CharacterInputs = new CharacterInputs();
-        animator = GetComponent<Animator>();
     }
+
+    [PunRPC]
+    public void Initialize(Player player)
+    {
+        id = player.ActorNumber;
+        photonPlayer = player;
+
+        GameManager.instance.players[id - 1] = this;
+
+        // is this not our local player?
+        if (!photonView.IsMine)
+        {
+            Destroy(GetComponentInChildren<Camera>().gameObject);
+            Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
+        }
+        else
+        {
+            cc = GetComponent<CharacterController>();
+            animator = GetComponent<Animator>();
+            mainCamera = Camera.main;
+            jumpVelovity = Mathf.Sqrt(2 * gravity * jumpHeight);
+            
+            heavyProjectile = GetComponent<HeavyProjectile>();
+
+            CharacterInputs.Player.Jump.performed += OnJump;
+            CharacterInputs.Player.Shoot.performed += OnShoot;
+            CharacterInputs.Player.Aim.performed += OnAim;
+
+            CharacterInputs.Player.Aim.canceled += OnAimCancelled;
+            
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            //GameUI.instance.Initialize(this);
+        }
+    }
+
+    private void OnAimCancelled(InputAction.CallbackContext obj)
+    {
+        heavyProjectile.AimCancelled();
+    }
+
+    private void OnAim(InputAction.CallbackContext obj)
+    {
+        
+       heavyProjectile.Aim();
+    }
+
+    private void OnShoot(InputAction.CallbackContext obj)
+    {
+        heavyProjectile.Shoot();
+    }
+
+    private void OnJump(InputAction.CallbackContext obj)
+    {
+        Jump();
+    }
+
 
     private void Update()
     {
@@ -67,11 +117,7 @@ public class PlayerController : MonoBehaviourPun
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
         animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
         animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
-
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Jump();
-        }
+        
     }
     private void FixedUpdate()
     {
@@ -127,35 +173,12 @@ public class PlayerController : MonoBehaviourPun
     }
 
 
-    [PunRPC]
-    public void Initialize(Player player)
-    {
-        id = player.ActorNumber;
-        photonPlayer = player;
 
-        GameManager.instance.players[id - 1] = this;
-
-        // is this not our local player?
-        if (!photonView.IsMine)
-        {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
-            Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
-        }
-        else
-        {
-            cc = GetComponent<CharacterController>();
-            animator = GetComponent<Animator>();
-            mainCamera = Camera.main;
-            jumpVelovity = Mathf.Sqrt(2 * gravity * jumpHeight);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            //GameUI.instance.Initialize(this);
-        }
-    }
 
     private void OnEnable()
     {
         if (photonView.IsMine)
+            
             CharacterInputs.Player.Enable();
 
     }
@@ -210,5 +233,5 @@ public class PlayerController : MonoBehaviourPun
         // Apply the push
         body.velocity = pushDir * pushPower;
     }
-
+    
 }

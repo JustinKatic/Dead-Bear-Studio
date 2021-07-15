@@ -71,6 +71,7 @@ GameObject:
   - component: {fileID: 1516984283348793863}
   - component: {fileID: 1302168214484477477}
   - component: {fileID: 7698500645096730958}
+  - component: {fileID: 3500497851002557668}
   m_Layer: 0
   m_Name: CM FreeLook
   m_TagString: Untagged
@@ -211,6 +212,21 @@ MonoBehaviour:
   m_Offset: {x: 0.38, y: -0.15, z: -0.84}
   m_ApplyAfter: 1
   m_PreserveComposition: 0
+--- !u!114 &3500497851002557668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914674470398199567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb7194dc27b9df64c8beca7482ee8e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerIndex: -1
+  XYAxis: {fileID: -6460068753448597980, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+  ZAxis: {fileID: 0}
 --- !u!1 &1937018729003094080
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,12 +2151,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numPoints: 50
   timeBetweenPoints: 0.1
-  rotationSpeed: 1
   blastPower: 20
+  shootYAngle: -0.2
   heavyProjectile: {fileID: 4327312882750377501, guid: c851eb72043db7e4782dac785b2b6e4b, type: 3}
   shotPoint: {fileID: 1090681262641618435}
-  shootYAngle: -0.2
   recticle: {fileID: 4299418701417167322}
+  isAiming: 0
   collidableLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -2359,7 +2375,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3745922281781720449}
-  m_LocalRotation: {x: 0.3519327, y: 0.0118809445, z: -0.004467483, w: 0.93593925}
+  m_LocalRotation: {x: 0.3519327, y: 0.011880912, z: -0.0044674706, w: 0.93593925}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
