@@ -32,6 +32,12 @@ public class ShootController : MonoBehaviourPun
 
     void Awake()
     {
+        if (!photonView.IsMine)
+        {
+            Destroy(recticle.gameObject);
+            return;
+        }
+
         player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
     }

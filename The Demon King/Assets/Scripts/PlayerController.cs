@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPun
     public float turnSpeed = 15;
     public float jumpDamp;
 
-    private int curAttackerId;
+
 
 
     Vector3 PlayerVelocity;
