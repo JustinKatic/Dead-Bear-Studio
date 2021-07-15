@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class HeavyProjectileController : MonoBehaviour
 {
-    private int damage;
+    private int damage = 1;
     private int attackerId;
     private bool isMine;
 
@@ -36,7 +38,7 @@ public class HeavyProjectileController : MonoBehaviour
             PlayerController player = GameManager.instance.GetPlayer(other.gameObject);
 
             if (player.id != attackerId)
-                player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+                player.photonView.RPC("TakeDamage", RpcTarget.All, attackerId, damage);
         }
 
         Destroy(gameObject);

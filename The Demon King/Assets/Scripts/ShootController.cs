@@ -65,7 +65,6 @@ public class ShootController : MonoBehaviourPun
 
         projectileSctipt.Initialize(damage, player.id, player.photonView.IsMine);
         projectileSctipt.rb.velocity = shootDir * power;
-        Debug.Log(projectileSctipt.rb.velocity);
     }
 
     public void Aim()
