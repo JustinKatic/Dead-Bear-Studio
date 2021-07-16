@@ -9,6 +9,8 @@ public class HeavyProjectileController : MonoBehaviour
     private int damage = 1;
     private int attackerId;
     private bool isMine;
+    public LayerMask player;
+
 
     public Rigidbody rb;
 
@@ -28,17 +30,17 @@ public class HeavyProjectileController : MonoBehaviour
         Destroy(gameObject, 5.0f);
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
-        // did we hit a player?
-        // if this is the local player's bullet, damage the hit player
-        // we're using client side hit detection
-        if (other.CompareTag("Player") && isMine)
+        if (isMine)
         {
-            PlayerController player = GameManager.instance.GetPlayer(other.gameObject);
-
-            if (player.id != attackerId)
-                player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+            Collider[] hitColliders = Physics.OverlapSphere(collision.contacts[0].point, 4, player);
+            foreach (Collider col in hitColliders)
+            {
+                PlayerController player = GameManager.instance.GetPlayer(col.gameObject);
+                if (player.id != attackerId)
+                    player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+            }
         }
 
         Destroy(gameObject);
