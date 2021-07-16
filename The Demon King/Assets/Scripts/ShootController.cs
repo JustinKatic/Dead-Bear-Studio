@@ -28,14 +28,11 @@ public class ShootController : MonoBehaviourPun
     public LayerMask collidableLayers;
     private PlayerController player;
 
-    private Camera cam;
-
     void Awake()
     {
         if (!photonView.IsMine)
         {
             Destroy(recticle.gameObject);
-            return;
         }
 
         player = GetComponent<PlayerController>();

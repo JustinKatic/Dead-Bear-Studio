@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviourPun
     private ShootController shootController;
 
     public Player photonPlayer;
+    public bool isStunned = false;
 
     private void Awake()
     {
@@ -109,16 +110,23 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        //Get value from input system for directional movement
-        input = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
-        //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
-        animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
-        animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
+        if (!isStunned)
+        {
+            //Get value from input system for directional movement
+            input = CharacterInputs.Player.Move.ReadValue<Vector2>();
+
+            //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
+            animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
+            animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
+        }
     }
     private void FixedUpdate()
     {
         if (!photonView.IsMine)
+            return;
+
+        if (isStunned)
             return;
 
         //Is in air state

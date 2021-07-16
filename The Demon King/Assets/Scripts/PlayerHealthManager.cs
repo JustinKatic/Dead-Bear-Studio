@@ -11,7 +11,6 @@ public class PlayerHealthManager : MonoBehaviourPun
     public int CurrentHealth = 0;
     public TMP_Text OverheadText = null;
     public bool Dead = false;
-    public bool stunned = false;
     public float stunnedDuration;
 
     private float TimeBeforeHealthRegen = 3f;
@@ -33,7 +32,7 @@ public class PlayerHealthManager : MonoBehaviourPun
         if (CurrentHealth < MaxHealth)
         {
             HealthRegenTimer -= Time.deltaTime;
-            if (HealthRegenTimer <= 0 && !stunned)
+            if (HealthRegenTimer <= 0 && !player.isStunned)
             {
                 player.photonView.RPC("Heal", RpcTarget.All, 1);
             }
@@ -43,8 +42,9 @@ public class PlayerHealthManager : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(int attackerId, int damage)
     {
-        if (Dead)
+        if (player.isStunned)
             return;
+
 
         CurrentHealth -= damage;
         curAttackerId = attackerId;
@@ -75,10 +75,11 @@ public class PlayerHealthManager : MonoBehaviourPun
 
         IEnumerator StunnedCorutine()
         {
-            stunned = true;
+            
+            player.isStunned = true;
             OverheadText.text = "stunned";
             yield return new WaitForSeconds(stunnedDuration);
-            stunned = false;
+            player.isStunned = false;
         }
     }
 }
