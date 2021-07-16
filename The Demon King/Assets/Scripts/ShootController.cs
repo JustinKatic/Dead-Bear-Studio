@@ -23,6 +23,9 @@ public class ShootController : MonoBehaviourPun
     public GameObject recticle;
     public GameObject AoeZone;
 
+    public bool PrimaryProjectileActive = false;
+    public bool HeavyProjectileActive = false;
+
     [HideInInspector] public bool isAiming = false;
 
     // The physics layer that will cause the line to stop being drawn
@@ -51,11 +54,11 @@ public class ShootController : MonoBehaviourPun
 
         if (isAiming)
         {
-            Aim();
+            HeavyProjectileAim();
         }
     }
 
-    public void Shoot()
+    public void ShootHeavyProjectile()
     {
         if (isAiming)
         {
@@ -75,7 +78,7 @@ public class ShootController : MonoBehaviourPun
         projectileSctipt.rb.velocity = shootDir * power;
     }
 
-    public void Aim()
+    public void HeavyProjectileAim()
     {
         shotPoint.transform.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, shotPoint.transform.eulerAngles.y, shotPoint.transform.eulerAngles.z);
         lineRenderer.enabled = true;
@@ -106,7 +109,7 @@ public class ShootController : MonoBehaviourPun
         isAiming = true;
     }
 
-    public void AimCancelled()
+    public void HeavyProjectileAimCancelled()
     {
         AoeZone.SetActive(false);
         isAiming = false;

@@ -80,29 +80,38 @@ public class PlayerController : MonoBehaviourPun
             //GameUI.instance.Initialize(this);
         }
     }
+    private void OnAim(InputAction.CallbackContext obj)
+    {
+        if (isStunned)
+            return;
+
+        if (shootController.HeavyProjectileActive)
+            shootController.HeavyProjectileAim();
+    }
 
     private void OnAimCancelled(InputAction.CallbackContext obj)
     {
-        if (!isStunned)
-            shootController.AimCancelled();
+        if (isStunned)
+            return;
+
+        if (shootController.HeavyProjectileActive)
+            shootController.HeavyProjectileAimCancelled();
     }
 
-    private void OnAim(InputAction.CallbackContext obj)
-    {
-        if (!isStunned)
-            shootController.Aim();
-    }
 
     private void OnShoot(InputAction.CallbackContext obj)
     {
-        if (!isStunned)
-            shootController.Shoot();
+        if (isStunned)
+            return;
+        if (shootController.HeavyProjectileActive)
+            shootController.ShootHeavyProjectile();
     }
 
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (!isStunned)
-            Jump();
+        if (isStunned)
+            return;
+        Jump();
     }
 
 
