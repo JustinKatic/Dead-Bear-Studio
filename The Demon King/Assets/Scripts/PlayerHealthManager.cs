@@ -34,7 +34,7 @@ public class PlayerHealthManager : MonoBehaviourPun
             HealthRegenTimer -= Time.deltaTime;
             if (HealthRegenTimer <= 0 && !player.isStunned)
             {
-                player.photonView.RPC("Heal", RpcTarget.All, 1);
+                photonView.RPC("Heal", player.photonPlayer, 1);
             }
         }
     }
@@ -45,17 +45,22 @@ public class PlayerHealthManager : MonoBehaviourPun
         if (player.isStunned)
             return;
 
-
         CurrentHealth -= damage;
         curAttackerId = attackerId;
 
         HealthRegenTimer = TimeBeforeHealthRegen;
 
-        OverheadText.text = CurrentHealth.ToString();
+        photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
 
         //die if no health left
         if (CurrentHealth <= 0)
-            photonView.RPC("Stunned", RpcTarget.All);
+            photonView.RPC("Stunned", player.photonPlayer);
+    }
+
+    [PunRPC]
+    public void UpdateOverheadText(string textToDisplay)
+    {
+        OverheadText.text = textToDisplay;
     }
 
 
@@ -75,9 +80,8 @@ public class PlayerHealthManager : MonoBehaviourPun
 
         IEnumerator StunnedCorutine()
         {
-            
             player.isStunned = true;
-            OverheadText.text = "stunned";
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
             yield return new WaitForSeconds(stunnedDuration);
             player.isStunned = false;
         }

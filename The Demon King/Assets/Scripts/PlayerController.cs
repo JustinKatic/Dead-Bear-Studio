@@ -21,9 +21,6 @@ public class PlayerController : MonoBehaviourPun
     public float turnSpeed = 15;
     public float jumpDamp;
 
-
-
-
     Vector3 PlayerVelocity;
     private float jumpVelovity;
     private Vector3 rootMotion;
@@ -203,8 +200,6 @@ public class PlayerController : MonoBehaviourPun
         PlayerVelocity.y = jumpVelocity;
         animator.SetBool("isJumping", true);
     }
-
-
 
 
     //Push rigidbodys collideded with..

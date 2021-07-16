@@ -21,6 +21,7 @@ public class ShootController : MonoBehaviourPun
     public GameObject heavyProjectile;
     public Transform shotPoint;
     public GameObject recticle;
+    public GameObject AoeZone;
 
     [HideInInspector] public bool isAiming = false;
 
@@ -28,15 +29,19 @@ public class ShootController : MonoBehaviourPun
     public LayerMask collidableLayers;
     private PlayerController player;
 
+    private Camera cam;
+
     void Awake()
     {
         if (!photonView.IsMine)
         {
             Destroy(recticle.gameObject);
+            Destroy(AoeZone);
         }
 
         player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
+        cam = GetComponentInChildren<Camera>();
     }
 
     private void Update()
@@ -72,8 +77,10 @@ public class ShootController : MonoBehaviourPun
 
     public void Aim()
     {
+        shotPoint.transform.eulerAngles = new Vector3(cam.transform.eulerAngles.x, shotPoint.transform.eulerAngles.y, shotPoint.transform.eulerAngles.z);
         lineRenderer.enabled = true;
         recticle.SetActive(false);
+        AoeZone.SetActive(true);
 
         shootAngle = new Vector3(shotPoint.transform.forward.x, shotPoint.transform.forward.y + shootYAngle, shotPoint.transform.forward.z);
 
@@ -88,18 +95,20 @@ public class ShootController : MonoBehaviourPun
             newPoint.y = startingPosition.y + startingVelocity.y * t + Physics.gravity.y / 2f * t * t;
             points.Add(newPoint);
 
-            if (Physics.OverlapSphere(newPoint, 1, collidableLayers).Length > 0)
+            if (Physics.OverlapSphere(newPoint, .4f, collidableLayers).Length > 0)
             {
                 lineRenderer.positionCount = points.Count;
                 break;
             }
         }
+        AoeZone.transform.position = new Vector3(points[points.Count - 1].x, points[points.Count - 1].y, points[points.Count - 1].z);
         lineRenderer.SetPositions(points.ToArray());
         isAiming = true;
     }
 
     public void AimCancelled()
     {
+        AoeZone.SetActive(false);
         isAiming = false;
         lineRenderer.enabled = false;
         recticle.SetActive(true);

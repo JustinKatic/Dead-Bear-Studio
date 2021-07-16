@@ -38,7 +38,7 @@ public class HeavyProjectileController : MonoBehaviour
             PlayerController player = GameManager.instance.GetPlayer(other.gameObject);
 
             if (player.id != attackerId)
-                player.photonView.RPC("TakeDamage", RpcTarget.All, attackerId, damage);
+                player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
         }
 
         Destroy(gameObject);
