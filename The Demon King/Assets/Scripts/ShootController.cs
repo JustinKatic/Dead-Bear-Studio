@@ -77,7 +77,7 @@ public class ShootController : MonoBehaviourPun
 
     public void Aim()
     {
-        shotPoint.transform.eulerAngles = new Vector3(cam.transform.eulerAngles.x, shotPoint.transform.eulerAngles.y, shotPoint.transform.eulerAngles.z);
+        shotPoint.transform.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, shotPoint.transform.eulerAngles.y, shotPoint.transform.eulerAngles.z);
         lineRenderer.enabled = true;
         recticle.SetActive(false);
         AoeZone.SetActive(true);

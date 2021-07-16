@@ -83,22 +83,26 @@ public class PlayerController : MonoBehaviourPun
 
     private void OnAimCancelled(InputAction.CallbackContext obj)
     {
-        shootController.AimCancelled();
+        if (!isStunned)
+            shootController.AimCancelled();
     }
 
     private void OnAim(InputAction.CallbackContext obj)
     {
-        shootController.Aim();
+        if (!isStunned)
+            shootController.Aim();
     }
 
     private void OnShoot(InputAction.CallbackContext obj)
     {
-        shootController.Shoot();
+        if (!isStunned)
+            shootController.Shoot();
     }
 
     private void OnJump(InputAction.CallbackContext obj)
     {
-        Jump();
+        if (!isStunned)
+            Jump();
     }
 
 
@@ -180,7 +184,8 @@ public class PlayerController : MonoBehaviourPun
     {
         if (!photonView.IsMine)
             return;
-        rootMotion += animator.deltaPosition;
+        if (!isStunned)
+            rootMotion += animator.deltaPosition;
     }
 
     //player Jump
