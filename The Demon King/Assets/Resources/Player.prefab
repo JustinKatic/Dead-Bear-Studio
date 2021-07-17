@@ -2287,24 +2287,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   numPoints: 50
   timeBetweenPoints: 0.05
-  blastPower: 20
-  shootYAngle: -0.2
+  primaryProjectilePower: 50
+  blastPower: 10
+  shootYAngle: 1.11
   damage: 1
   PrimaryProjectileLayer:
     serializedVersion: 2
     m_Bits: 256
+  collidableLayers:
+    serializedVersion: 2
+    m_Bits: 8
   heavyProjectile: {fileID: 4327312882750377501, guid: c851eb72043db7e4782dac785b2b6e4b, type: 3}
   primaryProjectile: {fileID: 2324771704206079354, guid: 4b29cedb918c5884082f98317d795a44, type: 3}
-  primaryProjectilePower: 50
   shotPoint: {fileID: 1090681262641618435}
   recticle: {fileID: 4299418701417167322}
   AoeZone: {fileID: 1264589668316797343}
   PrimaryProjectileActive: 1
   HeavyProjectileActive: 0
   isAiming: 0
-  collidableLayers:
-    serializedVersion: 2
-    m_Bits: 8
 --- !u!120 &-3481319835397508516
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2417,10 +2417,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 3
   CurrentHealth: 0
-  OverheadText: {fileID: 6340795918260208060}
-  Dead: 0
-  stunnedDuration: 5
   HealthRegenTimer: 3
+  stunnedDuration: 5
+  Dead: 0
+  OverheadText: {fileID: 6340795918260208060}
 --- !u!1 &1937018729003094522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2538,7 +2538,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3745922281781720449}
-  m_LocalRotation: {x: 0.34194988, y: 0.011927882, z: -0.0043407795, w: 0.9396325}
+  m_LocalRotation: {x: 0.34194988, y: 0.011927916, z: -0.0043407925, w: 0.9396325}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

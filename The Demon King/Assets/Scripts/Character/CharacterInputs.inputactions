@@ -14,14 +14,6 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Shoot",
-                    "type": "Button",
-                    "id": "44bf9536-eccd-429e-9d81-516bcb994b2f",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
                     "id": "b8aa9b9b-2bf8-4953-9193-6e5dc5d42b9b",
@@ -30,7 +22,15 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Aim",
+                    "name": "Ability1",
+                    "type": "Button",
+                    "id": "44bf9536-eccd-429e-9d81-516bcb994b2f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Ability2",
                     "type": "Button",
                     "id": "73a8c356-bb7d-4f82-b35e-91f77d984f04",
                     "expectedControlType": "Button",
@@ -55,17 +55,6 @@
                 }
             ],
             "bindings": [
-                {
-                    "name": "",
-                    "id": "2c231873-4597-452d-bb90-39d2e4e81156",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Shoot",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
                 {
                     "name": "",
                     "id": "e9da84b3-841e-4001-ba0f-1b252b17cf81",
@@ -139,7 +128,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Aim",
+                    "action": "Ability2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -162,6 +151,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c231873-4597-452d-bb90-39d2e4e81156",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Ability1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

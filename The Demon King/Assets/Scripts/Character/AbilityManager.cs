@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.InputSystem;
 
-public class ShootController : MonoBehaviourPun
+public class AbilityManager : MonoBehaviourPun
 {
     [Header("HeavyArcVariables")]
     private LineRenderer lineRenderer;
@@ -13,7 +14,7 @@ public class ShootController : MonoBehaviourPun
     public int numPoints = 50;
     //Distance between points on the line
     public float timeBetweenPoints = .1f;
-    
+
     [Header("ProjectileVariables")]
     public float primaryProjectilePower;
     public float blastPower = 5;
@@ -26,16 +27,16 @@ public class ShootController : MonoBehaviourPun
     // The physics layer that will cause the line to stop being drawn
     public LayerMask collidableLayers;
 
-    
+
     [Header("ProjectilePrefabs")]
     public GameObject heavyProjectile;
     public GameObject primaryProjectile;
-    
+
     [Header("GameObjects")]
     public Transform shotPoint;
     public GameObject recticle;
     public GameObject AoeZone;
-    
+
     [HideInInspector] public bool PrimaryProjectileActive = false;
     [HideInInspector] public bool HeavyProjectileActive = false;
     [HideInInspector] public bool isAiming = false;
@@ -54,7 +55,45 @@ public class ShootController : MonoBehaviourPun
         player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
         cam = GetComponentInChildren<Camera>();
+
+        player.CharacterInputs.Player.Ability1.performed += OnAbility1;
+        player.CharacterInputs.Player.Ability1.canceled += OnAbility1Cancelled;
+
+        player.CharacterInputs.Player.Ability2.performed += OnAbility2;
+        player.CharacterInputs.Player.Ability2.canceled += OnAbility2Cancelled;
     }
+
+    private void OnAbility1(InputAction.CallbackContext obj)
+    {
+        if (player.isStunned)
+            return;
+
+        ShootPrimaryProjectile();
+    }
+
+    private void OnAbility1Cancelled(InputAction.CallbackContext obj)
+    {
+        if (player.isStunned)
+            return;
+    }
+
+    private void OnAbility2(InputAction.CallbackContext obj)
+    {
+        if (player.isStunned)
+            return;
+
+        HeavyProjectileAim();
+    }
+
+    private void OnAbility2Cancelled(InputAction.CallbackContext obj)
+    {
+        if (player.isStunned)
+            return;
+
+        HeavyProjectileAimCancelled();
+    }
+
+
 
     private void Update()
     {
@@ -128,7 +167,7 @@ public class ShootController : MonoBehaviourPun
         // Calculate the trajectory of the projectile based off the given position and velocity
         Vector3 startingPosition = shotPoint.position;
         Vector3 startingVelocity = shootAngle * blastPower;
-        
+
         //Creates a list of points for the Line renderer based off the given points and distance between points
         //Continues adding to the list if an object has not been hit with a collidable layer
         for (float t = 0; t < numPoints; t += timeBetweenPoints)
@@ -152,7 +191,7 @@ public class ShootController : MonoBehaviourPun
     //Set the reticule back to active for the primary attack
     public void HeavyProjectileAimCancelled()
     {
-
+        ShootHeavyProjectile();
         AoeZone.SetActive(false);
         isAiming = false;
         lineRenderer.enabled = false;

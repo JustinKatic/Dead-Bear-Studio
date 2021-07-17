@@ -20,21 +20,21 @@ public class PlayerController : MonoBehaviourPun
     public float groundSpeed = 1f;
     public float turnSpeed = 15;
     public float jumpDamp;
+    public CharacterInputs CharacterInputs;
     private float jumpVelovity;
 
     public bool isStunned = false;
     private bool isJumping;
-    
+
     Vector3 PlayerVelocity;
     private Vector3 rootMotion;
     private Vector2 input;
-    
+
     //Player Components
     private Animator animator;
     private Camera mainCamera;
-    private CharacterInputs CharacterInputs;
     private CharacterController cc;
-    private ShootController shootController;
+    private AbilityManager shootController;
 
     public Player photonPlayer;
 
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs = new CharacterInputs();
         }
 
-        shootController = GetComponent<ShootController>();
+        shootController = GetComponent<AbilityManager>();
     }
 
     [PunRPC]
@@ -72,45 +72,16 @@ public class PlayerController : MonoBehaviourPun
             jumpVelovity = Mathf.Sqrt(2 * gravity * jumpHeight);
 
             CharacterInputs.Player.Jump.performed += OnJump;
-            CharacterInputs.Player.Shoot.performed += OnShoot;
-            CharacterInputs.Player.Aim.performed += OnAim;
-
-            CharacterInputs.Player.Aim.canceled += OnAimCancelled;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             //GameUI.instance.Initialize(this);
         }
     }
-    private void OnAim(InputAction.CallbackContext obj)
-    {
-        if (isStunned)
-            return;
 
-        if (shootController.HeavyProjectileActive)
-            shootController.HeavyProjectileAim();
-    }
-
-    private void OnAimCancelled(InputAction.CallbackContext obj)
-    {
-        if (isStunned)
-            return;
-
-        if (shootController.HeavyProjectileActive)
-            shootController.HeavyProjectileAimCancelled();
-    }
+  
 
 
-    private void OnShoot(InputAction.CallbackContext obj)
-    {
-        if (isStunned)
-            return;
-        if (shootController.HeavyProjectileActive)
-            shootController.ShootHeavyProjectile();
-
-        if (shootController.PrimaryProjectileActive)
-            shootController.ShootPrimaryProjectile();
-    }
 
     private void OnJump(InputAction.CallbackContext obj)
     {
