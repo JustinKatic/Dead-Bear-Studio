@@ -2100,6 +2100,7 @@ GameObject:
   - component: {fileID: 4060751635038238556}
   - component: {fileID: -3481319835397508516}
   - component: {fileID: 225705835477089089}
+  - component: {fileID: -3268942554301705269}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -2171,6 +2172,7 @@ MonoBehaviour:
   turnSpeed: 15
   jumpDamp: 0.5
   isStunned: 0
+  animator: {fileID: 0}
 --- !u!114 &1937018729003094515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2302,8 +2304,6 @@ MonoBehaviour:
   shotPoint: {fileID: 1090681262641618435}
   recticle: {fileID: 4299418701417167322}
   AoeZone: {fileID: 1264589668316797343}
-  PrimaryProjectileActive: 1
-  HeavyProjectileActive: 0
   isAiming: 0
 --- !u!120 &-3481319835397508516
 LineRenderer:
@@ -2421,6 +2421,19 @@ MonoBehaviour:
   stunnedDuration: 5
   Dead: 0
   OverheadText: {fileID: 6340795918260208060}
+--- !u!114 &-3268942554301705269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937018729003094520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d451510b9427358438f67dd44693d53a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  devourRange: 50
 --- !u!1 &1937018729003094522
 GameObject:
   m_ObjectHideFlags: 0

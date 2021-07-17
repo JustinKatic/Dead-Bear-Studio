@@ -37,8 +37,6 @@ public class AbilityManager : MonoBehaviourPun
     public GameObject recticle;
     public GameObject AoeZone;
 
-    [HideInInspector] public bool PrimaryProjectileActive = false;
-    [HideInInspector] public bool HeavyProjectileActive = false;
     [HideInInspector] public bool isAiming = false;
 
     private PlayerController player;
@@ -56,11 +54,17 @@ public class AbilityManager : MonoBehaviourPun
         lineRenderer = GetComponent<LineRenderer>();
         cam = GetComponentInChildren<Camera>();
 
-        player.CharacterInputs.Player.Ability1.performed += OnAbility1;
-        player.CharacterInputs.Player.Ability1.canceled += OnAbility1Cancelled;
+    }
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            player.CharacterInputs.Player.Ability1.performed += OnAbility1;
+            player.CharacterInputs.Player.Ability1.canceled += OnAbility1Cancelled;
 
-        player.CharacterInputs.Player.Ability2.performed += OnAbility2;
-        player.CharacterInputs.Player.Ability2.canceled += OnAbility2Cancelled;
+            player.CharacterInputs.Player.Ability2.performed += OnAbility2;
+            player.CharacterInputs.Player.Ability2.canceled += OnAbility2Cancelled;
+        }
     }
 
     private void OnAbility1(InputAction.CallbackContext obj)

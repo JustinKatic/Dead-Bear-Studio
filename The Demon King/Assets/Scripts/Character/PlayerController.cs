@@ -75,6 +75,8 @@ public class PlayerController : MonoBehaviourPun
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+
             //GameUI.instance.Initialize(this);
         }
     }
@@ -171,6 +173,7 @@ public class PlayerController : MonoBehaviourPun
             return;
         if (!isStunned)
             rootMotion += animator.deltaPosition;
+
     }
 
     //player Jump

@@ -56,7 +56,7 @@ public class PlayerHealthManager : MonoBehaviourPun
 
         //die if no health left
         if (CurrentHealth <= 0)
-            photonView.RPC("Stunned", player.photonPlayer);
+            photonView.RPC("Stunned", RpcTarget.All);
     }
 
     //Updates the players text to everyone on the server

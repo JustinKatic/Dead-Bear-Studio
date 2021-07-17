@@ -31,7 +31,6 @@ public class PrimaryProjectileController : MonoBehaviour
     {
         if (isMine && collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Apply Dmg");
             PlayerController player = GameManager.instance.GetPlayer(collision.gameObject);
             if (player.id != attackerId)
                 player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
