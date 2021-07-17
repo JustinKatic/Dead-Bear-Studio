@@ -71,6 +71,7 @@ public class PlayerHealthManager : MonoBehaviourPun
     public void Heal(int amountToHeal)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
         OverheadText.text = CurrentHealth.ToString();
         HealthRegenTimer = TimeBeforeHealthRegen;
     }
