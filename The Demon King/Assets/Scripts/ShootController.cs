@@ -16,9 +16,13 @@ public class ShootController : MonoBehaviourPun
     public float blastPower = 5;
     public float shootYAngle;
     public int damage;
+    public LayerMask PrimaryProjectileLayer;
 
     private Vector3 shootAngle;
     public GameObject heavyProjectile;
+    public GameObject primaryProjectile;
+    public float primaryProjectilePower;
+
     public Transform shotPoint;
     public GameObject recticle;
     public GameObject AoeZone;
@@ -57,6 +61,32 @@ public class ShootController : MonoBehaviourPun
             HeavyProjectileAim();
         }
     }
+
+    public void ShootPrimaryProjectile()
+    {
+        RaycastHit hit;
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~PrimaryProjectileLayer))
+        {
+            player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
+        }
+        else
+        {
+            player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
+        }
+    }
+
+    [PunRPC]
+    void SpawnPrimaryProjectile(Vector3 pos, Vector3 dir, float power, Vector3 hitPoint)
+    {
+        GameObject createdPrimaryProjectile = Instantiate(primaryProjectile, pos, Quaternion.identity);
+        createdPrimaryProjectile.transform.forward = dir;
+
+        PrimaryProjectileController projectileScript = createdPrimaryProjectile.GetComponent<PrimaryProjectileController>();
+        projectileScript.Initialize(damage, player.id, player.photonView.IsMine);
+        projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
+    }
+
 
     public void ShootHeavyProjectile()
     {

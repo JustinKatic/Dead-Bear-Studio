@@ -105,6 +105,9 @@ public class PlayerController : MonoBehaviourPun
             return;
         if (shootController.HeavyProjectileActive)
             shootController.ShootHeavyProjectile();
+
+        if (shootController.PrimaryProjectileActive)
+            shootController.ShootPrimaryProjectile();
     }
 
     private void OnJump(InputAction.CallbackContext obj)
