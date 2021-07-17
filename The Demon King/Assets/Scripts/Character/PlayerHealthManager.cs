@@ -7,17 +7,19 @@ using Photon.Realtime;
 
 public class PlayerHealthManager : MonoBehaviourPun
 {
+    [Header("HealthStats")]
     public int MaxHealth = 3;
     public int CurrentHealth = 0;
-    public TMP_Text OverheadText = null;
-    public bool Dead = false;
-    public float stunnedDuration;
-
-    private float TimeBeforeHealthRegen = 3f;
     public float HealthRegenTimer = 3f;
+    private float TimeBeforeHealthRegen = 3f;
 
+    [Header("StunStats")]
+    public float stunnedDuration;
+    
+    public bool Dead = false;
     private int curAttackerId;
 
+    public TMP_Text OverheadText = null;
     private PlayerController player;
 
     private void Awake()
@@ -57,6 +59,7 @@ public class PlayerHealthManager : MonoBehaviourPun
             photonView.RPC("Stunned", player.photonPlayer);
     }
 
+    //Updates the players text to everyone on the server
     [PunRPC]
     public void UpdateOverheadText(string textToDisplay)
     {
@@ -72,7 +75,7 @@ public class PlayerHealthManager : MonoBehaviourPun
         HealthRegenTimer = TimeBeforeHealthRegen;
     }
 
-
+    //This is run when the player has been stunned
     [PunRPC]
     void Stunned()
     {

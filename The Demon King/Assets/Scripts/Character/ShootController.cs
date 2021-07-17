@@ -7,35 +7,40 @@ using Photon.Realtime;
 
 public class ShootController : MonoBehaviourPun
 {
+    [Header("HeavyArcVariables")]
     private LineRenderer lineRenderer;
-
     //Number of points on the line
     public int numPoints = 50;
     //Distance between points on the line
     public float timeBetweenPoints = .1f;
+    
+    [Header("ProjectileVariables")]
+    public float primaryProjectilePower;
     public float blastPower = 5;
     public float shootYAngle;
     public int damage;
-    public LayerMask PrimaryProjectileLayer;
-
     private Vector3 shootAngle;
+
+    [Header("InteractableLayers")]
+    public LayerMask PrimaryProjectileLayer;
+    // The physics layer that will cause the line to stop being drawn
+    public LayerMask collidableLayers;
+
+    
+    [Header("ProjectilePrefabs")]
     public GameObject heavyProjectile;
     public GameObject primaryProjectile;
-    public float primaryProjectilePower;
-
+    
+    [Header("GameObjects")]
     public Transform shotPoint;
     public GameObject recticle;
     public GameObject AoeZone;
-
-    public bool PrimaryProjectileActive = false;
-    public bool HeavyProjectileActive = false;
-
+    
+    [HideInInspector] public bool PrimaryProjectileActive = false;
+    [HideInInspector] public bool HeavyProjectileActive = false;
     [HideInInspector] public bool isAiming = false;
 
-    // The physics layer that will cause the line to stop being drawn
-    public LayerMask collidableLayers;
     private PlayerController player;
-
     private Camera cam;
 
     void Awake()
@@ -111,6 +116,7 @@ public class ShootController : MonoBehaviourPun
     public void HeavyProjectileAim()
     {
         shotPoint.transform.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, shotPoint.transform.eulerAngles.y, shotPoint.transform.eulerAngles.z);
+        //Enables the Arc for the heavy projectile and disables the primary reticule
         lineRenderer.enabled = true;
         recticle.SetActive(false);
         AoeZone.SetActive(true);
@@ -119,9 +125,12 @@ public class ShootController : MonoBehaviourPun
 
         lineRenderer.positionCount = numPoints;
         List<Vector3> points = new List<Vector3>();
+        // Calculate the trajectory of the projectile based off the given position and velocity
         Vector3 startingPosition = shotPoint.position;
         Vector3 startingVelocity = shootAngle * blastPower;
-
+        
+        //Creates a list of points for the Line renderer based off the given points and distance between points
+        //Continues adding to the list if an object has not been hit with a collidable layer
         for (float t = 0; t < numPoints; t += timeBetweenPoints)
         {
             Vector3 newPoint = startingPosition + t * startingVelocity;
@@ -139,8 +148,11 @@ public class ShootController : MonoBehaviourPun
         isAiming = true;
     }
 
+    //Set the Aoe zone to and line renderer to inactive 
+    //Set the reticule back to active for the primary attack
     public void HeavyProjectileAimCancelled()
     {
+
         AoeZone.SetActive(false);
         isAiming = false;
         lineRenderer.enabled = false;

@@ -10,8 +10,7 @@ public class HeavyProjectileController : MonoBehaviour
     private int attackerId;
     private bool isMine;
     public LayerMask player;
-
-
+    
     public Rigidbody rb;
 
     private void OnEnable()

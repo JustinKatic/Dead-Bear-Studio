@@ -20,13 +20,16 @@ public class PlayerController : MonoBehaviourPun
     public float groundSpeed = 1f;
     public float turnSpeed = 15;
     public float jumpDamp;
-
-    Vector3 PlayerVelocity;
     private float jumpVelovity;
+
+    public bool isStunned = false;
+    private bool isJumping;
+    
+    Vector3 PlayerVelocity;
     private Vector3 rootMotion;
     private Vector2 input;
-
-    private bool isJumping;
+    
+    //Player Components
     private Animator animator;
     private Camera mainCamera;
     private CharacterInputs CharacterInputs;
@@ -34,7 +37,6 @@ public class PlayerController : MonoBehaviourPun
     private ShootController shootController;
 
     public Player photonPlayer;
-    public bool isStunned = false;
 
     private void Awake()
     {
