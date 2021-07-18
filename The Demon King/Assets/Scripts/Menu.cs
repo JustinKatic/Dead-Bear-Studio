@@ -162,10 +162,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
         
+        //Name of scene is the current dropdown selection
         if (sceneDropdown != null)
         {
             sceneName = sceneDropdown.options[sceneDropdown.value].text;
-            Debug.Log(sceneName);
         }
         else
         {

@@ -48,6 +48,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChangeScene (string sceneName)
     {
+        //Checks if the scene is found within the build settings, otherwise load game as default
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
             PhotonNetwork.LoadLevel(sceneName);
