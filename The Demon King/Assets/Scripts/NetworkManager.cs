@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
@@ -47,7 +48,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChangeScene (string sceneName)
     {
-        PhotonNetwork.LoadLevel(sceneName);
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("Game");
+            Debug.Log("Scene Not Found in Build Settings");
+        }
     }
 
     // called when we disconnect from the Photon server

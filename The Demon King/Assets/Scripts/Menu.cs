@@ -25,6 +25,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public TextMeshProUGUI playerListText;
     public TextMeshProUGUI roomInfoText;
     public Button startGameButton;
+    [SerializeField] private TMP_Dropdown sceneDropdown;
+    
 
     [Header("Lobby Browser")]
     public RectTransform roomListContainer;
@@ -32,6 +34,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
+
+    private string sceneName;
 
     void Start()
     {
@@ -53,6 +57,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             PhotonNetwork.CurrentRoom.IsVisible = true;
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
+
+
     }
 
 
@@ -105,6 +111,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         createNewRoomButton.interactable = !string.IsNullOrEmpty(playerRoomNameInput.text);
     }
+    public void OnLevelSelectionChanged(Dropdown.OptionData sceneNameSelection)
+    {
+        sceneName = sceneNameSelection.text;
+        
+    }
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
@@ -150,10 +161,18 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // hide the room
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-
-
+        
+        if (sceneDropdown != null)
+        {
+            sceneName = sceneDropdown.options[sceneDropdown.value].text;
+            Debug.Log(sceneName);
+        }
+        else
+        {
+            sceneName = "Game";
+        }
         // tell everyone to load into the Game scene
-        NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, "Game");
+        NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, sceneName);
     }
 
     // called when the "Leave Lobby" button has been pressed
