@@ -15,7 +15,7 @@ public class PlayerHealthManager : MonoBehaviourPun
 
     [Header("StunStats")]
     public float stunnedDuration;
-    
+
     public bool Dead = false;
     private int curAttackerId;
 
@@ -84,9 +84,12 @@ public class PlayerHealthManager : MonoBehaviourPun
 
         IEnumerator StunnedCorutine()
         {
+            Animator stunnedPlayerAnim = player.gameObject.GetComponent<Animator>();
+            stunnedPlayerAnim.speed = 0;
             player.isStunned = true;
             photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
             yield return new WaitForSeconds(stunnedDuration);
+            stunnedPlayerAnim.speed = 1;
             player.isStunned = false;
         }
     }

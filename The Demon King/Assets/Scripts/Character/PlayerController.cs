@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
-  
+
 
 
 
@@ -114,23 +114,23 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-        if (isStunned)
-            return;
-
         //Is in air state
         if (isJumping)
         {
             UpdateInAir();
         }
         //IsGrounded state
-        else
+        else if (!isJumping && !isStunned)
         {
             UpdateOnGround();
         }
 
-        //set the players rotation to the direction of the camera with a slerp smoothness
-        float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
+        if (!isStunned)
+        {
+            //set the players rotation to the direction of the camera with a slerp smoothness
+            float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
+        }
     }
 
 
@@ -173,6 +173,8 @@ public class PlayerController : MonoBehaviourPun
             return;
         if (!isStunned)
             rootMotion += animator.deltaPosition;
+        else
+            rootMotion = Vector3.zero;
 
     }
 
