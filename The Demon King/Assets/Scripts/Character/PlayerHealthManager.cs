@@ -22,6 +22,8 @@ public class PlayerHealthManager : MonoBehaviourPun
     public TMP_Text OverheadText = null;
     private PlayerController player;
 
+    public bool beingDevoured = false;
+
     private void Awake()
     {
         player = GetComponent<PlayerController>();
@@ -89,8 +91,16 @@ public class PlayerHealthManager : MonoBehaviourPun
             player.isStunned = true;
             photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
             yield return new WaitForSeconds(stunnedDuration);
-            stunnedPlayerAnim.speed = 1;
-            player.isStunned = false;
+            if (!beingDevoured)
+            {
+                stunnedPlayerAnim.speed = 1;
+                player.isStunned = false;
+            }
         }
+    }
+
+    public void Respawn()
+    {
+        playerController.transform.position = GameManager.instance.spawnPoints[0].position;
     }
 }

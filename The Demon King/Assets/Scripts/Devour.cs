@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class Devour : MonoBehaviourPun
 {
     private PlayerController playerController;
+    private PlayerHealthManager playerHealthManager;
     private Camera cam;
     private bool IsDevouring;
 
@@ -18,6 +19,7 @@ public class Devour : MonoBehaviourPun
         if (photonView.IsMine)
         {
             playerController = GetComponent<PlayerController>();
+            playerHealthManager = GetComponent<PlayerHealthManager>();
             cam = GetComponentInChildren<Camera>();
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
         }
@@ -43,16 +45,25 @@ public class Devour : MonoBehaviourPun
                 PlayerController hitPlayer = GameManager.instance.GetPlayer(hit.collider.gameObject).GetComponent<PlayerController>();
                 if (hitPlayer.isStunned)
                 {
-                    hitPlayer.photonView.RPC("OnDevourStart", hitPlayer.photonPlayer,playerController.id);
+                    hitPlayer.photonView.RPC("OnDevour", hitPlayer.photonPlayer, playerController.id);
                 }
             }
         }
     }
 
     [PunRPC]
-    void OnDevourStart(int attackerId)
+    void OnDevour(int attackerId)
     {
-        Debug.Log(playerController.id + "IM THE HIT PLAYER");
-        Debug.Log("Devoured by" + attackerId);
+        StartCoroutine(DevourCorutine());
+        IEnumerator DevourCorutine()
+        {
+            playerHealthManager.beingDevoured = true;
+            Debug.Log(GameManager.instance.GetPlayer(playerController.id).photonPlayer.NickName + " Is being devoured");
+
+            yield return new WaitForSeconds(3);
+
+            Debug.Log("Devoured by: " + GameManager.instance.GetPlayer(attackerId).photonPlayer.NickName);
+            playerHealthManager.Respawn();
+        }
     }
 }
