@@ -101,6 +101,6 @@ public class PlayerHealthManager : MonoBehaviourPun
 
     public void Respawn()
     {
-        playerController.transform.position = GameManager.instance.spawnPoints[0].position;
+        transform.position = GameManager.instance.spawnPoints[0].position;
     }
 }
