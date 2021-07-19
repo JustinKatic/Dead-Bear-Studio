@@ -7,52 +7,46 @@ public class AISpawner : MonoBehaviour
 {
     [SerializeField] private GameObject agent = null;
     [SerializeField] private int spawnLimit = 5;
-    [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
+    [SerializeField] public List<SpawnLocation> spawnsList = new List<SpawnLocation>();
     [SerializeField] private NavMeshSurface area;
     
-
-    private List<Vector3> spawnLocations = null;
     private int numberOfLocations = 0;
     private LayerMask obstruction;
     
     // Start is called before the first frame update
     void Start()
     {
-        spawnLocations = new List<Vector3>();
-        foreach (var position in spawnPositions)
+        area = GetComponent<NavMeshSurface>();
+        
+        //Spawn AI at each Location on the given Navmesh
+        foreach (var spawn in spawnsList)
         {
-            spawnLocations.Add(position.position);
+            Instantiate(agent, spawn.spawnPosition, Quaternion.identity);
         }
 
-        numberOfLocations = spawnLocations.Count;
     }
 
     private Vector3 RandomSpawnLocation()
     {
         int position = Random.Range(0, numberOfLocations - 1);
+   
 
-        Vector3 randomLocation = spawnLocations[position];
+        Vector3 randomLocation = spawnsList[position].spawnPosition;
 
         return randomLocation;
     }
 
     private void SpawnNewAI()
     {
-        bool spawnLocationAvailable = false;
         //If a spawn location is blocked or not available
         //keep checking until one is available
-        while (!spawnLocationAvailable)
-        {
-            Vector3 spawnLocation = RandomSpawnLocation();
+        Vector3 spawnLocation = RandomSpawnLocation();
             
             if (CheckSpawnLocationIsFree(spawnLocation))
             {
-                spawnLocationAvailable = true;
                 Instantiate(agent, spawnLocation, Quaternion.identity);
             }
 
-        }
-        spawnLocationAvailable = false;
 
     }
     bool CheckSpawnLocationIsFree(Vector3 spawnLocation)
