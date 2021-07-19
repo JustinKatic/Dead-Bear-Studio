@@ -1,18 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AISpawner : MonoBehaviour
 {
     [SerializeField] private GameObject agent = null;
-    //[SerializeField] private int spawnLimit = 5;
+    [SerializeField] private int spawnLimit = 5;
     [SerializeField] private List<Transform> spawnPositions = new List<Transform>();
+    [SerializeField] private NavMeshSurface area;
+    
 
     private List<Vector3> spawnLocations = null;
     private int numberOfLocations = 0;
-
-
-
+    private LayerMask obstruction;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -36,14 +38,29 @@ public class AISpawner : MonoBehaviour
 
     private void SpawnNewAI()
     {
-        Instantiate(agent, RandomSpawnLocation(), Quaternion.identity);
+        bool spawnLocationAvailable = false;
+        //If a spawn location is blocked or not available
+        //keep checking until one is available
+        while (!spawnLocationAvailable)
+        {
+            Vector3 spawnLocation = RandomSpawnLocation();
+            
+            if (CheckSpawnLocationIsFree(spawnLocation))
+            {
+                spawnLocationAvailable = true;
+                Instantiate(agent, spawnLocation, Quaternion.identity);
+            }
+
+        }
+        spawnLocationAvailable = false;
 
     }
-
-    private int AgentCount()
+    bool CheckSpawnLocationIsFree(Vector3 spawnLocation)
     {
-        int count = 0;
-        
-        return count;
+        if (Physics.SphereCast(spawnLocation,2,Vector3.zero, out RaycastHit hitInfo,1, obstruction))
+        {
+            return false;
+        }
+        return true;
     }
 }
