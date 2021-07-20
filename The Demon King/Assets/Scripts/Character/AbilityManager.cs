@@ -44,16 +44,16 @@ public class AbilityManager : MonoBehaviourPun
 
     void Awake()
     {
-        if (!photonView.IsMine)
-        {
-            Destroy(recticle.gameObject);
-            Destroy(AoeZone);
-        }
-
         player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
         cam = GetComponentInChildren<Camera>();
 
+        if (!photonView.IsMine)
+        {
+            Destroy(recticle.gameObject);
+            Destroy(AoeZone);
+            Destroy(lineRenderer);
+        }
     }
     private void Start()
     {
@@ -69,31 +69,21 @@ public class AbilityManager : MonoBehaviourPun
 
     private void OnAbility1(InputAction.CallbackContext obj)
     {
-        if (player.isStunned)
-            return;
-
         ShootPrimaryProjectile();
     }
 
     private void OnAbility1Cancelled(InputAction.CallbackContext obj)
     {
-        if (player.isStunned)
-            return;
+
     }
 
     private void OnAbility2(InputAction.CallbackContext obj)
     {
-        if (player.isStunned)
-            return;
-
         HeavyProjectileAim();
     }
 
     private void OnAbility2Cancelled(InputAction.CallbackContext obj)
     {
-        if (player.isStunned)
-            return;
-
         HeavyProjectileAimCancelled();
     }
 

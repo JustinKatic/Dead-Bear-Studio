@@ -7,11 +7,11 @@ using Photon.Realtime;
 public class Devour : MonoBehaviourPun
 {
     private PlayerController playerController;
-    private PlayerHealthManager playerHealthManager;
     private Camera cam;
     private bool IsDevouring;
 
     public float devourRange;
+    public float DevourTime = 3f;
 
 
     private void Awake()
@@ -19,7 +19,6 @@ public class Devour : MonoBehaviourPun
         if (photonView.IsMine)
         {
             playerController = GetComponent<PlayerController>();
-            playerHealthManager = GetComponent<PlayerHealthManager>();
             cam = GetComponentInChildren<Camera>();
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
         }
@@ -28,7 +27,7 @@ public class Devour : MonoBehaviourPun
 
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (IsDevouring || playerController.isStunned)
+        if (IsDevouring)
             return;
 
         CheckForDevourTarget();
@@ -43,27 +42,37 @@ public class Devour : MonoBehaviourPun
             if (hit.transform.CompareTag("Player"))
             {
                 PlayerController hitPlayer = GameManager.instance.GetPlayer(hit.collider.gameObject).GetComponent<PlayerController>();
-                if (hitPlayer.isStunned)
+                PlayerHealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<PlayerHealthManager>();
+
+                if (hitPlayerHealth.canBeDevoured)
                 {
-                    hitPlayer.photonView.RPC("OnDevour", hitPlayer.photonPlayer, playerController.id);
+                    hitPlayer.photonView.RPC("OnDevour", hitPlayer.photonPlayer);
+
+                    StartCoroutine(DevourCorutine());
+
+                    IEnumerator DevourCorutine()
+                    {
+                        photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring " + GameManager.instance.GetPlayer(hitPlayer.gameObject).photonPlayer.NickName);
+                        playerController.DisableMovement();
+                        yield return new WaitForSeconds(DevourTime);
+                        playerController.EnableMovement();
+                    }
                 }
             }
         }
     }
 
     [PunRPC]
-    void OnDevour(int attackerId)
+    void OnDevour()
     {
         StartCoroutine(DevourCorutine());
         IEnumerator DevourCorutine()
         {
-            playerHealthManager.beingDevoured = true;
-            Debug.Log(GameManager.instance.GetPlayer(playerController.id).photonPlayer.NickName + " Is being devoured");
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(playerController.id).photonPlayer.NickName + " Is being devoured"); 
+            
+            yield return new WaitForSeconds(DevourTime);
 
-            yield return new WaitForSeconds(3);
-
-            Debug.Log("Devoured by: " + GameManager.instance.GetPlayer(attackerId).photonPlayer.NickName);
-            playerHealthManager.Respawn();
+            photonView.RPC("Respawn", RpcTarget.All);
         }
     }
 }

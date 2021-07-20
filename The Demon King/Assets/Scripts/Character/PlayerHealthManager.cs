@@ -23,6 +23,7 @@ public class PlayerHealthManager : MonoBehaviourPun
     private PlayerController player;
 
     public bool beingDevoured = false;
+    public bool canBeDevoured = false;
 
     private void Awake()
     {
@@ -36,7 +37,7 @@ public class PlayerHealthManager : MonoBehaviourPun
         if (CurrentHealth < MaxHealth)
         {
             HealthRegenTimer -= Time.deltaTime;
-            if (HealthRegenTimer <= 0 && !player.isStunned)
+            if (HealthRegenTimer <= 0)
             {
                 photonView.RPC("Heal", player.photonPlayer, 1);
             }
@@ -46,7 +47,7 @@ public class PlayerHealthManager : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(int attackerId, int damage)
     {
-        if (player.isStunned)
+        if (beingDevoured)
             return;
 
         CurrentHealth -= damage;
@@ -86,21 +87,62 @@ public class PlayerHealthManager : MonoBehaviourPun
 
         IEnumerator StunnedCorutine()
         {
-            Animator stunnedPlayerAnim = player.gameObject.GetComponent<Animator>();
-            stunnedPlayerAnim.speed = 0;
-            player.isStunned = true;
+            //Things that only affect local
+            if (photonView.IsMine)
+            {
+                player.DisableMovement();
+            }
+            //Things that affect everyone
+            canBeDevoured = true;
             photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
+
             yield return new WaitForSeconds(stunnedDuration);
+
             if (!beingDevoured)
             {
-                stunnedPlayerAnim.speed = 1;
-                player.isStunned = false;
+                //Things that only affect local
+                if (photonView.IsMine)
+                {
+                    player.EnableMovement();
+                }
+                //Things that affect everyone
+                canBeDevoured = false;
             }
         }
     }
 
+
+    [PunRPC]
     public void Respawn()
     {
-        transform.position = GameManager.instance.spawnPoints[0].position;
+        StartCoroutine(ResetPlayer());
+
+        IEnumerator ResetPlayer()
+        {
+            if (photonView.IsMine)
+            {
+                int randSpawn = Random.Range(0, GameManager.instance.spawnPoints.Length);
+                transform.position = GameManager.instance.spawnPoints[randSpawn].position;
+            }
+            OverheadText.enabled = false;
+            Renderer[] renderer = GetComponentsInChildren<Renderer>();
+            foreach (Renderer mesh in renderer)
+                mesh.enabled = false;
+
+
+            yield return new WaitForSeconds(3);
+
+            if (photonView.IsMine)
+            {
+                player.EnableMovement();
+                CurrentHealth = MaxHealth;
+            }
+            foreach (Renderer mesh in renderer)
+                mesh.enabled = true;
+            OverheadText.enabled = true;
+            canBeDevoured = false;
+            beingDevoured = false;
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+        }
     }
 }

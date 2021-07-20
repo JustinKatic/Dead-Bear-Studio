@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviourPun
     public CharacterInputs CharacterInputs;
     private float jumpVelovity;
 
-    public bool isStunned = false;
     private bool isJumping;
 
     Vector3 PlayerVelocity;
@@ -34,7 +33,6 @@ public class PlayerController : MonoBehaviourPun
     private Animator animator;
     private Camera mainCamera;
     private CharacterController cc;
-    private AbilityManager shootController;
 
     public Player photonPlayer;
 
@@ -44,8 +42,6 @@ public class PlayerController : MonoBehaviourPun
         {
             CharacterInputs = new CharacterInputs();
         }
-
-        shootController = GetComponent<AbilityManager>();
     }
 
     [PunRPC]
@@ -83,12 +79,8 @@ public class PlayerController : MonoBehaviourPun
 
 
 
-
-
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (isStunned)
-            return;
         Jump();
     }
 
@@ -99,15 +91,13 @@ public class PlayerController : MonoBehaviourPun
             return;
 
 
-        if (!isStunned)
-        {
-            //Get value from input system for directional movement
-            input = CharacterInputs.Player.Move.ReadValue<Vector2>();
+        //Get value from input system for directional movement
+        input = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
-            //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
-            animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
-            animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
-        }
+        //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
+        animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
+        animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
+
     }
     private void FixedUpdate()
     {
@@ -120,17 +110,16 @@ public class PlayerController : MonoBehaviourPun
             UpdateInAir();
         }
         //IsGrounded state
-        else if (!isJumping && !isStunned)
+        else if (!isJumping)
         {
             UpdateOnGround();
         }
 
-        if (!isStunned)
-        {
-            //set the players rotation to the direction of the camera with a slerp smoothness
-            float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
-        }
+
+        //set the players rotation to the direction of the camera with a slerp smoothness
+        float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
+
     }
 
 
@@ -171,10 +160,10 @@ public class PlayerController : MonoBehaviourPun
     {
         if (!photonView.IsMine)
             return;
-        if (!isStunned)
-            rootMotion += animator.deltaPosition;
-        else
-            rootMotion = Vector3.zero;
+
+        rootMotion += animator.deltaPosition;
+        //  else
+        //     rootMotion = Vector3.zero;
 
     }
 
@@ -235,5 +224,17 @@ public class PlayerController : MonoBehaviourPun
             return;
 
         CharacterInputs.Player.Disable();
+    }
+
+    public void EnableMovement()
+    {
+        CharacterInputs.Player.Enable();
+        animator.speed = 1;
+    }
+
+    public void DisableMovement()
+    {
+        CharacterInputs.Player.Disable();
+        animator.speed = 1;
     }
 }
