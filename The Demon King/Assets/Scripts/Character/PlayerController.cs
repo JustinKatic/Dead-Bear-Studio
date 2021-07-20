@@ -119,8 +119,24 @@ public class PlayerController : MonoBehaviourPun
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enviroment"))
+        {
+            transform.SetParent(other.transform);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Enviroment"))
+        {
+            transform.SetParent(null);
+        }
 
     }
+
 
 
     //Movement while on ground
