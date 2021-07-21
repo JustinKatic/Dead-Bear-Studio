@@ -5,8 +5,10 @@ using UnityEngine;
 public class RotateGround : MonoBehaviour
 {
     public float RotateSpeed;
-    private void Update()
+
+    private void FixedUpdate()
     {
         transform.Rotate(new Vector3(0, 1, 0) * Time.deltaTime * RotateSpeed);
     }
+
 }

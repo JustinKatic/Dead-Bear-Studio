@@ -12,21 +12,14 @@ public class PlayerController : MonoBehaviourPun
     [Header("PhotonInfo")]
     public int id;
     [Header("PlayerStats")]
-    public float jumpHeight;
     public float gravity;
-    public float stepDown;
-    public float airControl;
-    public float pushPower = 2f;
-    public float groundSpeed = 1f;
     public float turnSpeed = 15;
-    public float jumpDamp;
+    public float speed = 5f;
+
     public CharacterInputs CharacterInputs;
-    private float jumpVelovity;
 
-    private bool isJumping;
-
-    Vector3 PlayerVelocity;
-    private Vector3 rootMotion;
+    [SerializeField] float jumpHeight;
+    Vector3 velocity;
     private Vector2 input;
 
     //Player Components
@@ -35,13 +28,16 @@ public class PlayerController : MonoBehaviourPun
     private CharacterController cc;
 
     public Player photonPlayer;
+    private float pushPower = 2f;
+
+    [SerializeField] float slopeForce;
+    [SerializeField] float slopeForceRayLength;
+    private bool isJumping;
 
     private void Awake()
     {
         if (photonView.IsMine)
-        {
             CharacterInputs = new CharacterInputs();
-        }
     }
 
     [PunRPC]
@@ -65,15 +61,11 @@ public class PlayerController : MonoBehaviourPun
             cc = GetComponent<CharacterController>();
             animator = GetComponent<Animator>();
             mainCamera = Camera.main;
-            jumpVelovity = Mathf.Sqrt(2 * gravity * jumpHeight);
 
             CharacterInputs.Player.Jump.performed += OnJump;
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-
-
-            //GameUI.instance.Initialize(this);
         }
     }
 
@@ -81,7 +73,8 @@ public class PlayerController : MonoBehaviourPun
 
     private void OnJump(InputAction.CallbackContext obj)
     {
-        Jump();
+        if (cc.isGrounded)
+            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
 
 
@@ -90,31 +83,30 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
+        //if the player is on the ground and players y velocity is less then 0 
+        if (cc.isGrounded && velocity.y < 0)
+            velocity.y = -2f;           //-2 instead of 0 to force the player on the ground a bit more
 
         //Get value from input system for directional movement
         input = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
+        //movement
+        Vector3 move = transform.right * input.x + transform.forward * input.y;
+        cc.Move(move * speed * Time.deltaTime);
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
-        animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
-        animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
+        // animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
+        // animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
+
+        //falling physics velocity.y increased every second
+        velocity.y += gravity * Time.deltaTime;
+        //apply falling gravity to character controller
+        cc.Move(velocity * Time.deltaTime);
 
     }
     private void FixedUpdate()
     {
         if (!photonView.IsMine)
             return;
-
-        //Is in air state
-        if (isJumping)
-        {
-            UpdateInAir();
-        }
-        //IsGrounded state
-        else if (!isJumping)
-        {
-            UpdateOnGround();
-        }
-
 
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
@@ -124,82 +116,14 @@ public class PlayerController : MonoBehaviourPun
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Enviroment"))
-        {
             transform.SetParent(other.transform);
-            groundSpeed = other.gameObject.GetComponent<RotateGround>().RotateSpeed;
-        }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Enviroment"))
-        {
             transform.SetParent(null);
-            groundSpeed = 1;
-        }
-
-    }
-    
-    //Movement while on ground
-    private void UpdateOnGround()
-    {
-        Vector3 stepForwardAmount = rootMotion * groundSpeed;
-        Vector3 stepDownAmount = Vector3.down * stepDown;
-
-        cc.Move(stepForwardAmount + stepDownAmount);
-        rootMotion = Vector3.zero;
-
-        if (!cc.isGrounded)
-        {
-            SetInAir(0);
-        }
     }
 
-    //Movement while in air
-    private void UpdateInAir()
-    {
-        PlayerVelocity.y -= gravity * Time.fixedDeltaTime;
-        Vector3 displacement = PlayerVelocity * Time.fixedDeltaTime;
-        displacement += CalculateAirControl();
-        cc.Move(displacement);
-        isJumping = !cc.isGrounded;
-        rootMotion = Vector3.zero;
-        animator.SetBool("isJumping", isJumping);
-    }
-    //Adds air control to player
-    Vector3 CalculateAirControl()
-    {
-        return ((transform.forward * input.y) + (transform.right * input.x)) * (airControl / 100);
-    }
-
-    //Increase the delta of animation 
-    private void OnAnimatorMove()
-    {
-        if (!photonView.IsMine)
-            return;
-
-        rootMotion += animator.deltaPosition;
-        //  else
-        //     rootMotion = Vector3.zero;
-
-    }
-
-    //player Jump
-    void Jump()
-    {
-        if (!isJumping)
-        {
-            SetInAir(jumpVelovity);
-        }
-    }
-
-    //Jumping logic 
-    private void SetInAir(float jumpVelocity)
-    {
-        isJumping = true;
-        PlayerVelocity = animator.velocity * jumpDamp * groundSpeed;
-        PlayerVelocity.y = jumpVelocity;
-        animator.SetBool("isJumping", true);
-    }
 
 
     //Push rigidbodys collideded with..
@@ -222,7 +146,6 @@ public class PlayerController : MonoBehaviourPun
         // Apply the push
         body.velocity = pushDir * pushPower;
     }
-
 
     //Enable character Input
     private void OnEnable()
