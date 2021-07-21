@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class AISpawner : MonoBehaviour
 {
@@ -28,10 +30,24 @@ public class AISpawner : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        foreach (var minion in minions)
+        {
+            if (!minion.activeSelf)
+            {
+                RespawnMinion(minion);
+            }
+        }
+    }
+
     //Get a random position that is available and return that position for minion
     private Vector3 RandomSpawnLocation()
     {
         int position = 0;
+        
+        position = Random.Range(0, numberOfLocations - 1);
+
         Vector3 randomLocation = Vector3.zero;
         
         //If a spawn location is blocked or not available
@@ -51,7 +67,7 @@ public class AISpawner : MonoBehaviour
     //Check if any objects are blocking the spawn position
     bool CheckSpawnLocationIsFree(Vector3 spawnLocation)
     {
-        if (Physics.SphereCast(spawnLocation,2,Vector3.zero, out RaycastHit hitInfo,1, obstruction))
+        if (Physics.SphereCast(spawnLocation,5,Vector3.zero, out RaycastHit hitInfo,4, obstruction))
         {
             return false;
         }
@@ -65,8 +81,8 @@ public class AISpawner : MonoBehaviour
     
     IEnumerator SpawnTimer(GameObject minion)
     {
-        yield return new WaitForSeconds(timeToRespawn);
         minion.transform.position = RandomSpawnLocation();
+        yield return new WaitForSeconds(timeToRespawn);
         minion.SetActive(true);
     }
 
