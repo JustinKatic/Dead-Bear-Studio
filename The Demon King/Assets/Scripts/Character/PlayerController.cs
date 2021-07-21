@@ -126,6 +126,7 @@ public class PlayerController : MonoBehaviourPun
         if (other.gameObject.CompareTag("Enviroment"))
         {
             transform.SetParent(other.transform);
+            groundSpeed = other.gameObject.GetComponent<RotateGround>().RotateSpeed;
         }
     }
     private void OnTriggerExit(Collider other)
@@ -133,12 +134,11 @@ public class PlayerController : MonoBehaviourPun
         if (other.gameObject.CompareTag("Enviroment"))
         {
             transform.SetParent(null);
+            groundSpeed = 1;
         }
 
     }
-
-
-
+    
     //Movement while on ground
     private void UpdateOnGround()
     {
