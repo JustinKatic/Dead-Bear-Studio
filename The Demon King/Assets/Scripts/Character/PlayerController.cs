@@ -170,7 +170,6 @@ public class PlayerController : MonoBehaviourPun
         CharacterInputs.Player.Enable();
         animator.speed = 1;
     }
-
     public void DisableMovement()
     {
         CharacterInputs.Player.Disable();
