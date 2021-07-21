@@ -12,8 +12,6 @@ public class Devour : MonoBehaviourPun
 
     public float devourRange;
     public float DevourTime = 3f;
-
-
     private void Awake()
     {
         if (photonView.IsMine)
@@ -23,8 +21,6 @@ public class Devour : MonoBehaviourPun
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
         }
     }
-
-
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (IsDevouring)
@@ -41,8 +37,8 @@ public class Devour : MonoBehaviourPun
         {
             if (hit.transform.CompareTag("Player"))
             {
-                PlayerController hitPlayer = GameManager.instance.GetPlayer(hit.collider.gameObject).GetComponent<PlayerController>();
-                PlayerHealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<PlayerHealthManager>();
+                PlayerController hitPlayer = GameManager.instance?.GetPlayer(hit.collider.gameObject).GetComponent<PlayerController>();
+                HealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<HealthManager>();
 
                 if (hitPlayerHealth.canBeDevoured)
                 {
