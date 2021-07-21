@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
 public class PrimaryProjectileController : MonoBehaviour
@@ -31,11 +32,22 @@ public class PrimaryProjectileController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (isMine && collision.gameObject.CompareTag("Player"))
+        string objTag = collision.transform.tag;
+        
+        if (isMine && objTag.Equals("Player") || objTag.Equals("Minion"))
         {
-            PlayerController player = GameManager.instance.GetPlayer(collision.gameObject);
-            if (player.id != attackerId)
-                player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+            if (objTag.Equals("Player"))
+            {
+                PlayerController player = GameManager.instance.GetPlayer(collision.gameObject);
+                if (player.id != attackerId)
+                    player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+            }
+            else if (objTag.Equals("Minion"))
+            {
+                Minion minion = collision.gameObject.GetComponent<Minion>();
+                minion.photonView.RPC("TakeDamage", RpcTarget.All, damage);
+            }
+
         }
         Instantiate(impactFX, transform.position, Quaternion.identity);
         Destroy(gameObject);

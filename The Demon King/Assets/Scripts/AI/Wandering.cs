@@ -9,6 +9,7 @@ public class Wandering : MonoBehaviour
     Vector3 location;
     private float distanceToDestination = 0;
     private Vector3 previousDestination;
+    public bool stunned = false;
 
     // Start is called before the first frame update
     void Start()
@@ -21,8 +22,8 @@ public class Wandering : MonoBehaviour
     void Update()
     {
         //If the AI has not been stunned move to next position
-        //if (!stunned.IsStunned())
-        
+        if (!stunned)
+        {
             distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
 
             if (location == Vector3.zero || previousDestination == location)
@@ -42,14 +43,14 @@ public class Wandering : MonoBehaviour
                 location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
                 agent.SetDestination(location);
             }
-        
-        //else
-        //{
+        }
+        else
+        {
             //Sets the position of the next movement to it's current position when stunned
-            //distanceToDestination = 0;
-            //location = transform.position;
-            //agent.SetDestination(location);
-        //}
+            distanceToDestination = 0;
+            location = transform.position;
+            agent.SetDestination(location);
+        }
     }
     
     public static Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask)
