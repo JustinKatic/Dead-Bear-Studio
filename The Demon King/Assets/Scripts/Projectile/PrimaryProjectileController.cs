@@ -11,6 +11,8 @@ public class PrimaryProjectileController : MonoBehaviour
 
     public Rigidbody rb;
 
+    public GameObject impactFX;
+
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
@@ -35,6 +37,7 @@ public class PrimaryProjectileController : MonoBehaviour
             if (player.id != attackerId)
                 player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
         }
+        Instantiate(impactFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }

@@ -13,6 +13,8 @@ public class HeavyProjectileController : MonoBehaviour
     
     public Rigidbody rb;
 
+    public GameObject impactFX;
+
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
@@ -41,7 +43,7 @@ public class HeavyProjectileController : MonoBehaviour
                     player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
             }
         }
-
+        Instantiate(impactFX, gameObject.transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 }
