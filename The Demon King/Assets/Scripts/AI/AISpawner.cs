@@ -58,14 +58,16 @@ public class AISpawner : MonoBehaviour
         return true;
     }
 
-    public void RespawnMinion()
+    public void RespawnMinion(GameObject minion)
     {
-        
+        StartCoroutine(SpawnTimer(minion));
     }
     
-    IEnumerator SpawnTimer()
+    IEnumerator SpawnTimer(GameObject minion)
     {
         yield return new WaitForSeconds(timeToRespawn);
+        minion.transform.position = RandomSpawnLocation();
+        minion.SetActive(true);
     }
 
 }
