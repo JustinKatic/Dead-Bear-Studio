@@ -649,7 +649,6 @@ GameObject:
   - component: {fileID: 1937018729003322840}
   - component: {fileID: 1937018729003094521}
   - component: {fileID: 1937018729003094515}
-  - component: {fileID: 1937018729003094519}
   - component: {fileID: 1522354652541372666}
   - component: {fileID: 8543471442678258642}
   - component: {fileID: 4060751635038238556}
@@ -659,6 +658,7 @@ GameObject:
   - component: {fileID: 896110656619393156}
   - component: {fileID: 7583187386789538603}
   - component: {fileID: 3869653764491908818}
+  - component: {fileID: 5162740172806438575}
   m_Layer: 7
   m_Name: Player
   m_TagString: Player
@@ -726,29 +726,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 1937018729003094519}
   - {fileID: 1522354652541372666}
+  - {fileID: 5162740172806438575}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &1937018729003094519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1937018729003094520}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers:
-  - SynchronizeType: 1
-    LayerIndex: 0
 --- !u!114 &1522354652541372666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1010,6 +992,30 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5162740172806438575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937018729003094520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: InputX
+  - Type: 1
+    SynchronizeType: 1
+    Name: InputY
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
 --- !u!1 &1995540063406594704
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1601,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3745922281781720449}
-  m_LocalRotation: {x: 0.38537854, y: 0.01171259, z: -0.004892078, w: 0.9226713}
+  m_LocalRotation: {x: 0.38537848, y: 0.011712563, z: -0.0048920666, w: 0.9226713}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
