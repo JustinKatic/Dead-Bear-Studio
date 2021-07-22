@@ -94,8 +94,8 @@ public class PlayerController : MonoBehaviourPun
         Vector3 move = transform.right * input.x + transform.forward * input.y;
         cc.Move(move * speed * Time.deltaTime);
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
-        // animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
-        // animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
+        animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
+        animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
 
         //falling physics velocity.y increased every second
         velocity.y += gravity * Time.deltaTime;
