@@ -249,9 +249,9 @@ GameObject:
   - component: {fileID: 5749900445612739791}
   - component: {fileID: 5322302489832545201}
   - component: {fileID: 4002031338795006347}
+  - component: {fileID: -7345558078257920850}
   - component: {fileID: 2781860859885420293}
   - component: {fileID: 8192716648819613347}
-  - component: {fileID: -7345558078257920850}
   m_Layer: 0
   m_Name: AI
   m_TagString: Minion
@@ -386,6 +386,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dead: 0
   spawnPos: {x: 0, y: 0, z: 0}
+--- !u!114 &-7345558078257920850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694443010412763333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d5bd1845b943e64da48f3aefc8c2875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 3
+  CurrentHealth: 0
+  HealthRegenTimer: 3
+  stunnedDuration: 0
+  Dead: 0
+  OverheadText: {fileID: 5623566927767794681}
+  beingDevoured: 0
+  canBeDevoured: 0
+  isStunned: 0
 --- !u!114 &2781860859885420293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425,24 +446,3 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!114 &-7345558078257920850
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694443010412763333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d5bd1845b943e64da48f3aefc8c2875, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxHealth: 3
-  CurrentHealth: 0
-  HealthRegenTimer: 3
-  stunnedDuration: 0
-  Dead: 0
-  OverheadText: {fileID: 5623566927767794681}
-  beingDevoured: 0
-  canBeDevoured: 0
-  isStunned: 0

@@ -14,14 +14,14 @@ public class Minion : MonoBehaviourPun
     {
         dead = true;
         
-        gameObject.SetActive(false);
-        
+        gameObject.SetActive(false);       
     }
 
     private void OnEnable()
     {
         spawnPos = transform.position;
     }
+
     [PunRPC]
     public void RespawnThisMinion()
     {
