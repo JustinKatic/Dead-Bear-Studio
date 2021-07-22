@@ -63,7 +63,6 @@ public class HealthManager : MonoBehaviourPun
             //Things that affect everyone
             canBeDevoured = true;
             photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
-            Debug.Log("stunned");
 
             yield return new WaitForSeconds(stunnedDuration);
 

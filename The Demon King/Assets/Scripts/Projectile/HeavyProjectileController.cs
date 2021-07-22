@@ -9,7 +9,7 @@ public class HeavyProjectileController : MonoBehaviour
     private int damage = 1;
     private int attackerId;
     private bool isMine;
-    public LayerMask player;
+    public LayerMask damageable;
     
     public Rigidbody rb;
 
@@ -35,7 +35,7 @@ public class HeavyProjectileController : MonoBehaviour
     {
         if (isMine)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(collision.contacts[0].point, 4, player);
+            Collider[] hitColliders = Physics.OverlapSphere(collision.contacts[0].point, 4, damageable);
             foreach (Collider col in hitColliders)
             {
                 PlayerController player = GameManager.instance.GetPlayer(col.gameObject);

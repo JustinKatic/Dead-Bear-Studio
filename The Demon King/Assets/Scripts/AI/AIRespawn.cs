@@ -7,28 +7,23 @@ using Photon.Realtime;
 public class AIRespawn : MonoBehaviourPun
 {
     public AISpawner mySpawnAreaManager;
-    public GameObject myBody;
+    public GameObject body;
 
-    [PunRPC]
+    public float respawnTimer;
+
+
+
     public void Respawn()
     {
         StartCoroutine(ResetPlayer());
 
         IEnumerator ResetPlayer()
         {
-            if (photonView.IsMine)
-            {
-                myBody.SetActive(false);
-            }
 
+            yield return new WaitForSeconds(respawnTimer);
+            body.transform.position = mySpawnAreaManager.RandomPoint(mySpawnAreaManager.transform.position, mySpawnAreaManager.RadiusCheck);
+            body.SetActive(true);
 
-            yield return new WaitForSeconds(3);
-
-            if (photonView.IsMine)
-            {
-                transform.position = mySpawnAreaManager.RandomPoint(mySpawnAreaManager.transform.position, mySpawnAreaManager.RadiusCheck);
-                myBody.SetActive(true);
-            }
         }
     }
 }

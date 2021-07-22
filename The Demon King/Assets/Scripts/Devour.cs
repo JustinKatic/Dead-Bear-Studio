@@ -36,7 +36,7 @@ public class Devour : MonoBehaviourPun
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, devourRange))
         {
-            if (hit.transform.CompareTag("Player"))
+            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion"))
             {
                 PhotonView hitPlayer = hit.collider.gameObject.GetPhotonView();
                 HealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<HealthManager>();
@@ -49,7 +49,7 @@ public class Devour : MonoBehaviourPun
 
                     IEnumerator DevourCorutine()
                     {
-                        photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring " + GameManager.instance.GetPlayer(hitPlayer.gameObject).photonPlayer.NickName);
+                        photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring ");
                         playerController.DisableMovement();
                         yield return new WaitForSeconds(healthManager.DevourTime);
                         playerController.EnableMovement();

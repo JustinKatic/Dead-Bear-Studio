@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class MinionHealthManager : HealthManager
 {
-    AISpawner aISpawner;
+    AIRespawn aiRespawner;
 
-   private void Awake()
-   {
+    private void Awake()
+    {
         CurrentHealth = MaxHealth;
         OverheadText.text = CurrentHealth.ToString();
-        aISpawner = GetComponent<AISpawner>();
+        aiRespawner = GetComponentInParent<AIRespawn>();
     }
 
     private void Update()
@@ -41,7 +41,8 @@ public class MinionHealthManager : HealthManager
 
             yield return new WaitForSeconds(DevourTime);
 
-            photonView.RPC("Respawn", RpcTarget.All);
+            aiRespawner.Respawn();
+            gameObject.SetActive(false);
         }
     }
     protected override void OnStunStart()

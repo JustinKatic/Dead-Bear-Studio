@@ -44,7 +44,7 @@ public class PrimaryProjectileController : MonoBehaviour
             }
             else if (objTag.Equals("Minion"))
             {
-                PhotonView hitView = collision.gameObject.GetPhotonView();
+                PhotonView hitView = collision.gameObject.GetComponentInParent<PhotonView>();
                 hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
 

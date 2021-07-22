@@ -24,23 +24,23 @@ public class Wandering : MonoBehaviour
         //If the AI has not been stunned move to next position
         if (!healthManager.isStunned)
         {
-            distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
+            distanceToDestination = Vector3.Distance(gameObject.transform.position, location);
 
             if (location == Vector3.zero || previousDestination == location)
             {
-                location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+                location = RandomNavSphere(gameObject.transform.position, 10, -1);
                 agent.SetDestination(location);
             }
 
             if (distanceToDestination <= 1)
             {
-                location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+                location = RandomNavSphere(gameObject.transform.position, 10, -1);
                 agent.SetDestination(location);
             }
 
             if (agent.velocity == Vector3.zero)
             {
-                location = RandomNavSphere(gameObject.transform.localPosition, 10, -1);
+                location = RandomNavSphere(gameObject.transform.position, 10, -1);
                 agent.SetDestination(location);
             }
         }
