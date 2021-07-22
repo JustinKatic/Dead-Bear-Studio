@@ -26,7 +26,7 @@ public class PlayerHealthManager : HealthManager
             }
         }
     }
-    
+
     [PunRPC]
     public void Respawn()
     {
@@ -34,15 +34,17 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
+            OverheadText.enabled = false;
+
+            Renderer[] renderer = GetComponentsInChildren<Renderer>();
+            foreach (Renderer mesh in renderer)
+                mesh.enabled = false;
+
             if (photonView.IsMine)
             {
                 int randSpawn = Random.Range(0, GameManager.instance.spawnPoints.Length);
                 transform.position = GameManager.instance.spawnPoints[randSpawn].position;
             }
-            OverheadText.enabled = false;
-            Renderer[] renderer = GetComponentsInChildren<Renderer>();
-            foreach (Renderer mesh in renderer)
-                mesh.enabled = false;
 
 
             yield return new WaitForSeconds(3);
@@ -51,17 +53,20 @@ public class PlayerHealthManager : HealthManager
             {
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
+                photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
             }
+            OverheadText.enabled = true;
+
             foreach (Renderer mesh in renderer)
                 mesh.enabled = true;
-            OverheadText.enabled = true;
+
             canBeDevoured = false;
             beingDevoured = false;
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+            isStunned = false;
         }
     }
 
-    protected override void DevourFinished()
+    protected override void OnStunEnd()
     {
         if (!beingDevoured)
         {
@@ -73,10 +78,9 @@ public class PlayerHealthManager : HealthManager
             //Things that affect everyone
             canBeDevoured = false;
         }
-        
     }
 
-    protected override void StunnedBehaviour()
+    protected override void OnStunStart()
     {
         //Things that only affect local
         if (photonView.IsMine)

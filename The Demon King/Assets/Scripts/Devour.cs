@@ -7,6 +7,7 @@ using Photon.Realtime;
 public class Devour : MonoBehaviourPun
 {
     private PlayerController playerController;
+    private HealthManager healthManager;
     private Camera cam;
     private bool IsDevouring;
 
@@ -19,6 +20,7 @@ public class Devour : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             cam = GetComponentInChildren<Camera>();
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
+            healthManager = GetComponent<HealthManager>();
         }
     }
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -52,6 +54,7 @@ public class Devour : MonoBehaviourPun
                         playerController.DisableMovement();
                         yield return new WaitForSeconds(DevourTime);
                         playerController.EnableMovement();
+                        photonView.RPC("UpdateOverheadText", RpcTarget.All, gameObject.GetComponent<HealthManager>().CurrentHealth.ToString());
                     }
                 }
             }
@@ -64,8 +67,9 @@ public class Devour : MonoBehaviourPun
         StartCoroutine(DevourCorutine());
         IEnumerator DevourCorutine()
         {
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(playerController.id).photonPlayer.NickName + " Is being devoured"); 
-            
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(playerController.id).photonPlayer.NickName + " Is being devoured");
+            healthManager.beingDevoured = true;
+
             yield return new WaitForSeconds(DevourTime);
 
             photonView.RPC("Respawn", RpcTarget.All);
