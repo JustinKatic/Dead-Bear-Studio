@@ -13,6 +13,9 @@ public class HealthManager : MonoBehaviourPun
     public float HealthRegenTimer = 3f;
     protected float TimeBeforeHealthRegen = 3f;
 
+    public float DevourTime = 3f;
+
+
     [Header("StunStats")]
     public float stunnedDuration;
 
@@ -86,6 +89,7 @@ public class HealthManager : MonoBehaviourPun
         if (CurrentHealth <= 0)
             photonView.RPC("Stunned", RpcTarget.All);
     }
+
     [PunRPC]
     public void TakeDamage(int damage)
     {
@@ -102,6 +106,8 @@ public class HealthManager : MonoBehaviourPun
         if (CurrentHealth <= 0)
             photonView.RPC("Stunned", RpcTarget.All);
     }
+
+
 
     protected virtual void OnStunStart()
     {

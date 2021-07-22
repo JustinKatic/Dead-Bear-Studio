@@ -12,7 +12,6 @@ public class Devour : MonoBehaviourPun
     private bool IsDevouring;
 
     public float devourRange;
-    public float DevourTime = 3f;
     private void Awake()
     {
         if (photonView.IsMine)
@@ -39,12 +38,12 @@ public class Devour : MonoBehaviourPun
         {
             if (hit.transform.CompareTag("Player"))
             {
-                PlayerController hitPlayer = GameManager.instance?.GetPlayer(hit.collider.gameObject).GetComponent<PlayerController>();
+                PhotonView hitPlayer = hit.collider.gameObject.GetPhotonView();
                 HealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<HealthManager>();
 
                 if (hitPlayerHealth.canBeDevoured)
                 {
-                    hitPlayer.photonView.RPC("OnDevour", hitPlayer.photonPlayer);
+                    hitPlayer.RPC("OnDevour", RpcTarget.All);
 
                     StartCoroutine(DevourCorutine());
 
@@ -52,27 +51,12 @@ public class Devour : MonoBehaviourPun
                     {
                         photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring " + GameManager.instance.GetPlayer(hitPlayer.gameObject).photonPlayer.NickName);
                         playerController.DisableMovement();
-                        yield return new WaitForSeconds(DevourTime);
+                        yield return new WaitForSeconds(healthManager.DevourTime);
                         playerController.EnableMovement();
                         photonView.RPC("UpdateOverheadText", RpcTarget.All, gameObject.GetComponent<HealthManager>().CurrentHealth.ToString());
                     }
                 }
             }
         }
-    }
-
-    [PunRPC]
-    void OnDevour()
-    {
-        StartCoroutine(DevourCorutine());
-        IEnumerator DevourCorutine()
-        {
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(playerController.id).photonPlayer.NickName + " Is being devoured");
-            healthManager.beingDevoured = true;
-
-            yield return new WaitForSeconds(DevourTime);
-
-            photonView.RPC("Respawn", RpcTarget.All);
-        }
-    }
+    } 
 }

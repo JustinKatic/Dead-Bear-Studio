@@ -5,14 +5,13 @@ using UnityEngine;
 
 public class MinionHealthManager : HealthManager
 {
-    private Wandering aiMove;
-    private Minion minion;
+    AISpawner aISpawner;
+
    private void Awake()
    {
-        minion = GetComponent<Minion>();
-        aiMove = GetComponent<Wandering>();
         CurrentHealth = MaxHealth;
         OverheadText.text = CurrentHealth.ToString();
+        aISpawner = GetComponent<AISpawner>();
     }
 
     private void Update()
@@ -26,20 +25,40 @@ public class MinionHealthManager : HealthManager
             }
         }
     }
+
+
+    [PunRPC]
+    void OnDevour()
+    {
+        if (!photonView.IsMine)
+            return;
+
+        StartCoroutine(DevourCorutine());
+        IEnumerator DevourCorutine()
+        {
+            beingDevoured = true;
+            Debug.Log("NONNONONON");
+
+            yield return new WaitForSeconds(DevourTime);
+
+            photonView.RPC("Respawn", RpcTarget.All);
+        }
+    }
     protected override void OnStunStart()
     {
         //Things that only affect local
         if (photonView.IsMine)
         {
-            aiMove.stunned = true;
+            isStunned = true;
         }
     }
 
     protected override void OnStunEnd()
     {
-        minion.Death();
 
     }
+
+
 
     protected override void InterruptedDevour()
     {
