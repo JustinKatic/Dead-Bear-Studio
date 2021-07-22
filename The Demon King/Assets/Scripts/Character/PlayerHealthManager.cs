@@ -84,28 +84,36 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+    protected override void OnStunStart()
+    {
+        //Things that affect everyone
+        canBeDevoured = true;
+
+        //Things that only affect local
+        if (photonView.IsMine)
+        {
+            isStunned = true;
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
+            player.DisableMovement();
+        }
+    }
+
     protected override void OnStunEnd()
     {
         if (!beingDevoured)
         {
+            //Things that affect everyone
+            canBeDevoured = false;
+
             //Things that only affect local
             if (photonView.IsMine)
             {
+                isStunned = false;
                 player.EnableMovement();
             }
-            //Things that affect everyone
-            canBeDevoured = false;
         }
     }
 
-    protected override void OnStunStart()
-    {
-        //Things that only affect local
-        if (photonView.IsMine)
-        {
-            player.DisableMovement();
-        }
-    }
 
     protected override void InterruptedDevour()
     {
