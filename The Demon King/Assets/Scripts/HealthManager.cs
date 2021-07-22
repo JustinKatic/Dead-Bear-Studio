@@ -58,15 +58,10 @@ public class HealthManager : MonoBehaviourPun
 
         IEnumerator StunnedCorutine()
         {
-            isStunned = true;
             OnStunStart();
-            //Things that affect everyone
-            canBeDevoured = true;
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
 
             yield return new WaitForSeconds(stunnedDuration);
 
-            isStunned = false;
             OnStunEnd();
         }
     }

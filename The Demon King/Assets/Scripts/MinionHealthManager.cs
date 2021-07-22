@@ -7,6 +7,7 @@ public class MinionHealthManager : HealthManager
 {
     AIRespawn aiRespawner;
 
+
     private void Awake()
     {
         CurrentHealth = MaxHealth;
@@ -47,19 +48,32 @@ public class MinionHealthManager : HealthManager
     }
     protected override void OnStunStart()
     {
+        //Things that affect everyone
+        canBeDevoured = true;
+
         //Things that only affect local
         if (photonView.IsMine)
         {
             isStunned = true;
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
         }
     }
 
     protected override void OnStunEnd()
     {
+        if (!beingDevoured)
+        {
+            //Things that affect everyone
+            canBeDevoured = false;
 
+            //Things that only affect local
+            if (photonView.IsMine)
+            {
+                isStunned = false;
+                photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+            }
+        }
     }
-
-
 
     protected override void InterruptedDevour()
     {
