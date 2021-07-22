@@ -33,7 +33,7 @@ public class PrimaryProjectileController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         string objTag = collision.transform.tag;
-        
+
         if (isMine && objTag.Equals("Player") || objTag.Equals("Minion"))
         {
             if (objTag.Equals("Player"))
@@ -44,8 +44,8 @@ public class PrimaryProjectileController : MonoBehaviour
             }
             else if (objTag.Equals("Minion"))
             {
-                Minion minion = collision.gameObject.GetComponent<Minion>();
-                minion.photonView.RPC("TakeDamage", RpcTarget.All, damage);
+                PhotonView hitView = collision.gameObject.GetPhotonView();
+                hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
 
         }

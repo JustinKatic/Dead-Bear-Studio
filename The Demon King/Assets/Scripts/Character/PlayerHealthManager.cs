@@ -28,6 +28,24 @@ public class PlayerHealthManager : HealthManager
     }
 
     [PunRPC]
+    void OnDevour()
+    {
+        if (!photonView.IsMine)
+            return;
+
+        StartCoroutine(DevourCorutine());
+        IEnumerator DevourCorutine()
+        {
+            photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(player.id).photonPlayer.NickName + " Is being devoured");
+            beingDevoured = true;
+
+            yield return new WaitForSeconds(DevourTime);
+
+            photonView.RPC("Respawn", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
     public void Respawn()
     {
         StartCoroutine(ResetPlayer());
