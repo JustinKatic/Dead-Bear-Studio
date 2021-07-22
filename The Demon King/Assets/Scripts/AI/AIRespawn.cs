@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
 
-public class AIRespawn : MonoBehaviour
+public class AIRespawn : MonoBehaviourPun
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public AISpawner mySpawnAreaManager;
+    public GameObject myBody;
 
-    // Update is called once per frame
-    void Update()
+    [PunRPC]
+    public void Respawn()
     {
-        
+        StartCoroutine(ResetPlayer());
+
+        IEnumerator ResetPlayer()
+        {
+            if (photonView.IsMine)
+            {
+                myBody.SetActive(false);
+            }
+
+
+            yield return new WaitForSeconds(3);
+
+            if (photonView.IsMine)
+            {
+                transform.position = mySpawnAreaManager.RandomPoint(mySpawnAreaManager.transform.position, mySpawnAreaManager.RadiusCheck);
+                myBody.SetActive(true);
+            }
+        }
     }
 }

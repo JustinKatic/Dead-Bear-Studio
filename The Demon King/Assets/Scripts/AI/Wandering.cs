@@ -9,20 +9,20 @@ public class Wandering : MonoBehaviour
     Vector3 location;
     private float distanceToDestination = 0;
     private Vector3 previousDestination;
-    public bool stunned = false;
+    HealthManager healthManager;
 
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
+        healthManager = GetComponent<HealthManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //If the AI has not been stunned move to next position
-        if (!stunned)
+        if (!healthManager.isStunned)
         {
             distanceToDestination = Vector3.Distance(gameObject.transform.localPosition, location);
 

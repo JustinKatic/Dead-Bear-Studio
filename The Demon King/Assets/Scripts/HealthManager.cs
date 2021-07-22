@@ -89,6 +89,7 @@ public class HealthManager : MonoBehaviourPun
         if (CurrentHealth <= 0)
             photonView.RPC("Stunned", RpcTarget.All);
     }
+
     [PunRPC]
     public void TakeDamage(int damage)
     {
