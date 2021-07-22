@@ -21,6 +21,8 @@ public class AbilityManager : MonoBehaviourPun
     public float shootYAngle;
     public int damage;
     private Vector3 shootAngle;
+    public float primaryProjectileDelay = 0.3f;
+    public float secondaryProjectileDelay = 0.7f;
 
     [Header("InteractableLayers")]
     public LayerMask PrimaryProjectileLayer;
@@ -38,6 +40,8 @@ public class AbilityManager : MonoBehaviourPun
     public GameObject AoeZone;
 
     [HideInInspector] public bool isAiming = false;
+    private bool canCast = true;
+
 
     private PlayerController player;
     private Camera cam;
@@ -69,7 +73,11 @@ public class AbilityManager : MonoBehaviourPun
 
     private void OnAbility1(InputAction.CallbackContext obj)
     {
-        ShootPrimaryProjectile();
+        if (canCast)
+        {
+            ShootPrimaryProjectile();
+            StartCoroutine(CanCast(primaryProjectileDelay));
+        }
     }
 
     private void OnAbility1Cancelled(InputAction.CallbackContext obj)
@@ -79,7 +87,11 @@ public class AbilityManager : MonoBehaviourPun
 
     private void OnAbility2(InputAction.CallbackContext obj)
     {
-        HeavyProjectileAim();
+        if (canCast)
+        {
+            HeavyProjectileAim();
+            StartCoroutine(CanCast(secondaryProjectileDelay));
+        }
     }
 
     private void OnAbility2Cancelled(InputAction.CallbackContext obj)
@@ -190,5 +202,13 @@ public class AbilityManager : MonoBehaviourPun
         isAiming = false;
         lineRenderer.enabled = false;
         recticle.SetActive(true);
+    }
+
+    public IEnumerator CanCast(float timer)
+    {
+        canCast = false;
+        yield return new WaitForSeconds(timer);
+        canCast = true;
+
     }
 }

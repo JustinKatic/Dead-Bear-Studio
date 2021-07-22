@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviourPun
     public float turnSpeed = 15;
     public float MoveSpeed = 5f;
 
+
     public CharacterInputs CharacterInputs;
 
     [SerializeField] float jumpHeight;
