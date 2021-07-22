@@ -8,6 +8,8 @@ using UnityEngine.Events;
 public class Minion : MonoBehaviourPun
 {
     public bool dead = false;
+    public Vector3 spawnPos;
+    
     public void Death()
     {
         dead = true;
@@ -16,10 +18,14 @@ public class Minion : MonoBehaviourPun
         
     }
 
-    public void Respawn(Vector3 spawnPosition)
+    private void OnEnable()
     {
-        transform.position = spawnPosition;
-        gameObject.SetActive(true);
+        spawnPos = transform.position;
+    }
+    [PunRPC]
+    public void RespawnThisMinion()
+    {
+        transform.position = spawnPos;
     }
 
 }

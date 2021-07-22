@@ -64,5 +64,6 @@ public class Wandering : MonoBehaviour
         NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask);
 
         return navHit.position;
+        
     }
 }
