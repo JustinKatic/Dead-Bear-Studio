@@ -26,7 +26,7 @@ public class MinionHealthManager : HealthManager
             }
         }
     }
-    protected override void StunnedBehaviour()
+    protected override void OnStunStart()
     {
         //Things that only affect local
         if (photonView.IsMine)
@@ -35,7 +35,7 @@ public class MinionHealthManager : HealthManager
         }
     }
 
-    protected override void DevourFinished()
+    protected override void OnStunEnd()
     {
         minion.Death();
 

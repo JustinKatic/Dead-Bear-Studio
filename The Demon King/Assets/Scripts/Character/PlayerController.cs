@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviourPun
     [Header("PlayerStats")]
     public float gravity;
     public float turnSpeed = 15;
-    public float speed = 5f;
+    public float MoveSpeed = 5f;
 
     public CharacterInputs CharacterInputs;
 
@@ -92,7 +92,7 @@ public class PlayerController : MonoBehaviourPun
 
         //movement
         Vector3 move = transform.right * input.x + transform.forward * input.y;
-        cc.Move(move * speed * Time.deltaTime);
+        cc.Move(move * MoveSpeed * Time.deltaTime);
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
         animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
         animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
@@ -169,10 +169,12 @@ public class PlayerController : MonoBehaviourPun
     {
         CharacterInputs.Player.Enable();
         animator.speed = 1;
+        MoveSpeed = 5;    
     }
     public void DisableMovement()
     {
         CharacterInputs.Player.Disable();
-        animator.speed = 1;
+        animator.speed = 0;
+        MoveSpeed = 0;
     }
 }
