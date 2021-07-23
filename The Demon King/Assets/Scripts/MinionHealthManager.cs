@@ -8,25 +8,12 @@ public class MinionHealthManager : HealthManager
     AIRespawn aiRespawner;
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        CurrentHealth = MaxHealth;
-        SetStatusStartValues();
-        //OverheadText.text = CurrentHealth.ToString();
+        base.Awake();
         aiRespawner = GetComponentInParent<AIRespawn>();
     }
 
-    private void Update()
-    {
-        if (CurrentHealth < MaxHealth)
-        {
-            HealthRegenTimer -= Time.deltaTime;
-            if (HealthRegenTimer <= 0)
-            {
-                photonView.RPC("Heal", RpcTarget.All, 1);
-            }
-        }
-    }
 
 
     [PunRPC]
@@ -56,7 +43,7 @@ public class MinionHealthManager : HealthManager
         if (photonView.IsMine)
         {
             isStunned = true;
-            photonView.RPC("ChangeStatusBarStun", RpcTarget.All);
+            Debug.Log("Play Stun Anim");
         }
     }
 
@@ -71,7 +58,7 @@ public class MinionHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 isStunned = false;
-                photonView.RPC("ChangeStatusBarHealth", RpcTarget.All);
+                Debug.Log("Stop Playing Stun Anim");
             }
         }
     }

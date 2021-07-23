@@ -24,17 +24,36 @@ public class HealthManager : MonoBehaviourPun
     public bool Dead = false;
     protected int curAttackerId;
 
-    public TMP_Text OverheadText = null;
-    public Slider statusBar =  null;
+    public Slider statusBar = null;
 
     public bool beingDevoured = false;
     public bool canBeDevoured = false;
 
     public bool isStunned = false;
 
-
-    public void SetStatusStartValues()
+    protected virtual void Awake()
     {
+        SetStartValues();
+    }
+
+    private void Update()
+    {
+        if (!photonView.IsMine)
+            return;
+
+        if (CurrentHealth < MaxHealth)
+        {
+            HealthRegenTimer -= Time.deltaTime;
+            if (HealthRegenTimer <= 0)
+            {
+                Heal(1);
+            }
+        }
+    }
+
+    public void SetStartValues()
+    {
+        CurrentHealth = MaxHealth;
         statusBar.maxValue = MaxHealth;
         statusBar.value = CurrentHealth;
     }
@@ -46,14 +65,7 @@ public class HealthManager : MonoBehaviourPun
         statusBar.value = value;
     }
 
-    //Updates the players text to everyone on the server
-    [PunRPC]
-    public void UpdateOverheadText(string textToDisplay)
-    {
-        //OverheadText.text = textToDisplay;
-    }
 
-    [PunRPC]
     public void Heal(int amountToHeal)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
@@ -73,7 +85,7 @@ public class HealthManager : MonoBehaviourPun
         IEnumerator StunnedCorutine()
         {
             OnStunStart();
-            
+
             yield return new WaitForSeconds(stunnedDuration);
 
             OnStunEnd();
@@ -115,35 +127,9 @@ public class HealthManager : MonoBehaviourPun
             photonView.RPC("Stunned", RpcTarget.All);
     }
 
-    [PunRPC]
-    protected void ChangeStatusBarStun()
-    {
-        var fill = statusBar.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == "Fill");
-        
-        if (fill != null)
-        {
-            fill.color = Color.yellow;
-        }
-        statusBar.maxValue = stunnedDuration;
-        statusBar.value = stunnedDuration;
-    }
-    [PunRPC]
-    protected void ChangeStatusBarHealth()
-    {
-        var fill = statusBar.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == "Fill");
-        
-        if (fill != null)
-        {
-            fill.color = Color.red;
-        }
-
-        statusBar.maxValue = MaxHealth;
-        statusBar.value = CurrentHealth;
-    }
-
     protected virtual void OnStunStart()
     {
-        
+
     }
 
     protected virtual void InterruptedDevour()
@@ -155,5 +141,5 @@ public class HealthManager : MonoBehaviourPun
     {
 
     }
-    
+
 }

@@ -26,7 +26,7 @@ public class PlayerController : MonoBehaviourPun
     //Player Components
     private Animator animator;
     private Camera mainCamera;
-    private CharacterController cc;
+    [HideInInspector] public CharacterController cc;
 
     public Player photonPlayer;
     private float pushPower = 2f;
@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviourPun
     {
         CharacterInputs.Player.Enable();
         animator.speed = 1;
-        MoveSpeed = 5;    
+        MoveSpeed = 5;
     }
     public void DisableMovement()
     {
