@@ -12,7 +12,7 @@ public class PlayerHealthManager : HealthManager
     {
         player = GetComponent<PlayerController>();
         CurrentHealth = MaxHealth;
-        OverheadText.text = CurrentHealth.ToString();
+        SetStatusStartValues();
     }
 
     private void Update()
@@ -36,7 +36,7 @@ public class PlayerHealthManager : HealthManager
         StartCoroutine(DevourCorutine());
         IEnumerator DevourCorutine()
         {
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(player.id).photonPlayer.NickName + " Is being devoured");
+            //photonView.RPC("UpdateOverheadText", RpcTarget.All, GameManager.instance.GetPlayer(player.id).photonPlayer.NickName + " Is being devoured");
             beingDevoured = true;
 
             yield return new WaitForSeconds(DevourTime);
@@ -52,7 +52,7 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            OverheadText.enabled = false;
+            statusBar.enabled = false;
 
             Renderer[] renderer = GetComponentsInChildren<Renderer>();
             foreach (Renderer mesh in renderer)
@@ -71,9 +71,9 @@ public class PlayerHealthManager : HealthManager
             {
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+                photonView.RPC("ChangeStatusBarHealth", RpcTarget.All);
             }
-            OverheadText.enabled = true;
+            statusBar.enabled = true;
 
             foreach (Renderer mesh in renderer)
                 mesh.enabled = true;
@@ -93,7 +93,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             isStunned = true;
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
+            photonView.RPC("ChangeStatusBarStun", RpcTarget.All);
             player.DisableMovement();
         }
     }
@@ -110,6 +110,8 @@ public class PlayerHealthManager : HealthManager
             {
                 isStunned = false;
                 player.EnableMovement();
+                photonView.RPC("ChangeStatusBarHealth", RpcTarget.All);
+
             }
         }
     }

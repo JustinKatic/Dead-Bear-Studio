@@ -11,7 +11,8 @@ public class MinionHealthManager : HealthManager
     private void Awake()
     {
         CurrentHealth = MaxHealth;
-        OverheadText.text = CurrentHealth.ToString();
+        SetStatusStartValues();
+        //OverheadText.text = CurrentHealth.ToString();
         aiRespawner = GetComponentInParent<AIRespawn>();
     }
 
@@ -55,7 +56,7 @@ public class MinionHealthManager : HealthManager
         if (photonView.IsMine)
         {
             isStunned = true;
-            photonView.RPC("UpdateOverheadText", RpcTarget.All, "Stunned");
+            photonView.RPC("ChangeStatusBarStun", RpcTarget.All);
         }
     }
 
@@ -70,7 +71,7 @@ public class MinionHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 isStunned = false;
-                photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+                photonView.RPC("ChangeStatusBarHealth", RpcTarget.All);
             }
         }
     }

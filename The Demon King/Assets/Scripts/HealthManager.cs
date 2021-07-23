@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviourPun
 {
@@ -23,6 +25,7 @@ public class HealthManager : MonoBehaviourPun
     protected int curAttackerId;
 
     public TMP_Text OverheadText = null;
+    public Slider statusBar =  null;
 
     public bool beingDevoured = false;
     public bool canBeDevoured = false;
@@ -30,21 +33,32 @@ public class HealthManager : MonoBehaviourPun
     public bool isStunned = false;
 
 
+    public void SetStatusStartValues()
+    {
+        statusBar.maxValue = MaxHealth;
+        statusBar.value = CurrentHealth;
+    }
 
+    //Updates the players text to everyone on the server
+    [PunRPC]
+    public void UpdateStatusBar(int value)
+    {
+        statusBar.value = value;
+    }
 
     //Updates the players text to everyone on the server
     [PunRPC]
     public void UpdateOverheadText(string textToDisplay)
     {
-        OverheadText.text = textToDisplay;
+        //OverheadText.text = textToDisplay;
     }
 
     [PunRPC]
     public void Heal(int amountToHeal)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
-        OverheadText.text = CurrentHealth.ToString();
+        photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
+        statusBar.value = CurrentHealth;
         HealthRegenTimer = TimeBeforeHealthRegen;
     }
 
@@ -59,7 +73,7 @@ public class HealthManager : MonoBehaviourPun
         IEnumerator StunnedCorutine()
         {
             OnStunStart();
-
+            
             yield return new WaitForSeconds(stunnedDuration);
 
             OnStunEnd();
@@ -77,7 +91,7 @@ public class HealthManager : MonoBehaviourPun
 
         HealthRegenTimer = TimeBeforeHealthRegen;
 
-        photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+        photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
 
         //die if no health left
         if (CurrentHealth <= 0)
@@ -94,18 +108,42 @@ public class HealthManager : MonoBehaviourPun
 
         HealthRegenTimer = TimeBeforeHealthRegen;
 
-        photonView.RPC("UpdateOverheadText", RpcTarget.All, CurrentHealth.ToString());
+        photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
 
         //die if no health left
         if (CurrentHealth <= 0)
             photonView.RPC("Stunned", RpcTarget.All);
     }
 
+    [PunRPC]
+    protected void ChangeStatusBarStun()
+    {
+        var fill = statusBar.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == "Fill");
+        
+        if (fill != null)
+        {
+            fill.color = Color.yellow;
+        }
+        statusBar.maxValue = stunnedDuration;
+        statusBar.value = stunnedDuration;
+    }
+    [PunRPC]
+    protected void ChangeStatusBarHealth()
+    {
+        var fill = statusBar.GetComponentsInChildren<Image>().FirstOrDefault(t => t.name == "Fill");
+        
+        if (fill != null)
+        {
+            fill.color = Color.red;
+        }
 
+        statusBar.maxValue = MaxHealth;
+        statusBar.value = CurrentHealth;
+    }
 
     protected virtual void OnStunStart()
     {
-
+        
     }
 
     protected virtual void InterruptedDevour()
@@ -117,4 +155,5 @@ public class HealthManager : MonoBehaviourPun
     {
 
     }
+    
 }

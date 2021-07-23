@@ -49,11 +49,11 @@ public class Devour : MonoBehaviourPun
 
                     IEnumerator DevourCorutine()
                     {
-                        photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring ");
+                        //photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring ");
                         playerController.DisableMovement();
                         yield return new WaitForSeconds(healthManager.DevourTime);
                         playerController.EnableMovement();
-                        photonView.RPC("UpdateOverheadText", RpcTarget.All, gameObject.GetComponent<HealthManager>().CurrentHealth.ToString());
+                        photonView.RPC("UpdateStatusBar", RpcTarget.All, gameObject.GetComponent<HealthManager>().CurrentHealth);
                     }
                 }
             }
