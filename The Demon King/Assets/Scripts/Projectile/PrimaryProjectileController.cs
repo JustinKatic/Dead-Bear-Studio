@@ -19,38 +19,46 @@ public class PrimaryProjectileController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // called when the bullet is spawned
+    // Called when the bullet is spawned by the player who spawned it
     public void Initialize(int damage, int attackerId, bool isMine)
     {
         this.damage = damage;
         this.attackerId = attackerId;
         this.isMine = isMine;
 
-        // set a lifetime so it can't go on forever
+        // set a lifetime of bullet
         Destroy(gameObject, 5.0f);
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
-        string objTag = other.transform.tag;
-
-        if (isMine && objTag.Equals("Player") || objTag.Equals("Minion"))
+        if (isMine)
         {
+            //stores refrence to tag collided with
+            string objTag = other.transform.tag;
+
+            //If tag is Player
             if (objTag.Equals("Player"))
             {
+                //tell the player who was hit to take damage
                 PlayerController player = GameManager.instance.GetPlayer(other.gameObject);
                 if (player.id != attackerId)
                     player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
             }
+            //If tag is Minion
             else if (objTag.Equals("Minion"))
             {
+                //tell the minion who was hit to take damage
                 PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
                 hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
         }
+        //Spawn explision vfx
         Instantiate(impactFX, transform.position, Quaternion.identity);
+        //Detroy this bullet
         Destroy(gameObject);
     }
 }
+
 

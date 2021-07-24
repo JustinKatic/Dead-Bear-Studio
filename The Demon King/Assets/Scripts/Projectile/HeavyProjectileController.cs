@@ -20,7 +20,7 @@ public class HeavyProjectileController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    // called when the bullet is spawned
+    // Called when the bullet is spawned by the player who spawned it
     public void Initialize(int damage, int attackerId, bool isMine)
     {
         this.damage = damage;
@@ -33,29 +33,37 @@ public class HeavyProjectileController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Only run if is the player who shot the projectile
         if (isMine)
         {
+            //Get list of all colliders who have layer damageable layer
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4, damageable);
+
             foreach (Collider col in hitColliders)
             {
+                //store tag of collider
                 string objTag = col.transform.tag;
-                Debug.Log(objTag);
 
+                //If hit another player
                 if (objTag.Equals("Player"))
                 {
+                    //tell the player who was hit to take damage
                     PlayerController player = GameManager.instance.GetPlayer(col.gameObject);
                     if (player.id != attackerId)
                         player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
                 }
+                //tell the minion who was hit to take damage
                 else if (objTag.Equals("Minion"))
                 {
+                    //call take damage on the minion that was hit
                     PhotonView hitView = col.gameObject.GetComponent<PhotonView>();
                     hitView.RPC("TakeDamage", RpcTarget.All, damage);
                 }
             }
-            Instantiate(impactFX, gameObject.transform.position, Quaternion.identity);
-            Destroy(gameObject);
         }
-
+        //spawn explision vfx
+        Instantiate(impactFX, gameObject.transform.position, Quaternion.identity);
+        //detroy this bullet
+        Destroy(gameObject);
     }
 }

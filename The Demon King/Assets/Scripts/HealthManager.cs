@@ -10,55 +10,54 @@ public class HealthManager : MonoBehaviourPun
 {
 
     [Header("HealthStats")]
+    [Tooltip("Max health value")]
     public int MaxHealth = 3;
-    public int CurrentHealth = 0;
+    [Tooltip("Time before health regen, Reset on dmg taken")]
     public float HealthRegenTimer = 3f;
-    protected float TimeBeforeHealthRegen = 3f;
 
+    [Header("Stun/Devour Duration")]
+    [Tooltip("Time spent being devoured")]
     public float DevourTime = 3f;
-
-
-    [Header("StunStats")]
     public float stunnedDuration;
 
-    public bool Dead = false;
+
+    protected float TimeBeforeHealthRegen = 3f;
     protected int curAttackerId;
 
-    public Slider statusBar = null;
+    [HideInInspector] public Slider statusBar = null;
 
-    public bool beingDevoured = false;
-    public bool canBeDevoured = false;
+    [HideInInspector] public int CurrentHealth = 0;
+    [HideInInspector] public bool beingDevoured = false;
+    [HideInInspector] public bool canBeDevoured = false;
+    [HideInInspector] public bool isStunned = false;
 
-    public bool isStunned = false;
 
     protected virtual void Awake()
     {
-        SetStartValues();
-    }
-
-    private void Update()
-    {
-        if (!photonView.IsMine)
-            return;
-
-        if (CurrentHealth < MaxHealth)
-        {
-            HealthRegenTimer -= Time.deltaTime;
-            if (HealthRegenTimer <= 0)
-            {
-                Heal(1);
-            }
-        }
-    }
-
-    public void SetStartValues()
-    {
+        //Get value of everyones status bar and set there sliders max length and values so accurate when adjust later in rpc calls
+        statusBar = GetComponentInChildren<Slider>();
         CurrentHealth = MaxHealth;
         statusBar.maxValue = MaxHealth;
         statusBar.value = CurrentHealth;
     }
 
-    //Updates the players text to everyone on the server
+    private void Update()
+    {
+        //Run following if local player
+        if (photonView.IsMine)
+        {
+            //Heal every X seconds if not at max health
+            if (CurrentHealth < MaxHealth)
+            {
+                HealthRegenTimer -= Time.deltaTime;
+                if (HealthRegenTimer <= 0)
+                    Heal(1);
+            }
+        }
+    }
+
+
+    //Updates the players status to everyone on the server
     [PunRPC]
     public void UpdateStatusBar(int value)
     {
@@ -66,9 +65,11 @@ public class HealthManager : MonoBehaviourPun
     }
 
 
+    //Runing following if local player
     public void Heal(int amountToHeal)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters status bar on all players in network
         photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
         statusBar.value = CurrentHealth;
         HealthRegenTimer = TimeBeforeHealthRegen;
@@ -95,38 +96,56 @@ public class HealthManager : MonoBehaviourPun
     [PunRPC]
     public void TakeDamage(int attackerId, int damage)
     {
-        if (beingDevoured)
-            return;
+        //Runing following if local player
+        if (photonView.IsMine)
+        {
+            //Return if already being devoured
+            if (beingDevoured)
+                return;
 
-        CurrentHealth -= damage;
-        curAttackerId = attackerId;
+            //Remove health
+            CurrentHealth -= damage;
 
-        HealthRegenTimer = TimeBeforeHealthRegen;
+            //Id of who attacked us
+            curAttackerId = attackerId;
 
-        photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
+            //Reset health regen timer
+            HealthRegenTimer = TimeBeforeHealthRegen;
 
-        //die if no health left
-        if (CurrentHealth <= 0)
-            photonView.RPC("Stunned", RpcTarget.All);
+            //Updates this charcters status bar on all players in network
+            photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
+
+            //call Stunned() on all player on network if no health left
+            if (CurrentHealth <= 0)
+                photonView.RPC("Stunned", RpcTarget.All);
+        }
     }
 
     [PunRPC]
     public void TakeDamage(int damage)
     {
-        if (beingDevoured)
-            return;
+        if (photonView.IsMine)
+        {
+            //Return if already being devoured
+            if (beingDevoured)
+                return;
 
-        CurrentHealth -= damage;
+            //Remove health
+            CurrentHealth -= damage;
+            //Reset health regen timer
+            HealthRegenTimer = TimeBeforeHealthRegen;
 
-        HealthRegenTimer = TimeBeforeHealthRegen;
+            //Updates this charcters status bar on all players in network
+            photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
 
-        photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
-
-        //die if no health left
-        if (CurrentHealth <= 0)
-            photonView.RPC("Stunned", RpcTarget.All);
+            //call Stunned() on all player on network if no health left
+            if (CurrentHealth <= 0)
+                photonView.RPC("Stunned", RpcTarget.All);
+        }
     }
 
+
+    //Overrides for inherited classes
     protected virtual void OnStunStart()
     {
 
