@@ -31,6 +31,7 @@ public class MinionHealthManager : HealthManager
             yield return new WaitForSeconds(DevourTime);
 
             aiRespawner.Respawn();
+            isStunned = false;
             gameObject.SetActive(false);
         }
     }

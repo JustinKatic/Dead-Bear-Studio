@@ -51,6 +51,7 @@ public class Wandering : MonoBehaviour
             location = transform.position;
             agent.SetDestination(location);
         }
+        Debug.Log(location);
     }
     
     public static Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask)
