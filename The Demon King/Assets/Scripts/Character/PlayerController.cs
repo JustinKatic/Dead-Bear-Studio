@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviourPun
     public CharacterInputs CharacterInputs;
 
     [SerializeField] float jumpHeight;
-    private float yVelovity;
+    private float playerYVelocity;
     private Vector2 input;
 
     //Player Components
@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviourPun
 
     public Player photonPlayer;
     [SerializeField] float pushPower = 2f;
+    private Vector3 playerMoveVelocity;
 
     private bool isJumping;
 
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviourPun
     {
         if (cc.isGrounded)
         {
-            yVelovity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             isJumping = true;
             cc.stepOffset = 0;
             cc.slopeLimit = 0;
@@ -89,10 +90,9 @@ public class PlayerController : MonoBehaviourPun
         if (!photonView.IsMine)
             return;
 
-
-        if (cc.isGrounded && yVelovity < 0)
+        if (cc.isGrounded && playerYVelocity < 0)
         {
-            yVelovity = -2f;
+            playerYVelocity = -2f;
             if (isJumping)
             {
                 isJumping = false;
@@ -101,16 +101,17 @@ public class PlayerController : MonoBehaviourPun
             }
         }
 
-
         //Get value from input system for directional movement
         input = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
-        yVelovity += gravity * Time.deltaTime;
+        playerYVelocity += gravity * Time.deltaTime;
 
         //movement
-        Vector3 move = transform.right * input.x * MoveSpeed + transform.forward * input.y * MoveSpeed;
-        move.y = yVelovity;
-        cc.Move(move * Time.deltaTime);
+        playerMoveVelocity = transform.right * input.x * MoveSpeed + transform.forward * input.y * MoveSpeed;
+        playerMoveVelocity.y = playerYVelocity;
+
+        if (cc.enabled)
+            cc.Move(playerMoveVelocity * Time.deltaTime);
 
         //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
         animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
@@ -123,23 +124,6 @@ public class PlayerController : MonoBehaviourPun
             //set the players rotation to the direction of the camera with a slerp smoothness
             float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), turnSpeed * Time.deltaTime);
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (photonView.IsMine)
-        {
-            if (other.gameObject.CompareTag("Enviroment"))
-                transform.SetParent(other.transform);
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (photonView.IsMine)
-        {
-            if (other.gameObject.CompareTag("Enviroment"))
-                transform.SetParent(null);
         }
     }
 

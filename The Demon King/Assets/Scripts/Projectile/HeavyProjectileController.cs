@@ -10,7 +10,7 @@ public class HeavyProjectileController : MonoBehaviour
     private int attackerId;
     private bool isMine;
     public LayerMask damageable;
-    
+
     public Rigidbody rb;
 
     public GameObject impactFX;
@@ -31,19 +31,31 @@ public class HeavyProjectileController : MonoBehaviour
         Destroy(gameObject, 5.0f);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
         if (isMine)
         {
-            Collider[] hitColliders = Physics.OverlapSphere(collision.contacts[0].point, 4, damageable);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4, damageable);
             foreach (Collider col in hitColliders)
             {
-                PlayerController player = GameManager.instance.GetPlayer(col.gameObject);
-                if (player.id != attackerId)
-                    player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+                string objTag = col.transform.tag;
+                Debug.Log(objTag);
+
+                if (objTag.Equals("Player"))
+                {
+                    PlayerController player = GameManager.instance.GetPlayer(col.gameObject);
+                    if (player.id != attackerId)
+                        player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+                }
+                else if (objTag.Equals("Minion"))
+                {
+                    PhotonView hitView = col.gameObject.GetComponent<PhotonView>();
+                    hitView.RPC("TakeDamage", RpcTarget.All, damage);
+                }
             }
+            Instantiate(impactFX, gameObject.transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
-        Instantiate(impactFX, gameObject.transform.position, Quaternion.identity);
-        Destroy(gameObject);
+
     }
 }

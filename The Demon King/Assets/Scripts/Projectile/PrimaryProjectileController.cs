@@ -30,24 +30,24 @@ public class PrimaryProjectileController : MonoBehaviour
         Destroy(gameObject, 5.0f);
     }
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        string objTag = collision.transform.tag;
+        string objTag = other.transform.tag;
 
         if (isMine && objTag.Equals("Player") || objTag.Equals("Minion"))
         {
             if (objTag.Equals("Player"))
             {
-                PlayerController player = GameManager.instance.GetPlayer(collision.gameObject);
+                PlayerController player = GameManager.instance.GetPlayer(other.gameObject);
                 if (player.id != attackerId)
                     player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
             }
             else if (objTag.Equals("Minion"))
             {
-                PhotonView hitView = collision.gameObject.GetComponentInParent<PhotonView>();
+                PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
                 hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
-
         }
         Instantiate(impactFX, transform.position, Quaternion.identity);
         Destroy(gameObject);
