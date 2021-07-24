@@ -20,7 +20,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""cdfa34cf-a71a-407f-80dc-26e6758d6fa6"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -60,7 +60,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Look"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Value"",
                     ""id"": ""d16db478-d7cd-4ff4-8e7a-6ced5fa37868"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",

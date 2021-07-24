@@ -12,7 +12,6 @@ public class AIRespawn : MonoBehaviourPun
     public float respawnTimer;
 
 
-
     public void Respawn()
     {
         StartCoroutine(ResetPlayer());
