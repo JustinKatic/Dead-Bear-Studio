@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
@@ -9,7 +10,8 @@ using UnityEngine.UI;
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
-    public Image playerHealthBar;
+    public Canvas playerHealthBar;
+    private List<Image> healthaBars = new List<Image>();
 
     private IEnumerator myDevourCo;
 
@@ -17,27 +19,19 @@ public class PlayerHealthManager : HealthManager
     protected override void Awake()
     {
         if (photonView.IsMine)
-            SetupPlayerHealthBarUI();
+            statusBar.gameObject.SetActive(false);        
         else
+        {
             base.Awake();
+
+            Destroy(playerHealthBar.gameObject);
+        }
+
+        healthaBars = playerHealthBar.transform.GetChild(0).GetComponentsInChildren<Image>().ToList();
         
         player = GetComponent<PlayerController>();
         
     }
-    
-    // Set My UI health bar overlay
-    void SetupPlayerHealthBarUI()
-    {
-        //overhead bar inactive
-        statusBar.gameObject.SetActive(false);
-
-        if(!photonView.IsMine)
-        {
-
-        }
-  
-    }
-
 
     [PunRPC]
     void OnDevour()
@@ -87,7 +81,8 @@ public class PlayerHealthManager : HealthManager
             {
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
+                //photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
+                MyHealthBarUIUpdate();
             }
             statusBar.enabled = true;
             foreach (Renderer mesh in renderer)
@@ -135,5 +130,18 @@ public class PlayerHealthManager : HealthManager
     {
         beingDevoured = false;
         StopCoroutine(myDevourCo);
+    }
+
+    void MyHealthBarUIUpdate()
+    {
+        for (int i = 0; i < healthaBars.Count; i++)
+        {
+            if (i <= CurrentHealth)
+            {
+                //healthaBars[i].material.
+            }
+            
+        }
+        
     }
 }
