@@ -43,12 +43,29 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
-            for (int i = 0; i < MaxHealth - 1; i++)
+            for (int i = 0; i < MaxHealth; i++)
             {
                 if (i < CurrentHealth)
                     healthBars[i].color = Color.red;
                 else
                     healthBars[i].color = new Color(255, 0, 0, 0);
+            }
+        }
+    }
+
+
+
+    [PunRPC]
+    public void ChangeMaxHealth(int NewMaxHealth)
+    {
+        MaxHealth = NewMaxHealth;
+
+        if (photonView.IsMine)
+        {
+            for (int i = healthBars.Count; i < NewMaxHealth; i++)
+            {
+                Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
+                healthBars.Add(healthBar);
             }
         }
     }
@@ -93,8 +110,6 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            statusBar.enabled = false;
-
             Renderer[] renderer = GetComponentsInChildren<Renderer>();
             foreach (Renderer mesh in renderer)
                 mesh.enabled = false;
@@ -102,10 +117,8 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 int randSpawn = Random.Range(0, GameManager.instance.spawnPoints.Length);
-
                 player.DisableMovement();
                 transform.position = GameManager.instance.spawnPoints[randSpawn].position;
-                player.EnableMovement();
             }
 
             yield return new WaitForSeconds(3);
@@ -113,10 +126,12 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 player.EnableMovement();
+                photonView.RPC("ChangeMaxHealth", RpcTarget.All, 6);
                 CurrentHealth = MaxHealth;
+                UpdateHealthBar();
+                photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
                 photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
             }
-            statusBar.enabled = true;
             foreach (Renderer mesh in renderer)
                 mesh.enabled = true;
 

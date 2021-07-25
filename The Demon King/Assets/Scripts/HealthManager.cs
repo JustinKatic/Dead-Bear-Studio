@@ -37,8 +37,7 @@ public class HealthManager : MonoBehaviourPun
         //Get value of everyones status bar and set there sliders max length and values so accurate when adjust later in rpc calls
         statusBar = GetComponentInChildren<Slider>();
         CurrentHealth = MaxHealth;
-        statusBar.maxValue = MaxHealth;
-        statusBar.value = CurrentHealth;
+        photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
     }
 
     private void Update()
@@ -46,6 +45,8 @@ public class HealthManager : MonoBehaviourPun
         //Run following if local player
         if (photonView.IsMine)
         {
+            if (beingDevoured || isStunned)
+                return;
             //Heal every X seconds if not at max health
             if (CurrentHealth < MaxHealth)
             {
@@ -56,9 +57,9 @@ public class HealthManager : MonoBehaviourPun
         }
     }
     //Set overhead start values
-    public void SetStartValues()
+    [PunRPC]
+    public void UpdateStatusbarValues()
     {
-        CurrentHealth = MaxHealth;
         statusBar.maxValue = MaxHealth;
         statusBar.value = CurrentHealth;
     }
@@ -72,7 +73,7 @@ public class HealthManager : MonoBehaviourPun
 
 
 
-   protected virtual void Heal(int amountToHeal)
+    protected virtual void Heal(int amountToHeal)
     {
 
     }
@@ -97,7 +98,7 @@ public class HealthManager : MonoBehaviourPun
 
 
 
-   
+
 
 
     //Overrides for inherited classes
