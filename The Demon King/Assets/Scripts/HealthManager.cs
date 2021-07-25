@@ -65,7 +65,7 @@ public class HealthManager : MonoBehaviourPun
     }
 
 
-    //Runing following if local player
+    //Only running on local player
     public void Heal(int amountToHeal)
     {
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
@@ -151,7 +151,8 @@ public class HealthManager : MonoBehaviourPun
 
     }
 
-    protected virtual void InterruptedDevour()
+    [PunRPC]
+    protected virtual void InterruptDevourOnSelf()
     {
 
     }

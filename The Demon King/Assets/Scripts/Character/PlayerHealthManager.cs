@@ -9,6 +9,8 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
 
+    private IEnumerator myDevourCo;
+
 
     protected override void Awake()
     {
@@ -23,7 +25,9 @@ public class PlayerHealthManager : HealthManager
         if (!photonView.IsMine)
             return;
 
-        StartCoroutine(DevourCorutine());
+        myDevourCo = DevourCorutine();
+        StartCoroutine(myDevourCo);
+
         IEnumerator DevourCorutine()
         {
             beingDevoured = true;
@@ -37,6 +41,7 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     public void Respawn()
     {
+
         StartCoroutine(ResetPlayer());
 
         IEnumerator ResetPlayer()
@@ -101,14 +106,14 @@ public class PlayerHealthManager : HealthManager
                 isStunned = false;
                 player.EnableMovement();
                 Debug.Log("Stop Stunned Anim");
-
             }
         }
     }
 
-
-    protected override void InterruptedDevour()
+    [PunRPC]
+    protected override void InterruptDevourOnSelf()
     {
-        base.InterruptedDevour();
+        beingDevoured = false;
+        StopCoroutine(myDevourCo);
     }
 }

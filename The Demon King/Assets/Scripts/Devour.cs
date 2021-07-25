@@ -14,6 +14,8 @@ public class Devour : MonoBehaviourPun
     private Camera cam;
     private bool IsDevouring;
 
+    [HideInInspector] public PhotonView targetBeingDevouredPV = null;
+
 
     private void Awake()
     {
@@ -27,6 +29,20 @@ public class Devour : MonoBehaviourPun
 
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
+        }
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine)
+        {
+            if (IsDevouring && healthManager.isStunned)
+            {
+                //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
+                targetBeingDevouredPV.RPC("InterruptDevourOnSelf", RpcTarget.All);
+                IsDevouring = false;
+                targetBeingDevouredPV = null;
+            }
         }
     }
 
@@ -62,18 +78,26 @@ public class Devour : MonoBehaviourPun
                 if (hitPlayerHealth.canBeDevoured)
                 {
                     //Get the photon view of hit target
-                    PhotonView hitTarget = hit.collider.gameObject.GetPhotonView();
+                    targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
 
                     //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-                    hitTarget.RPC("OnDevour", RpcTarget.All);
+                    targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
 
                     //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
                     IEnumerator DevourCorutine()
                     {
+                        IsDevouring = true;
                         playerController.DisableMovement();
+
                         yield return new WaitForSeconds(healthManager.DevourTime);
-                        playerController.EnableMovement();
+
+                        if (!healthManager.isStunned)
+                        {
+                            IsDevouring = false;
+                            playerController.EnableMovement();
+                            targetBeingDevouredPV = null;
+                        }
                     }
                 }
             }

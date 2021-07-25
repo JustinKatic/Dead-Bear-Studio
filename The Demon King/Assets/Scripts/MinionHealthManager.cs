@@ -7,6 +7,9 @@ public class MinionHealthManager : HealthManager
 {
     AIRespawn aiRespawner;
 
+    private IEnumerator myDevourCo;
+
+
 
     protected override void Awake()
     {
@@ -20,7 +23,9 @@ public class MinionHealthManager : HealthManager
         if (!photonView.IsMine)
             return;
 
-        StartCoroutine(DevourCorutine());
+        myDevourCo = DevourCorutine();
+        StartCoroutine(myDevourCo);
+
         IEnumerator DevourCorutine()
         {
             beingDevoured = true;
@@ -62,8 +67,10 @@ public class MinionHealthManager : HealthManager
         }
     }
 
-    protected override void InterruptedDevour()
+    [PunRPC]
+    protected override void InterruptDevourOnSelf()
     {
-        base.InterruptedDevour();
+        beingDevoured = false;
+        StopCoroutine(myDevourCo);
     }
 }
