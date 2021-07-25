@@ -11,27 +11,61 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
     public Canvas playerHealthBar;
-    private List<Image> healthaBars = new List<Image>();
+    public Transform playerHealthBarContainer;
+    public Image healthBarPrefab;
+    private List<Image> healthBars = new List<Image>();
 
     private IEnumerator myDevourCo;
 
 
     protected override void Awake()
     {
-        if (photonView.IsMine)
-            statusBar.gameObject.SetActive(false);        
-        else
-        {
-            base.Awake();
+        base.Awake();
 
+        if (!photonView.IsMine)
+        {
             Destroy(playerHealthBar.gameObject);
         }
+        else
+        {
+            statusBar.gameObject.SetActive(false);
+            player = GetComponent<PlayerController>();
 
-        healthaBars = playerHealthBar.transform.GetChild(0).GetComponentsInChildren<Image>().ToList();
-        
-        player = GetComponent<PlayerController>();
-        
+            for (int i = 0; i < CurrentHealth; i++)
+            {
+                Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
+                healthBars.Add(healthBar);
+            }
+        }
     }
+
+    public void UpdateHealthBar()
+    {
+        if (photonView.IsMine)
+        {
+            for (int i = 0; i < MaxHealth - 1; i++)
+            {
+                if (i < CurrentHealth)
+                    healthBars[i].color = Color.red;
+                else
+                    healthBars[i].color = new Color(255, 0, 0, 0);
+            }
+        }
+    }
+
+
+    protected override void Heal(int amountToHeal)
+    {
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters status bar on all players in network
+        photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
+        UpdateHealthBar();
+
+        statusBar.value = CurrentHealth;
+        HealthRegenTimer = TimeBeforeHealthRegen;
+    }
+
 
     [PunRPC]
     void OnDevour()
@@ -55,7 +89,6 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     public void Respawn()
     {
-
         StartCoroutine(ResetPlayer());
 
         IEnumerator ResetPlayer()
@@ -81,8 +114,7 @@ public class PlayerHealthManager : HealthManager
             {
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
-                //photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
-                MyHealthBarUIUpdate();
+                photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
             }
             statusBar.enabled = true;
             foreach (Renderer mesh in renderer)
@@ -91,6 +123,36 @@ public class PlayerHealthManager : HealthManager
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
+        }
+    }
+
+    [PunRPC]
+    public void TakeDamage(int attackerId, int damage)
+    {
+        //Runing following if local player
+        if (photonView.IsMine)
+        {
+            //Return if already being devoured
+            if (beingDevoured)
+                return;
+
+            //Remove health
+            CurrentHealth -= damage;
+
+            UpdateHealthBar();
+
+            //Id of who attacked us
+            curAttackerId = attackerId;
+
+            //Reset health regen timer
+            HealthRegenTimer = TimeBeforeHealthRegen;
+
+            //Updates this charcters status bar on all players in network
+            photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
+
+            //call Stunned() on all player on network if no health left
+            if (CurrentHealth <= 0)
+                photonView.RPC("Stunned", RpcTarget.All);
         }
     }
 
@@ -130,18 +192,5 @@ public class PlayerHealthManager : HealthManager
     {
         beingDevoured = false;
         StopCoroutine(myDevourCo);
-    }
-
-    void MyHealthBarUIUpdate()
-    {
-        for (int i = 0; i < healthaBars.Count; i++)
-        {
-            if (i <= CurrentHealth)
-            {
-                //healthaBars[i].material.
-            }
-            
-        }
-        
     }
 }

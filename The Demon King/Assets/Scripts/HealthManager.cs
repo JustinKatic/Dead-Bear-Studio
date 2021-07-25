@@ -71,14 +71,10 @@ public class HealthManager : MonoBehaviourPun
     }
 
 
-    //Only running on local player
-    public void Heal(int amountToHeal)
+
+   protected virtual void Heal(int amountToHeal)
     {
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        //Updates this charcters status bar on all players in network
-        photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
-        statusBar.value = CurrentHealth;
-        HealthRegenTimer = TimeBeforeHealthRegen;
+
     }
 
 
@@ -99,56 +95,9 @@ public class HealthManager : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    public void TakeDamage(int attackerId, int damage)
-    {
-        //Runing following if local player
-        if (photonView.IsMine)
-        {
-            //Return if already being devoured
-            if (beingDevoured)
-                return;
 
-            //Remove health
-            CurrentHealth -= damage;
 
-            //Id of who attacked us
-            curAttackerId = attackerId;
-
-            //Reset health regen timer
-            HealthRegenTimer = TimeBeforeHealthRegen;
-
-            //Updates this charcters status bar on all players in network
-            photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
-
-            //call Stunned() on all player on network if no health left
-            if (CurrentHealth <= 0)
-                photonView.RPC("Stunned", RpcTarget.All);
-        }
-    }
-
-    [PunRPC]
-    public void TakeDamage(int damage)
-    {
-        if (photonView.IsMine)
-        {
-            //Return if already being devoured
-            if (beingDevoured)
-                return;
-
-            //Remove health
-            CurrentHealth -= damage;
-            //Reset health regen timer
-            HealthRegenTimer = TimeBeforeHealthRegen;
-
-            //Updates this charcters status bar on all players in network
-            photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
-
-            //call Stunned() on all player on network if no health left
-            if (CurrentHealth <= 0)
-                photonView.RPC("Stunned", RpcTarget.All);
-        }
-    }
+   
 
 
     //Overrides for inherited classes
