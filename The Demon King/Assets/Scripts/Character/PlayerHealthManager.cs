@@ -4,16 +4,37 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
+    public PlayerHealthBarUI playerHealthBar;
+
+    private IEnumerator myDevourCo;
 
 
     protected override void Awake()
     {
-        base.Awake();
+        if (photonView.IsMine)
+            SetupPlayerHealthBarUI();
+        else
+            base.Awake();
+        
         player = GetComponent<PlayerController>();
+        
+    }
+    
+    // Set My UI health bar overlay
+    void SetupPlayerHealthBarUI()
+    {
+        //overhead bar inactive
+        statusBar.gameObject.SetActive(false);
+        //Set each image to full
+        for (int i = 0; i < MaxHealth; i++)
+        {
+            playerHealthBar.healthBars[i].fillAmount = 1;
+        }
     }
 
 
@@ -23,7 +44,9 @@ public class PlayerHealthManager : HealthManager
         if (!photonView.IsMine)
             return;
 
-        StartCoroutine(DevourCorutine());
+        myDevourCo = DevourCorutine();
+        StartCoroutine(myDevourCo);
+
         IEnumerator DevourCorutine()
         {
             beingDevoured = true;
@@ -37,6 +60,7 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     public void Respawn()
     {
+
         StartCoroutine(ResetPlayer());
 
         IEnumerator ResetPlayer()
@@ -101,14 +125,14 @@ public class PlayerHealthManager : HealthManager
                 isStunned = false;
                 player.EnableMovement();
                 Debug.Log("Stop Stunned Anim");
-
             }
         }
     }
 
-
-    protected override void InterruptedDevour()
+    [PunRPC]
+    protected override void InterruptDevourOnSelf()
     {
-        base.InterruptedDevour();
+        beingDevoured = false;
+        StopCoroutine(myDevourCo);
     }
 }
