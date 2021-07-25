@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
-    public PlayerHealthBarUI playerHealthBar;
+    public Image playerHealthBar;
 
     private IEnumerator myDevourCo;
 
@@ -30,11 +30,12 @@ public class PlayerHealthManager : HealthManager
     {
         //overhead bar inactive
         statusBar.gameObject.SetActive(false);
-        //Set each image to full
-        for (int i = 0; i < MaxHealth; i++)
+
+        if(!photonView.IsMine)
         {
-            playerHealthBar.healthBars[i].fillAmount = 1;
+
         }
+  
     }
 
 
