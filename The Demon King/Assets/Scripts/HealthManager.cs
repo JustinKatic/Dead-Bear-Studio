@@ -55,11 +55,17 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
-
+    //Set overhead start values
+    public void SetStartValues()
+    {
+        CurrentHealth = MaxHealth;
+        statusBar.maxValue = MaxHealth;
+        statusBar.value = CurrentHealth;
+    }
 
     //Updates the players status to everyone on the server
     [PunRPC]
-    public void UpdateStatusBar(int value)
+    public virtual void UpdateStatusBar(int value)
     {
         statusBar.value = value;
     }

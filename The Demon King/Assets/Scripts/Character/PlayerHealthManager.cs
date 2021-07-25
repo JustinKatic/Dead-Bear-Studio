@@ -4,18 +4,37 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
+    public PlayerHealthBarUI playerHealthBar;
 
     private IEnumerator myDevourCo;
 
 
     protected override void Awake()
     {
-        base.Awake();
+        if (photonView.IsMine)
+            SetupPlayerHealthBarUI();
+        else
+            base.Awake();
+        
         player = GetComponent<PlayerController>();
+        
+    }
+    
+    // Set My UI health bar overlay
+    void SetupPlayerHealthBarUI()
+    {
+        //overhead bar inactive
+        statusBar.gameObject.SetActive(false);
+        //Set each image to full
+        for (int i = 0; i < MaxHealth; i++)
+        {
+            playerHealthBar.healthBars[i].fillAmount = 1;
+        }
     }
 
 
