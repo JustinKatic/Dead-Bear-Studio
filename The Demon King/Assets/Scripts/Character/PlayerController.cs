@@ -11,64 +11,76 @@ public class PlayerController : MonoBehaviourPun
 {
     [Header("PhotonInfo")]
     public int id;
+    public Player photonPlayer;
     [Header("PlayerStats")]
     [SerializeField] float gravity;
     [SerializeField] float turnSpeed = 15;
     [SerializeField] float MoveSpeed = 5f;
+    [SerializeField] float jumpHeight;
+    [SerializeField] float pushPower = 2f;
+    [SerializeField] float SlopeLimit = 45f;
+    [SerializeField] float StepOffset = 0.3f;
 
 
+    [Header("Components")]
     public CharacterInputs CharacterInputs;
 
-    [SerializeField] float jumpHeight;
-    private float yVelovity;
-    private Vector2 input;
+    private float startMoveSpeed;
+    private float playerYVelocity;
+    private Vector2 playerInputs;
 
     //Player Components
     private Animator animator;
     private Camera mainCamera;
     private CharacterController cc;
 
-    public Player photonPlayer;
-    [SerializeField] float pushPower = 2f;
 
+    private Vector3 playerMoveVelocity;
     private bool isJumping;
 
-    public float SlopeLimit = 45f;
-    public float StepOffset = 0.3f;
+
 
 
     private void Awake()
     {
+        //Run following if not local player
         if (!photonView.IsMine)
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
         }
+        //Run following if local player
         else
         {
+            //Get Components
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
-
-            cc.slopeLimit = SlopeLimit;
-            cc.stepOffset = StepOffset;
-
             animator = GetComponent<Animator>();
             mainCamera = Camera.main;
 
+            //Set default values
+            cc.slopeLimit = SlopeLimit;
+            cc.stepOffset = StepOffset;
+            startMoveSpeed = MoveSpeed;
+
+            //Jump callback
             CharacterInputs.Player.Jump.performed += OnJump;
 
+            //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
     }
 
+
     [PunRPC]
     public void Initialize(Player player)
     {
+        //gives player an ID
         id = player.ActorNumber;
+        //Set photon player
         photonPlayer = player;
-
-        //Sets player id inside of gamemanager = to this
+        //Sets player id inside of gameManager = to this
         GameManager.instance.players[id - 1] = this;
     }
 
@@ -77,8 +89,10 @@ public class PlayerController : MonoBehaviourPun
     {
         if (cc.isGrounded)
         {
-            yVelovity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            //Sets Y velocity to jump value
+            playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             isJumping = true;
+            //Sets CC not to try and stepUp while in air
             cc.stepOffset = 0;
             cc.slopeLimit = 0;
         }
@@ -86,38 +100,45 @@ public class PlayerController : MonoBehaviourPun
 
     private void Update()
     {
-        if (!photonView.IsMine)
-            return;
-
-
-        if (cc.isGrounded && yVelovity < 0)
+        //Run following if local player
+        if (photonView.IsMine)
         {
-            yVelovity = -2f;
-            if (isJumping)
+            //pushes player onto ground
+            if (cc.isGrounded && playerYVelocity < 0)
             {
-                isJumping = false;
-                cc.stepOffset = StepOffset;
-                cc.slopeLimit = SlopeLimit;
+                playerYVelocity = -2f;
+                //Set jumping false and allow CC to stepUp
+                if (isJumping)
+                {
+                    isJumping = false;
+                    cc.stepOffset = StepOffset;
+                    cc.slopeLimit = SlopeLimit;
+                }
             }
+
+            //Get value from input system for directional movement
+            playerInputs = CharacterInputs.Player.Move.ReadValue<Vector2>();
+
+            //Add gravity to player
+            playerYVelocity += gravity * Time.deltaTime;
+
+            //Get the players current movement velocity based of inputs and relative direction
+            playerMoveVelocity = transform.right * playerInputs.x * MoveSpeed + transform.forward * playerInputs.y * MoveSpeed;
+            //Add jump and gravity values to current movements Y
+            playerMoveVelocity.y = playerYVelocity;
+
+            //Move the character based of the players velocity values
+            if (cc.enabled)
+                cc.Move(playerMoveVelocity * Time.deltaTime);
+
+            //Set the animators blend tree to correct animation based of PlayerInputs, with 0.1 smooth added
+            animator.SetFloat("InputX", playerInputs.x, 0.1f, Time.deltaTime);
+            animator.SetFloat("InputY", playerInputs.y, 0.1f, Time.deltaTime);
         }
-
-
-        //Get value from input system for directional movement
-        input = CharacterInputs.Player.Move.ReadValue<Vector2>();
-
-        yVelovity += gravity * Time.deltaTime;
-
-        //movement
-        Vector3 move = transform.right * input.x * MoveSpeed + transform.forward * input.y * MoveSpeed;
-        move.y = yVelovity;
-        cc.Move(move * Time.deltaTime);
-
-        //Set the animators blend tree to correct animation based of inputs, with 0.1 smooth added
-        animator.SetFloat("InputX", input.x, 0.1f, Time.deltaTime);
-        animator.SetFloat("InputY", input.y, 0.1f, Time.deltaTime);
     }
     private void FixedUpdate()
     {
+        //Run following if local player
         if (photonView.IsMine)
         {
             //set the players rotation to the direction of the camera with a slerp smoothness
@@ -126,25 +147,8 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (photonView.IsMine)
-        {
-            if (other.gameObject.CompareTag("Enviroment"))
-                transform.SetParent(other.transform);
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        if (photonView.IsMine)
-        {
-            if (other.gameObject.CompareTag("Enviroment"))
-                transform.SetParent(null);
-        }
-    }
 
-
-    //Push rigidbodys collideded with..
+    //Push rigidbodys collideded with
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (photonView.IsMine)
@@ -171,34 +175,42 @@ public class PlayerController : MonoBehaviourPun
     //Enable character Input
     private void OnEnable()
     {
+        //Run following if local player 
         if (photonView.IsMine)
+            //Enable the player inputs
             CharacterInputs.Player.Enable();
     }
 
     //Disable character input
     private void OnDisable()
     {
+        //Run following if local player
         if (photonView.IsMine)
+            //Disable the player inputs
             CharacterInputs.Player.Disable();
     }
 
     public void EnableMovement()
     {
+        //Run following if local player
         if (photonView.IsMine)
         {
+            //Enable player inputs, CC and set speeds back to starting speeds.
             CharacterInputs.Player.Enable();
             cc.enabled = true;
             animator.speed = 1;
-            MoveSpeed = 5;
+            MoveSpeed = startMoveSpeed;
         }
     }
 
     public void DisableMovement()
     {
+        //Run following if local player
         if (photonView)
         {
-            cc.enabled = false;
+            //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
+            cc.enabled = false;
             animator.speed = 0;
             MoveSpeed = 0;
         }

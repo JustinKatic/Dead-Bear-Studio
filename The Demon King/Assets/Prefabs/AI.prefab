@@ -252,7 +252,7 @@ GameObject:
   - component: {fileID: -7345558078257920850}
   - component: {fileID: 2781860859885420293}
   - component: {fileID: 8192716648819613347}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: AI
   m_TagString: Minion
   m_Icon: {fileID: 0}
@@ -371,7 +371,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f68364df4c8ebee419b6b3f617b6f10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunned: 0
 --- !u!114 &4002031338795006347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -401,9 +400,10 @@ MonoBehaviour:
   MaxHealth: 3
   CurrentHealth: 0
   HealthRegenTimer: 3
+  DevourTime: 3
   stunnedDuration: 0
   Dead: 0
-  OverheadText: {fileID: 5623566927767794681}
+  statusBar: {fileID: 0}
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0

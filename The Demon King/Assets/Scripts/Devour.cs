@@ -6,57 +6,77 @@ using Photon.Realtime;
 
 public class Devour : MonoBehaviourPun
 {
+    [Tooltip("Range the player can devour from")]
+    public float devourRange;
+
     private PlayerController playerController;
     private HealthManager healthManager;
     private Camera cam;
     private bool IsDevouring;
 
-    public float devourRange;
+
     private void Awake()
     {
+        //Run following if local player
         if (photonView.IsMine)
         {
+            //Getting components
             playerController = GetComponent<PlayerController>();
             cam = GetComponentInChildren<Camera>();
-            playerController.CharacterInputs.Player.Interact.performed += OnInteract;
             healthManager = GetComponent<HealthManager>();
+
+            //Interact callback
+            playerController.CharacterInputs.Player.Interact.performed += OnInteract;
         }
     }
+
+    //Called when the interact key is pressed
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (IsDevouring)
-            return;
+        //Run following if local player
+        if (photonView.IsMine)
+        {
+            //If already devoouring return
+            if (IsDevouring)
+                return;
 
-        CheckForDevourTarget();
+            //check to see if can devour target
+            CheckForDevourTarget();
+        }
     }
 
     private void CheckForDevourTarget()
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
+        //Shoots ray from center of screen
         if (Physics.Raycast(ray, out hit, devourRange))
         {
+            //If raycast hits player or minion
             if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion"))
             {
-                PhotonView hitPlayer = hit.collider.gameObject.GetPhotonView();
+                //Get the healthManager of hit target
                 HealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<HealthManager>();
 
+                //check if the target can be devoured
                 if (hitPlayerHealth.canBeDevoured)
                 {
-                    hitPlayer.RPC("OnDevour", RpcTarget.All);
+                    //Get the photon view of hit target
+                    PhotonView hitTarget = hit.collider.gameObject.GetPhotonView();
 
+                    //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
+                    hitTarget.RPC("OnDevour", RpcTarget.All);
+
+                    //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
-
                     IEnumerator DevourCorutine()
                     {
-                        //photonView.RPC("UpdateOverheadText", RpcTarget.All, "Devouring ");
                         playerController.DisableMovement();
                         yield return new WaitForSeconds(healthManager.DevourTime);
                         playerController.EnableMovement();
-                        photonView.RPC("UpdateStatusBar", RpcTarget.All, gameObject.GetComponent<HealthManager>().CurrentHealth);
                     }
                 }
             }
         }
-    } 
+    }
 }

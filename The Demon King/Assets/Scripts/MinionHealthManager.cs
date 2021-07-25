@@ -14,8 +14,6 @@ public class MinionHealthManager : HealthManager
         aiRespawner = GetComponentInParent<AIRespawn>();
     }
 
-
-
     [PunRPC]
     void OnDevour()
     {
