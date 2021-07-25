@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
@@ -9,32 +10,60 @@ using UnityEngine.UI;
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
-    public PlayerHealthBarUI playerHealthBar;
+    public Canvas playerHealthBar;
+    public Transform playerHealthBarContainer;
+    public Image healthBarPrefab;
+    private List<Image> healthBars = new List<Image>();
 
     private IEnumerator myDevourCo;
 
 
     protected override void Awake()
     {
-        if (photonView.IsMine)
-            SetupPlayerHealthBarUI();
-        else
-            base.Awake();
-        
-        player = GetComponent<PlayerController>();
-        
-    }
-    
-    // Set My UI health bar overlay
-    void SetupPlayerHealthBarUI()
-    {
-        //overhead bar inactive
-        statusBar.gameObject.SetActive(false);
-        //Set each image to full
-        for (int i = 0; i < MaxHealth; i++)
+        base.Awake();
+
+        if (!photonView.IsMine)
         {
-            playerHealthBar.healthBars[i].fillAmount = 1;
+            Destroy(playerHealthBar.gameObject);
         }
+        else
+        {
+            statusBar.gameObject.SetActive(false);
+            player = GetComponent<PlayerController>();
+
+            for (int i = 0; i < CurrentHealth; i++)
+            {
+                Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
+                healthBars.Add(healthBar);
+            }
+        }
+    }
+
+    public void UpdateHealthBar()
+    {
+        if (photonView.IsMine)
+        {
+            for (int i = 0; i < MaxHealth - 1; i++)
+            {
+                if (i < CurrentHealth)
+                    healthBars[i].color = Color.red;
+                else
+                    healthBars[i].color = new Color(255, 0, 0, 0);
+            }
+        }
+    }
+
+
+    protected override void Heal(int amountToHeal)
+    {
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters status bar on all players in network
+        photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
+        UpdateHealthBar();
+
+        statusBar.value = CurrentHealth;
+        HealthRegenTimer = TimeBeforeHealthRegen;
     }
 
 
@@ -60,7 +89,6 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     public void Respawn()
     {
-
         StartCoroutine(ResetPlayer());
 
         IEnumerator ResetPlayer()
@@ -86,7 +114,7 @@ public class PlayerHealthManager : HealthManager
             {
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateStatusBar", RpcTarget.All, CurrentHealth);
+                photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
             }
             statusBar.enabled = true;
             foreach (Renderer mesh in renderer)
@@ -95,6 +123,36 @@ public class PlayerHealthManager : HealthManager
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
+        }
+    }
+
+    [PunRPC]
+    public void TakeDamage(int attackerId, int damage)
+    {
+        //Runing following if local player
+        if (photonView.IsMine)
+        {
+            //Return if already being devoured
+            if (beingDevoured)
+                return;
+
+            //Remove health
+            CurrentHealth -= damage;
+
+            UpdateHealthBar();
+
+            //Id of who attacked us
+            curAttackerId = attackerId;
+
+            //Reset health regen timer
+            HealthRegenTimer = TimeBeforeHealthRegen;
+
+            //Updates this charcters status bar on all players in network
+            photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
+
+            //call Stunned() on all player on network if no health left
+            if (CurrentHealth <= 0)
+                photonView.RPC("Stunned", RpcTarget.All);
         }
     }
 
