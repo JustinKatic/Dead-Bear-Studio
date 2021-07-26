@@ -39,8 +39,6 @@ public class PlayerController : MonoBehaviourPun
     private bool isJumping;
 
 
-
-
     private void Awake()
     {
         //Run following if not local player
@@ -115,6 +113,7 @@ public class PlayerController : MonoBehaviourPun
                     cc.slopeLimit = SlopeLimit;
                 }
             }
+
 
             //Get value from input system for directional movement
             playerInputs = CharacterInputs.Player.Move.ReadValue<Vector2>();

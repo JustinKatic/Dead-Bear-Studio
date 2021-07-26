@@ -48,6 +48,9 @@ namespace Photon.Pun
 
         bool m_ReceivedNetworkUpdate = false;
 
+        public bool UseWorldPosition;
+
+
         /// <summary>
         /// Flag to skip initial data when Object is instantiated and rely on the first deserialized data instead.
         /// </summary>
@@ -86,7 +89,11 @@ namespace Photon.Pun
                 return;
             }
 
-            transform.localPosition = this.m_PositionControl.UpdatePosition(transform.localPosition);
+            if (!UseWorldPosition)
+                transform.localPosition = this.m_PositionControl.UpdatePosition(transform.localPosition);
+            else
+                transform.position = this.m_PositionControl.UpdatePosition(transform.position);
+
         }
 
         void UpdateRotation()
@@ -96,7 +103,11 @@ namespace Photon.Pun
                 return;
             }
 
-            transform.localRotation = this.m_RotationControl.GetRotation(transform.localRotation);
+            if (!UseWorldPosition)
+                transform.localRotation = this.m_RotationControl.GetRotation(transform.localRotation);
+            else
+                transform.rotation = this.m_RotationControl.GetRotation(transform.rotation);
+
         }
 
         void UpdateScale()
@@ -125,32 +136,68 @@ namespace Photon.Pun
 
         public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
         {
-            this.m_PositionControl.OnPhotonSerializeView(transform.localPosition, stream, info);
-            this.m_RotationControl.OnPhotonSerializeView(transform.localRotation, stream, info);
-            this.m_ScaleControl.OnPhotonSerializeView(transform.localScale, stream, info);
-
-            if (stream.IsReading == true)
+            if (!UseWorldPosition)
             {
-                this.m_ReceivedNetworkUpdate = true;
+                this.m_PositionControl.OnPhotonSerializeView(transform.localPosition, stream, info);
+                this.m_RotationControl.OnPhotonSerializeView(transform.localRotation, stream, info);
+                this.m_ScaleControl.OnPhotonSerializeView(transform.localScale, stream, info);
 
-                // force latest data to avoid initial drifts when player is instantiated.
-                if (m_firstTake)
+                if (stream.IsReading == true)
                 {
-                    m_firstTake = false;
+                    this.m_ReceivedNetworkUpdate = true;
 
-                    if (this.m_PositionModel.SynchronizeEnabled)
+                    // force latest data to avoid initial drifts when player is instantiated.
+                    if (m_firstTake)
                     {
-                        this.transform.localPosition = this.m_PositionControl.GetNetworkPosition();
+                        m_firstTake = false;
+
+                        if (this.m_PositionModel.SynchronizeEnabled)
+                        {
+                            this.transform.localPosition = this.m_PositionControl.GetNetworkPosition();
+                        }
+
+                        if (this.m_RotationModel.SynchronizeEnabled)
+                        {
+                            this.transform.localRotation = this.m_RotationControl.GetNetworkRotation();
+                        }
+
+                        if (this.m_ScaleModel.SynchronizeEnabled)
+                        {
+                            this.transform.localScale = this.m_ScaleControl.GetNetworkScale();
+                        }
                     }
+                }
+            }
+            else
+            {
+                this.m_PositionControl.OnPhotonSerializeView(transform.position, stream, info);
+                this.m_RotationControl.OnPhotonSerializeView(transform.rotation, stream, info);
+                this.m_ScaleControl.OnPhotonSerializeView(transform.localScale, stream, info);
 
-                    if (this.m_RotationModel.SynchronizeEnabled)
-                    {
-                        this.transform.localRotation = this.m_RotationControl.GetNetworkRotation();
-                    }
+                if (stream.IsReading == true)
+                {
+                    this.m_ReceivedNetworkUpdate = true;
 
-                    if (this.m_ScaleModel.SynchronizeEnabled)
+                    // force latest data to avoid initial drifts when player is instantiated.
+                    if (m_firstTake)
                     {
-                        this.transform.localScale = this.m_ScaleControl.GetNetworkScale();
+                        m_firstTake = false;
+
+                        if (this.m_PositionModel.SynchronizeEnabled)
+                        {
+                            this.transform.position = this.m_PositionControl.GetNetworkPosition();
+                        }
+
+                        if (this.m_RotationModel.SynchronizeEnabled)
+                        {
+                            this.transform.rotation = this.m_RotationControl.GetNetworkRotation();
+                        }
+
+                        if (this.m_ScaleModel.SynchronizeEnabled)
+                        {
+                            this.transform.localScale = this.m_ScaleControl.GetNetworkScale();
+                        }
+
                     }
                 }
             }

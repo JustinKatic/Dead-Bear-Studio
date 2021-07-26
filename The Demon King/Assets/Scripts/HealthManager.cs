@@ -32,14 +32,6 @@ public class HealthManager : MonoBehaviourPun
     [HideInInspector] public bool isStunned = false;
 
 
-    protected virtual void Awake()
-    {
-        //Get value of everyones status bar and set there sliders max length and values so accurate when adjust later in rpc calls
-        statusBar = GetComponentInChildren<Slider>();
-        CurrentHealth = MaxHealth;
-        photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
-    }
-
     private void Update()
     {
         //Run following if local player
@@ -56,28 +48,6 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
-    //Set overhead start values
-    [PunRPC]
-    public void UpdateStatusbarValues()
-    {
-        statusBar.maxValue = MaxHealth;
-        statusBar.value = CurrentHealth;
-    }
-
-    //Updates the players status to everyone on the server
-    [PunRPC]
-    public virtual void UpdateStatusBar(int value)
-    {
-        statusBar.value = value;
-    }
-
-
-
-    protected virtual void Heal(int amountToHeal)
-    {
-
-    }
-
 
     //This is run when the player has been stunned
     [PunRPC]
@@ -97,18 +67,20 @@ public class HealthManager : MonoBehaviourPun
     }
 
 
+    //Updates the Health status bar
+    [PunRPC]
+    public virtual void UpdateHealthStatusBar(int value)
+    {
+        statusBar.value = value;
+    }
 
-
-
-
-    //Overrides for inherited classes
-    protected virtual void OnStunStart()
+    protected virtual void Heal(int amountToHeal)
     {
 
     }
 
-    [PunRPC]
-    protected virtual void InterruptDevourOnSelf()
+    //Overrides for inherited classes
+    protected virtual void OnStunStart()
     {
 
     }
@@ -118,4 +90,9 @@ public class HealthManager : MonoBehaviourPun
 
     }
 
+    [PunRPC]
+    protected virtual void InterruptDevourOnSelf()
+    {
+
+    }
 }

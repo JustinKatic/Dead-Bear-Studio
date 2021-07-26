@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MinionHealthManager : HealthManager
 {
@@ -11,9 +12,12 @@ public class MinionHealthManager : HealthManager
 
 
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
+        statusBar = GetComponentInChildren<Slider>();
+        CurrentHealth = MaxHealth;
+        photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
+
         aiRespawner = GetComponentInParent<AIRespawn>();
     }
 

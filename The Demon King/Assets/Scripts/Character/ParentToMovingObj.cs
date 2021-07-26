@@ -12,7 +12,7 @@ public class ParentToMovingObj : MonoBehaviourPun
         if (photonView.IsMine)
         {
             if (other.gameObject.CompareTag("Enviroment"))
-                transform.parent.SetParent(other.transform);
+                transform.parent.SetParent(other.transform.parent);
         }
     }
 

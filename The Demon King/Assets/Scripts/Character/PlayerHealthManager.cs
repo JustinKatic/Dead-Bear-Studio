@@ -18,55 +18,68 @@ public class PlayerHealthManager : HealthManager
     private IEnumerator myDevourCo;
 
 
-    protected override void Awake()
+    void Awake()
     {
-        base.Awake();
-
+        //Run following if not local player
         if (!photonView.IsMine)
         {
+            statusBar = GetComponentInChildren<Slider>();
             Destroy(playerHealthBar.gameObject);
         }
+        //Run following if local player
         else
         {
+            CurrentHealth = MaxHealth;
             statusBar.gameObject.SetActive(false);
             player = GetComponent<PlayerController>();
 
-            for (int i = 0; i < CurrentHealth; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
-                healthBars.Add(healthBar);
-            }
+            photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
         }
     }
 
-    public void UpdateHealthBar()
+    [PunRPC]
+    public void UpdateHealthBar(int CurrentHealth)
     {
+        //Run following if local player
         if (photonView.IsMine)
         {
             for (int i = 0; i < MaxHealth; i++)
             {
+                //Change health bar red if the bar we are looking at is < currentHealth
                 if (i < CurrentHealth)
                     healthBars[i].color = Color.red;
+                //Change health bar transparent if the bar we are looking at is > currentHealth
                 else
                     healthBars[i].color = new Color(255, 0, 0, 0);
             }
+            //Tell everyone who isnt me to update my status bar with my current health.
+            photonView.RPC("UpdateHealthStatusBar", RpcTarget.Others, CurrentHealth);
         }
     }
 
 
-
     [PunRPC]
-    public void ChangeMaxHealth(int NewMaxHealth)
+    void SetHealth(int MaxHealthValue, int CurrentHealthValue)
     {
-        MaxHealth = NewMaxHealth;
+        //Run following on everyone
+        MaxHealth = MaxHealthValue;
 
+        //Run following if local player
         if (photonView.IsMine)
         {
-            for (int i = healthBars.Count; i < NewMaxHealth; i++)
+            //Adds additional health bars to playerhealthBarContainer.
+            for (int i = healthBars.Count; i < MaxHealthValue; i++)
             {
                 Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
                 healthBars.Add(healthBar);
             }
+        }
+        //Run following if not local player
+        else
+        {
+            //Update status bar for non local players
+            statusBar.maxValue = MaxHealth;
+            statusBar.value = CurrentHealthValue;
         }
     }
 
@@ -76,8 +89,7 @@ public class PlayerHealthManager : HealthManager
         //Only running on local player
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
         //Updates this charcters status bar on all players in network
-        photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
-        UpdateHealthBar();
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
         statusBar.value = CurrentHealth;
         HealthRegenTimer = TimeBeforeHealthRegen;
@@ -114,6 +126,10 @@ public class PlayerHealthManager : HealthManager
             foreach (Renderer mesh in renderer)
                 mesh.enabled = false;
 
+            if (!photonView.IsMine)
+                statusBar.enabled = false;
+
+
             if (photonView.IsMine)
             {
                 int randSpawn = Random.Range(0, GameManager.instance.spawnPoints.Length);
@@ -126,14 +142,14 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 player.EnableMovement();
-                photonView.RPC("ChangeMaxHealth", RpcTarget.All, 6);
                 CurrentHealth = MaxHealth;
-                UpdateHealthBar();
-                photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
-                photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
+                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
             }
             foreach (Renderer mesh in renderer)
                 mesh.enabled = true;
+
+            if (!photonView.IsMine)
+                statusBar.enabled = true;
 
             canBeDevoured = false;
             beingDevoured = false;
@@ -154,7 +170,7 @@ public class PlayerHealthManager : HealthManager
             //Remove health
             CurrentHealth -= damage;
 
-            UpdateHealthBar();
+            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
             //Id of who attacked us
             curAttackerId = attackerId;
@@ -162,8 +178,6 @@ public class PlayerHealthManager : HealthManager
             //Reset health regen timer
             HealthRegenTimer = TimeBeforeHealthRegen;
 
-            //Updates this charcters status bar on all players in network
-            photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
 
             //call Stunned() on all player on network if no health left
             if (CurrentHealth <= 0)
