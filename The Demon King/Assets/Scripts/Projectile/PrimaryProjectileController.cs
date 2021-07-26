@@ -27,9 +27,14 @@ public class PrimaryProjectileController : MonoBehaviourPun
         this.isMine = isMine;
 
         // set a lifetime of bullet
-        Destroy(gameObject, 5.0f);
+        if (photonView.IsMine)
+            Invoke("DestroyBullet", 5f);
     }
 
+    void DestroyBullet()
+    {
+        PhotonNetwork.Destroy(gameObject);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -53,11 +58,9 @@ public class PrimaryProjectileController : MonoBehaviourPun
                 PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
                 hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
+            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
+            PhotonNetwork.Destroy(gameObject);
         }
-        //Spawn explision vfx
-        Instantiate(impactFX, transform.position, Quaternion.identity);
-        //Detroy this bullet
-        Destroy(gameObject);
     }
 }
 
