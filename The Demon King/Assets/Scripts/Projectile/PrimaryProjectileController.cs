@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-public class PrimaryProjectileController : MonoBehaviour
+public class PrimaryProjectileController : MonoBehaviourPun
 {
     private int damage = 1;
     private int attackerId;
@@ -33,7 +33,7 @@ public class PrimaryProjectileController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (isMine)
+        if (photonView.IsMine)
         {
             //stores refrence to tag collided with
             string objTag = other.transform.tag;

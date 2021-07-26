@@ -118,18 +118,20 @@ public class AbilityManager : MonoBehaviourPun
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~PrimaryProjectileLayer))
         {
-            player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
+            SpawnPrimaryProjectile(shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
+            //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
         }
         else
         {
-            player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
+            SpawnPrimaryProjectile(shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
+            //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
         }
     }
 
     [PunRPC]
     void SpawnPrimaryProjectile(Vector3 pos, Vector3 dir, float power, Vector3 hitPoint)
     {
-        GameObject createdPrimaryProjectile = Instantiate(primaryProjectile, pos, Quaternion.identity);
+        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("PrimaryProjectile", pos, Quaternion.identity);
         createdPrimaryProjectile.transform.forward = dir;
 
         PrimaryProjectileController projectileScript = createdPrimaryProjectile.GetComponent<PrimaryProjectileController>();
