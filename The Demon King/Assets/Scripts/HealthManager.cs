@@ -26,7 +26,7 @@ public class HealthManager : MonoBehaviourPun
 
     [HideInInspector] public Slider statusBar = null;
 
-    [HideInInspector] public int CurrentHealth = 0;
+     public int CurrentHealth = 0;
     [HideInInspector] public bool beingDevoured = false;
     [HideInInspector] public bool canBeDevoured = false;
     [HideInInspector] public bool isStunned = false;
@@ -44,7 +44,10 @@ public class HealthManager : MonoBehaviourPun
             {
                 HealthRegenTimer -= Time.deltaTime;
                 if (HealthRegenTimer <= 0)
-                    Heal(1);
+                {
+                    if (!beingDevoured || !isStunned)
+                        Heal(1);
+                }
             }
         }
     }

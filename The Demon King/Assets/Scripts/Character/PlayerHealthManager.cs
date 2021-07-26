@@ -61,8 +61,18 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     void SetHealth(int MaxHealthValue, int CurrentHealthValue)
     {
+        if (MaxHealth > MaxHealthValue)
+        {
+            foreach (Image healthBar in healthBars)
+            {
+                Destroy(healthBar.gameObject);
+            }
+            healthBars.Clear();
+        }
+
         //Run following on everyone
         MaxHealth = MaxHealthValue;
+
 
         //Run following if local player
         if (photonView.IsMine)
@@ -167,6 +177,8 @@ public class PlayerHealthManager : HealthManager
             if (beingDevoured)
                 return;
 
+            if (CurrentHealth <= 0)
+                return;
             //Remove health
             CurrentHealth -= damage;
 
@@ -211,6 +223,7 @@ public class PlayerHealthManager : HealthManager
             {
                 isStunned = false;
                 player.EnableMovement();
+                Heal(1);
                 Debug.Log("Stop Stunned Anim");
             }
         }
