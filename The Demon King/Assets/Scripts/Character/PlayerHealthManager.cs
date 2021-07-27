@@ -73,6 +73,9 @@ public class PlayerHealthManager : HealthManager
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
+
 
         //Run following if local player
         if (photonView.IsMine)
@@ -83,6 +86,7 @@ public class PlayerHealthManager : HealthManager
                 Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
                 healthBars.Add(healthBar);
             }
+            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
         }
         //Run following if not local player
         else
