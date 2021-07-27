@@ -24,7 +24,7 @@ public class HealthManager : MonoBehaviourPun
     protected float TimeBeforeHealthRegen = 3f;
     protected int curAttackerId;
 
-    [HideInInspector] public Slider statusBar = null;
+   // [HideInInspector] public Slider statusBar = null;
 
      public int CurrentHealth = 0;
     [HideInInspector] public bool beingDevoured = false;
@@ -70,12 +70,6 @@ public class HealthManager : MonoBehaviourPun
     }
 
 
-    //Updates the Health status bar
-    [PunRPC]
-    public virtual void UpdateHealthStatusBar(int value)
-    {
-        statusBar.value = value;
-    }
 
     protected virtual void Heal(int amountToHeal)
     {

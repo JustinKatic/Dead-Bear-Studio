@@ -14,7 +14,7 @@ public class MinionHealthManager : HealthManager
 
     void Awake()
     {
-        statusBar = GetComponentInChildren<Slider>();
+      //statusBar = GetComponentInChildren<Slider>();
         CurrentHealth = MaxHealth;
         photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
 
@@ -27,7 +27,7 @@ public class MinionHealthManager : HealthManager
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
         //Updates this charcters status bar on all players in network
         photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
-        statusBar.value = CurrentHealth;
+        // statusBar.value = CurrentHealth;
         HealthRegenTimer = TimeBeforeHealthRegen;
     }
 
