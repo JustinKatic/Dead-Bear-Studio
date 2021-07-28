@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
 
 
         // initialize the player for all other players
