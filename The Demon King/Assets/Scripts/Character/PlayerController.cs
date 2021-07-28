@@ -30,9 +30,11 @@ public class PlayerController : MonoBehaviourPun
     private Vector2 playerInputs;
 
 
-    //public Animator animator;
+    //Player Components
 
 
+
+    [HideInInspector] public Animator currentAnim = null;
     private Camera mainCamera;
     [HideInInspector] public CharacterController cc;
 
@@ -68,8 +70,6 @@ public class PlayerController : MonoBehaviourPun
             //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            if (currentAnim == null)
-                currentAnim = OozeAnimator;
         }
     }
 
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviourPun
     private void OnJump(InputAction.CallbackContext obj)
     {
         if (cc.isGrounded)
-        {           
+        {
             //Sets Y velocity to jump value
             playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             isJumping = true;
