@@ -12,15 +12,7 @@ public class PlayerHealthManager : HealthManager
     private PlayerController player;
 
     public Canvas playerOverheadHealthBar;
-    public Transform playerHealthBarContainerOverhead;
-    private List<Image> healthBarsOverhead = new List<Image>();
-
-
-    public Canvas playerHealthBar;
-    public Transform playerHealthBarContainer;
-    public Image healthBarPrefab;
-    private List<Image> healthBars = new List<Image>();
-
+  
     private IEnumerator myDevourCo;
 
 
@@ -29,7 +21,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(playerHealthBar.gameObject);
+            Destroy(HealthBar.gameObject);
         }
         //Run following if local player
         else
@@ -39,88 +31,6 @@ public class PlayerHealthManager : HealthManager
             player = GetComponent<PlayerController>();
 
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
-        }
-    }
-
-    [PunRPC]
-    public void UpdateHealthBar(int CurrentHealth)
-    {
-        //Run following if local player
-        if (photonView.IsMine)
-        {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBars[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBars[i].color = new Color(255, 0, 0, 0);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBarsOverhead[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
-            }
-        }
-    }
-
-
-    [PunRPC]
-    void SetHealth(int MaxHealthValue, int CurrentHealthValue)
-    {
-        //Run following on everyone
-        MaxHealth = MaxHealthValue;
-
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
-
-
-        //Run following if not local player
-        if (!photonView.IsMine)
-        {
-            if (MaxHealth > MaxHealthValue)
-            {
-                foreach (Image healthBar in healthBarsOverhead)
-                {
-                    Destroy(healthBar.gameObject);
-                }
-                healthBarsOverhead.Clear();
-            }
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainerOverhead);
-                healthBarsOverhead.Add(healthBar);
-            }
-        }
-        //Run following if local player
-        else
-        {
-            if (MaxHealth > MaxHealthValue)
-            {
-                foreach (Image healthBar in healthBars)
-                {
-                    Destroy(healthBar.gameObject);
-                }
-                healthBars.Clear();
-            }
-
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBars.Count; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, playerHealthBarContainer);
-                healthBars.Add(healthBar);
-            }
-
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
         }
     }
 
