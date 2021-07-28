@@ -152,6 +152,11 @@ MonoBehaviour:
   HealthRegenTimer: 3
   DevourTime: 3
   stunnedDuration: 3
+  HealthBar: {fileID: 0}
+  HealthBarContainer: {fileID: 0}
+  healthBarPrefab: {fileID: 4320337310133678998, guid: c80f99395e78a4b4fb29543589e7c83a, type: 3}
+  HealthBarContainerOverhead: {fileID: 6431211447757132598}
+  overheadHealthBar: {fileID: 7874990089996276361}
   CurrentHealth: 0
   beingDevoured: 0
   canBeDevoured: 0
@@ -194,7 +199,7 @@ MonoBehaviour:
   m_PositionModel:
     SynchronizeEnabled: 1
     TeleportEnabled: 1
-    TeleportIfDistanceGreaterThan: 3
+    TeleportIfDistanceGreaterThan: 10
     InterpolateOption: 2
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 1
@@ -376,7 +381,7 @@ GameObject:
   - component: {fileID: 2147772636725921215}
   - component: {fileID: 3444969086701405828}
   m_Layer: 5
-  m_Name: PlayerOverheadCanvas
+  m_Name: AIOverheadCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -470,9 +475,8 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8953581024521915973}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b1585925e821cbb4faad554ac7d2857b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cam: {fileID: 0}

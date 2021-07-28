@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviourPun
 
     private int playersInGame;
 
-    private int spawnIndex = 0;
+    public int spawnIndex = 0;
 
     // instance
     public static GameManager instance;
@@ -45,11 +45,19 @@ public class GameManager : MonoBehaviourPun
     {
         GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
 
-
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
     }
 
+
+    [PunRPC]
+    public void IncrementSpawnPos()
+    {
+        spawnIndex++;
+
+        if (spawnIndex >= spawnPoints.Length)
+            spawnIndex = 0;
+    }
 
 
     public PlayerController GetPlayer(int playerId)
