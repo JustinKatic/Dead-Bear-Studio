@@ -60,6 +60,7 @@ public class MinionHealthManager : HealthManager
             CurrentHealth = MaxHealth;
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
             isStunned = false;
+            beingDevoured = false;
             gameObject.SetActive(false);
         }
     }

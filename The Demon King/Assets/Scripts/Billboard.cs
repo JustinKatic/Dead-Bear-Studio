@@ -8,11 +8,14 @@ public class Billboard : MonoBehaviour
 
     private void Start()
     {
-        _cam = Camera.main.transform;  
+            _cam = Camera.main.transform;
+
     }
 
     void LateUpdate()
     {
+        _cam = Camera.main.transform;
+        
         transform.LookAt(transform.position + _cam.forward);
     }
 }
