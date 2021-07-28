@@ -7,29 +7,15 @@ using UnityEngine.UI;
 public class MinionHealthManager : HealthManager
 {
     AIRespawn aiRespawner;
-
-    private IEnumerator myDevourCo;
-
-
-
     void Awake()
     {
       //statusBar = GetComponentInChildren<Slider>();
         CurrentHealth = MaxHealth;
-        photonView.RPC("UpdateStatusbarValues", RpcTarget.All);
+        photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
 
         aiRespawner = GetComponentInParent<AIRespawn>();
     }
 
-    protected override void Heal(int amountToHeal)
-    {
-        //Only running on local player
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        //Updates this charcters status bar on all players in network
-        photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
-        // statusBar.value = CurrentHealth;
-        HealthRegenTimer = TimeBeforeHealthRegen;
-    }
 
     [PunRPC]
     public void TakeDamage(int damage)
@@ -46,7 +32,7 @@ public class MinionHealthManager : HealthManager
             HealthRegenTimer = TimeBeforeHealthRegen;
 
             //Updates this charcters status bar on all players in network
-            photonView.RPC("UpdateStatusBar", RpcTarget.Others, CurrentHealth);
+            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
             //call Stunned() on all player on network if no health left
             if (CurrentHealth <= 0)
@@ -71,6 +57,8 @@ public class MinionHealthManager : HealthManager
             yield return new WaitForSeconds(DevourTime);
 
             aiRespawner.Respawn();
+            CurrentHealth = MaxHealth;
+            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
             isStunned = false;
             gameObject.SetActive(false);
         }
@@ -99,15 +87,54 @@ public class MinionHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 isStunned = false;
+                Heal(1);
                 Debug.Log("Stop Playing Stun Anim");
             }
         }
     }
-
+    
     [PunRPC]
-    protected override void InterruptDevourOnSelf()
+    protected void SetHealth(int MaxHealthValue, int CurrentHealthValue)
     {
-        beingDevoured = false;
-        StopCoroutine(myDevourCo);
+        //Run following on everyone
+        MaxHealth = MaxHealthValue;
+
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
+        
+        if (MaxHealth > MaxHealthValue)
+        {
+            foreach (Image healthBar in healthBarsOverhead)
+            {
+                Destroy(healthBar.gameObject);
+            }
+            healthBarsOverhead.Clear();
+        }
+        //Adds additional health bars to playerhealthBarContainer.
+        for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
+        {
+            Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
+            healthBarsOverhead.Add(healthBar);
+        }
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+
+    }
+    [PunRPC]
+    public void UpdateHealthBar(int CurrentHealth)
+    {
+        //Run following if local player
+        if (photonView.IsMine)
+        {
+            for (int i = 0; i < MaxHealth; i++)
+            {
+                //Change health bar red if the bar we are looking at is < currentHealth
+                if (i < CurrentHealth)
+                    healthBarsOverhead[i].color = Color.red;
+                //Change health bar transparent if the bar we are looking at is > currentHealth
+                else
+                    healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
+            }
+        }
+
     }
 }

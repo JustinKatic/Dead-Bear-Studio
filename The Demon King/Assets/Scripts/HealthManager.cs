@@ -30,7 +30,7 @@ public class HealthManager : MonoBehaviourPun
     protected List<Image> healthBars = new List<Image>();
     protected List<Image> healthBarsOverhead = new List<Image>();
     public Transform HealthBarContainerOverhead;
-
+    public Canvas overheadHealthBar;
 
 
     // [HideInInspector] public Slider statusBar = null;
@@ -40,7 +40,8 @@ public class HealthManager : MonoBehaviourPun
     [HideInInspector] public bool canBeDevoured = false;
     [HideInInspector] public bool isStunned = false;
 
-
+    protected IEnumerator myDevourCo;
+    
     private void Update()
     {
         //Run following if local player
@@ -60,93 +61,14 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
-    [PunRPC]
-    public void UpdateHealthBar(int CurrentHealth)
-    {
-        //Run following if local player
-        if (photonView.IsMine)
-        {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBars[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBars[i].color = new Color(255, 0, 0, 0);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBarsOverhead[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
-            }
-        }
-    }
-    [PunRPC]
-    protected void SetHealth(int MaxHealthValue, int CurrentHealthValue)
-    {
-        //Run following on everyone
-        MaxHealth = MaxHealthValue;
-
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
-
-
-        //Run following if not local player
-        if (!photonView.IsMine)
-        {
-            if (MaxHealth > MaxHealthValue)
-            {
-                foreach (Image healthBar in healthBarsOverhead)
-                {
-                    Destroy(healthBar.gameObject);
-                }
-                healthBarsOverhead.Clear();
-            }
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
-                healthBarsOverhead.Add(healthBar);
-            }
-        }
-        //Run following if local player
-        else
-        {
-            if (MaxHealth > MaxHealthValue)
-            {
-                foreach (Image healthBar in healthBars)
-                {
-                    Destroy(healthBar.gameObject);
-                }
-                healthBars.Clear();
-            }
-
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBars.Count; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainer);
-                healthBars.Add(healthBar);
-            }
-
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-        }
-    }
-
+    
     //This is run when the player has been stunned
     [PunRPC]
     protected void Stunned()
     {
         if (!isStunned)
             StartCoroutine(StunnedCorutine());
-
+        
         IEnumerator StunnedCorutine()
         {
             OnStunStart();
@@ -156,12 +78,14 @@ public class HealthManager : MonoBehaviourPun
             OnStunEnd();
         }
     }
-
-
-
-    protected virtual void Heal(int amountToHeal)
+    
+    protected void Heal(int amountToHeal)
     {
-
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters health bars on all players in network
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        HealthRegenTimer = TimeBeforeHealthRegen;
     }
 
     //Overrides for inherited classes
@@ -176,8 +100,9 @@ public class HealthManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected virtual void InterruptDevourOnSelf()
+    protected void InterruptDevourOnSelf()
     {
-
+        beingDevoured = false;
+        StopCoroutine(myDevourCo);
     }
 }
