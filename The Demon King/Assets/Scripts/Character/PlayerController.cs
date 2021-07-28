@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviourPun
     //Player Components
     private Animator animator;
     private Camera mainCamera;
-    private CharacterController cc;
+    [HideInInspector] public CharacterController cc;
 
 
     private Vector3 playerMoveVelocity;
@@ -196,7 +196,6 @@ public class PlayerController : MonoBehaviourPun
         {
             //Enable player inputs, CC and set speeds back to starting speeds.
             CharacterInputs.Player.Enable();
-            cc.enabled = true;
             animator.speed = 1;
             MoveSpeed = startMoveSpeed;
         }
@@ -209,7 +208,6 @@ public class PlayerController : MonoBehaviourPun
         {
             //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
-            cc.enabled = false;
             animator.speed = 0;
             MoveSpeed = 0;
         }

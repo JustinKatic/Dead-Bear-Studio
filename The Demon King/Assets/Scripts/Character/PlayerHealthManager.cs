@@ -81,7 +81,9 @@ public class PlayerHealthManager : HealthManager
             {
                 int randSpawn = Random.Range(0, GameManager.instance.spawnPoints.Length);
                 player.DisableMovement();
+                player.cc.enabled = false;
                 transform.position = GameManager.instance.spawnPoints[randSpawn].position;
+                player.cc.enabled = true;
             }
 
             yield return new WaitForSeconds(3);
