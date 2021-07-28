@@ -12,7 +12,7 @@ public class PlayerHealthManager : HealthManager
     private PlayerController player;
 
     public Canvas playerOverheadHealthBar;
-  
+
     private IEnumerator myDevourCo;
 
 
@@ -76,13 +76,12 @@ public class PlayerHealthManager : HealthManager
                 mesh.enabled = false;
 
 
-
             if (photonView.IsMine)
             {
-                int randSpawn = Random.Range(0, GameManager.instance.spawnPoints.Length);
+                GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
-                transform.position = GameManager.instance.spawnPoints[randSpawn].position;
+                transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
             }
 
