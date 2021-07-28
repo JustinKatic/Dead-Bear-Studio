@@ -29,8 +29,10 @@ public class PlayerController : MonoBehaviourPun
     private float playerYVelocity;
     private Vector2 playerInputs;
 
-    //Player Components
-    private Animator animator;
+
+    //public Animator animator;
+
+
     private Camera mainCamera;
     [HideInInspector] public CharacterController cc;
 
@@ -53,7 +55,6 @@ public class PlayerController : MonoBehaviourPun
             //Get Components
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
-            animator = GetComponent<Animator>();
             mainCamera = Camera.main;
 
             //Set default values
@@ -67,6 +68,8 @@ public class PlayerController : MonoBehaviourPun
             //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            if (currentAnim == null)
+                currentAnim = OozeAnimator;
         }
     }
 
@@ -86,7 +89,7 @@ public class PlayerController : MonoBehaviourPun
     private void OnJump(InputAction.CallbackContext obj)
     {
         if (cc.isGrounded)
-        {
+        {           
             //Sets Y velocity to jump value
             playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             isJumping = true;
@@ -131,8 +134,8 @@ public class PlayerController : MonoBehaviourPun
                 cc.Move(playerMoveVelocity * Time.deltaTime);
 
             //Set the animators blend tree to correct animation based of PlayerInputs, with 0.1 smooth added
-            animator.SetFloat("InputX", playerInputs.x, 0.1f, Time.deltaTime);
-            animator.SetFloat("InputY", playerInputs.y, 0.1f, Time.deltaTime);
+            currentAnim.SetFloat("InputX", playerInputs.x, 0.1f, Time.deltaTime);
+            currentAnim.SetFloat("InputY", playerInputs.y, 0.1f, Time.deltaTime);
         }
     }
     private void FixedUpdate()
@@ -196,7 +199,7 @@ public class PlayerController : MonoBehaviourPun
         {
             //Enable player inputs, CC and set speeds back to starting speeds.
             CharacterInputs.Player.Enable();
-            animator.speed = 1;
+            currentAnim.speed = 1;
             MoveSpeed = startMoveSpeed;
         }
     }
@@ -208,7 +211,7 @@ public class PlayerController : MonoBehaviourPun
         {
             //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
-            animator.speed = 0;
+            currentAnim.speed = 0;
             MoveSpeed = 0;
         }
     }
