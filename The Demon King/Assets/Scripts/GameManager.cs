@@ -14,15 +14,17 @@ public class GameManager : MonoBehaviourPun
 
     private int playersInGame;
 
+    private int spawnIndex = 0;
+
     // instance
     public static GameManager instance;
 
-    void Awake ()
+    void Awake()
     {
         instance = this;
     }
 
-    void Start ()
+    void Start()
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
 
@@ -30,41 +32,42 @@ public class GameManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    void ImInGame ()
+    void ImInGame()
     {
         playersInGame++;
 
-        if(PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
+        if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
             photonView.RPC("SpawnPlayer", RpcTarget.All);
     }
 
     [PunRPC]
-    void SpawnPlayer ()
+    void SpawnPlayer()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[Random.Range(0, spawnPoints.Length)].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
+
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
     }
 
-    
 
-    public PlayerController GetPlayer (int playerId)
+
+    public PlayerController GetPlayer(int playerId)
     {
-        foreach(PlayerController player in players)
+        foreach (PlayerController player in players)
         {
-            if(player != null && player.id == playerId)
+            if (player != null && player.id == playerId)
                 return player;
         }
 
         return null;
     }
 
-    public PlayerController GetPlayer (GameObject playerObject)
+    public PlayerController GetPlayer(GameObject playerObject)
     {
-        foreach(PlayerController player in players)
+        foreach (PlayerController player in players)
         {
-            if(player != null && player.gameObject == playerObject)
+            if (player != null && player.gameObject == playerObject)
                 return player;
         }
 
