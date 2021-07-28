@@ -11,9 +11,7 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
 
-    public Canvas playerOverheadHealthBar;
-
-    private IEnumerator myDevourCo;
+  
 
 
     void Awake()
@@ -26,25 +24,14 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
-            Destroy(playerOverheadHealthBar.gameObject);
+            Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
 
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
         }
     }
-
-
-    protected override void Heal(int amountToHeal)
-    {
-        //Only running on local player
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        //Updates this charcters health bars on all players in network
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-        HealthRegenTimer = TimeBeforeHealthRegen;
-    }
-
-
+    
     [PunRPC]
     void OnDevour()
     {
@@ -131,6 +118,85 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("Stunned", RpcTarget.All);
         }
     }
+    [PunRPC]
+    protected void SetHealth(int MaxHealthValue, int CurrentHealthValue)
+    {
+        //Run following on everyone
+        MaxHealth = MaxHealthValue;
+
+        if (CurrentHealth > MaxHealth)
+            CurrentHealth = MaxHealth;
+
+        //Run following if not local player
+        if (!photonView.IsMine)
+        {
+            if (MaxHealth > MaxHealthValue)
+            {
+                foreach (Image healthBar in healthBarsOverhead)
+                {
+                    Destroy(healthBar.gameObject);
+                }
+                healthBarsOverhead.Clear();
+            }
+            //Adds additional health bars to playerhealthBarContainer.
+            for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
+            {
+                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
+                healthBarsOverhead.Add(healthBar);
+            }
+        }
+        //Run following if local player
+        else
+        {
+            if (MaxHealth > MaxHealthValue)
+            {
+                foreach (Image healthBar in healthBars)
+                {
+                    Destroy(healthBar.gameObject);
+                }
+                healthBars.Clear();
+            }
+
+            //Adds additional health bars to playerhealthBarContainer.
+            for (int i = healthBars.Count; i < MaxHealthValue; i++)
+            {
+                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainer);
+                healthBars.Add(healthBar);
+            }
+
+            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        }
+    }
+    
+    [PunRPC]
+    public void UpdateHealthBar(int CurrentHealth)
+    {
+        //Run following if local player
+        if (photonView.IsMine)
+        {
+            for (int i = 0; i < MaxHealth; i++)
+            {
+                //Change health bar red if the bar we are looking at is < currentHealth
+                if (i < CurrentHealth)
+                    healthBars[i].color = Color.red;
+                //Change health bar transparent if the bar we are looking at is > currentHealth
+                else
+                    healthBars[i].color = new Color(255, 0, 0, 0);
+            }
+        }
+        else
+        {
+            for (int i = 0; i < MaxHealth; i++)
+            {
+                //Change health bar red if the bar we are looking at is < currentHealth
+                if (i < CurrentHealth)
+                    healthBarsOverhead[i].color = Color.red;
+                //Change health bar transparent if the bar we are looking at is > currentHealth
+                else
+                    healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
+            }
+        }
+    }
 
     protected override void OnStunStart()
     {
@@ -164,10 +230,4 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    [PunRPC]
-    protected override void InterruptDevourOnSelf()
-    {
-        beingDevoured = false;
-        StopCoroutine(myDevourCo);
-    }
 }
