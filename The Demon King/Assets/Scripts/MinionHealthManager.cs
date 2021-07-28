@@ -9,10 +9,9 @@ public class MinionHealthManager : HealthManager
     AIRespawn aiRespawner;
     void Awake()
     {
-      //statusBar = GetComponentInChildren<Slider>();
+        //statusBar = GetComponentInChildren<Slider>();
         CurrentHealth = MaxHealth;
         photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
-
         aiRespawner = GetComponentInParent<AIRespawn>();
     }
 
@@ -93,7 +92,7 @@ public class MinionHealthManager : HealthManager
             }
         }
     }
-    
+
     [PunRPC]
     protected void SetHealth(int MaxHealthValue, int CurrentHealthValue)
     {
@@ -102,7 +101,7 @@ public class MinionHealthManager : HealthManager
 
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;
-        
+
         if (MaxHealth > MaxHealthValue)
         {
             foreach (Image healthBar in healthBarsOverhead)
@@ -123,19 +122,14 @@ public class MinionHealthManager : HealthManager
     [PunRPC]
     public void UpdateHealthBar(int CurrentHealth)
     {
-        //Run following if local player
-        if (!photonView.IsMine)
+        for (int i = 0; i < MaxHealth; i++)
         {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBarsOverhead[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
-            }
+            //Change health bar red if the bar we are looking at is < currentHealth
+            if (i < CurrentHealth)
+                healthBarsOverhead[i].color = Color.red;
+            //Change health bar transparent if the bar we are looking at is > currentHealth
+            else
+                healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
         }
-
     }
 }
