@@ -124,7 +124,7 @@ public class MinionHealthManager : HealthManager
     public void UpdateHealthBar(int CurrentHealth)
     {
         //Run following if local player
-        if (photonView.IsMine)
+        if (!photonView.IsMine)
         {
             for (int i = 0; i < MaxHealth; i++)
             {
