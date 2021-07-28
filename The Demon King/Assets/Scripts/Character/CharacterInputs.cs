@@ -65,6 +65,22 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Evolve"",
+                    ""type"": ""Button"",
+                    ""id"": ""13ef0cca-1f95-4722-9cd3-b2a15125191b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Devolve"",
+                    ""type"": ""Button"",
+                    ""id"": ""94f7094b-d82d-4e2f-a1fa-5ad69650bc72"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -177,6 +193,28 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""action"": ""Ability1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07254b62-9c89-4b98-bbb4-10c2e4c8a076"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Evolve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""358c9967-01b2-4f29-abd1-5a815e4c5f15"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Devolve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +229,8 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         m_Player_Ability2 = m_Player.FindAction("Ability2", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Evolve = m_Player.FindAction("Evolve", throwIfNotFound: true);
+        m_Player_Devolve = m_Player.FindAction("Devolve", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -246,6 +286,8 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Ability2;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Evolve;
+    private readonly InputAction m_Player_Devolve;
     public struct PlayerActions
     {
         private @CharacterInputs m_Wrapper;
@@ -256,6 +298,8 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         public InputAction @Ability2 => m_Wrapper.m_Player_Ability2;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Evolve => m_Wrapper.m_Player_Evolve;
+        public InputAction @Devolve => m_Wrapper.m_Player_Devolve;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,6 +327,12 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
+                @Evolve.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvolve;
+                @Evolve.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvolve;
+                @Evolve.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvolve;
+                @Devolve.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
+                @Devolve.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
+                @Devolve.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -305,6 +355,12 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Look.started += instance.OnLook;
                 @Look.performed += instance.OnLook;
                 @Look.canceled += instance.OnLook;
+                @Evolve.started += instance.OnEvolve;
+                @Evolve.performed += instance.OnEvolve;
+                @Evolve.canceled += instance.OnEvolve;
+                @Devolve.started += instance.OnDevolve;
+                @Devolve.performed += instance.OnDevolve;
+                @Devolve.canceled += instance.OnDevolve;
             }
         }
     }
@@ -317,5 +373,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         void OnAbility2(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnEvolve(InputAction.CallbackContext context);
+        void OnDevolve(InputAction.CallbackContext context);
     }
 }

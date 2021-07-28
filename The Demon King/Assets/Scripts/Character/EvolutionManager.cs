@@ -26,26 +26,46 @@ public class EvolutionManager : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             playerHealth = GetComponent<PlayerHealthManager>();
 
-            currentActiveModel = OozeModel;
             playerController.currentAnim = OozeAnimator;
+
+            playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
+            playerController.CharacterInputs.Player.Devolve.performed += Devolve_performed;
         }
+        currentActiveModel = OozeModel;
     }
 
-    [ContextMenu("EvolveToMiximo")]
+    private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        photonView.RPC("EvolveToMiximo", RpcTarget.All);
+    }
+
+    private void Devolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        photonView.RPC("EvolveToOoze", RpcTarget.All);
+    }
+
+    [PunRPC]
     public void EvolveToMiximo()
     {
-        playerController.currentAnim = MiximoAnimator;
         currentActiveModel.SetActive(false);
         MiximoModel.SetActive(true);
         currentActiveModel = MiximoModel;
+
+        if (photonView.IsMine)
+        {
+            playerController.currentAnim = MiximoAnimator;
+        }
     }
 
-    [ContextMenu("EvolveToOoze")]
+    [PunRPC]
     public void EvolveToOoze()
     {
-        playerController.currentAnim = OozeAnimator;
         currentActiveModel.SetActive(false);
         OozeModel.SetActive(true);
         currentActiveModel = OozeModel;
+        if (photonView.IsMine)
+        {
+            playerController.currentAnim = OozeAnimator;
+        }
     }
 }
