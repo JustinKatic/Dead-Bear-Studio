@@ -58,9 +58,11 @@ public class PrimaryProjectileController : MonoBehaviourPun
                 PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
                 hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
-            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
-            PhotonNetwork.Destroy(gameObject);
         }
+        Instantiate(impactFX, transform.position, Quaternion.identity);
+
+        if (photonView.IsMine)
+            PhotonNetwork.Destroy(gameObject);
     }
 }
 
