@@ -11,8 +11,8 @@ public class MinionHealthManager : HealthManager
     {
         //statusBar = GetComponentInChildren<Slider>();
         CurrentHealth = MaxHealth;
-        photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
-        aiRespawner = GetComponentInParent<AIRespawn>();
+        photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
+        aiRespawner = GetComponent<AIRespawn>();
     }
 
 
@@ -42,25 +42,27 @@ public class MinionHealthManager : HealthManager
     [PunRPC]
     void OnDevour()
     {
-        if (!photonView.IsMine)
-            return;
-
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
         IEnumerator DevourCorutine()
         {
-            beingDevoured = true;
-            Debug.Log("NONNONONON");
+            if (photonView.IsMine)
+            {
+                beingDevoured = true;
+            }
 
             yield return new WaitForSeconds(DevourTime);
 
             aiRespawner.Respawn();
-            CurrentHealth = MaxHealth;
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-            isStunned = false;
-            beingDevoured = false;
-            gameObject.SetActive(false);
+
+            if (photonView.IsMine)
+            {
+                CurrentHealth = MaxHealth;
+                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+                isStunned = false;
+                beingDevoured = false;
+            }
         }
     }
     protected override void OnStunStart()
@@ -94,7 +96,7 @@ public class MinionHealthManager : HealthManager
     }
 
     [PunRPC]
-    protected void SetHealth(int MaxHealthValue, int CurrentHealthValue)
+    protected void SetAIHealth(int MaxHealthValue)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
@@ -102,14 +104,12 @@ public class MinionHealthManager : HealthManager
         if (CurrentHealth > MaxHealth)
             CurrentHealth = MaxHealth;
 
-        if (MaxHealth > MaxHealthValue)
+        foreach (Image healthBar in healthBarsOverhead)
         {
-            foreach (Image healthBar in healthBarsOverhead)
-            {
-                Destroy(healthBar.gameObject);
-            }
-            healthBarsOverhead.Clear();
+            Destroy(healthBar.gameObject);
         }
+        healthBarsOverhead.Clear();
+
         //Adds additional health bars to playerhealthBarContainer.
         for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
         {

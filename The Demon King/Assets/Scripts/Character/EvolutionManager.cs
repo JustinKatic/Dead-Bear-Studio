@@ -9,6 +9,7 @@ public struct Evolution
     public GameObject Model;
     public Animator animator;
     public Transform ShootPoint;
+    public int MaxHealth;
 }
 
 
@@ -31,6 +32,7 @@ public class EvolutionManager : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             playerHealth = GetComponent<PlayerHealthManager>();
 
+            currentActiveShootPoint = Ooze.ShootPoint;
             playerController.currentAnim = Ooze.animator;
 
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
@@ -60,6 +62,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             currentActiveShootPoint = Miximo.ShootPoint;
             playerController.currentAnim = Miximo.animator;
+            photonView.RPC("SetHealth", RpcTarget.All, Miximo.MaxHealth);
         }
     }
 
@@ -73,6 +76,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             currentActiveShootPoint = Ooze.ShootPoint;
             playerController.currentAnim = Ooze.animator;
+            photonView.RPC("SetHealth", RpcTarget.All, Ooze.MaxHealth);
         }
     }
 }
