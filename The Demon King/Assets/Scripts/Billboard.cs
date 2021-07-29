@@ -6,16 +6,25 @@ public class Billboard : MonoBehaviour
 {
     private Transform _cam;
 
+    bool startBillboarding = false;
+
     private void Start()
     {
-            _cam = Camera.main.transform;
+        Invoke("FindMainCam", 3);
 
+    }
+    void FindMainCam()
+    {
+        _cam = Camera.main.transform;
+        startBillboarding = true;
     }
 
     void LateUpdate()
     {
-        _cam = Camera.main.transform;
-        
-        transform.LookAt(transform.position + _cam.forward);
+        if (startBillboarding)
+        {
+            _cam = Camera.main.transform;
+            transform.LookAt(transform.position + _cam.forward);
+        }
     }
 }
