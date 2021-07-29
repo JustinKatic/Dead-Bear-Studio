@@ -11,7 +11,7 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
 
-  
+
 
 
     void Awake()
@@ -28,10 +28,10 @@ public class PlayerHealthManager : HealthManager
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
 
-            photonView.RPC("SetHealth", RpcTarget.All, MaxHealth, CurrentHealth);
+            photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
     }
-    
+
     [PunRPC]
     void OnDevour()
     {
@@ -119,27 +119,23 @@ public class PlayerHealthManager : HealthManager
         }
     }
     [PunRPC]
-    protected void SetHealth(int MaxHealthValue, int CurrentHealthValue)
+    protected void SetHealth(int MaxHealthValue)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
 
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            if (MaxHealth > MaxHealthValue)
+            foreach (Image healthBar in healthBarsOverhead)
             {
-                foreach (Image healthBar in healthBarsOverhead)
-                {
-                    Destroy(healthBar.gameObject);
-                }
-                healthBarsOverhead.Clear();
+                Destroy(healthBar.gameObject);
             }
+            healthBarsOverhead.Clear();
+
             //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
+            for (int i = 0; i < MaxHealthValue; i++)
             {
                 Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
                 healthBarsOverhead.Add(healthBar);
@@ -148,26 +144,27 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
-            if (MaxHealth > MaxHealthValue)
+            foreach (Image healthBar in healthBars)
             {
-                foreach (Image healthBar in healthBars)
-                {
-                    Destroy(healthBar.gameObject);
-                }
-                healthBars.Clear();
+                Destroy(healthBar.gameObject);
             }
+            healthBars.Clear();
+
 
             //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBars.Count; i < MaxHealthValue; i++)
+            for (int i = 0; i < MaxHealthValue; i++)
             {
                 Image healthBar = Instantiate(healthBarPrefab, HealthBarContainer);
                 healthBars.Add(healthBar);
             }
 
+            if (CurrentHealth > MaxHealth)
+                CurrentHealth = MaxHealth;
+
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
         }
     }
-    
+
     [PunRPC]
     public void UpdateHealthBar(int CurrentHealth)
     {

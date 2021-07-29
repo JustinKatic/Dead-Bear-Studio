@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviourPun
 
 
 
-    [HideInInspector] public Animator currentAnim = null;
+    public Animator currentAnim = null;
     private Camera mainCamera;
     [HideInInspector] public CharacterController cc;
 
