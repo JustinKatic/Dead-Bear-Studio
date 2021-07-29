@@ -29,13 +29,15 @@ public class AbilityManager : MonoBehaviourPun
     // The physics layer that will cause the line to stop being drawn
     public LayerMask collidableLayers;
 
+    private EvolutionManager evolutionManager;
+
 
     [Header("ProjectilePrefabs")]
     public GameObject heavyProjectile;
     public GameObject primaryProjectile;
 
     [Header("GameObjects")]
-    public Transform shotPoint;
+    public Transform shootPoint;
     public GameObject recticle;
     public GameObject AoeZone;
 
@@ -51,6 +53,11 @@ public class AbilityManager : MonoBehaviourPun
         player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
         cam = GetComponentInChildren<Camera>();
+
+        if (photonView.IsMine)
+        {
+            evolutionManager = GetComponent<EvolutionManager>();
+        }
 
         if (!photonView.IsMine)
         {
@@ -115,15 +122,16 @@ public class AbilityManager : MonoBehaviourPun
     public void ShootPrimaryProjectile()
     {
         RaycastHit hit;
+        shootPoint = evolutionManager.currentActiveShootPoint;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~PrimaryProjectileLayer))
         {
-            SpawnPrimaryProjectile(shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
+            SpawnPrimaryProjectile(shootPoint.position, shootPoint.transform.forward, primaryProjectilePower, hit.point);
             //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
         }
         else
         {
-            SpawnPrimaryProjectile(shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
+            SpawnPrimaryProjectile(shootPoint.position, shootPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
             //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
         }
     }
@@ -144,7 +152,7 @@ public class AbilityManager : MonoBehaviourPun
     {
         if (isAiming)
         {
-            player.photonView.RPC("SpawnHeavyProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, shootAngle, blastPower);
+            player.photonView.RPC("SpawnHeavyProjectile", RpcTarget.All, shootPoint.position, shootPoint.transform.forward, shootAngle, blastPower);
         }
     }
 
@@ -162,18 +170,20 @@ public class AbilityManager : MonoBehaviourPun
 
     public void HeavyProjectileAim()
     {
-        shotPoint.transform.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, shotPoint.transform.eulerAngles.y, shotPoint.transform.eulerAngles.z);
+        shootPoint = evolutionManager.currentActiveShootPoint;
+
+        shootPoint.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, shootPoint.eulerAngles.y, shootPoint.eulerAngles.z);
         //Enables the Arc for the heavy projectile and disables the primary reticule
         lineRenderer.enabled = true;
         recticle.SetActive(false);
         AoeZone.SetActive(true);
 
-        shootAngle = new Vector3(shotPoint.transform.forward.x, shotPoint.transform.forward.y + shootYAngle, shotPoint.transform.forward.z);
+        shootAngle = new Vector3(shootPoint.forward.x, shootPoint.forward.y + shootYAngle, shootPoint.forward.z);
 
         lineRenderer.positionCount = numPoints;
         List<Vector3> points = new List<Vector3>();
         // Calculate the trajectory of the projectile based off the given position and velocity
-        Vector3 startingPosition = shotPoint.position;
+        Vector3 startingPosition = shootPoint.position;
         Vector3 startingVelocity = shootAngle * blastPower;
 
         //Creates a list of points for the Line renderer based off the given points and distance between points

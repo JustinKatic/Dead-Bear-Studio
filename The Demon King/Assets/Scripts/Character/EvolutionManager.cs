@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
+[System.Serializable]
+public struct Evolution
+{
+    public GameObject Model;
+    public Animator animator;
+    public Transform ShootPoint;
+    public int MaxHealth;
+}
+
+
 public class EvolutionManager : MonoBehaviourPun
 {
-    [Header("Animations")]
-    public Animator OozeAnimator;
-    public Animator MiximoAnimator;
-
-    [Header("Models")]
-    public GameObject OozeModel;
-    public GameObject MiximoModel;
+    public Evolution Ooze;
+    public Evolution Miximo;
 
     private GameObject currentActiveModel;
+    [HideInInspector] public Transform currentActiveShootPoint;
 
 
     PlayerController playerController;
@@ -26,12 +32,13 @@ public class EvolutionManager : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             playerHealth = GetComponent<PlayerHealthManager>();
 
-            playerController.currentAnim = OozeAnimator;
+            currentActiveShootPoint = Ooze.ShootPoint;
+            playerController.currentAnim = Ooze.animator;
 
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
             playerController.CharacterInputs.Player.Devolve.performed += Devolve_performed;
         }
-        currentActiveModel = OozeModel;
+        currentActiveModel = Ooze.Model;
     }
 
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -48,12 +55,14 @@ public class EvolutionManager : MonoBehaviourPun
     public void EvolveToMiximo()
     {
         currentActiveModel.SetActive(false);
-        MiximoModel.SetActive(true);
-        currentActiveModel = MiximoModel;
+        Miximo.Model.SetActive(true);
+        currentActiveModel = Miximo.Model;
 
         if (photonView.IsMine)
         {
-            playerController.currentAnim = MiximoAnimator;
+            currentActiveShootPoint = Miximo.ShootPoint;
+            playerController.currentAnim = Miximo.animator;
+            photonView.RPC("SetHealth", RpcTarget.All, Miximo.MaxHealth);
         }
     }
 
@@ -61,11 +70,13 @@ public class EvolutionManager : MonoBehaviourPun
     public void EvolveToOoze()
     {
         currentActiveModel.SetActive(false);
-        OozeModel.SetActive(true);
-        currentActiveModel = OozeModel;
+        Ooze.Model.SetActive(true);
+        currentActiveModel = Ooze.Model;
         if (photonView.IsMine)
         {
-            playerController.currentAnim = OozeAnimator;
+            currentActiveShootPoint = Ooze.ShootPoint;
+            playerController.currentAnim = Ooze.animator;
+            photonView.RPC("SetHealth", RpcTarget.All, Ooze.MaxHealth);
         }
     }
 }
