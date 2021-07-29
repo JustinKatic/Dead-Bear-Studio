@@ -50,11 +50,12 @@ public class AbilityManager : MonoBehaviourPun
 
     void Awake()
     {
+        player = GetComponent<PlayerController>();
+        lineRenderer = GetComponent<LineRenderer>();
+        cam = GetComponentInChildren<Camera>();
+
         if (photonView.IsMine)
         {
-            player = GetComponent<PlayerController>();
-            lineRenderer = GetComponent<LineRenderer>();
-            cam = GetComponentInChildren<Camera>();
             evolutionManager = GetComponent<EvolutionManager>();
         }
 
