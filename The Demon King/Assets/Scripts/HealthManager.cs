@@ -21,6 +21,10 @@ public class HealthManager : MonoBehaviourPun
     public float stunnedDuration;
 
 
+    public MinionType MyMinionType;
+    public int ExperienceValue;
+
+
     protected float TimeBeforeHealthRegen = 3f;
     protected int curAttackerId;
     

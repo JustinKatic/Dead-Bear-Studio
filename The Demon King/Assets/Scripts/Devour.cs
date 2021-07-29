@@ -14,6 +14,8 @@ public class Devour : MonoBehaviourPun
     private Camera cam;
     private bool IsDevouring;
 
+    private ExperienceManager experienceManager;
+
     [HideInInspector] public PhotonView targetBeingDevouredPV = null;
 
 
@@ -22,6 +24,7 @@ public class Devour : MonoBehaviourPun
         //Run following if local player
         if (photonView.IsMine)
         {
+            experienceManager = GetComponent<ExperienceManager>();
             //Getting components
             playerController = GetComponent<PlayerController>();
             cam = GetComponentInChildren<Camera>();
@@ -97,6 +100,9 @@ public class Devour : MonoBehaviourPun
                             IsDevouring = false;
                             playerController.EnableMovement();
                             targetBeingDevouredPV = null;
+
+                            experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
+                            
                         }
                     }
                 }
