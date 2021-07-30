@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 
 
-public class ExperienceManager : MonoBehaviour
+public class ExperienceManager : MonoBehaviourPun
 {
     public Evolutions CurrentEvolution;
     public MinionType CurrentMinionType;
@@ -21,14 +22,17 @@ public class ExperienceManager : MonoBehaviour
 
     private void Awake()
     {
-        red.expBar.expSlider.maxValue = red.expBar.MaxExp;
-        red.expBar.expSlider.value = red.expBar.CurrentExp;
+        if (photonView.IsMine)
+        {
+            red.expBar.expSlider.maxValue = red.expBar.MaxExp;
+            red.expBar.expSlider.value = red.expBar.CurrentExp;
 
-        blue.expBar.expSlider.maxValue = blue.expBar.MaxExp;
-        blue.expBar.expSlider.value = blue.expBar.CurrentExp;
+            blue.expBar.expSlider.maxValue = blue.expBar.MaxExp;
+            blue.expBar.expSlider.value = blue.expBar.CurrentExp;
 
-        green.expBar.expSlider.maxValue = green.expBar.MaxExp;
-        green.expBar.expSlider.value = green.expBar.CurrentExp;
+            green.expBar.expSlider.maxValue = green.expBar.MaxExp;
+            green.expBar.expSlider.value = green.expBar.CurrentExp;
+        }
     }
 
 

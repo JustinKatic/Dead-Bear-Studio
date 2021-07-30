@@ -16,9 +16,9 @@ public class EvolutionManager : MonoBehaviourPun
 
     void Awake()
     {
+        experienceManager = GetComponent<ExperienceManager>();
         if (photonView.IsMine)
         {
-            experienceManager = GetComponent<ExperienceManager>();
             playerController = GetComponent<PlayerController>();
             playerHealth = GetComponent<PlayerHealthManager>();
 
@@ -33,25 +33,24 @@ public class EvolutionManager : MonoBehaviourPun
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (experienceManager.CanEvolve())
-            photonView.RPC("Evolve", RpcTarget.All);
+            Evolve(experienceManager.NextEvolution);
     }
 
 
     [PunRPC]
-    public void Evolve()
+    public void Evolve(GameObject currentModel, GameObject newModel)
     {
-        Evolve(experienceManager.NextEvolution);
+        currentModel.SetActive(false);
+        newModel.SetActive(true);
     }
 
 
     public void Evolve(Evolutions evolution)
     {
-        currentActiveModel.SetActive(false);
-        evolution.Model.SetActive(true);
-        currentActiveModel = evolution.Model;
-
         if (photonView.IsMine)
         {
+            photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model, experienceManager.NextEvolution.Model);
+            currentActiveModel = evolution.Model;
             currentActiveShootPoint = evolution.ShootPoint;
             playerController.currentAnim = evolution.animator;
             photonView.RPC("SetHealth", RpcTarget.All, evolution.MaxHealth);
