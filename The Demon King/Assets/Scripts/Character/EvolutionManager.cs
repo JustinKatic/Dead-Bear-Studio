@@ -52,8 +52,9 @@ public class EvolutionManager : MonoBehaviourPun
 
 
     public void Evolve(Evolutions evolution)
-    {
+    {      
         photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model.tag, experienceManager.NextEvolution.Model.tag);
+        experienceManager.CurrentEvolution = evolution;
         currentActiveShootPoint = evolution.ShootPoint;
         playerController.currentAnim = evolution.animator;
         photonView.RPC("SetHealth", RpcTarget.All, evolution.MaxHealth);
