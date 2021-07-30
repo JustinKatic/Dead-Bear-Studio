@@ -11,7 +11,5 @@ public class ExperienceBranch
 
     public bool CanEvolve = false;
 
-    public bool HasEvolved;
-
     public ExperienceBar expBar;
 }
