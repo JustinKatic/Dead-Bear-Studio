@@ -21,10 +21,10 @@ public class Devour : MonoBehaviourPun
 
     private void Awake()
     {
+        experienceManager = GetComponent<ExperienceManager>();
         //Run following if local player
         if (photonView.IsMine)
         {
-            experienceManager = GetComponent<ExperienceManager>();
             //Getting components
             playerController = GetComponent<PlayerController>();
             cam = GetComponentInChildren<Camera>();
@@ -102,7 +102,6 @@ public class Devour : MonoBehaviourPun
                             targetBeingDevouredPV = null;
 
                             experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
-                            
                         }
                     }
                 }

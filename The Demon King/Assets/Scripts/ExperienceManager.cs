@@ -49,7 +49,6 @@ public class ExperienceManager : MonoBehaviourPun
     }
 
 
-
     public void AddExpereince(MinionType minionType, int expValue)
     {
         if (minionType == redMinion)
