@@ -14,8 +14,12 @@ public class ExperienceBar
     public int level1ExpNeeded;
     public int level2ExpNeeded;
 
-    public void UpdateSlider()
-    {
 
+
+
+
+    public void UpdateExpSlider()
+    {
+        expSlider.value = CurrentExp;
     }
 }

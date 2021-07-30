@@ -19,6 +19,17 @@ public class ExperienceManager : MonoBehaviour
     public MinionType greenMinion;
     public MinionType blueMinion;
 
+    private void Awake()
+    {
+        red.expBar.expSlider.maxValue = red.expBar.MaxExp;
+        red.expBar.expSlider.value = red.expBar.CurrentExp;
+
+        blue.expBar.expSlider.maxValue = blue.expBar.MaxExp;
+        blue.expBar.expSlider.value = blue.expBar.CurrentExp;
+
+        green.expBar.expSlider.maxValue = green.expBar.MaxExp;
+        green.expBar.expSlider.value = green.expBar.CurrentExp;
+    }
 
 
     public bool CanEvolve()
@@ -28,10 +39,20 @@ public class ExperienceManager : MonoBehaviour
             red.CanEvolve = false;
             blue.CanEvolve = false;
             green.CanEvolve = false;
+            SetHasEvolved();
             return true;
         }
-
         return false;
+    }
+
+    public void SetHasEvolved()
+    {
+        if (NextEvolution.MyType == redMinion)
+            red.HasEvolved = true;
+        else if (NextEvolution.MyType == greenMinion)
+            green.HasEvolved = true;
+        else if (NextEvolution.MyType == blueMinion)
+            blue.HasEvolved = true;
     }
 
     public void AddExpereince(MinionType minionType, int expValue)
@@ -39,9 +60,17 @@ public class ExperienceManager : MonoBehaviour
         if (minionType == redMinion)
         {
             red.expBar.CurrentExp = Mathf.Clamp(red.expBar.CurrentExp + expValue, 0, red.expBar.MaxExp);
+            red.expBar.UpdateExpSlider();
             if (red.expBar.CurrentExp >= red.expBar.level1ExpNeeded)
             {
                 NextEvolution = red.evo1;
+                red.CanEvolve = true;
+                blue.CanEvolve = false;
+                green.CanEvolve = false;
+            }
+            if (red.expBar.CurrentExp >= red.expBar.level2ExpNeeded)
+            {
+                NextEvolution = red.evo2;
                 red.CanEvolve = true;
                 blue.CanEvolve = false;
                 green.CanEvolve = false;
@@ -50,9 +79,17 @@ public class ExperienceManager : MonoBehaviour
         else if (minionType == greenMinion)
         {
             green.expBar.CurrentExp = Mathf.Clamp(green.expBar.CurrentExp + expValue, 0, green.expBar.MaxExp);
-            if (green.expBar.CurrentExp >= green.expBar.level1ExpNeeded)
+            green.expBar.UpdateExpSlider();
+            if (!green.HasEvolved && green.expBar.CurrentExp >= green.expBar.level1ExpNeeded)
             {
                 NextEvolution = green.evo1;
+                red.CanEvolve = false;
+                blue.CanEvolve = false;
+                green.CanEvolve = true;
+            }
+            if (green.expBar.CurrentExp >= green.expBar.level2ExpNeeded)
+            {
+                NextEvolution = green.evo2;
                 red.CanEvolve = false;
                 blue.CanEvolve = false;
                 green.CanEvolve = true;
@@ -61,9 +98,17 @@ public class ExperienceManager : MonoBehaviour
         else if (minionType == blueMinion)
         {
             blue.expBar.CurrentExp = Mathf.Clamp(blue.expBar.CurrentExp + expValue, 0, blue.expBar.MaxExp);
-            if (blue.expBar.CurrentExp >= blue.expBar.level1ExpNeeded)
+            blue.expBar.UpdateExpSlider();
+            if (!blue.HasEvolved && blue.expBar.CurrentExp >= blue.expBar.level1ExpNeeded)
             {
                 NextEvolution = blue.evo1;
+                red.CanEvolve = false;
+                blue.CanEvolve = true;
+                green.CanEvolve = false;
+            }
+            if (blue.expBar.CurrentExp >= blue.expBar.level2ExpNeeded)
+            {
+                NextEvolution = blue.evo2;
                 red.CanEvolve = false;
                 blue.CanEvolve = true;
                 green.CanEvolve = false;
