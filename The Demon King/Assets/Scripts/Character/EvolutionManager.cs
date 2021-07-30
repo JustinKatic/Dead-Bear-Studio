@@ -6,10 +6,11 @@ using Photon.Pun;
 
 public class EvolutionManager : MonoBehaviourPun
 {
-    private GameObject currentActiveModel;
     [HideInInspector] public Transform currentActiveShootPoint;
 
     ExperienceManager experienceManager;
+
+    public List<GameObject> models = new List<GameObject>();
 
     PlayerController playerController;
     PlayerHealthManager playerHealth;
@@ -24,36 +25,38 @@ public class EvolutionManager : MonoBehaviourPun
 
             currentActiveShootPoint = experienceManager.CurrentEvolution.ShootPoint;
             playerController.currentAnim = experienceManager.CurrentEvolution.animator;
-
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
-        currentActiveModel = experienceManager.CurrentEvolution.Model;
     }
 
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (experienceManager.CanEvolve())
+        {
             Evolve(experienceManager.NextEvolution);
+        }
     }
 
 
     [PunRPC]
-    public void Evolve(GameObject currentModel, GameObject newModel)
+    public void Evolve(string currentModelsTag, string nextModelsTag)
     {
-        currentModel.SetActive(false);
-        newModel.SetActive(true);
+        foreach (var model in models)
+        {
+            if (model.tag == currentModelsTag)
+                model.SetActive(false);
+            if (model.tag == nextModelsTag)
+                model.SetActive(true);
+        }
     }
 
 
     public void Evolve(Evolutions evolution)
-    {
-        if (photonView.IsMine)
-        {
-            photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model, experienceManager.NextEvolution.Model);
-            currentActiveModel = evolution.Model;
-            currentActiveShootPoint = evolution.ShootPoint;
-            playerController.currentAnim = evolution.animator;
-            photonView.RPC("SetHealth", RpcTarget.All, evolution.MaxHealth);
-        }
+    {      
+        photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model.tag, experienceManager.NextEvolution.Model.tag);
+        experienceManager.CurrentEvolution = evolution;
+        currentActiveShootPoint = evolution.ShootPoint;
+        playerController.currentAnim = evolution.animator;
+        photonView.RPC("SetHealth", RpcTarget.All, evolution.MaxHealth);
     }
 }
