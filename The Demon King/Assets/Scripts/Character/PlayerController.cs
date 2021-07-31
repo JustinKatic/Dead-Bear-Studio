@@ -120,14 +120,15 @@ public class PlayerController : MonoBehaviourPun
                 //Set jumping false and allow CC to stepUp
                 if (isJumping)
                 {
+                    currentAnim.SetBool("HasLanded", true);
                     isJumping = false;
                     cc.stepOffset = StepOffset;
                     cc.slopeLimit = SlopeLimit;
-                    currentAnim.SetBool("HasLanded", true);
                     currentAnim.SetBool("JumpStarted", false);
                 }
                 if (isFalling)
                 {
+                    currentAnim.SetBool("HasLanded", true);
                     currentAnim.SetBool("Falling", false);
                     isFalling = false;
                 }
@@ -135,6 +136,7 @@ public class PlayerController : MonoBehaviourPun
             else if (!cc.isGrounded && !isJumping)
             {
                 currentAnim.SetBool("Falling", true);
+                currentAnim.SetBool("HasLanded", false);
                 isFalling = true;
             }
 
