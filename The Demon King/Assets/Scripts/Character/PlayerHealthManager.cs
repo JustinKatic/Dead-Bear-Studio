@@ -58,8 +58,8 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            Renderer[] renderer = GetComponentsInChildren<Renderer>();
-            foreach (Renderer mesh in renderer)
+            SkinnedMeshRenderer[] renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+            foreach (SkinnedMeshRenderer mesh in renderer)
                 mesh.enabled = false;
 
             if (photonView.IsMine)
@@ -67,7 +67,6 @@ public class PlayerHealthManager : HealthManager
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
-                experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
             }
@@ -79,8 +78,9 @@ public class PlayerHealthManager : HealthManager
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+                experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
             }
-            foreach (Renderer mesh in renderer)
+            foreach (SkinnedMeshRenderer mesh in renderer)
                 mesh.enabled = true;
 
             canBeDevoured = false;

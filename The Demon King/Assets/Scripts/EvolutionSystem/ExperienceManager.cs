@@ -9,18 +9,22 @@ public class ExperienceManager : MonoBehaviourPun
     [HideInInspector] public Evolutions NextEvolution;
     public Evolutions CurrentEvolution;
 
+
     public ExperienceBranch green;
     public ExperienceBranch red;
     public ExperienceBranch blue;
-    
+
     public MinionType redMinion;
     public MinionType greenMinion;
     public MinionType blueMinion;
+
+    private EvolutionManager evolutionManager;
 
     private void Awake()
     {
         if (photonView.IsMine)
         {
+            evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
         }
     }
@@ -94,33 +98,44 @@ public class ExperienceManager : MonoBehaviourPun
     {
         if (experienceIncrease)
         {
-            branchType.expBar.CurrentExp = Mathf.Clamp(branchType.expBar.CurrentExp + (value), 0, branchType.expBar.MaxExp);
+            branchType.expBar.CurrentExp = Mathf.Clamp(branchType.expBar.CurrentExp + value, 0, branchType.expBar.MaxExp);
             branchType.expBar.UpdateExpSlider();
+
+            // if experience is greater than level 2
+            if (branchType.expBar.CurrentExp >= branchType.expBar.level2ExpNeeded)
+            {
+                if (CurrentEvolution != branchType.evo2)
+                {
+                    NextEvolution = branchType.evo2;
+                    ChangeEvolutionBools(branchType);
+                }
+            }
+            // if experience is greater than level 1
+            else if (branchType.expBar.CurrentExp >= branchType.expBar.level1ExpNeeded)
+            {
+                if (CurrentEvolution != branchType.evo1)
+                {
+                    NextEvolution = branchType.evo1;
+                    ChangeEvolutionBools(branchType);
+                }
+            }
         }
         else
         {
             branchType.expBar.CurrentExp = Mathf.Clamp(branchType.expBar.CurrentExp - value, 0, branchType.expBar.MaxExp);
             branchType.expBar.UpdateExpSlider();
-        }
 
-        
-        // if experience is greater than level 2
-        if (branchType.expBar.CurrentExp >= branchType.expBar.level2ExpNeeded)
-        {
-            if (CurrentEvolution != branchType.evo2)
+            //Current exp is less then level 1 required
+            if (branchType.expBar.CurrentExp < branchType.expBar.level1ExpNeeded)
             {
-                NextEvolution = branchType.evo2;
-                ChangeEvolutionBools(branchType);
+                NextEvolution = branchType.startingEvo;
+                evolutionManager.ChangeEvolution(branchType.startingEvo);
             }
-
-        }
-        // if experience is greater than level 1
-        else if (branchType.expBar.CurrentExp >= branchType.expBar.level1ExpNeeded)
-        {
-            if (CurrentEvolution != branchType.evo1)
+            //Current exp is less then level 2 required
+            else if (branchType.expBar.CurrentExp < branchType.expBar.level2ExpNeeded)
             {
                 NextEvolution = branchType.evo1;
-                ChangeEvolutionBools(branchType);
+                evolutionManager.ChangeEvolution(branchType.evo1);
             }
         }
     }
