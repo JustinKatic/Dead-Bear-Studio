@@ -7,7 +7,6 @@ using Photon.Pun;
 public class EvolutionManager : MonoBehaviourPun
 {
     [HideInInspector] public Transform currentActiveShootPoint;
-
     ExperienceManager experienceManager;
 
     public List<GameObject> models = new List<GameObject>();
