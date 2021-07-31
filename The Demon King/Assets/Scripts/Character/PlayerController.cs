@@ -221,7 +221,6 @@ public class PlayerController : MonoBehaviourPun
         {
             //Enable player inputs, CC and set speeds back to starting speeds.
             CharacterInputs.Player.Enable();
-            currentAnim.speed = 1;
             MoveSpeed = startMoveSpeed;
         }
     }
@@ -233,7 +232,6 @@ public class PlayerController : MonoBehaviourPun
         {
             //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
-            currentAnim.speed = 0;
             MoveSpeed = 0;
         }
     }

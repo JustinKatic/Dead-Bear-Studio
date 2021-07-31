@@ -143,7 +143,7 @@ public class AbilityManager : MonoBehaviourPun
         createdPrimaryProjectile.transform.forward = dir;
 
         PrimaryProjectileController projectileScript = createdPrimaryProjectile.GetComponent<PrimaryProjectileController>();
-        projectileScript.Initialize(damage, player.id, player.photonView.IsMine);
+        projectileScript.Initialize(damage, player.id);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
     }
 
@@ -158,12 +158,12 @@ public class AbilityManager : MonoBehaviourPun
 
     void SpawnHeavyProjectile(Vector3 pos, Vector3 dir, Vector3 shootDir, float power)
     {
-        GameObject createdHeavyProjectile =PhotonNetwork.Instantiate("HeavyProjectile", pos, Quaternion.identity);
+        GameObject createdHeavyProjectile = PhotonNetwork.Instantiate("HeavyProjectile", pos, Quaternion.identity);
         createdHeavyProjectile.transform.forward = dir;
 
         HeavyProjectileController projectileSctipt = createdHeavyProjectile.GetComponent<HeavyProjectileController>();
 
-        projectileSctipt.Initialize(damage, player.id, player.photonView.IsMine);
+        projectileSctipt.Initialize(damage, player.id);
         projectileSctipt.rb.velocity = shootDir * power;
     }
 

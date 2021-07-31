@@ -743,6 +743,9 @@ MonoBehaviour:
   - Type: 4
     SynchronizeType: 1
     Name: HasLanded
+  - Type: 4
+    SynchronizeType: 1
+    Name: Stunned
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -4097,7 +4100,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3814233615992383805}
-  m_LocalRotation: {x: 0.4376999, y: 0.0114125, z: -0.0055562565, w: 0.8990316}
+  m_LocalRotation: {x: 0.43769994, y: 0.0114125125, z: -0.005556263, w: 0.8990315}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -6495,9 +6498,9 @@ MonoBehaviour:
     MaxHealth: 0
   CurrentEvolution:
     MyType: {fileID: 0}
-    Model: {fileID: 6849928038898874486}
-    animator: {fileID: 190322414822078646}
-    ShootPoint: {fileID: 4886548998357426947}
+    Model: {fileID: 610048305480391202}
+    animator: {fileID: 6187013276664158946}
+    ShootPoint: {fileID: 2426080807058789532}
     MaxHealth: 3
   green:
     startingEvo:
@@ -10378,7 +10381,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
       propertyPath: m_TagString
@@ -10641,7 +10644,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
       propertyPath: m_TagString

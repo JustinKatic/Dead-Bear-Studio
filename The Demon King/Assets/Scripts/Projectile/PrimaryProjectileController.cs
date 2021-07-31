@@ -20,11 +20,10 @@ public class PrimaryProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int damage, int attackerId, bool isMine)
+    public void Initialize(int damage, int attackerId)
     {
         this.damage = damage;
         this.attackerId = attackerId;
-        this.isMine = isMine;
 
         // set a lifetime of bullet
         if (photonView.IsMine)
@@ -58,12 +57,8 @@ public class PrimaryProjectileController : MonoBehaviourPun
                 PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
                 hitView.RPC("TakeDamage", RpcTarget.All, damage);
             }
-        }
-        Instantiate(impactFX, transform.position, Quaternion.identity);
-
-        if (photonView.IsMine)
+            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);
+        }
     }
 }
-
-

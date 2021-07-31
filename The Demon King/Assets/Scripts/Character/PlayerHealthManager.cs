@@ -12,7 +12,7 @@ public class PlayerHealthManager : HealthManager
     private PlayerController player;
     private ExperienceManager experienceManager;
     public int experienceLoss = 2;
-   
+
     void Awake()
     {
 
@@ -205,7 +205,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             isStunned = true;
-            Debug.Log("Play Stunned Anim");
+            player.currentAnim.SetBool("Stunned", true);
             player.DisableMovement();
         }
     }
@@ -223,7 +223,7 @@ public class PlayerHealthManager : HealthManager
                 isStunned = false;
                 player.EnableMovement();
                 Heal(1);
-                Debug.Log("Stop Stunned Anim");
+                player.currentAnim.SetBool("Stunned", false);
             }
         }
     }
