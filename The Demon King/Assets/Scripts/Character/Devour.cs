@@ -100,8 +100,12 @@ public class Devour : MonoBehaviourPun
                             IsDevouring = false;
                             playerController.EnableMovement();
                             targetBeingDevouredPV = null;
-
-                            experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
+                            
+                            if (hitPlayerHealth.MyMinionType != null)
+                            {
+                                healthManager.MyMinionType = hitPlayerHealth.MyMinionType;
+                                experienceManager.AddExpereince(healthManager.MyMinionType, hitPlayerHealth.ExperienceValue);
+                            }
                         }
                     }
                 }

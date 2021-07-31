@@ -10,12 +10,12 @@ using UnityEngine.UI;
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
-
-
-
-
+    private ExperienceManager experienceManager;
+    public int experienceLoss = 2;
+   
     void Awake()
     {
+
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -27,7 +27,7 @@ public class PlayerHealthManager : HealthManager
             Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
-
+            experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
     }
@@ -62,12 +62,12 @@ public class PlayerHealthManager : HealthManager
             foreach (Renderer mesh in renderer)
                 mesh.enabled = false;
 
-
             if (photonView.IsMine)
             {
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
+                experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
             }

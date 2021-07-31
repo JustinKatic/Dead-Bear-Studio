@@ -5,9 +5,9 @@ using Photon.Pun;
 
 public class ExperienceManager : MonoBehaviourPun
 {
-    public Evolutions CurrentEvolution;
-    public MinionType CurrentMinionType;
+    [HideInInspector] public MinionType CurrentMinionType;
     [HideInInspector] public Evolutions NextEvolution;
+    public Evolutions CurrentEvolution;
 
     public ExperienceBranch green;
     public ExperienceBranch red;
@@ -43,18 +43,16 @@ public class ExperienceManager : MonoBehaviourPun
     {
         if (minionType == redMinion)
         {
-            UpdateBranchType(red, expValue);
-
+            UpdateBranchType(red, expValue, true);
         }
         else if (minionType == greenMinion)
         {
-            UpdateBranchType(green, expValue);
+            UpdateBranchType(green, expValue, true);
 
         }
         else if (minionType == blueMinion)
         {
-            UpdateBranchType(blue, expValue);
-           
+            UpdateBranchType(blue, expValue, true);
         }
     }
 
@@ -70,28 +68,76 @@ public class ExperienceManager : MonoBehaviourPun
         green.expBar.expSlider.value = green.expBar.CurrentExp;
     }
 
-    void ChangeEvolutionBools(bool redBool, bool greenBool, bool blueBool)
+    void ChangeEvolutionBools(ExperienceBranch branch)
     {
-        red.CanEvolve = redBool;
-        green.CanEvolve = greenBool;
-        blue.CanEvolve = blueBool;
+        if (branch == red)
+        {
+            red.CanEvolve = true;
+            green.CanEvolve = false;
+            blue.CanEvolve = false;
+        }
+        if (branch == green)
+        {
+            red.CanEvolve = false;
+            green.CanEvolve = true;
+            blue.CanEvolve = false;
+        }
+        if (branch == blue)
+        {
+            red.CanEvolve = false;
+            green.CanEvolve = false;
+            blue.CanEvolve = true;
+        }
     }
     //Update the correct branch based off the given parameters
-    void UpdateBranchType(ExperienceBranch branchType, int value)
+    void UpdateBranchType(ExperienceBranch branchType, int value, bool experienceIncrease)
     {
-        branchType.expBar.CurrentExp = Mathf.Clamp(branchType.expBar.CurrentExp + value, 0, branchType.expBar.MaxExp);
-        branchType.expBar.UpdateExpSlider();
-            
+        if (experienceIncrease)
+        {
+            branchType.expBar.CurrentExp = Mathf.Clamp(branchType.expBar.CurrentExp + (value), 0, branchType.expBar.MaxExp);
+            branchType.expBar.UpdateExpSlider();
+        }
+        else
+        {
+            branchType.expBar.CurrentExp = Mathf.Clamp(branchType.expBar.CurrentExp - value, 0, branchType.expBar.MaxExp);
+            branchType.expBar.UpdateExpSlider();
+        }
+
+        
+        // if experience is greater than level 2
         if (branchType.expBar.CurrentExp >= branchType.expBar.level2ExpNeeded)
         {
-            NextEvolution = branchType.evo2;
-            ChangeEvolutionBools(true, false, false);
+            if (CurrentEvolution != branchType.evo2)
+            {
+                NextEvolution = branchType.evo2;
+                ChangeEvolutionBools(branchType);
+            }
 
         }
+        // if experience is greater than level 1
         else if (branchType.expBar.CurrentExp >= branchType.expBar.level1ExpNeeded)
         {
-            NextEvolution = branchType.evo1;
-            ChangeEvolutionBools(true, false, false);
+            if (CurrentEvolution != branchType.evo1)
+            {
+                NextEvolution = branchType.evo1;
+                ChangeEvolutionBools(branchType);
+            }
+        }
+    }
+
+    public void CheckEvolutionOnDeath(MinionType currentMinionType, int experienceLoss)
+    {
+        if (currentMinionType == redMinion)
+        {
+            UpdateBranchType(red, experienceLoss, false);
+        }
+        else if (currentMinionType == greenMinion)
+        {
+            UpdateBranchType(green, experienceLoss, false);
+        }
+        else if (currentMinionType == blueMinion)
+        {
+            UpdateBranchType(blue, experienceLoss, false);
         }
     }
 }

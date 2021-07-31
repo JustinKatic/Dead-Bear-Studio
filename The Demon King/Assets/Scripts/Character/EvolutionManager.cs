@@ -32,7 +32,7 @@ public class EvolutionManager : MonoBehaviourPun
     {
         if (experienceManager.CanEvolve())
         {
-            Evolve(experienceManager.NextEvolution);
+            ChangeEvolution(experienceManager.NextEvolution);
         }
     }
 
@@ -50,7 +50,7 @@ public class EvolutionManager : MonoBehaviourPun
     }
 
 
-    public void Evolve(Evolutions evolution)
+    public void ChangeEvolution(Evolutions evolution)
     {      
         photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model.tag, experienceManager.NextEvolution.Model.tag);
         experienceManager.CurrentEvolution = evolution;
