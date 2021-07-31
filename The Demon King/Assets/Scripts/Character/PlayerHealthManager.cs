@@ -58,6 +58,7 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
+            //MAY BECOME QUITE ALOT OF MESHS TO LOOP THOUGH THINK OF A WAY TO JUST GET ACTIVE MESH
             SkinnedMeshRenderer[] renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
             foreach (SkinnedMeshRenderer mesh in renderer)
                 mesh.enabled = false;
