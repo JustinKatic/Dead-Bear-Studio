@@ -152,14 +152,13 @@ public class AbilityManager : MonoBehaviourPun
     {
         if (isAiming)
         {
-            player.photonView.RPC("SpawnHeavyProjectile", RpcTarget.All, shootPoint.position, shootPoint.transform.forward, shootAngle, blastPower);
+            SpawnHeavyProjectile(shootPoint.position, shootPoint.transform.forward, shootAngle, blastPower);
         }
     }
 
-    [PunRPC]
     void SpawnHeavyProjectile(Vector3 pos, Vector3 dir, Vector3 shootDir, float power)
     {
-        GameObject createdHeavyProjectile = Instantiate(heavyProjectile, pos, Quaternion.identity);
+        GameObject createdHeavyProjectile =PhotonNetwork.Instantiate("HeavyProjectile", pos, Quaternion.identity);
         createdHeavyProjectile.transform.forward = dir;
 
         HeavyProjectileController projectileSctipt = createdHeavyProjectile.GetComponent<HeavyProjectileController>();

@@ -72,6 +72,8 @@ public class PlayerController : MonoBehaviourPun
             //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            gameObject.layer = LayerMask.NameToLayer("Player");
         }
     }
 
