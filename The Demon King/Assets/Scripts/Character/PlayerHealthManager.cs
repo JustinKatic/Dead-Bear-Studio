@@ -51,6 +51,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+
     [PunRPC]
     public void Respawn()
     {
@@ -70,6 +71,7 @@ public class PlayerHealthManager : HealthManager
                 player.cc.enabled = false;
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
+                player.currentAnim.SetBool("Stunned", false);
             }
 
             yield return new WaitForSeconds(3);
@@ -205,6 +207,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             isStunned = true;
+            player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
             player.DisableMovement();
         }

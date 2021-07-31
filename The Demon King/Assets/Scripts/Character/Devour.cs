@@ -91,16 +91,18 @@ public class Devour : MonoBehaviourPun
                     IEnumerator DevourCorutine()
                     {
                         IsDevouring = true;
+                        playerController.currentAnim.SetBool("Devouring", true);
                         playerController.DisableMovement();
 
                         yield return new WaitForSeconds(healthManager.DevourTime);
 
                         if (!healthManager.isStunned)
                         {
+                            playerController.currentAnim.SetBool("Devouring", false);
                             IsDevouring = false;
                             playerController.EnableMovement();
                             targetBeingDevouredPV = null;
-                            
+
                             if (hitPlayerHealth.MyMinionType != null)
                             {
                                 healthManager.MyMinionType = hitPlayerHealth.MyMinionType;
