@@ -52,6 +52,7 @@ public class PlayerController : MonoBehaviourPun
         {
             Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
+            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
         }
         //Run following if local player
         else

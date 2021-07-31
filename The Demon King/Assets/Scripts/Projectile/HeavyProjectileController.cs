@@ -35,7 +35,7 @@ public class HeavyProjectileController : MonoBehaviourPun
         if (photonView.IsMine)
         {
             //Get list of all colliders who have layer damageable layer
-            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4);
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4, damageable);
             Debug.Log("Exploded");
 
             foreach (Collider col in hitColliders)
