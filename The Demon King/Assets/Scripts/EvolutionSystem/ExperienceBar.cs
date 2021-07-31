@@ -8,18 +8,17 @@ public class ExperienceBar
 {
     public Slider expSlider;
 
-    public int CurrentExp;
+    [HideInInspector]public int CurrentExp;
+    
+    [Header("Experience for Evolutions")]
     public int MaxExp;
-
     public int level1ExpNeeded;
     public int level2ExpNeeded;
 
-
-
-
-
+    
     public void UpdateExpSlider()
     {
+        expSlider.maxValue = MaxExp;
         expSlider.value = CurrentExp;
     }
 }
