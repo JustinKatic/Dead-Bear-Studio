@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviourPun
     private Vector3 playerMoveVelocity;
     private bool isJumping;
 
+    private bool isFalling = false;
+
 
     private void Awake()
     {
@@ -96,6 +98,10 @@ public class PlayerController : MonoBehaviourPun
             //Sets CC not to try and stepUp while in air
             cc.stepOffset = 0;
             cc.slopeLimit = 0;
+            currentAnim.SetBool("JumpStarted", true);
+            currentAnim.SetBool("Falling", true);
+            currentAnim.SetBool("HasLanded", false);
+            isFalling = true;
         }
     }
 
@@ -114,8 +120,22 @@ public class PlayerController : MonoBehaviourPun
                     isJumping = false;
                     cc.stepOffset = StepOffset;
                     cc.slopeLimit = SlopeLimit;
+                    currentAnim.SetBool("HasLanded", true);
+                    currentAnim.SetBool("JumpStarted", false);
+                }
+                if (isFalling)
+                {
+                    currentAnim.SetBool("Falling", false);
+                    isFalling = false;
                 }
             }
+            else if (!cc.isGrounded && !isJumping)
+            {
+                currentAnim.SetBool("Falling", true);
+                isFalling = true;
+            }
+
+
 
 
             //Get value from input system for directional movement
