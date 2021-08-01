@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 
@@ -9,23 +10,37 @@ public class EvolutionManager : MonoBehaviourPun
     [HideInInspector] public Transform currentActiveShootPoint;
     ExperienceManager experienceManager;
 
-    public List<GameObject> models = new List<GameObject>();
+    [HideInInspector] public List<Evolutions> evolutions = new List<Evolutions>();
 
     PlayerController playerController;
     PlayerHealthManager playerHealth;
-
-    void Awake()
+    private Evolutions activeEvolution;
+    private Evolutions nextEvolution;
+    
+    void Start()
     {
+        evolutions = GetComponentsInChildren<Evolutions>().ToList();
         experienceManager = GetComponent<ExperienceManager>();
+        
+        foreach (var evolution in evolutions)
+        {
+            if (evolution.gameObject.activeSelf)
+            {
+                activeEvolution = evolution;
+                break;
+            }
+        }
+        
         if (photonView.IsMine)
         {
             playerController = GetComponent<PlayerController>();
             playerHealth = GetComponent<PlayerHealthManager>();
-
-            currentActiveShootPoint = experienceManager.CurrentEvolution.ShootPoint;
-            playerController.currentAnim = experienceManager.CurrentEvolution.animator;
+            
+            currentActiveShootPoint = activeEvolution.ShootPoint;
+            playerController.currentAnim = activeEvolution.animator;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
+
     }
 
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -36,26 +51,24 @@ public class EvolutionManager : MonoBehaviourPun
         }
     }
 
-
     [PunRPC]
     public void Evolve(string currentModelsTag, string nextModelsTag)
     {
-        foreach (var model in models)
+        foreach (var evolution in evolutions)
         {
-            if (model.tag == currentModelsTag)
-                model.SetActive(false);
-            if (model.tag == nextModelsTag)
-                model.SetActive(true);
+            if (evolution.tag == currentModelsTag)
+                evolution.gameObject.SetActive(false);
+            if (evolution.tag == nextModelsTag)
+                evolution.gameObject.SetActive(true);
         }
     }
-
-
-    public void ChangeEvolution(Evolutions evolution)
+    
+    public void ChangeEvolution(string evolution)
     {      
-        photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model.tag, experienceManager.NextEvolution.Model.tag);
+        photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution, experienceManager.NextEvolution);
         experienceManager.CurrentEvolution = evolution;
-        currentActiveShootPoint = evolution.ShootPoint;
-        playerController.currentAnim = evolution.animator;
-        photonView.RPC("SetHealth", RpcTarget.All, evolution.MaxHealth);
+        currentActiveShootPoint = activeEvolution.ShootPoint;
+        playerController.currentAnim = activeEvolution.animator;
+        photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
     }
 }

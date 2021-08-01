@@ -6,9 +6,10 @@ using UnityEngine;
 public class ExperienceBranch
 {
     [Header("Evolutions")] 
-    public Evolutions startingEvo;
-    public Evolutions evo1;
-    public Evolutions evo2;
+    [HideInInspector] public string startingEvo = "StartingEvo";
+    [HideInInspector] public string evo1 = "EvolutionOne";
+    [HideInInspector] public string evo2 = "EvolutionTwo";
+    [HideInInspector] public string branchName;
 
     [HideInInspector] public bool CanEvolve = false;
     public ExperienceBar expBar;

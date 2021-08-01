@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,10 +7,9 @@ using Photon.Pun;
 public class ExperienceManager : MonoBehaviourPun
 {
     [HideInInspector] public MinionType CurrentMinionType;
-    [HideInInspector] public Evolutions NextEvolution;
-    public Evolutions CurrentEvolution;
-
-
+    [HideInInspector] public string NextEvolution;
+    [HideInInspector] public string CurrentEvolution;
+    
     public ExperienceBranch green;
     public ExperienceBranch red;
     public ExperienceBranch blue;
@@ -22,6 +22,10 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void Awake()
     {
+        red.branchName = "Red";
+        green.branchName = "Green";
+        blue.branchName = "Blue";
+        
         if (photonView.IsMine)
         {
             evolutionManager = GetComponent<EvolutionManager>();
@@ -70,6 +74,7 @@ public class ExperienceManager : MonoBehaviourPun
 
         green.expBar.expSlider.maxValue = green.expBar.MaxExp;
         green.expBar.expSlider.value = green.expBar.CurrentExp;
+        
     }
 
     void ChangeEvolutionBools(ExperienceBranch branch)
@@ -106,7 +111,7 @@ public class ExperienceManager : MonoBehaviourPun
             {
                 if (CurrentEvolution != branchType.evo2)
                 {
-                    NextEvolution = branchType.evo2;
+                    NextEvolution = String.Concat(branchType.branchName, branchType.evo2);
                     ChangeEvolutionBools(branchType);
                 }
             }
@@ -115,7 +120,7 @@ public class ExperienceManager : MonoBehaviourPun
             {
                 if (CurrentEvolution != branchType.evo1)
                 {
-                    NextEvolution = branchType.evo1;
+                    NextEvolution = String.Concat(branchType.branchName, branchType.evo1);
                     ChangeEvolutionBools(branchType);
                 }
             }
@@ -128,14 +133,15 @@ public class ExperienceManager : MonoBehaviourPun
             //Current exp is less then level 1 required
             if (branchType.expBar.CurrentExp < branchType.expBar.level1ExpNeeded)
             {
+                //Will need to be changed to Concat once All oozes added
                 NextEvolution = branchType.startingEvo;
-                evolutionManager.ChangeEvolution(branchType.startingEvo);
+                evolutionManager.ChangeEvolution(NextEvolution);
             }
             //Current exp is less then level 2 required
             else if (branchType.expBar.CurrentExp < branchType.expBar.level2ExpNeeded)
             {
-                NextEvolution = branchType.evo1;
-                evolutionManager.ChangeEvolution(branchType.evo1);
+                NextEvolution = String.Concat(branchType.branchName, branchType.evo1);
+                evolutionManager.ChangeEvolution(NextEvolution);
             }
         }
     }
