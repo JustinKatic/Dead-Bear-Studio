@@ -10,12 +10,12 @@ using UnityEngine.UI;
 public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
-
-
-
+    private ExperienceManager experienceManager;
+    public int experienceLoss = 2;
 
     void Awake()
     {
+
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -27,7 +27,7 @@ public class PlayerHealthManager : HealthManager
             Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
-
+            experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
     }
@@ -51,6 +51,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+
     [PunRPC]
     public void Respawn()
     {
@@ -58,11 +59,6 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            Renderer[] renderer = GetComponentsInChildren<Renderer>();
-            foreach (Renderer mesh in renderer)
-                mesh.enabled = false;
-
-
             if (photonView.IsMine)
             {
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
@@ -70,6 +66,7 @@ public class PlayerHealthManager : HealthManager
                 player.cc.enabled = false;
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
+                player.currentAnim.SetBool("Stunned", false);
             }
 
             yield return new WaitForSeconds(3);
@@ -79,9 +76,8 @@ public class PlayerHealthManager : HealthManager
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+                experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
             }
-            foreach (Renderer mesh in renderer)
-                mesh.enabled = true;
 
             canBeDevoured = false;
             beingDevoured = false;
@@ -204,7 +200,8 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             isStunned = true;
-            Debug.Log("Play Stunned Anim");
+            player.currentAnim.SetBool("Devouring", false);
+            player.currentAnim.SetBool("Stunned", true);
             player.DisableMovement();
         }
     }
@@ -222,7 +219,7 @@ public class PlayerHealthManager : HealthManager
                 isStunned = false;
                 player.EnableMovement();
                 Heal(1);
-                Debug.Log("Stop Stunned Anim");
+                player.currentAnim.SetBool("Stunned", false);
             }
         }
     }

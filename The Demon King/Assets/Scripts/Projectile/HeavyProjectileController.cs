@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class HeavyProjectileController : MonoBehaviour
+public class HeavyProjectileController : MonoBehaviourPun
 {
     private int damage = 1;
     private int attackerId;
@@ -21,11 +21,10 @@ public class HeavyProjectileController : MonoBehaviour
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int damage, int attackerId, bool isMine)
+    public void Initialize(int damage, int attackerId)
     {
         this.damage = damage;
         this.attackerId = attackerId;
-        this.isMine = isMine;
 
         // set a lifetime so it can't go on forever
         Destroy(gameObject, 5.0f);
@@ -33,11 +32,11 @@ public class HeavyProjectileController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Only run if is the player who shot the projectile
-        if (isMine)
+        if (photonView.IsMine)
         {
             //Get list of all colliders who have layer damageable layer
             Collider[] hitColliders = Physics.OverlapSphere(transform.position, 4, damageable);
+            Debug.Log("Exploded");
 
             foreach (Collider col in hitColliders)
             {
@@ -60,10 +59,10 @@ public class HeavyProjectileController : MonoBehaviour
                     hitView.RPC("TakeDamage", RpcTarget.All, damage);
                 }
             }
+            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
+            PhotonNetwork.Destroy(gameObject);
         }
-        //spawn explision vfx
-        Instantiate(impactFX, gameObject.transform.position, Quaternion.identity);
-        //detroy this bullet
-        Destroy(gameObject);
     }
 }
+
+

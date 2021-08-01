@@ -42,14 +42,16 @@ public class PlayerController : MonoBehaviourPun
     private Vector3 playerMoveVelocity;
     private bool isJumping;
 
+    private bool isFalling = false;
+
 
     private void Awake()
     {
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
+            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
         }
         //Run following if local player
         else
@@ -70,6 +72,8 @@ public class PlayerController : MonoBehaviourPun
             //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+
+            gameObject.layer = LayerMask.NameToLayer("Player");
         }
     }
 
@@ -96,6 +100,10 @@ public class PlayerController : MonoBehaviourPun
             //Sets CC not to try and stepUp while in air
             cc.stepOffset = 0;
             cc.slopeLimit = 0;
+            currentAnim.SetBool("JumpStarted", true);
+            currentAnim.SetBool("Falling", true);
+            currentAnim.SetBool("HasLanded", false);
+            isFalling = true;
         }
     }
 
@@ -111,11 +119,27 @@ public class PlayerController : MonoBehaviourPun
                 //Set jumping false and allow CC to stepUp
                 if (isJumping)
                 {
+                    currentAnim.SetBool("HasLanded", true);
                     isJumping = false;
                     cc.stepOffset = StepOffset;
                     cc.slopeLimit = SlopeLimit;
+                    currentAnim.SetBool("JumpStarted", false);
+                }
+                if (isFalling)
+                {
+                    currentAnim.SetBool("HasLanded", true);
+                    currentAnim.SetBool("Falling", false);
+                    isFalling = false;
                 }
             }
+            else if (!cc.isGrounded && !isJumping)
+            {
+                currentAnim.SetBool("Falling", true);
+                currentAnim.SetBool("HasLanded", false);
+                isFalling = true;
+            }
+
+
 
 
             //Get value from input system for directional movement
@@ -199,7 +223,6 @@ public class PlayerController : MonoBehaviourPun
         {
             //Enable player inputs, CC and set speeds back to starting speeds.
             CharacterInputs.Player.Enable();
-            currentAnim.speed = 1;
             MoveSpeed = startMoveSpeed;
         }
     }
@@ -211,7 +234,6 @@ public class PlayerController : MonoBehaviourPun
         {
             //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
-            currentAnim.speed = 0;
             MoveSpeed = 0;
         }
     }
