@@ -52,7 +52,7 @@ public class AbilityManager : MonoBehaviourPun
     {
         player = GetComponent<PlayerController>();
         lineRenderer = GetComponent<LineRenderer>();
-        cam = GetComponentInChildren<Camera>();
+        cam = Camera.main;
 
         if (photonView.IsMine)
         {
