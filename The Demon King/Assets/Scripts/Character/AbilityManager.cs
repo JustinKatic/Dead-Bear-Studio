@@ -83,6 +83,7 @@ public class AbilityManager : MonoBehaviourPun
         if (canCast)
         {
             ShootPrimaryProjectile();
+            player.currentAnim.SetTrigger("Attack");
             StartCoroutine(CanCast(primaryProjectileDelay));
         }
     }
@@ -103,6 +104,7 @@ public class AbilityManager : MonoBehaviourPun
 
     private void OnAbility2Cancelled(InputAction.CallbackContext obj)
     {
+        player.currentAnim.SetTrigger("Attack");
         HeavyProjectileAimCancelled();
     }
 
