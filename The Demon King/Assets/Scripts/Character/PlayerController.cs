@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviourPun
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(GetComponentInChildren<Camera>().gameObject);
             Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
             gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
         }
