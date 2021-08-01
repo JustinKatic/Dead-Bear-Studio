@@ -27,7 +27,7 @@ public class Devour : MonoBehaviourPun
         {
             //Getting components
             playerController = GetComponent<PlayerController>();
-            cam = GetComponentInChildren<Camera>();
+            cam = Camera.main;
             healthManager = GetComponent<HealthManager>();
 
             //Interact callback

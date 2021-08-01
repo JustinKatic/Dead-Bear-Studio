@@ -1,38 +1,65 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 
 
 public class EvolutionManager : MonoBehaviourPun
 {
+    //List to hold all evolutions
+    [HideInInspector] public List<Evolutions> evolutions = new List<Evolutions>();
+
+    [HideInInspector] public Evolutions activeEvolution;
+    [HideInInspector] public Evolutions nextEvolution;
+
     [HideInInspector] public Transform currentActiveShootPoint;
-    ExperienceManager experienceManager;
 
-    public List<GameObject> models = new List<GameObject>();
+    //Components
+    private PlayerController playerController;
+    private ExperienceManager experienceManager;
 
-    PlayerController playerController;
-    PlayerHealthManager playerHealth;
-
-    void Awake()
+    void Start()
     {
+        //Run on all player objects
+
+        //Gets list of all evolutions on this player
+        evolutions = GetComponentsInChildren<Evolutions>(true).ToList();
+
+        //gets access to exp manager on this player
         experienceManager = GetComponent<ExperienceManager>();
+
+        //Loops through all evolutions on model and looks for active model and sets that as active evolution
+        foreach (var evolution in evolutions)
+        {
+            if (evolution.gameObject.activeSelf)
+            {
+                activeEvolution = evolution;
+                break;
+            }
+        }
+
+        //Run local
         if (photonView.IsMine)
         {
+            //get required components
             playerController = GetComponent<PlayerController>();
-            playerHealth = GetComponent<PlayerHealthManager>();
 
-            currentActiveShootPoint = experienceManager.CurrentEvolution.ShootPoint;
-            playerController.currentAnim = experienceManager.CurrentEvolution.animator;
+            //sets shootPoint and anim of this player to the activeEvolutions
+            currentActiveShootPoint = activeEvolution.ShootPoint;
+            playerController.currentAnim = activeEvolution.animator;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
+
     }
 
+    //called on evolve performed Input (Run locally)
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        //If can evolve change evolution to my next evolution
         if (experienceManager.CanEvolve())
         {
-            ChangeEvolution(experienceManager.NextEvolution);
+            ChangeEvolution(nextEvolution);
         }
     }
 
@@ -40,22 +67,24 @@ public class EvolutionManager : MonoBehaviourPun
     [PunRPC]
     public void Evolve(string currentModelsTag, string nextModelsTag)
     {
-        foreach (var model in models)
+        foreach (var evolution in evolutions)
         {
-            if (model.tag == currentModelsTag)
-                model.SetActive(false);
-            if (model.tag == nextModelsTag)
-                model.SetActive(true);
+            if (evolution.tag == currentModelsTag)
+                evolution.gameObject.SetActive(false);
+            if (evolution.tag == nextModelsTag)
+                evolution.gameObject.SetActive(true);
         }
     }
 
-
     public void ChangeEvolution(Evolutions evolution)
-    {      
-        photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution.Model.tag, experienceManager.NextEvolution.Model.tag);
-        experienceManager.CurrentEvolution = evolution;
-        currentActiveShootPoint = evolution.ShootPoint;
-        playerController.currentAnim = evolution.animator;
-        photonView.RPC("SetHealth", RpcTarget.All, evolution.MaxHealth);
+    {
+        if (photonView.IsMine)
+        {
+            photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
+            activeEvolution = evolution;
+            currentActiveShootPoint = activeEvolution.ShootPoint;
+            playerController.currentAnim = activeEvolution.animator;
+            photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
+        }
     }
 }

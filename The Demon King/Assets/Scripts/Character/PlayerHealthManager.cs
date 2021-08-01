@@ -59,11 +59,9 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            //MAY BECOME QUITE ALOT OF MESHS TO LOOP THOUGH THINK OF A WAY TO JUST GET ACTIVE MESH
-            SkinnedMeshRenderer[] renderer = GetComponentsInChildren<SkinnedMeshRenderer>();
-            foreach (SkinnedMeshRenderer mesh in renderer)
-                mesh.enabled = false;
-
+            GameObject currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>().gameObject;
+            currentActiveEvolution.SetActive(false);
+           
             if (photonView.IsMine)
             {
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
@@ -76,6 +74,8 @@ public class PlayerHealthManager : HealthManager
 
             yield return new WaitForSeconds(3);
 
+            currentActiveEvolution.SetActive(true);
+
             if (photonView.IsMine)
             {
                 player.EnableMovement();
@@ -83,8 +83,6 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
                 experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
             }
-            foreach (SkinnedMeshRenderer mesh in renderer)
-                mesh.enabled = true;
 
             canBeDevoured = false;
             beingDevoured = false;
