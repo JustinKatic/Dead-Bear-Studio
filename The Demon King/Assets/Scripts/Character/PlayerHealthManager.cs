@@ -59,6 +59,9 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
+            GameObject currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>().gameObject;
+            currentActiveEvolution.SetActive(false);
+           
             if (photonView.IsMine)
             {
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
@@ -70,6 +73,8 @@ public class PlayerHealthManager : HealthManager
             }
 
             yield return new WaitForSeconds(3);
+
+            currentActiveEvolution.SetActive(true);
 
             if (photonView.IsMine)
             {

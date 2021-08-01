@@ -7,21 +7,29 @@ using Photon.Pun;
 
 public class EvolutionManager : MonoBehaviourPun
 {
-    [HideInInspector] public Transform currentActiveShootPoint;
-    ExperienceManager experienceManager;
-
+    //List to hold all evolutions
     [HideInInspector] public List<Evolutions> evolutions = new List<Evolutions>();
 
-    PlayerController playerController;
-    PlayerHealthManager playerHealth;
-    private Evolutions activeEvolution;
-    private Evolutions nextEvolution;
-    
+    [HideInInspector] public Evolutions activeEvolution;
+    [HideInInspector] public Evolutions nextEvolution;
+
+    [HideInInspector] public Transform currentActiveShootPoint;
+
+    //Components
+    private PlayerController playerController;
+    private ExperienceManager experienceManager;
+
     void Start()
     {
-        evolutions = GetComponentsInChildren<Evolutions>().ToList();
+        //Run on all player objects
+
+        //Gets list of all evolutions on this player
+        evolutions = GetComponentsInChildren<Evolutions>(true).ToList();
+
+        //gets access to exp manager on this player
         experienceManager = GetComponent<ExperienceManager>();
-        
+
+        //Loops through all evolutions on model and looks for active model and sets that as active evolution
         foreach (var evolution in evolutions)
         {
             if (evolution.gameObject.activeSelf)
@@ -30,12 +38,14 @@ public class EvolutionManager : MonoBehaviourPun
                 break;
             }
         }
-        
+
+        //Run local
         if (photonView.IsMine)
         {
+            //get required components
             playerController = GetComponent<PlayerController>();
-            playerHealth = GetComponent<PlayerHealthManager>();
-            
+
+            //sets shootPoint and anim of this player to the activeEvolutions
             currentActiveShootPoint = activeEvolution.ShootPoint;
             playerController.currentAnim = activeEvolution.animator;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
@@ -43,13 +53,16 @@ public class EvolutionManager : MonoBehaviourPun
 
     }
 
+    //called on evolve performed Input (Run locally)
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        //If can evolve change evolution to my next evolution
         if (experienceManager.CanEvolve())
         {
-            ChangeEvolution(experienceManager.NextEvolution);
+            ChangeEvolution(nextEvolution);
         }
     }
+
 
     [PunRPC]
     public void Evolve(string currentModelsTag, string nextModelsTag)
@@ -62,13 +75,16 @@ public class EvolutionManager : MonoBehaviourPun
                 evolution.gameObject.SetActive(true);
         }
     }
-    
-    public void ChangeEvolution(string evolution)
-    {      
-        photonView.RPC("Evolve", RpcTarget.All, experienceManager.CurrentEvolution, experienceManager.NextEvolution);
-        experienceManager.CurrentEvolution = evolution;
-        currentActiveShootPoint = activeEvolution.ShootPoint;
-        playerController.currentAnim = activeEvolution.animator;
-        photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
+
+    public void ChangeEvolution(Evolutions evolution)
+    {
+        if (photonView.IsMine)
+        {
+            photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
+            activeEvolution = evolution;
+            currentActiveShootPoint = activeEvolution.ShootPoint;
+            playerController.currentAnim = activeEvolution.animator;
+            photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
+        }
     }
 }

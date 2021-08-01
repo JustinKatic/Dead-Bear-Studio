@@ -5,12 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class ExperienceBranch
 {
-    [Header("Evolutions")] 
-    [HideInInspector] public string startingEvo = "StartingEvo";
-    [HideInInspector] public string evo1 = "EvolutionOne";
-    [HideInInspector] public string evo2 = "EvolutionTwo";
-    [HideInInspector] public string branchName;
+    [Header("MY EVOLUTIONS")]
+    public Evolutions Level0Evolution;
+    public Evolutions Level1Evolution;
+    public Evolutions Level2Evolution;
+
 
     [HideInInspector] public bool CanEvolve = false;
-    public ExperienceBar expBar;
+    public ExperienceBar ExpBar;
 }

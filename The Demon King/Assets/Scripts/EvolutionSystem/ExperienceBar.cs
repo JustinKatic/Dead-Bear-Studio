@@ -6,16 +6,17 @@ using UnityEngine.UI;
 [System.Serializable]
 public class ExperienceBar
 {
+    [Header("EXP SLIDER FOR MY TYPE")]
     public Slider expSlider;
 
-    public int CurrentExp;
-    
-    [Header("Experience for Evolutions")]
-    public int MaxExp;
-    public int level1ExpNeeded;
-    public int level2ExpNeeded;
+    [HideInInspector] public int CurrentExp;
 
-    
+    [Header("EXPERIENCE REQUIRED TO EVOLVE")]
+    public IntSO level1ExpNeeded;
+    public IntSO level2ExpNeeded;
+
+
+    //Upates exp bar slider to current 
     public void UpdateExpSlider()
     {
         expSlider.value = CurrentExp;
