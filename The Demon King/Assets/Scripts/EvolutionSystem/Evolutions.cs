@@ -11,8 +11,8 @@ public class Evolutions : MonoBehaviourPun
     public MinionType MyType;
     public int MaxHealth;
 
-    [HideInInspector] public Animator animator;
-    [HideInInspector] public Transform ShootPoint;
+    public Animator animator;
+    public Transform ShootPoint;
 
 
     private void Awake()
@@ -22,7 +22,7 @@ public class Evolutions : MonoBehaviourPun
             //animator on this model
             animator = GetComponent<Animator>();
             //Shoot point on this model
-            ShootPoint = GameObject.FindGameObjectWithTag("shootPoint").transform;
+            ShootPoint = transform.Find("ShootPoint").transform;
         }
     }
 }
