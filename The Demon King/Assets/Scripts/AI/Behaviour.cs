@@ -8,9 +8,9 @@ using UnityEngine.AI;
 public class Behaviour : MonoBehaviourPun
 {
     protected NavMeshAgent agent;
+    [HideInInspector]public GameObject Target;
     protected HealthManager healthManager;
     protected Animator anim;
-    public AISpawner mySpawnAreaManager;
 
     private void Start()
     {

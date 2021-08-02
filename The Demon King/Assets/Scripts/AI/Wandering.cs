@@ -20,7 +20,7 @@ public class Wandering : Behaviour
             {
                 if (wanderPosFound == false)
                 {
-                    dest = mySpawnAreaManager.RandomPoint(mySpawnAreaManager.transform.position, mySpawnAreaManager.RadiusCheck);
+                    dest = RandomPoint(20f);
                     agent.isStopped = false;
                     wanderPosFound = true;
                 }
@@ -38,5 +38,28 @@ public class Wandering : Behaviour
                 agent.ResetPath();
             }
         }
+    }
+
+    public Vector3 RandomPoint(float range)
+    {
+        Vector3 result = Vector3.zero;
+        bool searching = true;
+
+        while (searching)
+        {
+            Vector3 randomPoint = transform.position + Random.insideUnitSphere * range;
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                NavMeshPath path = new NavMeshPath();
+                agent.CalculatePath(hit.position, path);
+                if (path.status == NavMeshPathStatus.PathComplete)
+                {
+                    result = hit.position;
+                    searching = false;
+                }
+            }
+        }
+        return result;
     }
 }
