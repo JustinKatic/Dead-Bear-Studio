@@ -14,6 +14,8 @@ public class Devour : MonoBehaviourPun
     private Camera cam;
     private bool IsDevouring;
 
+    public LayerMask LayersICanDevourer;
+
     private ExperienceManager experienceManager;
 
     [HideInInspector] public PhotonView targetBeingDevouredPV = null;
@@ -69,7 +71,7 @@ public class Devour : MonoBehaviourPun
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
         //Shoots ray from center of screen
-        if (Physics.Raycast(ray, out hit, devourRange))
+        if (Physics.Raycast(ray, out hit, devourRange, LayersICanDevourer))
         {
             //If raycast hits player or minion
             if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion"))

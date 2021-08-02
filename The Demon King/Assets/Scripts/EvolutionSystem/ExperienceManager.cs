@@ -18,9 +18,8 @@ public class ExperienceManager : MonoBehaviourPun
 
     private EvolutionManager evolutionManager;
 
-    private Vector3 RedCurrentScale;
-    private Vector3 BlueCurrentScale;
-    private Vector3 GreenCurrentScale;
+    private Vector3 BaseScale;
+
 
 
     private void Awake()
@@ -28,9 +27,8 @@ public class ExperienceManager : MonoBehaviourPun
         //If local
         if (photonView.IsMine)
         {
-            RedCurrentScale = transform.localScale;
-            GreenCurrentScale = transform.localScale;
-            BlueCurrentScale = transform.localScale;
+            BaseScale = transform.localScale;
+
 
             evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
@@ -93,27 +91,7 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
-    private void ScaleSize(ExperienceBranch branchType, int value)
-    {
-        if (branchType == red)
-        {
-            RedCurrentScale += RedCurrentScale * (value * 0.1f);
-            transform.localScale = RedCurrentScale;
-            Debug.Log("RedCurrentScale" + RedCurrentScale);
-        }
-        else if (branchType == green)
-        {
-            GreenCurrentScale += GreenCurrentScale * (value * 0.1f);
-            transform.localScale = GreenCurrentScale;
-            Debug.Log("GreenCurrentScale" + GreenCurrentScale);
-        }
-        else if (branchType == blue)
-        {
-            BlueCurrentScale += BlueCurrentScale * (value * 0.1f);
-            transform.localScale = BlueCurrentScale;
-            Debug.Log("BlueCurrentScale" + BlueCurrentScale);
-        }
-    }
+    private void ScaleSizeUp(int CurrentExp) => transform.localScale = BaseScale + Vector3.one * CurrentExp * 0.1f;
 
 
     //Update the correct branch based off the given parameters
@@ -125,7 +103,7 @@ public class ExperienceManager : MonoBehaviourPun
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
 
-            ScaleSize(branchType, value);
+            ScaleSizeUp(branchType.ExpBar.CurrentExp);
 
             // if experience is greater than level 2
             if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
@@ -151,6 +129,8 @@ public class ExperienceManager : MonoBehaviourPun
         {
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp - value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
+
+            ScaleSizeUp(branchType.ExpBar.CurrentExp);
 
             //Current exp is less then level 1 required
             if (branchType.ExpBar.CurrentExp < branchType.ExpBar.level1ExpNeeded.value)
