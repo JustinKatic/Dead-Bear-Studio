@@ -18,11 +18,20 @@ public class ExperienceManager : MonoBehaviourPun
 
     private EvolutionManager evolutionManager;
 
+    private Vector3 RedCurrentScale;
+    private Vector3 BlueCurrentScale;
+    private Vector3 GreenCurrentScale;
+
+
     private void Awake()
     {
         //If local
         if (photonView.IsMine)
         {
+            RedCurrentScale = transform.localScale;
+            GreenCurrentScale = transform.localScale;
+            BlueCurrentScale = transform.localScale;
+
             evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
         }
@@ -70,17 +79,39 @@ public class ExperienceManager : MonoBehaviourPun
             green.CanEvolve = false;
             blue.CanEvolve = false;
         }
-        if (branch == green)
+        else if (branch == green)
         {
             red.CanEvolve = false;
             green.CanEvolve = true;
             blue.CanEvolve = false;
         }
-        if (branch == blue)
+        else if (branch == blue)
         {
             red.CanEvolve = false;
             green.CanEvolve = false;
             blue.CanEvolve = true;
+        }
+    }
+
+    private void ScaleSize(ExperienceBranch branchType, int value)
+    {
+        if (branchType == red)
+        {
+            RedCurrentScale += RedCurrentScale * (value * 0.1f);
+            transform.localScale = RedCurrentScale;
+            Debug.Log("RedCurrentScale" + RedCurrentScale);
+        }
+        else if (branchType == green)
+        {
+            GreenCurrentScale += GreenCurrentScale * (value * 0.1f);
+            transform.localScale = GreenCurrentScale;
+            Debug.Log("GreenCurrentScale" + GreenCurrentScale);
+        }
+        else if (branchType == blue)
+        {
+            BlueCurrentScale += BlueCurrentScale * (value * 0.1f);
+            transform.localScale = BlueCurrentScale;
+            Debug.Log("BlueCurrentScale" + BlueCurrentScale);
         }
     }
 
@@ -93,6 +124,8 @@ public class ExperienceManager : MonoBehaviourPun
         {
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
+
+            ScaleSize(branchType, value);
 
             // if experience is greater than level 2
             if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
