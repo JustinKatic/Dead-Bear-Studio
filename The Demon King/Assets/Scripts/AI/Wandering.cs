@@ -4,13 +4,10 @@ using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 
-public class Wandering : MonoBehaviourPun
+public class Wandering : Behaviour
 {
-    private NavMeshAgent agent;
     Vector3 dest;
     private float distanceToDestination = 0;
-    HealthManager healthManager;
-
     private bool wanderPosFound;
 
     private Animator anim;
@@ -26,7 +23,7 @@ public class Wandering : MonoBehaviourPun
     }
 
     // Update is called once per frame
-    void Update()
+    public override void RunBehaviour()
     {
         if (photonView.IsMine)
         {
