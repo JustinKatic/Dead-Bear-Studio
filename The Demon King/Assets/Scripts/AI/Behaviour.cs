@@ -14,12 +14,9 @@ public class Behaviour : MonoBehaviourPun
 
     private void Start()
     {
-        if (photonView.IsMine)
-        {
-            anim = GetComponentInChildren<Animator>();
-            agent = GetComponent<NavMeshAgent>();
-            healthManager = GetComponent<HealthManager>();
-        }    
+        anim = GetComponentInChildren<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        healthManager = GetComponent<HealthManager>();
     }
 
     public virtual void RunBehaviour()

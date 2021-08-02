@@ -10,18 +10,6 @@ public class Wandering : Behaviour
     private float distanceToDestination = 0;
     private bool wanderPosFound;
 
-    private Animator anim;
-
-    public AISpawner mySpawnAreaManager;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        anim = GetComponentInChildren<Animator>();
-        agent = GetComponent<NavMeshAgent>();
-        healthManager = GetComponent<HealthManager>();
-    }
-
     // Update is called once per frame
     public override void RunBehaviour()
     {
