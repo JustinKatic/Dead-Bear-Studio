@@ -11,13 +11,12 @@ public class AIRespawn : MonoBehaviourPun
 
     public float respawnTimer;
 
-    private MeshRenderer mR;
+    public GameObject model;
     private Collider col;
     private Canvas hudCanvas;
 
     void Awake()
     {
-        mR = GetComponent<MeshRenderer>();
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();
     }
@@ -29,7 +28,7 @@ public class AIRespawn : MonoBehaviourPun
 
         IEnumerator ResetPlayer()
         {
-            mR.enabled = false;
+            model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
 
@@ -41,7 +40,7 @@ public class AIRespawn : MonoBehaviourPun
             yield return new WaitForSeconds(respawnTimer);
 
 
-            mR.enabled = true;
+            model.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
         }

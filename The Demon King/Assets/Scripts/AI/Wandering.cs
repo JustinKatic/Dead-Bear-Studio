@@ -12,11 +12,14 @@ public class Wandering : MonoBehaviourPun
     private Vector3 previousDestination;
     HealthManager healthManager;
 
+    private Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
         if (photonView.IsMine)
         {
+            anim = GetComponentInChildren<Animator>();
             agent = GetComponent<NavMeshAgent>();
             healthManager = GetComponent<HealthManager>();
         }
@@ -34,6 +37,7 @@ public class Wandering : MonoBehaviourPun
 
                 if (location == Vector3.zero || previousDestination == location)
                 {
+                    anim.SetBool("Walking", true);
                     location = RandomNavSphere(gameObject.transform.position, 10, -1);
                     agent.SetDestination(location);
                 }
