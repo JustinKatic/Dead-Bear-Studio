@@ -20,12 +20,9 @@ public class Wandering : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        if (photonView.IsMine)
-        {
-            anim = GetComponentInChildren<Animator>();
-            agent = GetComponent<NavMeshAgent>();
-            healthManager = GetComponent<HealthManager>();
-        }
+        anim = GetComponentInChildren<Animator>();
+        agent = GetComponent<NavMeshAgent>();
+        healthManager = GetComponent<HealthManager>();
     }
 
     // Update is called once per frame
