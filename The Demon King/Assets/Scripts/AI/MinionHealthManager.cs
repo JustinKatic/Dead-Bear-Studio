@@ -26,6 +26,9 @@ public class MinionHealthManager : HealthManager
             if (beingDevoured)
                 return;
 
+            if (CurrentHealth <= 0)
+                return;
+
             //Remove health
             CurrentHealth -= damage;
             //Reset health regen timer
@@ -102,22 +105,24 @@ public class MinionHealthManager : HealthManager
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
 
-        foreach (Image healthBar in healthBarsOverhead)
+        if (!photonView.IsMine)
         {
-            Destroy(healthBar.gameObject);
-        }
-        healthBarsOverhead.Clear();
+            foreach (Image healthBar in healthBarsOverhead)
+            {
+                Destroy(healthBar.gameObject);
+            }
+            healthBarsOverhead.Clear();
 
-        //Adds additional health bars to playerhealthBarContainer.
-        for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
-        {
-            Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
-            healthBarsOverhead.Add(healthBar);
+            //Adds additional health bars to playerhealthBarContainer.
+            for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
+            {
+                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
+                healthBarsOverhead.Add(healthBar);
+            }
         }
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        else
+            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
     }
     [PunRPC]

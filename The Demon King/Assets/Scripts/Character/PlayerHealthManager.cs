@@ -125,7 +125,6 @@ public class PlayerHealthManager : HealthManager
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
-
         //Run following if not local player
         if (!photonView.IsMine)
         {
