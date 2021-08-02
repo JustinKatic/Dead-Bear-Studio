@@ -106,23 +106,19 @@ public class MinionHealthManager : HealthManager
         MaxHealth = MaxHealthValue;
 
 
-        if (!photonView.IsMine)
+        foreach (Image healthBar in healthBarsOverhead)
         {
-            foreach (Image healthBar in healthBarsOverhead)
-            {
-                Destroy(healthBar.gameObject);
-            }
-            healthBarsOverhead.Clear();
-
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
-                healthBarsOverhead.Add(healthBar);
-            }
+            Destroy(healthBar.gameObject);
         }
-        else
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        healthBarsOverhead.Clear();
+
+        //Adds additional health bars to playerhealthBarContainer.
+        for (int i = healthBarsOverhead.Count; i < MaxHealthValue; i++)
+        {
+            Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
+            healthBarsOverhead.Add(healthBar);
+        }
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
     }
     [PunRPC]
