@@ -33,12 +33,13 @@ public class AIRespawn : MonoBehaviourPun
             col.enabled = false;
             hudCanvas.enabled = false;
 
-            yield return new WaitForSeconds(respawnTimer);
-
-            if (photonView.IsMine)
+            if (PhotonNetwork.IsMasterClient)
             {
                 transform.position = mySpawnAreaManager.RandomPoint(mySpawnAreaManager.transform.position, mySpawnAreaManager.RadiusCheck);
             }
+
+            yield return new WaitForSeconds(respawnTimer);
+
 
             mR.enabled = true;
             col.enabled = true;
