@@ -22,7 +22,6 @@ public class AISpawner : MonoBehaviour
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
-
                 result = hit.position;
                 searching = false;
             }

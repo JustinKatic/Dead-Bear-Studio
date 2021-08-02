@@ -7,12 +7,15 @@ using Photon.Pun;
 public class Wandering : MonoBehaviourPun
 {
     private NavMeshAgent agent;
-    Vector3 location;
+    Vector3 dest;
     private float distanceToDestination = 0;
-    private Vector3 previousDestination;
     HealthManager healthManager;
 
+    private bool wanderPosFound;
+
     private Animator anim;
+
+    public AISpawner mySpawnAreaManager;
 
     // Start is called before the first frame update
     void Start()
@@ -33,49 +36,25 @@ public class Wandering : MonoBehaviourPun
             //If the AI has not been stunned move to next position
             if (!healthManager.isStunned)
             {
-                distanceToDestination = Vector3.Distance(gameObject.transform.position, location);
-
-                if (location == Vector3.zero || previousDestination == location)
+                if (wanderPosFound == false)
                 {
-                    anim.SetBool("Walking", true);
-                    location = RandomNavSphere(gameObject.transform.position, 10, -1);
-                    agent.SetDestination(location);
+                    dest = mySpawnAreaManager.RandomPoint(mySpawnAreaManager.transform.position, mySpawnAreaManager.RadiusCheck);
+                    agent.isStopped = false;
+                    wanderPosFound = true;
                 }
+                distanceToDestination = Vector3.Distance(gameObject.transform.position, dest);
+                agent.SetDestination(dest);
 
-                if (distanceToDestination <= 1)
-                {
-                    location = RandomNavSphere(gameObject.transform.position, 10, -1);
-                    agent.SetDestination(location);
-                }
-
-                if (agent.velocity == Vector3.zero)
-                {
-                    location = RandomNavSphere(gameObject.transform.position, 10, -1);
-                    agent.SetDestination(location);
-                }
+                if (distanceToDestination <= 2)
+                    wanderPosFound = false;
             }
             else
             {
                 //Sets the position of the next movement to it's current position when stunned
                 anim.SetBool("Walking", false);
-                distanceToDestination = 0;
-                location = transform.position;
-                agent.SetDestination(location);
+                agent.isStopped = true;
+                agent.ResetPath();
             }
         }
-    }
-
-    public static Vector3 RandomNavSphere(Vector3 origin, float distance, int layermask)
-    {
-        Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * distance;
-
-        randomDirection += origin;
-
-        NavMeshHit navHit;
-
-        NavMesh.SamplePosition(randomDirection, out navHit, distance, layermask);
-
-        return navHit.position;
-
     }
 }
