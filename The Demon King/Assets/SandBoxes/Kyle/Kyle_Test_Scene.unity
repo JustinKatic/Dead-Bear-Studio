@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 51ccc6979a873a84e8490b1c6f2d4750, type: 2}
 --- !u!1001 &97903813
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -421,10 +421,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1987348390316115428, guid: d5b58a6fcc351744db9851d016aafe19, type: 3}
-      propertyPath: m_NavMeshData
-      value: 
-      objectReference: {fileID: 23800000, guid: e8171dddc7d007d4da006545baa019aa, type: 2}
     - target: {fileID: 1987348390316115429, guid: d5b58a6fcc351744db9851d016aafe19, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -472,10 +468,6 @@ PrefabInstance:
     - target: {fileID: 1987348390316115432, guid: d5b58a6fcc351744db9851d016aafe19, type: 3}
       propertyPath: m_Name
       value: AI Area Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1987348390316115434, guid: d5b58a6fcc351744db9851d016aafe19, type: 3}
-      propertyPath: RadiusCheck
-      value: 15.1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5b58a6fcc351744db9851d016aafe19, type: 3}
@@ -1185,7 +1177,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!64 &2087583262
 MeshCollider:
@@ -1319,6 +1311,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4195735074294553579, guid: 990427b4fcb3a804e8706e93b35cb427, type: 3}
+      propertyPath: mySpawnAreaManager
+      value: 
+      objectReference: {fileID: 838892554}
     - target: {fileID: 4195735074294553582, guid: 990427b4fcb3a804e8706e93b35cb427, type: 3}
       propertyPath: mySpawnAreaManager
       value: 
@@ -1338,7 +1334,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1534572014928822928, guid: f6ebc60c47e3d954eadb6ad4659bb724, type: 3}
       propertyPath: sceneViewId
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1534572014928822929, guid: f6ebc60c47e3d954eadb6ad4659bb724, type: 3}
       propertyPath: mySpawnAreaManager
@@ -1348,6 +1344,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Blue AI
       objectReference: {fileID: 0}
+    - target: {fileID: 1534572014928822957, guid: f6ebc60c47e3d954eadb6ad4659bb724, type: 3}
+      propertyPath: mySpawnAreaManager
+      value: 
+      objectReference: {fileID: 838892554}
     - target: {fileID: 1534572014928822959, guid: f6ebc60c47e3d954eadb6ad4659bb724, type: 3}
       propertyPath: m_RootOrder
       value: 15
@@ -1445,6 +1445,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1543743510251721906, guid: ac791f3bc0d6252468fab7cd165ed727, type: 3}
+      propertyPath: mySpawnAreaManager
+      value: 
+      objectReference: {fileID: 838892554}
     - target: {fileID: 1543743510251721910, guid: ac791f3bc0d6252468fab7cd165ed727, type: 3}
       propertyPath: mySpawnAreaManager
       value: 
@@ -1455,28 +1459,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1543743510251721929, guid: ac791f3bc0d6252468fab7cd165ed727, type: 3}
       propertyPath: sceneViewId
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac791f3bc0d6252468fab7cd165ed727, type: 3}
---- !u!1 &1650944473985548125 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 479546894948589476, guid: 990427b4fcb3a804e8706e93b35cb427, type: 3}
-  m_PrefabInstance: {fileID: 1175127364741374201}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1650944473985548126
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1650944473985548125}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers: []

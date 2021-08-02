@@ -567,6 +567,7 @@ GameObject:
   - component: {fileID: 1534572014928822930}
   - component: {fileID: 1534572014928822929}
   - component: {fileID: 1534572014928822928}
+  - component: {fileID: 178248207644940885}
   m_Layer: 9
   m_Name: Blue AI
   m_TagString: Minion
@@ -583,7 +584,7 @@ Transform:
   m_GameObject: {fileID: 1534572014928822935}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.1, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1534572014935968441}
   - {fileID: 1534572014454437787}
@@ -611,7 +612,7 @@ NavMeshAgent:
   m_Height: 1.23
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 0
 --- !u!114 &1534572014928822957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -624,6 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f68364df4c8ebee419b6b3f617b6f10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target: {fileID: 0}
 --- !u!114 &1534572014928822956
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -651,6 +653,8 @@ MonoBehaviour:
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0
+  model: {fileID: 1534572014454437786}
+  respawnTimer: 0
 --- !u!114 &1534572014928822931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,7 +715,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4966aee88b9ba3440bfa9f96921017ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpawnAreaManager: {fileID: 0}
   respawnTimer: 3
   model: {fileID: 1534572014454437786}
 --- !u!114 &1534572014928822928
@@ -737,6 +740,19 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &178248207644940885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534572014928822935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f5901d2b22a7964db9e8b1dca38231d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
 --- !u!1 &1534572014935968444
 GameObject:
   m_ObjectHideFlags: 0

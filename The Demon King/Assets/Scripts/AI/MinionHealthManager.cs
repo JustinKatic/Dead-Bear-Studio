@@ -6,14 +6,21 @@ using UnityEngine.UI;
 
 public class MinionHealthManager : HealthManager
 {
-    AIRespawn aiRespawner;
+    public GameObject model;
+    public float respawnTimer;
+    private GameObject[] RespawnPositions;
+    private Collider col;
+    private Canvas hudCanvas;
+
+
 
     void Awake()
     {
-        //statusBar = GetComponentInChildren<Slider>();
+        col = GetComponent<Collider>();
+        hudCanvas = GetComponentInChildren<Canvas>();
+        RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
-        aiRespawner = GetComponent<AIRespawn>();
     }
 
 
@@ -24,6 +31,9 @@ public class MinionHealthManager : HealthManager
         {
             //Return if already being devoured
             if (beingDevoured)
+                return;
+
+            if (CurrentHealth <= 0)
                 return;
 
             //Remove health
@@ -55,7 +65,7 @@ public class MinionHealthManager : HealthManager
 
             yield return new WaitForSeconds(DevourTime);
 
-            aiRespawner.Respawn();
+            Respawn();
 
             if (photonView.IsMine)
             {
@@ -66,6 +76,33 @@ public class MinionHealthManager : HealthManager
             }
         }
     }
+
+    public void Respawn()
+    {
+        StartCoroutine(ResetPlayer());
+
+        IEnumerator ResetPlayer()
+        {
+            model.SetActive(false);
+            col.enabled = false;
+            hudCanvas.enabled = false;
+            canBeDevoured = false;
+
+
+            if (PhotonNetwork.IsMasterClient)
+            {
+                transform.position = RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position;
+            }
+
+            yield return new WaitForSeconds(respawnTimer);
+
+
+            model.SetActive(true);
+            col.enabled = true;
+            hudCanvas.enabled = true;
+        }
+    }
+
     protected override void OnStunStart()
     {
         //Things that affect everyone
@@ -102,8 +139,6 @@ public class MinionHealthManager : HealthManager
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
 
         foreach (Image healthBar in healthBarsOverhead)
         {

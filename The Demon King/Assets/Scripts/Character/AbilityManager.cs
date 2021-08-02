@@ -147,7 +147,6 @@ public class AbilityManager : MonoBehaviourPun
         PrimaryProjectileController projectileScript = createdPrimaryProjectile.GetComponent<PrimaryProjectileController>();
         projectileScript.Initialize(damage, player.id);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
-        Debug.Log((hitPoint - pos).normalized * power);
     }
 
 
