@@ -57,6 +57,7 @@ public class Wandering : MonoBehaviourPun
             else
             {
                 //Sets the position of the next movement to it's current position when stunned
+                anim.SetBool("Walking", false);
                 distanceToDestination = 0;
                 location = transform.position;
                 agent.SetDestination(location);

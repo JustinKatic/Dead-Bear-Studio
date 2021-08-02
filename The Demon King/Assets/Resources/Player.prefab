@@ -7269,6 +7269,24 @@ MonoBehaviour:
   - Type: 1
     SynchronizeType: 1
     Name: InputY
+  - Type: 4
+    SynchronizeType: 0
+    Name: JumpStarted
+  - Type: 4
+    SynchronizeType: 0
+    Name: Falling
+  - Type: 4
+    SynchronizeType: 0
+    Name: HasLanded
+  - Type: 4
+    SynchronizeType: 0
+    Name: Stunned
+  - Type: 4
+    SynchronizeType: 0
+    Name: Devouring
+  - Type: 9
+    SynchronizeType: 0
+    Name: Attack
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -10555,6 +10573,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -5657754888077249182, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 983ce9524d5ac5047892b899f2a5211b, type: 2}
     - target: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
       propertyPath: m_Name
       value: SK_OozeDemon
