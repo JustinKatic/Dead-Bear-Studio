@@ -400,7 +400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f68364df4c8ebee419b6b3f617b6f10c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpawnAreaManager: {fileID: 0}
+  Target: {fileID: 0}
 --- !u!114 &4195735074294553578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,6 +428,8 @@ MonoBehaviour:
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0
+  model: {fileID: 479546894948589476}
+  respawnTimer: 0
 --- !u!114 &4195735074294553580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -488,7 +490,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4966aee88b9ba3440bfa9f96921017ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mySpawnAreaManager: {fileID: 0}
   respawnTimer: 3
   model: {fileID: 479546894948589476}
 --- !u!114 &4195735074294553571
@@ -527,6 +528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f5901d2b22a7964db9e8b1dca38231d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target: {fileID: 0}
 --- !u!1 &4746641771280204373
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,8 +15,7 @@ public class AIRespawn : MonoBehaviourPun
 
     void Awake()
     {
-        col = GetComponent<Collider>();
-        hudCanvas = GetComponentInChildren<Canvas>();
+
         healthManager = GetComponent<HealthManager>();
     }
 

@@ -13,8 +13,9 @@ public class Devour : MonoBehaviourPun
     private HealthManager healthManager;
     private Camera cam;
     private bool IsDevouring;
+    public Transform devourPoint;
 
-    public LayerMask LayersICanDevourer;
+    public LayerMask LayersForDevourToIgnore;
 
     private ExperienceManager experienceManager;
 
@@ -70,12 +71,16 @@ public class Devour : MonoBehaviourPun
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
+
         //Shoots ray from center of screen
-        if (Physics.Raycast(ray, out hit, devourRange, LayersICanDevourer))
+        if (Physics.Raycast(ray, out hit, 20, ~LayersForDevourToIgnore))
         {
             //If raycast hits player or minion
             if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion"))
             {
+                if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
+                    return;
+
                 //Get the healthManager of hit target
                 HealthManager hitPlayerHealth = hit.transform.gameObject.GetComponent<HealthManager>();
 

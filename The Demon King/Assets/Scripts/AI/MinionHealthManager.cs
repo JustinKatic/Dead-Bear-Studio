@@ -16,6 +16,8 @@ public class MinionHealthManager : HealthManager
 
     void Awake()
     {
+        col = GetComponent<Collider>();
+        hudCanvas = GetComponentInChildren<Canvas>();
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);

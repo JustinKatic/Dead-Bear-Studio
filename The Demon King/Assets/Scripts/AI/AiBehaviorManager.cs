@@ -3,8 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Photon.Pun;
 
-public class AiBehaviorManager : MonoBehaviour
+public class AiBehaviorManager : MonoBehaviourPun
 {
     private Wandering wander;
     private ChaseTarget chaseTarget;
@@ -29,23 +30,26 @@ public class AiBehaviorManager : MonoBehaviour
 
     private void Update()
     {
-        //Run the Active Behaviour
-        activeBehaviour.RunBehaviour();
-        
-        //If a player is in my radius change to chasing the target
-        if (CheckIfPlayerIsInMyChaseRadius() && !CheckIfPlayerIsInMyAttackDistance())
+        if (photonView.IsMine)
         {
-            chaseTarget.Target = Target;
-            //ChangeBehaviour(chaseTarget);
-        }
-        else if (CheckIfPlayerIsInMyChaseRadius() && CheckIfPlayerIsInMyAttackDistance())
-        {
-            attack.Target = Target;
-            //ChangeBehaviour(attack);
-        }
-        else if(activeBehaviour != wander)
-        {
-            ChangeBehaviour(wander);
+            //Run the Active Behaviour
+            activeBehaviour.RunBehaviour();
+
+            //If a player is in my radius change to chasing the target
+            if (CheckIfPlayerIsInMyChaseRadius() && !CheckIfPlayerIsInMyAttackDistance())
+            {
+                //chaseTarget.Target = Target;
+                //ChangeBehaviour(chaseTarget);
+            }
+            else if (CheckIfPlayerIsInMyChaseRadius() && CheckIfPlayerIsInMyAttackDistance())
+            {
+                //attack.Target = Target;
+                //ChangeBehaviour(attack);
+            }
+            else if (activeBehaviour != wander)
+            {
+                ChangeBehaviour(wander);
+            }
         }
     }
 
@@ -71,6 +75,8 @@ public class AiBehaviorManager : MonoBehaviour
         }
         return false;
     }
+
+
     bool CheckIfPlayerIsInMyAttackDistance()
     {
         float distanceToTarget = Vector3.Distance(transform.position, Target.transform.position);
