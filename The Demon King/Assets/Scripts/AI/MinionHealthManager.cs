@@ -26,6 +26,9 @@ public class MinionHealthManager : HealthManager
             if (beingDevoured)
                 return;
 
+            if (CurrentHealth <= 0)
+                return;
+
             //Remove health
             CurrentHealth -= damage;
             //Reset health regen timer
@@ -102,8 +105,6 @@ public class MinionHealthManager : HealthManager
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
-        if (CurrentHealth > MaxHealth)
-            CurrentHealth = MaxHealth;
 
         foreach (Image healthBar in healthBarsOverhead)
         {

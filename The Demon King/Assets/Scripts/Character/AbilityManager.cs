@@ -24,8 +24,8 @@ public class AbilityManager : MonoBehaviourPun
     public float primaryProjectileDelay = 0.3f;
     public float secondaryProjectileDelay = 0.7f;
 
-    [Header("InteractableLayers")]
-    public LayerMask PrimaryProjectileLayer;
+    [Header("LayersForRaycastToIgnore")]
+    public LayerMask PrimaryProjectileLayersToIgnore;
     // The physics layer that will cause the line to stop being drawn
     public LayerMask collidableLayers;
 
@@ -126,7 +126,7 @@ public class AbilityManager : MonoBehaviourPun
         RaycastHit hit;
         shootPoint = evolutionManager.currentActiveShootPoint;
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~PrimaryProjectileLayer))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~PrimaryProjectileLayersToIgnore))
         {
             SpawnPrimaryProjectile(shootPoint.position, shootPoint.transform.forward, primaryProjectilePower, hit.point);
             //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
