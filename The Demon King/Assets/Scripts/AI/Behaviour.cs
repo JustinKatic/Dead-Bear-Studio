@@ -11,7 +11,6 @@ public class Behaviour : MonoBehaviourPun
     [HideInInspector]public GameObject Target;
     protected HealthManager healthManager;
     protected Animator anim;
-    public AISpawner mySpawnAreaManager;
 
     private void Start()
     {
