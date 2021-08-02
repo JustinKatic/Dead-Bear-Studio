@@ -6,28 +6,47 @@ using UnityEngine;
 
 public class AiBehaviorManager : MonoBehaviour
 {
-    private List<Behaviour> behaviours = new List<Behaviour>();
+    private Wandering wander;
+    private ChaseTarget chaseTarget;
+    private Attack attack;
+
+    private float radiusCheck = 5;
+    private float attackRange = 1;
+
+    public GameObject Target;
 
     private Behaviour activeBehaviour;
 
     // Start is called before the first frame update
     void Start()
     {
-        behaviours = GetComponentsInChildren<Behaviour>().ToList();
+        wander = GetComponent<Wandering>();
+        chaseTarget = GetComponent<ChaseTarget>();
+        attack = GetComponent<Attack>();
 
-        foreach (var behaviour in behaviours)
-        {
-            if (behaviour.enabled == true)
-            {
-                activeBehaviour = behaviour;
-                return;
-            }
-        }
+        activeBehaviour = wander;
     }
 
     private void Update()
     {
+        //Run the Active Behaviour
         activeBehaviour.RunBehaviour();
+        
+        //If a player is in my radius change to chasing the target
+        if (CheckIfPlayerIsInMyChaseRadius() && !CheckIfPlayerIsInMyAttackDistance())
+        {
+            chaseTarget.Target = Target;
+            //ChangeBehaviour(chaseTarget);
+        }
+        else if (CheckIfPlayerIsInMyChaseRadius() && CheckIfPlayerIsInMyAttackDistance())
+        {
+            attack.Target = Target;
+            //ChangeBehaviour(attack);
+        }
+        else if(activeBehaviour != wander)
+        {
+            ChangeBehaviour(wander);
+        }
     }
 
     void ChangeBehaviour(Behaviour newBehaviour)
@@ -36,6 +55,30 @@ public class AiBehaviorManager : MonoBehaviour
         activeBehaviour = newBehaviour;
         activeBehaviour.enabled = true;
     }
-    
-    
+
+    bool CheckIfPlayerIsInMyChaseRadius()
+    {
+        RaycastHit hit;
+
+        // check with a spherecast if around the AI
+        if (Physics.SphereCast(transform.position, radiusCheck, transform.forward, out hit, 10))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                Target = hit.collider.gameObject;
+                return true;
+            }
+        }
+        return false;
+    }
+    bool CheckIfPlayerIsInMyAttackDistance()
+    {
+        float distanceToTarget = Vector3.Distance(transform.position, Target.transform.position);
+
+        if (distanceToTarget < attackRange)
+        {
+            return true;
+        }
+        return false;
+    }
 }
