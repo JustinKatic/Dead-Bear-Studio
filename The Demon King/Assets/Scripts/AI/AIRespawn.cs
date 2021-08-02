@@ -14,11 +14,13 @@ public class AIRespawn : MonoBehaviourPun
     public GameObject model;
     private Collider col;
     private Canvas hudCanvas;
+    private HealthManager healthManager;
 
     void Awake()
     {
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();
+        healthManager = GetComponent<HealthManager>();
     }
 
 
@@ -31,6 +33,8 @@ public class AIRespawn : MonoBehaviourPun
             model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
+            healthManager.canBeDevoured = false;
+            
 
             if (PhotonNetwork.IsMasterClient)
             {
