@@ -13,7 +13,7 @@ public class MinionHealthManager : HealthManager
     private Canvas hudCanvas;
     public GameObject PlayerWhoShotMe;
 
-    
+
 
     void Awake()
     {

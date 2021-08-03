@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float StepOffset = 0.3f;
 
 
-
     [Header("Components")]
     public CharacterInputs CharacterInputs;
 
@@ -61,7 +60,6 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
             mainCamera = Camera.main;
-
 
             //Set default values
             cc.slopeLimit = SlopeLimit;
