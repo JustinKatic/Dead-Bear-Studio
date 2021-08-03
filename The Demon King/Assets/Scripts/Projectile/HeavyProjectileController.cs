@@ -48,7 +48,7 @@ public class HeavyProjectileController : MonoBehaviourPun
                     //tell the player who was hit to take damage
                     PlayerController player = GameManager.instance.GetPlayer(col.gameObject);
                     if (player.id != attackerId)
-                        player.photonView.RPC("TakeDamage", player.photonPlayer, attackerId, damage);
+                        player.photonView.RPC("TakeDamage", player.photonPlayer, damage);
                 }
                 //tell the minion who was hit to take damage
                 else if (objTag.Equals("Minion"))

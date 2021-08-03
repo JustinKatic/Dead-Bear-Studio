@@ -91,7 +91,7 @@ public class PlayerHealthManager : HealthManager
     }
 
     [PunRPC]
-    public void TakeDamage(int attackerId, int damage)
+    public void TakeDamage(int damage)
     {
         //Runing following if local player
         if (photonView.IsMine)
@@ -106,9 +106,6 @@ public class PlayerHealthManager : HealthManager
             CurrentHealth -= damage;
 
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-
-            //Id of who attacked us
-            curAttackerId = attackerId;
 
             //Reset health regen timer
             HealthRegenTimer = TimeBeforeHealthRegen;

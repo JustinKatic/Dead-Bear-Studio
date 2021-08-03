@@ -27,7 +27,6 @@ public class WanderState : State
         {
             ProvokedState.target = healthManager.PlayerWhoShotMe;
             healthManager.PlayerWhoShotMe = null;
-            Debug.Log("ENTERED PROVOKE");
             return ProvokedState;
         }
         else if (CheckIfAPlayerIsInMyChaseRadius())
