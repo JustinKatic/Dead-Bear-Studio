@@ -8,7 +8,6 @@ public class HeavyProjectileController : MonoBehaviourPun
 {
     private int damage = 1;
     private int attackerId;
-    private bool isMine;
     public LayerMask damageable;
 
     public Rigidbody rb;
@@ -56,7 +55,7 @@ public class HeavyProjectileController : MonoBehaviourPun
                 {
                     //call take damage on the minion that was hit
                     PhotonView hitView = col.gameObject.GetComponent<PhotonView>();
-                    hitView.RPC("TakeDamage", RpcTarget.All, damage);
+                    hitView.RPC("TakeDamage", RpcTarget.All, damage, attackerId);
                 }
             }
             PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);

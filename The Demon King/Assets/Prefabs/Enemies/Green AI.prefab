@@ -158,13 +158,14 @@ GameObject:
   m_Component:
   - component: {fileID: 1543743510251721904}
   - component: {fileID: 1543743510251721907}
-  - component: {fileID: 1543743510251721906}
   - component: {fileID: 1543743510251721909}
   - component: {fileID: 1543743510251721908}
   - component: {fileID: 1543743510251721911}
-  - component: {fileID: 1543743510251721910}
   - component: {fileID: 1543743510251721929}
   - component: {fileID: 7584615679424477363}
+  - component: {fileID: 1543743510251721906}
+  - component: {fileID: 7650524772132138392}
+  - component: {fileID: 6252931584154212507}
   m_Layer: 9
   m_Name: Green AI
   m_TagString: Minion
@@ -210,19 +211,6 @@ NavMeshAgent:
   m_BaseOffset: 1
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 0
---- !u!114 &1543743510251721906
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543743510251721928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f68364df4c8ebee419b6b3f617b6f10c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Target: {fileID: 0}
 --- !u!114 &1543743510251721909
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,20 +288,6 @@ CapsuleCollider:
   m_Height: 1.67
   m_Direction: 1
   m_Center: {x: 0, y: -0.35, z: 0}
---- !u!114 &1543743510251721910
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1543743510251721928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4966aee88b9ba3440bfa9f96921017ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnTimer: 3
-  model: {fileID: 1543743510500648743}
 --- !u!114 &1543743510251721929
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -347,6 +321,45 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5f5901d2b22a7964db9e8b1dca38231d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+--- !u!114 &1543743510251721906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543743510251721928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f68364df4c8ebee419b6b3f617b6f10c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+--- !u!114 &7650524772132138392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543743510251721928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0928dabc731d04a48bdab72ee8dc336d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+--- !u!114 &6252931584154212507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1543743510251721928}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 005e29d384ac4684b900ba1aa4330be8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}

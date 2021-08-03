@@ -7,7 +7,6 @@ public class PrimaryProjectileController : MonoBehaviourPun
 {
     private int damage = 1;
     private int attackerId;
-    private bool isMine;
 
 
     public Rigidbody rb;
@@ -55,7 +54,7 @@ public class PrimaryProjectileController : MonoBehaviourPun
             {
                 //tell the minion who was hit to take damage
                 PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
-                hitView.RPC("TakeDamage", RpcTarget.All, damage);
+                hitView.RPC("TakeDamage", RpcTarget.All, damage, attackerId);
             }
             PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);
