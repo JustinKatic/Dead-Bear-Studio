@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviourPun
     public float CameraAngleOverride = 0.0f;
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
+    public float MouseSensitivity;
 
     private void Awake()
     {
@@ -130,8 +131,8 @@ public class PlayerController : MonoBehaviourPun
         // if there is an input and camera position is not fixed
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
-            _cinemachineTargetYaw += playerLookInput.x * Time.deltaTime;
-            _cinemachineTargetPitch += playerLookInput.y * Time.deltaTime;
+            _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
+            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity*  Time.deltaTime;
         }
 
         // clamp our rotations so our values are limited 360 degrees
