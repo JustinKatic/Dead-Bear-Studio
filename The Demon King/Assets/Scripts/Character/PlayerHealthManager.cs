@@ -61,7 +61,7 @@ public class PlayerHealthManager : HealthManager
         {
             GameObject currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>().gameObject;
             currentActiveEvolution.SetActive(false);
-           
+
             if (photonView.IsMine)
             {
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
@@ -83,6 +83,11 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
                 experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
             }
+            if (gameObject.GetComponentInChildren<Evolutions>().gameObject == null)
+                currentActiveEvolution.SetActive(true);
+
+
+
 
             canBeDevoured = false;
             beingDevoured = false;
