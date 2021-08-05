@@ -11,6 +11,7 @@ public class ExperienceBranch
     public Evolutions Level2Evolution;
 
 
+
     [HideInInspector] public bool CanEvolve = false;
     public ExperienceBar ExpBar;
 }

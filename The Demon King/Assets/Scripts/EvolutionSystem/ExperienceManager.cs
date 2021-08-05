@@ -20,6 +20,8 @@ public class ExperienceManager : MonoBehaviourPun
 
     private Vector3 BaseScale;
 
+    public ExperienceBranch currentBranch;
+
 
 
     private void Awake()
@@ -28,7 +30,6 @@ public class ExperienceManager : MonoBehaviourPun
         if (photonView.IsMine)
         {
             BaseScale = transform.localScale;
-
 
             evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
@@ -91,7 +92,7 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
-    private void ScaleSizeUp(int CurrentExp) => transform.localScale = BaseScale + Vector3.one * CurrentExp * 0.1f;
+    public void ScaleSizeUp(int CurrentExp) => transform.localScale = BaseScale + Vector3.one * CurrentExp * 0.1f;
 
 
     //Update the correct branch based off the given parameters
@@ -103,7 +104,13 @@ public class ExperienceManager : MonoBehaviourPun
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
 
-            ScaleSizeUp(branchType.ExpBar.CurrentExp);
+
+
+            if (branchType == currentBranch)
+                ScaleSizeUp(branchType.ExpBar.CurrentExp);
+
+
+
 
             // if experience is greater than level 2
             if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
@@ -111,6 +118,7 @@ public class ExperienceManager : MonoBehaviourPun
                 if (evolutionManager.activeEvolution != branchType.Level2Evolution)
                 {
                     evolutionManager.nextEvolution = branchType.Level2Evolution;
+                    evolutionManager.nextBranchType = branchType;
                     ChangeEvolutionBools(branchType);
                 }
             }
@@ -120,9 +128,11 @@ public class ExperienceManager : MonoBehaviourPun
                 if (evolutionManager.activeEvolution != branchType.Level1Evolution)
                 {
                     evolutionManager.nextEvolution = branchType.Level1Evolution;
+                    evolutionManager.nextBranchType = branchType;
                     ChangeEvolutionBools(branchType);
                 }
             }
+            
         }
         //If we are losing experience
         else

@@ -12,6 +12,8 @@ public class EvolutionManager : MonoBehaviourPun
 
     [HideInInspector] public Evolutions activeEvolution;
     [HideInInspector] public Evolutions nextEvolution;
+     public ExperienceBranch nextBranchType;
+
 
     [HideInInspector] public Transform currentActiveShootPoint;
 
@@ -82,6 +84,8 @@ public class EvolutionManager : MonoBehaviourPun
         {
             photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
             activeEvolution = evolution;
+            experienceManager.currentBranch = nextBranchType;
+            experienceManager.ScaleSizeUp(nextBranchType.ExpBar.CurrentExp);
             currentActiveShootPoint = activeEvolution.ShootPoint;
             playerController.currentAnim = activeEvolution.animator;
             photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
