@@ -21,9 +21,7 @@ public class ExperienceManager : MonoBehaviourPun
     private Vector3 BaseScale;
 
     public ExperienceBranch currentBranch;
-
-
-
+    
     private void Awake()
     {
         //If local
@@ -103,15 +101,13 @@ public class ExperienceManager : MonoBehaviourPun
         {
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
-
-
-
+            
             if (branchType == currentBranch)
                 ScaleSizeUp(branchType.ExpBar.CurrentExp);
-
-
-
-
+            
+            if (branchType.Level0Evolution.MyType == evolutionManager.activeEvolution.MyType)
+                ScaleSizeUp(branchType.ExpBar.CurrentExp);
+            
             // if experience is greater than level 2
             if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
             {
