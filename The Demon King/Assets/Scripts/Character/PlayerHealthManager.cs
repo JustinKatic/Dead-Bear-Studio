@@ -61,7 +61,7 @@ public class PlayerHealthManager : HealthManager
         {
             GameObject currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>().gameObject;
             currentActiveEvolution.SetActive(false);
-           
+
             if (photonView.IsMine)
             {
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
@@ -83,6 +83,11 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
                 experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
             }
+            if (gameObject.GetComponentInChildren<Evolutions>().gameObject == null)
+                currentActiveEvolution.SetActive(true);
+
+
+
 
             canBeDevoured = false;
             beingDevoured = false;
@@ -91,7 +96,7 @@ public class PlayerHealthManager : HealthManager
     }
 
     [PunRPC]
-    public void TakeDamage(int attackerId, int damage)
+    public void TakeDamage(int damage)
     {
         //Runing following if local player
         if (photonView.IsMine)
@@ -106,9 +111,6 @@ public class PlayerHealthManager : HealthManager
             CurrentHealth -= damage;
 
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-
-            //Id of who attacked us
-            curAttackerId = attackerId;
 
             //Reset health regen timer
             HealthRegenTimer = TimeBeforeHealthRegen;

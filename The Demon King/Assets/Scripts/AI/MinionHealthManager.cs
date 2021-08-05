@@ -11,6 +11,7 @@ public class MinionHealthManager : HealthManager
     private GameObject[] RespawnPositions;
     private Collider col;
     private Canvas hudCanvas;
+    public GameObject PlayerWhoShotMe;
 
 
 
@@ -25,7 +26,7 @@ public class MinionHealthManager : HealthManager
 
 
     [PunRPC]
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, int attackerID)
     {
         if (photonView.IsMine)
         {
@@ -43,6 +44,8 @@ public class MinionHealthManager : HealthManager
 
             //Updates this charcters status bar on all players in network
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+
+            PlayerWhoShotMe = GameManager.instance.GetPlayer(attackerID).gameObject;
 
             //call Stunned() on all player on network if no health left
             if (CurrentHealth <= 0)
@@ -138,7 +141,6 @@ public class MinionHealthManager : HealthManager
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
-
 
         foreach (Image healthBar in healthBarsOverhead)
         {

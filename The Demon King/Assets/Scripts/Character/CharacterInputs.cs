@@ -177,7 +177,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""id"": ""67f3ba4a-c0e4-45a9-85a2-70fe73f8a436"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertX=false)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,

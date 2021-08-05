@@ -1,18 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class Attack : Behaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-}
+//public class Attack : Behaviour
+//{
+//    public override void RunBehaviour()
+//    {
+//        Debug.Log("Im attacking " + Target);
+//    }
+//}

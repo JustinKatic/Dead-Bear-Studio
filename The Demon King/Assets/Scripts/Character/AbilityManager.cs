@@ -129,12 +129,10 @@ public class AbilityManager : MonoBehaviourPun
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~PrimaryProjectileLayersToIgnore))
         {
             SpawnPrimaryProjectile(shootPoint.position, shootPoint.transform.forward, primaryProjectilePower, hit.point);
-            //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, hit.point);
         }
         else
         {
             SpawnPrimaryProjectile(shootPoint.position, shootPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
-            //player.photonView.RPC("SpawnPrimaryProjectile", RpcTarget.All, shotPoint.position, shotPoint.transform.forward, primaryProjectilePower, ray.GetPoint(400f));
         }
     }
 
