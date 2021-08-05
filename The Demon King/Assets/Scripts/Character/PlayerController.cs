@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviourPun
     private float startMoveSpeed;
     private float playerYVelocity;
     private Vector2 playerInputs;
+    private Vector2 playerLookInput;
 
 
     //Player Components
@@ -44,13 +45,24 @@ public class PlayerController : MonoBehaviourPun
 
     private bool isFalling = false;
 
+    [Header("Cinemachine")]
+    [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
+    public GameObject CinemachineCameraTarget;
+    [Tooltip("How far in degrees can you move the camera up")]
+    public float TopClamp = 70.0f;
+    [Tooltip("How far in degrees can you move the camera down")]
+    public float BottomClamp = -30.0f;
+    [Tooltip("Additional degress to override the camera. Useful for fine tuning camera position when locked")]
+    public float CameraAngleOverride = 0.0f;
+    private float _cinemachineTargetYaw;
+    private float _cinemachineTargetPitch;
 
     private void Awake()
     {
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(GetComponentInChildren<CinemachineFreeLook>().gameObject);
+            Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
             gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
         }
         //Run following if local player
@@ -107,6 +119,35 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    {
+        if (lfAngle < -360f) lfAngle += 360f;
+        if (lfAngle > 360f) lfAngle -= 360f;
+        return Mathf.Clamp(lfAngle, lfMin, lfMax);
+    }
+    private void CameraRotation()
+    {
+        // if there is an input and camera position is not fixed
+        if (playerLookInput.sqrMagnitude >= 0.01)
+        {
+            _cinemachineTargetYaw += playerLookInput.x * Time.deltaTime;
+            _cinemachineTargetPitch += playerLookInput.y * Time.deltaTime;
+        }
+
+        // clamp our rotations so our values are limited 360 degrees
+        _cinemachineTargetYaw = ClampAngle(_cinemachineTargetYaw, float.MinValue, float.MaxValue);
+        _cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
+
+        // Cinemachine will follow this target
+        CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
+    }
+
+
+    private void LateUpdate()
+    {
+        CameraRotation();
+    }
+
     private void Update()
     {
         //Run following if local player
@@ -144,6 +185,9 @@ public class PlayerController : MonoBehaviourPun
 
             //Get value from input system for directional movement
             playerInputs = CharacterInputs.Player.Move.ReadValue<Vector2>();
+
+            playerLookInput = CharacterInputs.Player.Look.ReadValue<Vector2>();
+
 
             //Add gravity to player
             playerYVelocity += gravity * Time.deltaTime;
