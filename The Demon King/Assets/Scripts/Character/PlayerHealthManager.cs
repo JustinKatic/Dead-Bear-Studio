@@ -59,8 +59,8 @@ public class PlayerHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            GameObject currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>().gameObject;
-            currentActiveEvolution.SetActive(false);
+            Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
+            currentActiveEvolution?.gameObject.SetActive(false);
 
             if (photonView.IsMine)
             {
@@ -74,8 +74,6 @@ public class PlayerHealthManager : HealthManager
 
             yield return new WaitForSeconds(3);
 
-            currentActiveEvolution.SetActive(true);
-
             if (photonView.IsMine)
             {
                 player.EnableMovement();
@@ -83,8 +81,8 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
                 experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
             }
-            if (gameObject.GetComponentInChildren<Evolutions>().gameObject == null)
-                currentActiveEvolution.SetActive(true);
+            if (gameObject.GetComponentInChildren<Evolutions>() == null)
+                currentActiveEvolution?.gameObject.SetActive(true);
 
 
 
