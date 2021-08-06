@@ -11,6 +11,10 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
     private ExperienceManager experienceManager;
+    [Header("MINION TYPES")]
+    public MinionType redMinion;
+    public MinionType greenMinion;
+    public MinionType blueMinion;
     public int experienceLoss = 2;
 
     void Awake()
@@ -30,6 +34,9 @@ public class PlayerHealthManager : HealthManager
             experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
+        
+        SetMyMinionTypeOnStart();
+
     }
 
     [PunRPC]
@@ -83,10 +90,7 @@ public class PlayerHealthManager : HealthManager
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
-
-
-
-
+            
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
@@ -226,6 +230,23 @@ public class PlayerHealthManager : HealthManager
                 player.currentAnim.SetBool("Stunned", false);
             }
         }
+    }
+
+    private void SetMyMinionTypeOnStart()
+    {
+        List<MinionType> minionTypes = new List<MinionType>();
+        int randomMinionType = 0;
+        
+        //Add available minion types to list
+        minionTypes.Add(redMinion);
+        minionTypes.Add(blueMinion);
+        minionTypes.Add(greenMinion);
+        
+        //Get a random location
+        randomMinionType = Random.Range(0, minionTypes.Count);
+
+        //use random location to get my minion type on start
+        MyMinionType = minionTypes[randomMinionType];
     }
 
 }

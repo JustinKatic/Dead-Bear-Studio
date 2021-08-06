@@ -209,7 +209,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174589706744222170}
   m_LocalRotation: {x: 0.15073387, y: 0.6291408, z: -0.12594306, w: 0.7520636}
-  m_LocalPosition: {x: 1, y: 1.63, z: -1.4122057}
+  m_LocalPosition: {x: 1, y: 1.63, z: -7}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 7219376492991244888}
@@ -6245,6 +6245,9 @@ MonoBehaviour:
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0
+  redMinion: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
+  greenMinion: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
+  blueMinion: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   experienceLoss: 2
 --- !u!114 &2184246549117103819
 MonoBehaviour:
@@ -6295,6 +6298,16 @@ MonoBehaviour:
   evolutions: []
   activeEvolution: {fileID: 0}
   nextEvolution: {fileID: 0}
+  nextBranchType:
+    Level0Evolution: {fileID: 0}
+    Level1Evolution: {fileID: 0}
+    Level2Evolution: {fileID: 0}
+    CanEvolve: 0
+    ExpBar:
+      expSlider: {fileID: 0}
+      CurrentExp: 0
+      level1ExpNeeded: {fileID: 0}
+      level2ExpNeeded: {fileID: 0}
   currentActiveShootPoint: {fileID: 0}
 --- !u!114 &1525102547616031452
 MonoBehaviour:
@@ -6341,6 +6354,16 @@ MonoBehaviour:
   redMinion: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   greenMinion: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   blueMinion: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
+  currentBranch:
+    Level0Evolution: {fileID: 0}
+    Level1Evolution: {fileID: 0}
+    Level2Evolution: {fileID: 0}
+    CanEvolve: 0
+    ExpBar:
+      expSlider: {fileID: 0}
+      CurrentExp: 0
+      level1ExpNeeded: {fileID: 0}
+      level2ExpNeeded: {fileID: 0}
 --- !u!1 &6257699379011065199
 GameObject:
   m_ObjectHideFlags: 0
