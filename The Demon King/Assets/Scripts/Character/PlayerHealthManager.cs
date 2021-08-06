@@ -12,10 +12,9 @@ public class PlayerHealthManager : HealthManager
     private PlayerController player;
     private ExperienceManager experienceManager;
     [Header("MINION TYPES")]
-    public MinionType redMinion;
-    public MinionType greenMinion;
-    public MinionType blueMinion;
     public int experienceLoss = 2;
+    [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
+
 
     void Awake()
     {
@@ -234,15 +233,9 @@ public class PlayerHealthManager : HealthManager
 
     private void SetMyMinionTypeOnStart()
     {
-        List<MinionType> minionTypes = new List<MinionType>();
         int randomMinionType = 0;
-        
-        //Add available minion types to list
-        minionTypes.Add(redMinion);
-        minionTypes.Add(blueMinion);
-        minionTypes.Add(greenMinion);
-        
         //Get a random location
+        
         randomMinionType = Random.Range(0, minionTypes.Count);
 
         //use random location to get my minion type on start

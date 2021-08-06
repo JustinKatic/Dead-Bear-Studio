@@ -31,6 +31,7 @@ public class WanderState : State
         }
         else if (CheckIfAPlayerIsInMyChaseRadius())
         {
+            
             return ChaseState;
         }
         else
@@ -92,6 +93,7 @@ public class WanderState : State
             if (col.CompareTag("Player"))
             {
                 ChaseState.target = col.gameObject;
+                wanderPosFound = false;
                 return true;
             }
         }

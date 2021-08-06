@@ -12,8 +12,7 @@ public class MinionHealthManager : HealthManager
     private Collider col;
     private Canvas hudCanvas;
     public GameObject PlayerWhoShotMe;
-
-
+    public State state;
 
     void Awake()
     {
@@ -22,6 +21,7 @@ public class MinionHealthManager : HealthManager
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
+        //state = GetComponent<State>();
     }
 
 
