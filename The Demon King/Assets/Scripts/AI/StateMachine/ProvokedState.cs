@@ -51,6 +51,7 @@ public class ProvokedState : State
         if (timer >= ChasePlayerForX)
         {
             timer = 0;
+
             return true;
         }
 
