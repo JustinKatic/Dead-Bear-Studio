@@ -21,7 +21,6 @@ public class Devour : MonoBehaviourPun
 
     [HideInInspector] public PhotonView targetBeingDevouredPV = null;
 
-
     private void Awake()
     {
         experienceManager = GetComponent<ExperienceManager>();
