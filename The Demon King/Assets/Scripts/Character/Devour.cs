@@ -21,7 +21,6 @@ public class Devour : MonoBehaviourPun
 
     [HideInInspector] public PhotonView targetBeingDevouredPV = null;
 
-
     private void Awake()
     {
         experienceManager = GetComponent<ExperienceManager>();
@@ -109,12 +108,10 @@ public class Devour : MonoBehaviourPun
                             IsDevouring = false;
                             playerController.EnableMovement();
                             targetBeingDevouredPV = null;
-
-                            if (hitPlayerHealth.MyMinionType != null)
-                            {
-                                healthManager.MyMinionType = hitPlayerHealth.MyMinionType;
-                                experienceManager.AddExpereince(healthManager.MyMinionType, hitPlayerHealth.ExperienceValue);
-                            }
+                            
+                            healthManager.MyMinionType = hitPlayerHealth.MyMinionType;
+                            experienceManager.AddExpereince(healthManager.MyMinionType, hitPlayerHealth.ExperienceValue);
+                            
                         }
                     }
                 }

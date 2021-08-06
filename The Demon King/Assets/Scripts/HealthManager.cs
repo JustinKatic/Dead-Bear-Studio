@@ -46,6 +46,7 @@ public class HealthManager : MonoBehaviourPun
 
     protected IEnumerator myDevourCo;
     
+    
     private void Update()
     {
         //Run following if local player
