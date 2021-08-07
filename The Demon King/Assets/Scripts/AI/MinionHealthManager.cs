@@ -21,7 +21,9 @@ public class MinionHealthManager : HealthManager
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
-        //state = GetComponent<State>();
+
+        if (photonView.IsMine)
+            Debug.Log("test");
     }
 
 
