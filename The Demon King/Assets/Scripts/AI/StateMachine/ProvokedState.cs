@@ -28,7 +28,7 @@ public class ProvokedState : State
         {
             return ChaseState;
         }
-        else if (HasBeenChasingPlayerForX())
+        else if (HasBeenChasingPlayerForX() || target.gameObject == null)
         {
             return WanderState;
         }

@@ -17,7 +17,7 @@ public class ChaseState : State
         {
             return StunnedState;
         }
-        else if (CheckIfPlayerLeftChaseDistance())
+        else if (CheckIfPlayerLeftChaseDistance() || target.gameObject == null)
         {
             return WanderState;
         }

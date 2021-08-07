@@ -55,7 +55,6 @@ public class EvolutionManager : MonoBehaviourPun
             playerController.currentAnim = activeEvolution.animator;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
-
     }
 
     //called on evolve performed Input (Run locally)
