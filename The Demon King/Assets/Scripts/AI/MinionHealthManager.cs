@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class MinionHealthManager : HealthManager
 {
@@ -13,6 +14,7 @@ public class MinionHealthManager : HealthManager
     private Canvas hudCanvas;
     public GameObject PlayerWhoShotMe;
     public State state;
+    private NavMeshAgent agent;
 
     void Awake()
     {
@@ -21,9 +23,7 @@ public class MinionHealthManager : HealthManager
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
-
-        if (photonView.IsMine)
-            Debug.Log("test");
+        agent = GetComponent<NavMeshAgent>();
     }
 
 
@@ -91,7 +91,7 @@ public class MinionHealthManager : HealthManager
 
             if (PhotonNetwork.IsMasterClient)
             {
-                transform.position = RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position;
+                agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
             yield return new WaitForSeconds(respawnTimer);

@@ -34,7 +34,6 @@ public class PlayerHealthManager : HealthManager
         }
 
         SetMyMinionTypeOnStart();
-
     }
 
     [PunRPC]

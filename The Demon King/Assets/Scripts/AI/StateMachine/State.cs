@@ -15,6 +15,6 @@ public abstract class State : MonoBehaviour
     {
         agent = GetComponentInParent<NavMeshAgent>();
         healthManager = GetComponentInParent<MinionHealthManager>();
-        anim = GetComponentInParent<Animator>();
+        anim = GetComponentInParent<Animator>();       
     }
 }
