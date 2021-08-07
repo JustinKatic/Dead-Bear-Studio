@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Cinemachine;
 
 public class ExperienceManager : MonoBehaviourPun
 {
+    [Header("Modifible stats")]
+    public float ScaleAmount = 0.1f;
+    public float CamDistanceIncreaseAmount = .5f;
+
+
     [Header("EVOLUTION TYPES")]
     public ExperienceBranch green;
     public ExperienceBranch red;
@@ -18,10 +24,13 @@ public class ExperienceManager : MonoBehaviourPun
     private EvolutionManager evolutionManager;
 
     private Vector3 BaseScale;
+    private float baseCamDist;
 
     [HideInInspector] public ExperienceBranch currentBranch;
 
     [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
+
+    private Cinemachine3rdPersonFollow vCam;
 
     private HealthManager healthManager;
 
@@ -32,7 +41,10 @@ public class ExperienceManager : MonoBehaviourPun
         //If local
         if (photonView.IsMine)
         {
+            vCam = gameObject.GetComponentInChildren<Cinemachine3rdPersonFollow>();
             BaseScale = transform.localScale;
+            baseCamDist = vCam.CameraDistance;
+
             evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
             SetStartingActiveEvolution();
@@ -132,7 +144,12 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
-    public void ScaleSizeUp(int CurrentExp) => transform.localScale = BaseScale + Vector3.one * CurrentExp * 0.1f;
+    public void ScaleSizeUp(int CurrentExp)
+    {
+        transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
+        if (CurrentExp >= 1)
+            vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
+    }
 
 
     //Update the correct branch based off the given parameters
