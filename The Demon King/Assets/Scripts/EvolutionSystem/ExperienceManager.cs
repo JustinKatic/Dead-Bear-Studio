@@ -54,7 +54,7 @@ public class ExperienceManager : MonoBehaviourPun
     private void Start()
     {
         if (photonView.IsMine)
-            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution,false);
     }
 
     private void SetMyMinionTypeOnStart()
@@ -195,7 +195,7 @@ public class ExperienceManager : MonoBehaviourPun
                 {
                     evolutionManager.nextEvolution = branchType.Level0Evolution;
                     evolutionManager.nextBranchType = branchType;
-                    evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+                    evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
                 }
             }
 
@@ -213,13 +213,13 @@ public class ExperienceManager : MonoBehaviourPun
             {
                 //Will need to be changed to Concat once All oozes added
                 evolutionManager.nextEvolution = branchType.Level0Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
             }
             //Current exp is less then level 2 required
             else if (branchType.ExpBar.CurrentExp < branchType.ExpBar.level2ExpNeeded.value)
             {
                 evolutionManager.nextEvolution = branchType.Level1Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
             }
         }
     }

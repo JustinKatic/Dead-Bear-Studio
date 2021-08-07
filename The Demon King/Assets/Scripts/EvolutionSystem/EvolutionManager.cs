@@ -21,6 +21,10 @@ public class EvolutionManager : MonoBehaviourPun
     private PlayerController playerController;
     private ExperienceManager experienceManager;
 
+    public GameObject EvolveVFX;
+
+    private IEnumerator EvolveCo;
+
     private void Awake()
     {
         //Gets list of all evolutions on this player
@@ -63,7 +67,7 @@ public class EvolutionManager : MonoBehaviourPun
         //If can evolve change evolution to my next evolution
         if (experienceManager.CanEvolve())
         {
-            ChangeEvolution(nextEvolution);
+            ChangeEvolution(nextEvolution, true);
         }
     }
 
@@ -80,10 +84,37 @@ public class EvolutionManager : MonoBehaviourPun
         }
     }
 
-    public void ChangeEvolution(Evolutions evolution)
+    [PunRPC]
+    void EvolutionVFX(bool enabled)
     {
-        if (photonView.IsMine)
+        if (enabled)
+            EvolveVFX.SetActive(true);
+        else
+            EvolveVFX.SetActive(false);
+    }
+
+    public void ChangeEvolution(Evolutions evolution, bool ShouldPlayTransition)
+    {
+        EvolveCo = ChangeEvolve();
+        StartCoroutine(EvolveCo);
+
+        IEnumerator ChangeEvolve()
         {
+            if (ShouldPlayTransition)
+            {
+                photonView.RPC("EvolutionVFX", RpcTarget.All, true);
+                playerController.DisableMovement();
+            }
+
+
+            yield return new WaitForSeconds(3);
+
+            if (ShouldPlayTransition)
+            {
+                photonView.RPC("EvolutionVFX", RpcTarget.All, false);
+                playerController.EnableMovement();
+            }
+
             photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
             activeEvolution = evolution;
             experienceManager.currentBranch = nextBranchType;
@@ -91,6 +122,8 @@ public class EvolutionManager : MonoBehaviourPun
             currentActiveShootPoint = activeEvolution.ShootPoint;
             playerController.currentAnim = activeEvolution.animator;
             photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
+
         }
+
     }
 }

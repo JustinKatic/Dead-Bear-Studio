@@ -30,9 +30,7 @@ public class PlayerHealthManager : HealthManager
             player = GetComponent<PlayerController>();
             experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
-        }
-
-        
+        }       
     }
 
     [PunRPC]
