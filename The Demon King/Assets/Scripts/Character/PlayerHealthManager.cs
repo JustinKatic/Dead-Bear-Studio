@@ -18,7 +18,6 @@ public class PlayerHealthManager : HealthManager
 
     void Awake()
     {
-
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -41,13 +40,13 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     void OnDevour()
     {
-
-
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
         IEnumerator DevourCorutine()
         {
+            canBeDevoured = false;
+
             if (photonView.IsMine)
             {
                 beingDevoured = true;
@@ -238,10 +237,8 @@ public class PlayerHealthManager : HealthManager
 
     private void SetMyMinionTypeOnStart()
     {
-        int randomMinionType = 0;
         //Get a random location
-
-        randomMinionType = Random.Range(0, minionTypes.Count);
+        int randomMinionType = Random.Range(0, minionTypes.Count);
 
         //use random location to get my minion type on start
         MyMinionType = minionTypes[randomMinionType];

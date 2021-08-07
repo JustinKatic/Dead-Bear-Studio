@@ -61,10 +61,11 @@ public class MinionHealthManager : HealthManager
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
-        canBeDevoured = false;
 
         IEnumerator DevourCorutine()
         {
+            canBeDevoured = false;
+
             if (photonView.IsMine)
             {
                 beingDevoured = true;

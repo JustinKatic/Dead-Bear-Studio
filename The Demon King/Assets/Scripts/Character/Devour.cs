@@ -86,16 +86,14 @@ public class Devour : MonoBehaviourPun
                 //check if the target can be devoured
                 if (hitPlayerHealth.canBeDevoured)
                 {
-                    //Get the photon view of hit target
-                    targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
-
-                    //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-                    targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
-
                     //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
                     IEnumerator DevourCorutine()
                     {
+                        //Get the photon view of hit target
+                        targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
+                        //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
+                        targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
                         IsDevouring = true;
                         playerController.currentAnim.SetBool("Devouring", true);
                         playerController.DisableMovement();
@@ -108,10 +106,10 @@ public class Devour : MonoBehaviourPun
                             IsDevouring = false;
                             playerController.EnableMovement();
                             targetBeingDevouredPV = null;
-                            
+
                             healthManager.MyMinionType = hitPlayerHealth.MyMinionType;
                             experienceManager.AddExpereince(healthManager.MyMinionType, hitPlayerHealth.ExperienceValue);
-                            
+
                         }
                     }
                 }
