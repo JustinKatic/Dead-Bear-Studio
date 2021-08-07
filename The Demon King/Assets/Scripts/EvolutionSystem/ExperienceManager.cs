@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,19 +19,63 @@ public class ExperienceManager : MonoBehaviourPun
 
     private Vector3 BaseScale;
 
-    public ExperienceBranch currentBranch;
-    
+    [HideInInspector] public ExperienceBranch currentBranch;
+
+    [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
+
+    private HealthManager healthManager;
+
     private void Awake()
     {
+        healthManager = GetComponent<HealthManager>();
+        SetMyMinionTypeOnStart();
         //If local
         if (photonView.IsMine)
         {
             BaseScale = transform.localScale;
-
             evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
+            SetStartingActiveEvolution();
         }
     }
+
+    private void Start()
+    {
+        if (photonView.IsMine)
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+    }
+
+    private void SetMyMinionTypeOnStart()
+    {
+        //Get a random location
+        int randomMinionType = Random.Range(0, minionTypes.Count);
+
+        //use random location to get my minion type on start
+        healthManager.MyMinionType = minionTypes[randomMinionType];
+    }
+
+    void SetStartingActiveEvolution()
+    {
+        if (healthManager.MyMinionType == redMinion)
+        {
+            evolutionManager.activeEvolution = red.Level0Evolution;
+            evolutionManager.nextBranchType = red;
+            evolutionManager.nextEvolution = red.Level0Evolution;
+        }
+        else if (healthManager.MyMinionType == blueMinion)
+        {
+            evolutionManager.activeEvolution = blue.Level0Evolution;
+            evolutionManager.nextBranchType = blue;
+            evolutionManager.nextEvolution = blue.Level0Evolution;
+        }
+        else if (healthManager.MyMinionType == greenMinion)
+        {
+            evolutionManager.activeEvolution = green.Level0Evolution;
+            evolutionManager.nextBranchType = green;
+            evolutionManager.nextEvolution = green.Level0Evolution;
+        }
+    }
+
     //This runs inside the evolution Manager when the evolution button has been pressed
     public bool CanEvolve()
     {
@@ -62,7 +105,6 @@ public class ExperienceManager : MonoBehaviourPun
 
         green.ExpBar.expSlider.maxValue = green.ExpBar.level2ExpNeeded.value;
         green.ExpBar.expSlider.value = green.ExpBar.CurrentExp;
-
     }
 
 
@@ -101,13 +143,13 @@ public class ExperienceManager : MonoBehaviourPun
         {
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
-            
+
             if (branchType == currentBranch)
                 ScaleSizeUp(branchType.ExpBar.CurrentExp);
-            
+
             if (branchType.Level0Evolution.MyType == evolutionManager.activeEvolution.MyType)
                 ScaleSizeUp(branchType.ExpBar.CurrentExp);
-            
+
             // if experience is greater than level 2
             if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
             {
@@ -128,7 +170,18 @@ public class ExperienceManager : MonoBehaviourPun
                     ChangeEvolutionBools(branchType);
                 }
             }
-            
+            //if experince is less then level 1
+            else
+            {
+                if (evolutionManager.activeEvolution != red.Level1Evolution && evolutionManager.activeEvolution != blue.Level1Evolution && evolutionManager.activeEvolution != green.Level1Evolution
+                    && evolutionManager.activeEvolution != blue.Level2Evolution && evolutionManager.activeEvolution != blue.Level2Evolution && evolutionManager.activeEvolution != blue.Level2Evolution)
+                {
+                    evolutionManager.nextEvolution = branchType.Level0Evolution;
+                    evolutionManager.nextBranchType = branchType;
+                    evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+                }
+            }
+
         }
         //If we are losing experience
         else

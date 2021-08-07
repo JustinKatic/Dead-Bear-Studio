@@ -13,7 +13,6 @@ public class PlayerHealthManager : HealthManager
     private ExperienceManager experienceManager;
     [Header("MINION TYPES")]
     public int experienceLoss = 2;
-    [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
 
 
     void Awake()
@@ -33,7 +32,7 @@ public class PlayerHealthManager : HealthManager
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
 
-        SetMyMinionTypeOnStart();
+        
     }
 
     [PunRPC]
@@ -234,13 +233,6 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    private void SetMyMinionTypeOnStart()
-    {
-        //Get a random location
-        int randomMinionType = Random.Range(0, minionTypes.Count);
 
-        //use random location to get my minion type on start
-        MyMinionType = minionTypes[randomMinionType];
-    }
 
 }

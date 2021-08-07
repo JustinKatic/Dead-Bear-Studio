@@ -12,7 +12,7 @@ public class EvolutionManager : MonoBehaviourPun
 
     [HideInInspector] public Evolutions activeEvolution;
     [HideInInspector] public Evolutions nextEvolution;
-     public ExperienceBranch nextBranchType;
+    [HideInInspector] public ExperienceBranch nextBranchType;
 
 
     [HideInInspector] public Transform currentActiveShootPoint;
@@ -21,15 +21,18 @@ public class EvolutionManager : MonoBehaviourPun
     private PlayerController playerController;
     private ExperienceManager experienceManager;
 
-    void Start()
+    private void Awake()
     {
-        //Run on all player objects
-
         //Gets list of all evolutions on this player
         evolutions = GetComponentsInChildren<Evolutions>(true).ToList();
 
         //gets access to exp manager on this player
         experienceManager = GetComponent<ExperienceManager>();
+    }
+
+    void Start()
+    {
+        //Run on all player objects
 
         //Loops through all evolutions on model and looks for active model and sets that as active evolution
         foreach (var evolution in evolutions)
