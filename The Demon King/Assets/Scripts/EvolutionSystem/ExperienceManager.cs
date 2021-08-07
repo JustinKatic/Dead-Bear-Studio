@@ -191,7 +191,7 @@ public class ExperienceManager : MonoBehaviourPun
             else
             {
                 if (evolutionManager.activeEvolution != red.Level1Evolution && evolutionManager.activeEvolution != blue.Level1Evolution && evolutionManager.activeEvolution != green.Level1Evolution
-                    && evolutionManager.activeEvolution != blue.Level2Evolution && evolutionManager.activeEvolution != blue.Level2Evolution && evolutionManager.activeEvolution != blue.Level2Evolution)
+                    && evolutionManager.activeEvolution != blue.Level2Evolution && evolutionManager.activeEvolution != red.Level2Evolution && evolutionManager.activeEvolution != green.Level2Evolution)
                 {
                     evolutionManager.nextEvolution = branchType.Level0Evolution;
                     evolutionManager.nextBranchType = branchType;
