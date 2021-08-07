@@ -59,6 +59,8 @@ public class MinionHealthManager : HealthManager
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
+        canBeDevoured = false;
+
         IEnumerator DevourCorutine()
         {
             if (photonView.IsMine)
@@ -69,14 +71,6 @@ public class MinionHealthManager : HealthManager
             yield return new WaitForSeconds(DevourTime);
 
             Respawn();
-
-            if (photonView.IsMine)
-            {
-                CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                isStunned = false;
-                beingDevoured = false;
-            }
         }
     }
 
@@ -89,7 +83,7 @@ public class MinionHealthManager : HealthManager
             model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
-            canBeDevoured = false;
+
 
 
             if (PhotonNetwork.IsMasterClient)
@@ -100,9 +94,17 @@ public class MinionHealthManager : HealthManager
             yield return new WaitForSeconds(respawnTimer);
 
 
+            if (photonView.IsMine)
+            {
+                CurrentHealth = MaxHealth;
+                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+                beingDevoured = false;
+            }
             model.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
+            canBeDevoured = false;
+            isStunned = false;
         }
     }
 

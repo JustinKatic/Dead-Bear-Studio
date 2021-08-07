@@ -33,7 +33,7 @@ public class PlayerHealthManager : HealthManager
             experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
-        
+
         SetMyMinionTypeOnStart();
 
     }
@@ -41,19 +41,24 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     void OnDevour()
     {
-        if (!photonView.IsMine)
-            return;
+
 
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
         IEnumerator DevourCorutine()
         {
-            beingDevoured = true;
+            if (photonView.IsMine)
+            {
+                beingDevoured = true;
+            }
 
             yield return new WaitForSeconds(DevourTime);
 
-            photonView.RPC("Respawn", RpcTarget.All);
+            if (photonView.IsMine)
+            {
+                photonView.RPC("Respawn", RpcTarget.All);
+            }
         }
     }
 
@@ -89,7 +94,7 @@ public class PlayerHealthManager : HealthManager
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
-            
+
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
@@ -235,7 +240,7 @@ public class PlayerHealthManager : HealthManager
     {
         int randomMinionType = 0;
         //Get a random location
-        
+
         randomMinionType = Random.Range(0, minionTypes.Count);
 
         //use random location to get my minion type on start
