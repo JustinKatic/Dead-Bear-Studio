@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
+using UnityEngine.UI;
 
 public class ExperienceManager : MonoBehaviourPun
 {
     [Header("Modifible stats")]
     public float ScaleAmount = 0.1f;
     public float CamDistanceIncreaseAmount = .5f;
-
 
     [Header("EVOLUTION TYPES")]
     public ExperienceBranch green;
@@ -33,6 +33,8 @@ public class ExperienceManager : MonoBehaviourPun
     private Cinemachine3rdPersonFollow vCam;
 
     private HealthManager healthManager;
+
+
 
     private void Awake()
     {
@@ -73,18 +75,24 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.activeEvolution = red.Level0Evolution;
             evolutionManager.nextBranchType = red;
             evolutionManager.nextEvolution = red.Level0Evolution;
+            red.ExpBar.ActiveExpBarBackground.SetActive(true);
+            red.ExpBar.UnActiveExpBarBackground.SetActive(false);
         }
         else if (healthManager.MyMinionType == blueMinion)
         {
             evolutionManager.activeEvolution = blue.Level0Evolution;
             evolutionManager.nextBranchType = blue;
             evolutionManager.nextEvolution = blue.Level0Evolution;
+            blue.ExpBar.ActiveExpBarBackground.SetActive(true);
+            blue.ExpBar.UnActiveExpBarBackground.SetActive(false);
         }
         else if (healthManager.MyMinionType == greenMinion)
         {
             evolutionManager.activeEvolution = green.Level0Evolution;
             evolutionManager.nextBranchType = green;
             evolutionManager.nextEvolution = green.Level0Evolution;
+            green.ExpBar.ActiveExpBarBackground.SetActive(true);
+            green.ExpBar.UnActiveExpBarBackground.SetActive(false);
         }
     }
 
