@@ -7,9 +7,11 @@ using Photon.Pun;
 
 public class EvolutionManager : MonoBehaviourPun
 {
+    [Header("Modifiable stats")]
+    public float TimeToEvolve = 3f;
+
     //List to hold all evolutions
     [HideInInspector] public List<Evolutions> evolutions = new List<Evolutions>();
-
     [HideInInspector] public Evolutions activeEvolution;
     [HideInInspector] public Evolutions nextEvolution;
     [HideInInspector] public ExperienceBranch nextBranchType;
@@ -23,7 +25,7 @@ public class EvolutionManager : MonoBehaviourPun
 
     public GameObject EvolveVFX;
 
-    private IEnumerator EvolveCo;
+    private IEnumerator changeEvolutionCo;
 
     private void Awake()
     {
@@ -95,35 +97,37 @@ public class EvolutionManager : MonoBehaviourPun
 
     public void ChangeEvolution(Evolutions evolution, bool ShouldPlayTransition)
     {
-        EvolveCo = ChangeEvolve();
-        StartCoroutine(EvolveCo);
-
-        IEnumerator ChangeEvolve()
+        if (ShouldPlayTransition)
         {
-            if (ShouldPlayTransition)
-            {
-                photonView.RPC("EvolutionVFX", RpcTarget.All, true);
-                playerController.DisableMovement();
-            }
-
-
-            yield return new WaitForSeconds(3);
-
-            if (ShouldPlayTransition)
-            {
-                photonView.RPC("EvolutionVFX", RpcTarget.All, false);
-                playerController.EnableMovement();
-            }
-
-            photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
-            activeEvolution = evolution;
-            experienceManager.currentBranch = nextBranchType;
-            experienceManager.ScaleSizeUp(nextBranchType.ExpBar.CurrentExp);
-            currentActiveShootPoint = activeEvolution.ShootPoint;
-            playerController.currentAnim = activeEvolution.animator;
-            photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
-
+            photonView.RPC("EvolutionVFX", RpcTarget.All, true);
+            playerController.DisableMovement();
+            changeEvolutionCo = ChangeEvolutionAfterX();
+            StartCoroutine(changeEvolutionCo);
+        }
+        else
+        {
+            SwapEvolution(evolution);
         }
 
+        IEnumerator ChangeEvolutionAfterX()
+        {
+            yield return new WaitForSeconds(TimeToEvolve);
+            photonView.RPC("EvolutionVFX", RpcTarget.All, false);
+            playerController.EnableMovement();
+
+            SwapEvolution(evolution);
+        }
+    }
+
+
+    void SwapEvolution(Evolutions evolution)
+    {
+        photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
+        activeEvolution = evolution;
+        experienceManager.currentBranch = nextBranchType;
+        experienceManager.ScaleSizeUp(nextBranchType.ExpBar.CurrentExp);
+        currentActiveShootPoint = activeEvolution.ShootPoint;
+        playerController.currentAnim = activeEvolution.animator;
+        photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
     }
 }
