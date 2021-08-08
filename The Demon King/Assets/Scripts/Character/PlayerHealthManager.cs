@@ -11,8 +11,9 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
     private ExperienceManager experienceManager;
-    [Header("MINION TYPES")]
     public int experienceLoss = 2;
+    public GameObject StunVFX;
+
 
 
     void Awake()
@@ -30,7 +31,7 @@ public class PlayerHealthManager : HealthManager
             player = GetComponent<PlayerController>();
             experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
-        }       
+        }
     }
 
     [PunRPC]
@@ -70,12 +71,17 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                photonView.RPC("StunRPC", RpcTarget.All, false);
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
+            }
+            else
+            {
+                overheadHealthBar.enabled = false;
             }
 
             yield return new WaitForSeconds(3);
@@ -86,6 +92,10 @@ public class PlayerHealthManager : HealthManager
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
                 experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
+            }
+            else
+            {
+                overheadHealthBar.enabled = true;
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
@@ -198,6 +208,15 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+    [PunRPC]
+    void StunRPC(bool start)
+    {
+        if (start)
+            StunVFX.SetActive(true);
+        else
+            StunVFX.SetActive(false);
+    }
+
     protected override void OnStunStart()
     {
         //Things that affect everyone
@@ -206,6 +225,7 @@ public class PlayerHealthManager : HealthManager
         //Things that only affect local
         if (photonView.IsMine)
         {
+            photonView.RPC("StunRPC", RpcTarget.All, true);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
@@ -223,6 +243,7 @@ public class PlayerHealthManager : HealthManager
             //Things that only affect local
             if (photonView.IsMine)
             {
+                photonView.RPC("StunRPC", RpcTarget.All, false);
                 isStunned = false;
                 player.EnableMovement();
                 Heal(1);
