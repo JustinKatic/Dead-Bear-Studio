@@ -11,8 +11,8 @@ public class Evolutions : MonoBehaviourPun
     public MinionType MyType;
     public int MaxHealth;
 
-    public Animator animator;
-    public Transform ShootPoint;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public Transform ShootPoint;
 
 
     private void Awake()
