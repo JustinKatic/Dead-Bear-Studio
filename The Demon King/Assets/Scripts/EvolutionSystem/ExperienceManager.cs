@@ -54,7 +54,7 @@ public class ExperienceManager : MonoBehaviourPun
     private void Start()
     {
         if (photonView.IsMine)
-            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution,false);
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
 
     private void SetMyMinionTypeOnStart()
@@ -94,16 +94,18 @@ public class ExperienceManager : MonoBehaviourPun
         //Check if I can evolve into any of these types is yes reset can evolve and return true else return false
         if (red.CanEvolve || blue.CanEvolve || green.CanEvolve)
         {
-            //Player has evolved, can not evolve again
-            red.CanEvolve = false;
-            blue.CanEvolve = false;
-            green.CanEvolve = false;
             return true;
         }
         return false;
     }
 
-
+    public void SetCanEvolveFalse()
+    {
+        //Player has evolved, can not evolve again
+        red.CanEvolve = false;
+        blue.CanEvolve = false;
+        green.CanEvolve = false;
+    }
 
 
     //Set sliders max and current values called locally in Awake()
@@ -122,7 +124,7 @@ public class ExperienceManager : MonoBehaviourPun
 
 
     //Sets can evolve based of branch type passed in
-    void ChangeEvolutionBools(ExperienceBranch branch)
+    public void ChangeEvolutionBools(ExperienceBranch branch)
     {
         if (branch == red)
         {
