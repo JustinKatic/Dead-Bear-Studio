@@ -37,8 +37,6 @@ public class ExperienceManager : MonoBehaviourPun
     private HealthManager healthManager;
 
 
-
-
     private void Awake()
     {
         healthManager = GetComponent<HealthManager>();
@@ -97,7 +95,28 @@ public class ExperienceManager : MonoBehaviourPun
         evolutionManager.nextBranchType = branchType;
         evolutionManager.nextEvolution = branchType.Level0Evolution;
         branchType.ExpBar.ActiveExpBarBackground.SetActive(true);
-        branchType.ExpBar.UnActiveExpBarBackground.SetActive(false);
+    }
+
+    void UpdateActiveBranchUI(ExperienceBranch branchType)
+    {
+        if (branchType == red)
+        {
+            red.ExpBar.ActiveExpBarBackground.SetActive(true);
+            green.ExpBar.ActiveExpBarBackground.SetActive(false);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
+        }
+        else if (branchType == green)
+        {
+            red.ExpBar.ActiveExpBarBackground.SetActive(false);
+            green.ExpBar.ActiveExpBarBackground.SetActive(true);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
+        }
+        else if (branchType == blue)
+        {
+            red.ExpBar.ActiveExpBarBackground.SetActive(false);
+            green.ExpBar.ActiveExpBarBackground.SetActive(false);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(true);
+        }
     }
 
     //This runs inside the evolution Manager when the evolution button has been pressed
@@ -171,6 +190,9 @@ public class ExperienceManager : MonoBehaviourPun
     {
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
         branchType.ExpBar.UpdateExpSlider();
+
+
+        UpdateActiveBranchUI(branchType);
 
         if (branchType == CurrentActiveEvolutionBranch)
             ScaleSize(branchType.ExpBar.CurrentExp);

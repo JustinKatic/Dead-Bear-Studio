@@ -10,7 +10,6 @@ public class ExperienceBar
     public Slider expSlider;
 
     public GameObject ActiveExpBarBackground;
-    public GameObject UnActiveExpBarBackground;
 
 
 
