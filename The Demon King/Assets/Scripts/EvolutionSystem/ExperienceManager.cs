@@ -28,7 +28,7 @@ public class ExperienceManager : MonoBehaviourPun
     private Vector3 BaseScale;
     private float baseCamDist;
 
-    [HideInInspector] public ExperienceBranch currentBranch;
+    [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
     [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
 
@@ -79,28 +79,25 @@ public class ExperienceManager : MonoBehaviourPun
     {
         if (healthManager.MyMinionType == redMinion)
         {
-            evolutionManager.activeEvolution = red.Level0Evolution;
-            evolutionManager.nextBranchType = red;
-            evolutionManager.nextEvolution = red.Level0Evolution;
-            red.ExpBar.ActiveExpBarBackground.SetActive(true);
-            red.ExpBar.UnActiveExpBarBackground.SetActive(false);
+            SetStartBranchType(red);
         }
         else if (healthManager.MyMinionType == blueMinion)
         {
-            evolutionManager.activeEvolution = blue.Level0Evolution;
-            evolutionManager.nextBranchType = blue;
-            evolutionManager.nextEvolution = blue.Level0Evolution;
-            blue.ExpBar.ActiveExpBarBackground.SetActive(true);
-            blue.ExpBar.UnActiveExpBarBackground.SetActive(false);
+            SetStartBranchType(blue);
         }
         else if (healthManager.MyMinionType == greenMinion)
         {
-            evolutionManager.activeEvolution = green.Level0Evolution;
-            evolutionManager.nextBranchType = green;
-            evolutionManager.nextEvolution = green.Level0Evolution;
-            green.ExpBar.ActiveExpBarBackground.SetActive(true);
-            green.ExpBar.UnActiveExpBarBackground.SetActive(false);
+            SetStartBranchType(green);
         }
+    }
+
+    void SetStartBranchType(ExperienceBranch branchType)
+    {
+        evolutionManager.activeEvolution = branchType.Level0Evolution;
+        evolutionManager.nextBranchType = branchType;
+        evolutionManager.nextEvolution = branchType.Level0Evolution;
+        branchType.ExpBar.ActiveExpBarBackground.SetActive(true);
+        branchType.ExpBar.UnActiveExpBarBackground.SetActive(false);
     }
 
     //This runs inside the evolution Manager when the evolution button has been pressed
@@ -175,7 +172,7 @@ public class ExperienceManager : MonoBehaviourPun
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
         branchType.ExpBar.UpdateExpSlider();
 
-        if (branchType == currentBranch)
+        if (branchType == CurrentActiveEvolutionBranch)
             ScaleSize(branchType.ExpBar.CurrentExp);
 
         if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
@@ -225,59 +222,45 @@ public class ExperienceManager : MonoBehaviourPun
 
     public void DecreaseExperince()
     {
-        red.ExpBar.CurrentExp = Mathf.Clamp(red.ExpBar.CurrentExp - (red.ExpBar.CurrentExp * PercentOfExpToLoseOnDeath), 0, red.ExpBar.level2ExpNeeded.value);
-        red.ExpBar.UpdateExpSlider();
+        UpdateExpBarOnDecrease(red);
+        UpdateExpBarOnDecrease(green);
+        UpdateExpBarOnDecrease(blue);
 
-        green.ExpBar.CurrentExp = Mathf.Clamp(green.ExpBar.CurrentExp - (green.ExpBar.CurrentExp * PercentOfExpToLoseOnDeath), 0, green.ExpBar.level2ExpNeeded.value);
-        green.ExpBar.UpdateExpSlider();
-
-        blue.ExpBar.CurrentExp = Mathf.Clamp(blue.ExpBar.CurrentExp - (blue.ExpBar.CurrentExp * PercentOfExpToLoseOnDeath), 0, blue.ExpBar.level2ExpNeeded.value);
-        blue.ExpBar.UpdateExpSlider();
-
-
-        if (currentBranch == red)
+        if (CurrentActiveEvolutionBranch == red)
         {
-            ScaleSize(red.ExpBar.CurrentExp);
-            if (red.ExpBar.CurrentExp < red.ExpBar.level1ExpNeeded.value)
-            {
-                evolutionManager.nextEvolution = red.Level0Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            }
-            else if (red.ExpBar.CurrentExp < red.ExpBar.level2ExpNeeded.value)
-            {
-                evolutionManager.nextEvolution = red.Level1Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            }
+            DevolveIfExpDroppedBelowThreshold(red);
         }
 
-        else if (currentBranch == green)
+        else if (CurrentActiveEvolutionBranch == green)
         {
-            ScaleSize(green.ExpBar.CurrentExp);
-            if (green.ExpBar.CurrentExp < green.ExpBar.level1ExpNeeded.value)
-            {
-                evolutionManager.nextEvolution = green.Level0Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            }
-            else if (green.ExpBar.CurrentExp < green.ExpBar.level2ExpNeeded.value)
-            {
-                evolutionManager.nextEvolution = green.Level1Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            }
+            DevolveIfExpDroppedBelowThreshold(green);
         }
 
-        else if (currentBranch == blue)
+        else if (CurrentActiveEvolutionBranch == blue)
         {
-            ScaleSize(blue.ExpBar.CurrentExp);
-            if (blue.ExpBar.CurrentExp < blue.ExpBar.level1ExpNeeded.value)
-            {
-                evolutionManager.nextEvolution = blue.Level0Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            }
-            else if (blue.ExpBar.CurrentExp < blue.ExpBar.level2ExpNeeded.value)
-            {
-                evolutionManager.nextEvolution = blue.Level1Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            }
+            DevolveIfExpDroppedBelowThreshold(blue);
+        }
+    }
+
+
+    void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate)
+    {
+        branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * PercentOfExpToLoseOnDeath), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
+        branchToUpdate.ExpBar.UpdateExpSlider();
+    }
+
+    void DevolveIfExpDroppedBelowThreshold(ExperienceBranch CurrentActiveEvolutionBranch)
+    {
+        ScaleSize(CurrentActiveEvolutionBranch.ExpBar.CurrentExp);
+        if (CurrentActiveEvolutionBranch.ExpBar.CurrentExp < CurrentActiveEvolutionBranch.ExpBar.level1ExpNeeded.value)
+        {
+            evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level0Evolution;
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+        }
+        else if (CurrentActiveEvolutionBranch.ExpBar.CurrentExp < CurrentActiveEvolutionBranch.ExpBar.level2ExpNeeded.value)
+        {
+            evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level1Evolution;
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
         }
     }
 }

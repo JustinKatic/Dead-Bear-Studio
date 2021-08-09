@@ -140,7 +140,7 @@ public class EvolutionManager : MonoBehaviourPun
         experienceManager.SetCanEvolveFalse();
         photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
         activeEvolution = evolution;
-        experienceManager.currentBranch = nextBranchType;
+        experienceManager.CurrentActiveEvolutionBranch = nextBranchType;
         experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
         currentActiveShootPoint = activeEvolution.ShootPoint;
         playerController.currentAnim = activeEvolution.animator;

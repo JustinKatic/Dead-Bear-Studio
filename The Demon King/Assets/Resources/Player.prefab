@@ -4947,6 +4947,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScaleAmount: 0.1
   CamDistanceIncreaseAmount: 0.25
+  PercentOfExpToLoseOnDeath: 0.2
   green:
     Level0Evolution: {fileID: 1241169556992600606}
     Level1Evolution: {fileID: 3301691708715608449}
@@ -4986,7 +4987,7 @@ MonoBehaviour:
   redMinion: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   greenMinion: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   blueMinion: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
-  currentBranch:
+  CurrentActiveEvolutionBranch:
     Level0Evolution: {fileID: 0}
     Level1Evolution: {fileID: 0}
     Level2Evolution: {fileID: 0}
@@ -5002,7 +5003,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   - {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   - {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
-  PercentOfExpToLoseOnDeath: 0.2
 --- !u!1 &6257699379011065199
 GameObject:
   m_ObjectHideFlags: 0
