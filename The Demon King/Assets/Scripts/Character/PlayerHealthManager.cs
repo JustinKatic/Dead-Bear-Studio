@@ -11,7 +11,6 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
     private ExperienceManager experienceManager;
-    public int experienceLoss = 2;
     public GameObject StunVFX;
 
 
@@ -91,7 +90,7 @@ public class PlayerHealthManager : HealthManager
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
+                experienceManager.DecreaseExperince();
             }
             else
             {
