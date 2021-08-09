@@ -273,16 +273,22 @@ public class ExperienceManager : MonoBehaviourPun
 
     void DevolveIfExpDroppedBelowThreshold(ExperienceBranch CurrentActiveEvolutionBranch)
     {
-        ScaleSize(CurrentActiveEvolutionBranch.ExpBar.CurrentExp);
-        if (CurrentActiveEvolutionBranch.ExpBar.CurrentExp < CurrentActiveEvolutionBranch.ExpBar.level1ExpNeeded.value)
+        ExperienceBar currentExpBar = CurrentActiveEvolutionBranch.ExpBar;
+
+        ScaleSize(currentExpBar.CurrentExp);
+        //If exp is less then level 1 && If current active evlolution lvl 0 gameobject is false
+        if (currentExpBar.CurrentExp < currentExpBar.level1ExpNeeded.value && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level0Evolution)
         {
             evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level0Evolution;
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+            Debug.Log("ChangedEvo lvl 0");
         }
-        else if (CurrentActiveEvolutionBranch.ExpBar.CurrentExp < CurrentActiveEvolutionBranch.ExpBar.level2ExpNeeded.value)
+        else if (currentExpBar.CurrentExp < currentExpBar.level2ExpNeeded.value
+ && currentExpBar.CurrentExp >= currentExpBar.level1ExpNeeded.value && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level1Evolution)
         {
             evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level1Evolution;
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+            Debug.Log("ChangedEvo lvl 1");
         }
     }
 }
