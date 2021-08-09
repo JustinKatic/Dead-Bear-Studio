@@ -39,10 +39,10 @@ public class ExperienceManager : MonoBehaviourPun
     private void Awake()
     {
         healthManager = GetComponent<HealthManager>();
-        SetMyMinionTypeOnStart();
         //If local
         if (photonView.IsMine)
         {
+            SetMyMinionTypeOnStart();
             vCam = gameObject.GetComponentInChildren<Cinemachine3rdPersonFollow>();
             BaseScale = transform.localScale;
             baseCamDist = vCam.CameraDistance;
@@ -63,9 +63,13 @@ public class ExperienceManager : MonoBehaviourPun
     {
         //Get a random location
         int randomMinionType = Random.Range(0, minionTypes.Count);
+        photonView.RPC("SetMinionType", RpcTarget.All, randomMinionType);
+    }
 
-        //use random location to get my minion type on start
-        healthManager.MyMinionType = minionTypes[randomMinionType];
+    [PunRPC]
+    void SetMinionType(int minionType)
+    {
+        healthManager.MyMinionType = minionTypes[minionType];
     }
 
     void SetStartingActiveEvolution()
@@ -197,18 +201,6 @@ public class ExperienceManager : MonoBehaviourPun
                     ChangeEvolutionBools(branchType);
                 }
             }
-            //if experince is less then level 1
-            else
-            {
-                if (evolutionManager.activeEvolution != red.Level1Evolution && evolutionManager.activeEvolution != blue.Level1Evolution && evolutionManager.activeEvolution != green.Level1Evolution
-                    && evolutionManager.activeEvolution != blue.Level2Evolution && evolutionManager.activeEvolution != red.Level2Evolution && evolutionManager.activeEvolution != green.Level2Evolution)
-                {
-                    evolutionManager.nextEvolution = branchType.Level0Evolution;
-                    evolutionManager.nextBranchType = branchType;
-                    evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-                }
-            }
-
         }
         //If we are losing experience
         else
