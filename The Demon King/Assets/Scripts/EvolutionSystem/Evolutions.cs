@@ -8,7 +8,7 @@ using Photon.Pun;
 [System.Serializable]
 public class Evolutions : MonoBehaviourPun
 {
-    public MinionType MyType;
+    public MinionType MyMinionType;
     public int MaxHealth;
 
     [HideInInspector] public Animator animator;

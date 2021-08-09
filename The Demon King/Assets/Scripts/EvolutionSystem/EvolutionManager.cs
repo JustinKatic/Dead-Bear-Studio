@@ -93,7 +93,10 @@ public class EvolutionManager : MonoBehaviourPun
             if (evolution.tag == currentModelsTag)
                 evolution.gameObject.SetActive(false);
             if (evolution.tag == nextModelsTag)
+            {
                 evolution.gameObject.SetActive(true);
+                healthManager.MyMinionType = evolution.MyMinionType;
+            }
         }
     }
 
@@ -138,7 +141,7 @@ public class EvolutionManager : MonoBehaviourPun
         photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
         activeEvolution = evolution;
         experienceManager.currentBranch = nextBranchType;
-        experienceManager.ScaleSizeUp(nextBranchType.ExpBar.CurrentExp);
+        experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
         currentActiveShootPoint = activeEvolution.ShootPoint;
         playerController.currentAnim = activeEvolution.animator;
         photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);

@@ -158,7 +158,7 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
-    public void ScaleSizeUp(int CurrentExp)
+    public void ScaleSize(int CurrentExp)
     {
         transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
         if (CurrentExp >= 1)
@@ -176,10 +176,10 @@ public class ExperienceManager : MonoBehaviourPun
             branchType.ExpBar.UpdateExpSlider();
 
             if (branchType == currentBranch)
-                ScaleSizeUp(branchType.ExpBar.CurrentExp);
+                ScaleSize(branchType.ExpBar.CurrentExp);
 
-            if (branchType.Level0Evolution.MyType == evolutionManager.activeEvolution.MyType)
-                ScaleSizeUp(branchType.ExpBar.CurrentExp);
+            if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
+                ScaleSize(branchType.ExpBar.CurrentExp);
 
             // if experience is greater than level 2
             if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
@@ -205,10 +205,12 @@ public class ExperienceManager : MonoBehaviourPun
         //If we are losing experience
         else
         {
+
+
             branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp - value, 0, branchType.ExpBar.level2ExpNeeded.value);
             branchType.ExpBar.UpdateExpSlider();
 
-            ScaleSizeUp(branchType.ExpBar.CurrentExp);
+            ScaleSize(branchType.ExpBar.CurrentExp);
 
             //Current exp is less then level 1 required
             if (branchType.ExpBar.CurrentExp < branchType.ExpBar.level1ExpNeeded.value)
