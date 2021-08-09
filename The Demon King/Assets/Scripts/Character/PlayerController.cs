@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float gravity;
     [SerializeField] float turnSpeed = 15;
     [SerializeField] float MoveSpeed = 5f;
+    [SerializeField] float InAirSpeed = 3f;
     [SerializeField] float jumpHeight;
     [SerializeField] float pushPower = 2f;
     [SerializeField] float SlopeLimit = 45f;
@@ -132,7 +133,7 @@ public class PlayerController : MonoBehaviourPun
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
             _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
-            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity*  Time.deltaTime;
+            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -194,7 +195,10 @@ public class PlayerController : MonoBehaviourPun
             playerYVelocity += gravity * Time.deltaTime;
 
             //Get the players current movement velocity based of inputs and relative direction
-            playerMoveVelocity = transform.right * playerInputs.x * MoveSpeed + transform.forward * playerInputs.y * MoveSpeed;
+            if (cc.isGrounded)
+                playerMoveVelocity = transform.right * playerInputs.x * MoveSpeed + transform.forward * playerInputs.y * MoveSpeed;
+            else
+                playerMoveVelocity = transform.right * playerInputs.x * InAirSpeed + transform.forward * playerInputs.y * InAirSpeed;
             //Add jump and gravity values to current movements Y
             playerMoveVelocity.y = playerYVelocity;
 
