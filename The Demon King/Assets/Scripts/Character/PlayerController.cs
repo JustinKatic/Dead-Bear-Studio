@@ -16,7 +16,10 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float gravity;
     [SerializeField] float turnSpeed = 15;
     [SerializeField] float MoveSpeed = 5f;
-    [SerializeField] float InAirSpeed = 3f;
+    [SerializeField] float AirSpeed = 5f;
+    [SerializeField] float InAirAcceleration = 7f;
+
+
     [SerializeField] float jumpHeight;
     [SerializeField] float pushPower = 2f;
     [SerializeField] float SlopeLimit = 45f;
@@ -183,22 +186,29 @@ public class PlayerController : MonoBehaviourPun
             }
 
 
-
-
             //Get value from input system for directional movement
             playerInputs = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
             playerLookInput = CharacterInputs.Player.Look.ReadValue<Vector2>();
-
 
             //Add gravity to player
             playerYVelocity += gravity * Time.deltaTime;
 
             //Get the players current movement velocity based of inputs and relative direction
             if (cc.isGrounded)
-                playerMoveVelocity = transform.right * playerInputs.x * MoveSpeed + transform.forward * playerInputs.y * MoveSpeed;
+            {
+                playerMoveVelocity = (transform.right * playerInputs.x + transform.forward * playerInputs.y) * MoveSpeed;
+            }
             else
-                playerMoveVelocity = transform.right * playerInputs.x * InAirSpeed + transform.forward * playerInputs.y * InAirSpeed;
+            {
+                playerMoveVelocity += (transform.right * playerInputs.x + transform.forward * playerInputs.y) * InAirAcceleration * Time.deltaTime;
+                float tempPlayerYVel = playerMoveVelocity.y;
+                playerMoveVelocity.y = 0;
+                playerMoveVelocity = Vector3.ClampMagnitude(playerMoveVelocity, AirSpeed);
+                playerMoveVelocity.y = tempPlayerYVel;
+            }
+
+
             //Add jump and gravity values to current movements Y
             playerMoveVelocity.y = playerYVelocity;
 
@@ -211,6 +221,7 @@ public class PlayerController : MonoBehaviourPun
             currentAnim.SetFloat("InputY", playerInputs.y, 0.1f, Time.deltaTime);
         }
     }
+
     private void FixedUpdate()
     {
         //Run following if local player
