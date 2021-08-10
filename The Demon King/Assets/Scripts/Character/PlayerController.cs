@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviourPun
 
     public Animator currentAnim = null;
     private Camera mainCamera;
+    public CinemachineVirtualCamera vCam;
     [HideInInspector] public CharacterController cc;
 
 
@@ -64,10 +65,11 @@ public class PlayerController : MonoBehaviourPun
 
     private void Awake()
     {
+        vCam = GetComponentInChildren<CinemachineVirtualCamera>();
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
+            //Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
             gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
         }
         //Run following if local player
@@ -77,6 +79,8 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
             mainCamera = Camera.main;
+
+            vCam.m_Priority = 11;
 
             //Set default values
             cc.slopeLimit = SlopeLimit;

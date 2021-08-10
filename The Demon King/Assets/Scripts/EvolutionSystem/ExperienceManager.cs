@@ -1,15 +1,14 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
-using UnityEngine.UI;
 
 public class ExperienceManager : MonoBehaviourPun
 {
     [Header("Modifible stats")]
     public float ScaleAmount = 0.1f;
     public float CamDistanceIncreaseAmount = .5f;
+    public float CamShoulderOffsetXIncreaseAmount = .1f;
     public float PercentOfExpToLoseOnDeath = .20f;
 
 
@@ -27,6 +26,8 @@ public class ExperienceManager : MonoBehaviourPun
 
     private Vector3 BaseScale;
     private float baseCamDist;
+    private float baseCamShoulderX;
+
 
     [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
@@ -50,6 +51,7 @@ public class ExperienceManager : MonoBehaviourPun
             vCam = gameObject.GetComponentInChildren<Cinemachine3rdPersonFollow>();
             BaseScale = transform.localScale;
             baseCamDist = vCam.CameraDistance;
+            baseCamShoulderX = vCam.ShoulderOffset.x;
 
             evolutionManager = GetComponent<EvolutionManager>();
             SetSliders();
@@ -184,7 +186,10 @@ public class ExperienceManager : MonoBehaviourPun
     {
         transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
         if (CurrentExp >= 1)
+        {
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
+            vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
+        }
     }
 
 
@@ -284,14 +289,13 @@ public class ExperienceManager : MonoBehaviourPun
         {
             evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level0Evolution;
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            Debug.Log("ChangedEvo lvl 0");
         }
-        else if (currentExpBar.CurrentExp < currentExpBar.level2ExpNeeded.value
- && currentExpBar.CurrentExp >= currentExpBar.level1ExpNeeded.value && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level1Evolution)
+
+        else if (currentExpBar.CurrentExp < currentExpBar.level2ExpNeeded.value && currentExpBar.CurrentExp >= currentExpBar.level1ExpNeeded.value
+            && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level1Evolution)
         {
             evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level1Evolution;
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-            Debug.Log("ChangedEvo lvl 1");
         }
     }
 }
