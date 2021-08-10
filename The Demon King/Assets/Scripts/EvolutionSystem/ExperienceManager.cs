@@ -35,6 +35,9 @@ public class ExperienceManager : MonoBehaviourPun
     private Cinemachine3rdPersonFollow vCam;
 
     private HealthManager healthManager;
+    
+    [HideInInspector] public bool CanEvolveToDemonKing = false;
+    [HideInInspector] public bool AmITheDemonKing = false;
 
 
     private void Awake()
