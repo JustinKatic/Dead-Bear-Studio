@@ -98,8 +98,11 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
-                PlayerWhoDevouredMeController.vCam.Priority = 10;
-                KilledByUIPanel.SetActive(false);
+                if (PlayerWhoDevouredMeController != null)
+                {
+                    PlayerWhoDevouredMeController.vCam.Priority = 10;
+                    KilledByUIPanel.SetActive(false);
+                }
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
