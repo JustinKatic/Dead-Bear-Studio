@@ -13,6 +13,13 @@ public class PlayerHealthManager : HealthManager
     private ExperienceManager experienceManager;
     public GameObject StunVFX;
 
+    private PlayerController PlayerWhoDevouredMeController;
+
+    public float RespawnTime = 6;
+
+    public GameObject KilledByUIPanel;
+    public TextMeshProUGUI KilledByText;
+
 
 
     void Awake()
@@ -34,7 +41,7 @@ public class PlayerHealthManager : HealthManager
     }
 
     [PunRPC]
-    void OnDevour()
+    void OnDevour(int attackerID)
     {
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
@@ -52,6 +59,10 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+                PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+                KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+                KilledByUIPanel.SetActive(true);
                 photonView.RPC("Respawn", RpcTarget.All);
             }
         }
@@ -83,10 +94,12 @@ public class PlayerHealthManager : HealthManager
                 overheadHealthBar.enabled = false;
             }
 
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(RespawnTime);
 
             if (photonView.IsMine)
             {
+                PlayerWhoDevouredMeController.vCam.Priority = 10;
+                KilledByUIPanel.SetActive(false);
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);

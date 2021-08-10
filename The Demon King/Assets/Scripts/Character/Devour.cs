@@ -93,7 +93,13 @@ public class Devour : MonoBehaviourPun
                         //Get the photon view of hit target
                         targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
                         //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-                        targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
+                        if (targetBeingDevouredPV.gameObject.tag == "Player")
+                        {
+                            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, playerController.id);
+                        }
+                        else
+                            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
+
                         IsDevouring = true;
                         playerController.currentAnim.SetBool("Devouring", true);
                         playerController.DisableMovement();
