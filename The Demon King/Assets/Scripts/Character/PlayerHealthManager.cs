@@ -11,15 +11,19 @@ public class PlayerHealthManager : HealthManager
 {
     private PlayerController player;
     private ExperienceManager experienceManager;
-    [Header("MINION TYPES")]
-    public MinionType redMinion;
-    public MinionType greenMinion;
-    public MinionType blueMinion;
-    public int experienceLoss = 2;
+    public GameObject StunVFX;
+
+    private PlayerController PlayerWhoDevouredMeController;
+
+    public float RespawnTime = 6;
+
+    public GameObject KilledByUIPanel;
+    public TextMeshProUGUI KilledByText;
+
+
 
     void Awake()
     {
-
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -34,27 +38,33 @@ public class PlayerHealthManager : HealthManager
             experienceManager = GetComponent<ExperienceManager>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
-        
-        SetMyMinionTypeOnStart();
-
     }
 
     [PunRPC]
-    void OnDevour()
+    void OnDevour(int attackerID)
     {
-        if (!photonView.IsMine)
-            return;
-
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
         IEnumerator DevourCorutine()
         {
-            beingDevoured = true;
+            canBeDevoured = false;
+
+            if (photonView.IsMine)
+            {
+                beingDevoured = true;
+            }
 
             yield return new WaitForSeconds(DevourTime);
 
-            photonView.RPC("Respawn", RpcTarget.All);
+            if (photonView.IsMine)
+            {
+                PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+                PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+                KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+                KilledByUIPanel.SetActive(true);
+                photonView.RPC("Respawn", RpcTarget.All);
+            }
         }
     }
 
@@ -71,6 +81,7 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                photonView.RPC("StunRPC", RpcTarget.All, false);
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
@@ -78,19 +89,32 @@ public class PlayerHealthManager : HealthManager
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
             }
+            else
+            {
+                overheadHealthBar.enabled = false;
+            }
 
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(RespawnTime);
 
             if (photonView.IsMine)
             {
+                if (PlayerWhoDevouredMeController != null)
+                {
+                    PlayerWhoDevouredMeController.vCam.Priority = 10;
+                    KilledByUIPanel.SetActive(false);
+                }
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                experienceManager.CheckEvolutionOnDeath(MyMinionType, experienceLoss);
+                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+            }
+            else
+            {
+                overheadHealthBar.enabled = true;
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
-            
+
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
@@ -199,6 +223,15 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+    [PunRPC]
+    void StunRPC(bool start)
+    {
+        if (start)
+            StunVFX.SetActive(true);
+        else
+            StunVFX.SetActive(false);
+    }
+
     protected override void OnStunStart()
     {
         //Things that affect everyone
@@ -207,6 +240,7 @@ public class PlayerHealthManager : HealthManager
         //Things that only affect local
         if (photonView.IsMine)
         {
+            photonView.RPC("StunRPC", RpcTarget.All, true);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
@@ -224,6 +258,7 @@ public class PlayerHealthManager : HealthManager
             //Things that only affect local
             if (photonView.IsMine)
             {
+                photonView.RPC("StunRPC", RpcTarget.All, false);
                 isStunned = false;
                 player.EnableMovement();
                 Heal(1);
@@ -232,21 +267,6 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    private void SetMyMinionTypeOnStart()
-    {
-        List<MinionType> minionTypes = new List<MinionType>();
-        int randomMinionType = 0;
-        
-        //Add available minion types to list
-        minionTypes.Add(redMinion);
-        minionTypes.Add(blueMinion);
-        minionTypes.Add(greenMinion);
-        
-        //Get a random location
-        randomMinionType = Random.Range(0, minionTypes.Count);
 
-        //use random location to get my minion type on start
-        MyMinionType = minionTypes[randomMinionType];
-    }
 
 }

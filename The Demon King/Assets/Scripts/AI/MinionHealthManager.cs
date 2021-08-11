@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class MinionHealthManager : HealthManager
 {
@@ -12,8 +13,8 @@ public class MinionHealthManager : HealthManager
     private Collider col;
     private Canvas hudCanvas;
     public GameObject PlayerWhoShotMe;
-
-
+    public State state;
+    private NavMeshAgent agent;
 
     void Awake()
     {
@@ -22,6 +23,7 @@ public class MinionHealthManager : HealthManager
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
+        agent = GetComponent<NavMeshAgent>();
     }
 
 
@@ -59,8 +61,11 @@ public class MinionHealthManager : HealthManager
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
 
+
         IEnumerator DevourCorutine()
         {
+            canBeDevoured = false;
+
             if (photonView.IsMine)
             {
                 beingDevoured = true;
@@ -69,14 +74,6 @@ public class MinionHealthManager : HealthManager
             yield return new WaitForSeconds(DevourTime);
 
             Respawn();
-
-            if (photonView.IsMine)
-            {
-                CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                isStunned = false;
-                beingDevoured = false;
-            }
         }
     }
 
@@ -89,20 +86,28 @@ public class MinionHealthManager : HealthManager
             model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
-            canBeDevoured = false;
+
 
 
             if (PhotonNetwork.IsMasterClient)
             {
-                transform.position = RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position;
+                agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
             yield return new WaitForSeconds(respawnTimer);
 
 
+            if (photonView.IsMine)
+            {
+                CurrentHealth = MaxHealth;
+                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+                beingDevoured = false;
+            }
             model.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
+            canBeDevoured = false;
+            isStunned = false;
         }
     }
 

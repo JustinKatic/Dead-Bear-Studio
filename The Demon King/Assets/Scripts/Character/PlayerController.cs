@@ -16,6 +16,10 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float gravity;
     [SerializeField] float turnSpeed = 15;
     [SerializeField] float MoveSpeed = 5f;
+    [SerializeField] float AirSpeed = 5f;
+    [SerializeField] float InAirAcceleration = 7f;
+
+
     [SerializeField] float jumpHeight;
     [SerializeField] float pushPower = 2f;
     [SerializeField] float SlopeLimit = 45f;
@@ -37,6 +41,7 @@ public class PlayerController : MonoBehaviourPun
 
     public Animator currentAnim = null;
     private Camera mainCamera;
+    public CinemachineVirtualCamera vCam;
     [HideInInspector] public CharacterController cc;
 
 
@@ -60,10 +65,11 @@ public class PlayerController : MonoBehaviourPun
 
     private void Awake()
     {
+        vCam = GetComponentInChildren<CinemachineVirtualCamera>();
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
+            //Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
             gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
         }
         //Run following if local player
@@ -73,6 +79,8 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
             mainCamera = Camera.main;
+
+            vCam.m_Priority = 11;
 
             //Set default values
             cc.slopeLimit = SlopeLimit;
@@ -132,7 +140,7 @@ public class PlayerController : MonoBehaviourPun
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
             _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
-            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity*  Time.deltaTime;
+            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -182,19 +190,29 @@ public class PlayerController : MonoBehaviourPun
             }
 
 
-
-
             //Get value from input system for directional movement
             playerInputs = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
             playerLookInput = CharacterInputs.Player.Look.ReadValue<Vector2>();
 
-
             //Add gravity to player
             playerYVelocity += gravity * Time.deltaTime;
 
             //Get the players current movement velocity based of inputs and relative direction
-            playerMoveVelocity = transform.right * playerInputs.x * MoveSpeed + transform.forward * playerInputs.y * MoveSpeed;
+            if (cc.isGrounded)
+            {
+                playerMoveVelocity = (transform.right * playerInputs.x + transform.forward * playerInputs.y) * MoveSpeed;
+            }
+            else
+            {
+                playerMoveVelocity += (transform.right * playerInputs.x + transform.forward * playerInputs.y) * InAirAcceleration * Time.deltaTime;
+                float tempPlayerYVel = playerMoveVelocity.y;
+                playerMoveVelocity.y = 0;
+                playerMoveVelocity = Vector3.ClampMagnitude(playerMoveVelocity, AirSpeed);
+                playerMoveVelocity.y = tempPlayerYVel;
+            }
+
+
             //Add jump and gravity values to current movements Y
             playerMoveVelocity.y = playerYVelocity;
 
@@ -207,6 +225,7 @@ public class PlayerController : MonoBehaviourPun
             currentAnim.SetFloat("InputY", playerInputs.y, 0.1f, Time.deltaTime);
         }
     }
+
     private void FixedUpdate()
     {
         //Run following if local player

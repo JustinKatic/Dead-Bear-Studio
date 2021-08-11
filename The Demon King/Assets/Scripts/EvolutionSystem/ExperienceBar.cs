@@ -9,7 +9,11 @@ public class ExperienceBar
     [Header("EXP SLIDER FOR MY TYPE")]
     public Slider expSlider;
 
-    [HideInInspector] public int CurrentExp;
+    public GameObject ActiveExpBarBackground;
+
+
+
+    [HideInInspector] public float CurrentExp;
 
     [Header("EXPERIENCE REQUIRED TO EVOLVE")]
     public IntSO level1ExpNeeded;

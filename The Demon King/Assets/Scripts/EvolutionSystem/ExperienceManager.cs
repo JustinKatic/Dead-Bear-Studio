@@ -1,11 +1,17 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Cinemachine;
 
 public class ExperienceManager : MonoBehaviourPun
 {
+    [Header("Modifible stats")]
+    public float ScaleAmount = 0.1f;
+    public float CamDistanceIncreaseAmount = .5f;
+    public float CamShoulderOffsetXIncreaseAmount = .1f;
+    public float PercentOfExpToLoseOnDeath = .20f;
+    public float DemonKingExpLossDeath = 0.4f;
+
     [Header("EVOLUTION TYPES")]
     public ExperienceBranch green;
     public ExperienceBranch red;
@@ -17,38 +23,125 @@ public class ExperienceManager : MonoBehaviourPun
     public MinionType blueMinion;
 
     private EvolutionManager evolutionManager;
+    private DemonKingEvolution demonKingEvolution;
 
     private Vector3 BaseScale;
+    private float baseCamDist;
+    private float baseCamShoulderX;
 
-    public ExperienceBranch currentBranch;
+
+    [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
+
+    [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
+
+    private Cinemachine3rdPersonFollow vCam;
+
+    private HealthManager healthManager;
     
+   
     private void Awake()
     {
+        healthManager = GetComponent<HealthManager>();
         //If local
         if (photonView.IsMine)
         {
+            SetMyMinionTypeOnStart();
+            vCam = gameObject.GetComponentInChildren<Cinemachine3rdPersonFollow>();
             BaseScale = transform.localScale;
+            baseCamDist = vCam.CameraDistance;
+            baseCamShoulderX = vCam.ShoulderOffset.x;
 
             evolutionManager = GetComponent<EvolutionManager>();
+            demonKingEvolution = GetComponent<DemonKingEvolution>();
+            
             SetSliders();
+            SetStartingActiveEvolution();
         }
     }
+
+    private void Start()
+    {
+        if (photonView.IsMine)
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+    }
+
+    private void SetMyMinionTypeOnStart()
+    {
+        //Get a random location
+        int randomMinionType = Random.Range(0, minionTypes.Count);
+        photonView.RPC("SetMinionType", RpcTarget.All, randomMinionType);
+    }
+
+    [PunRPC]
+    void SetMinionType(int minionType)
+    {
+        healthManager.MyMinionType = minionTypes[minionType];
+    }
+
+    void SetStartingActiveEvolution()
+    {
+        if (healthManager.MyMinionType == redMinion)
+        {
+            SetStartBranchType(red);
+        }
+        else if (healthManager.MyMinionType == blueMinion)
+        {
+            SetStartBranchType(blue);
+        }
+        else if (healthManager.MyMinionType == greenMinion)
+        {
+            SetStartBranchType(green);
+        }
+    }
+
+    void SetStartBranchType(ExperienceBranch branchType)
+    {
+        evolutionManager.activeEvolution = branchType.Level0Evolution;
+        evolutionManager.nextBranchType = branchType;
+        evolutionManager.nextEvolution = branchType.Level0Evolution;
+        branchType.ExpBar.ActiveExpBarBackground.SetActive(true);
+    }
+
+    void UpdateActiveBranchUI(ExperienceBranch branchType)
+    {
+        if (branchType == red)
+        {
+            red.ExpBar.ActiveExpBarBackground.SetActive(true);
+            green.ExpBar.ActiveExpBarBackground.SetActive(false);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
+        }
+        else if (branchType == green)
+        {
+            red.ExpBar.ActiveExpBarBackground.SetActive(false);
+            green.ExpBar.ActiveExpBarBackground.SetActive(true);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
+        }
+        else if (branchType == blue)
+        {
+            red.ExpBar.ActiveExpBarBackground.SetActive(false);
+            green.ExpBar.ActiveExpBarBackground.SetActive(false);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(true);
+        }
+    }
+
     //This runs inside the evolution Manager when the evolution button has been pressed
     public bool CanEvolve()
     {
         //Check if I can evolve into any of these types is yes reset can evolve and return true else return false
         if (red.CanEvolve || blue.CanEvolve || green.CanEvolve)
         {
-            //Player has evolved, can not evolve again
-            red.CanEvolve = false;
-            blue.CanEvolve = false;
-            green.CanEvolve = false;
             return true;
         }
         return false;
     }
 
-
+    public void SetCanEvolveFalse()
+    {
+        //Player has evolved, can not evolve again
+        red.CanEvolve = false;
+        blue.CanEvolve = false;
+        green.CanEvolve = false;
+    }
 
 
     //Set sliders max and current values called locally in Awake()
@@ -62,13 +155,12 @@ public class ExperienceManager : MonoBehaviourPun
 
         green.ExpBar.expSlider.maxValue = green.ExpBar.level2ExpNeeded.value;
         green.ExpBar.expSlider.value = green.ExpBar.CurrentExp;
-
     }
 
 
 
     //Sets can evolve based of branch type passed in
-    void ChangeEvolutionBools(ExperienceBranch branch)
+    public void ChangeEvolutionBools(ExperienceBranch branch)
     {
         if (branch == red)
         {
@@ -90,66 +182,50 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
-    public void ScaleSizeUp(int CurrentExp) => transform.localScale = BaseScale + Vector3.one * CurrentExp * 0.1f;
+    public void ScaleSize(float CurrentExp)
+    {
+        transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
+        if (CurrentExp >= 1)
+        {
+            vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
+            vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
+        }
+    }
 
 
     //Update the correct branch based off the given parameters
-    void UpdateBranchType(ExperienceBranch branchType, int value, bool experienceIncrease)
+    void UpdateBranchType(ExperienceBranch branchType, int value)
     {
-        //If we are gaining experience
-        if (experienceIncrease)
+        branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
+        branchType.ExpBar.UpdateExpSlider();
+
+
+        UpdateActiveBranchUI(branchType);
+
+        if (branchType == CurrentActiveEvolutionBranch)
+            ScaleSize(branchType.ExpBar.CurrentExp);
+
+        if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
+            ScaleSize(branchType.ExpBar.CurrentExp);
+
+        // if experience is greater than level 2
+        if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
         {
-            branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
-            branchType.ExpBar.UpdateExpSlider();
-            
-            if (branchType == currentBranch)
-                ScaleSizeUp(branchType.ExpBar.CurrentExp);
-            
-            if (branchType.Level0Evolution.MyType == evolutionManager.activeEvolution.MyType)
-                ScaleSizeUp(branchType.ExpBar.CurrentExp);
-            
-            // if experience is greater than level 2
-            if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
+            if (evolutionManager.activeEvolution != branchType.Level2Evolution)
             {
-                if (evolutionManager.activeEvolution != branchType.Level2Evolution)
-                {
-                    evolutionManager.nextEvolution = branchType.Level2Evolution;
-                    evolutionManager.nextBranchType = branchType;
-                    ChangeEvolutionBools(branchType);
-                }
+                evolutionManager.nextEvolution = branchType.Level2Evolution;
+                evolutionManager.nextBranchType = branchType;
+                ChangeEvolutionBools(branchType);
             }
-            // if experience is greater than level 1
-            else if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level1ExpNeeded.value)
-            {
-                if (evolutionManager.activeEvolution != branchType.Level1Evolution)
-                {
-                    evolutionManager.nextEvolution = branchType.Level1Evolution;
-                    evolutionManager.nextBranchType = branchType;
-                    ChangeEvolutionBools(branchType);
-                }
-            }
-            
         }
-        //If we are losing experience
-        else
+        // if experience is greater than level 1
+        else if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level1ExpNeeded.value)
         {
-            branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp - value, 0, branchType.ExpBar.level2ExpNeeded.value);
-            branchType.ExpBar.UpdateExpSlider();
-
-            ScaleSizeUp(branchType.ExpBar.CurrentExp);
-
-            //Current exp is less then level 1 required
-            if (branchType.ExpBar.CurrentExp < branchType.ExpBar.level1ExpNeeded.value)
-            {
-                //Will need to be changed to Concat once All oozes added
-                evolutionManager.nextEvolution = branchType.Level0Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
-            }
-            //Current exp is less then level 2 required
-            else if (branchType.ExpBar.CurrentExp < branchType.ExpBar.level2ExpNeeded.value)
+            if (evolutionManager.activeEvolution != branchType.Level1Evolution)
             {
                 evolutionManager.nextEvolution = branchType.Level1Evolution;
-                evolutionManager.ChangeEvolution(evolutionManager.nextEvolution);
+                evolutionManager.nextBranchType = branchType;
+                ChangeEvolutionBools(branchType);
             }
         }
     }
@@ -160,34 +236,74 @@ public class ExperienceManager : MonoBehaviourPun
         //update red exp
         if (minionType == redMinion)
         {
-            UpdateBranchType(red, expValue, true);
+            UpdateBranchType(red, expValue);
         }
         //update green exp
         else if (minionType == greenMinion)
         {
-            UpdateBranchType(green, expValue, true);
+            UpdateBranchType(green, expValue);
         }
         //update blue exp
         else if (minionType == blueMinion)
         {
-            UpdateBranchType(blue, expValue, true);
+            UpdateBranchType(blue, expValue);
         }
     }
 
-    //Called when player died and then updated branch based of what player current minion type is
-    public void CheckEvolutionOnDeath(MinionType currentMinionType, int experienceLoss)
+    public void DecreaseExperince(float decreaseValue)
     {
-        if (currentMinionType == redMinion)
+        UpdateExpBarOnDecrease(red, decreaseValue);
+        UpdateExpBarOnDecrease(green, decreaseValue);
+        UpdateExpBarOnDecrease(blue, decreaseValue);
+
+        if (CurrentActiveEvolutionBranch == red)
         {
-            UpdateBranchType(red, experienceLoss, false);
+            DevolveIfExpDroppedBelowThreshold(red);
         }
-        else if (currentMinionType == greenMinion)
+
+        else if (CurrentActiveEvolutionBranch == green)
         {
-            UpdateBranchType(green, experienceLoss, false);
+            DevolveIfExpDroppedBelowThreshold(green);
         }
-        else if (currentMinionType == blueMinion)
+
+        else if (CurrentActiveEvolutionBranch == blue)
         {
-            UpdateBranchType(blue, experienceLoss, false);
+            DevolveIfExpDroppedBelowThreshold(blue);
         }
     }
+
+
+    void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
+    {
+        branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
+        branchToUpdate.ExpBar.UpdateExpSlider();
+    }
+
+    void DevolveIfExpDroppedBelowThreshold(ExperienceBranch CurrentActiveEvolutionBranch)
+    {
+        ExperienceBar currentExpBar = CurrentActiveEvolutionBranch.ExpBar;
+
+        ScaleSize(currentExpBar.CurrentExp);
+        //If exp is less then level 1 && If current active evlolution lvl 0 gameobject is false
+        if (currentExpBar.CurrentExp < currentExpBar.level1ExpNeeded.value && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level0Evolution)
+        {
+            evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level0Evolution;
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+        }
+
+        else if (currentExpBar.CurrentExp < currentExpBar.level2ExpNeeded.value && currentExpBar.CurrentExp >= currentExpBar.level1ExpNeeded.value
+            && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level1Evolution)
+        {
+            evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level1Evolution;
+            evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+        }
+    }
+
+    //This function is called by DemonKingEvolution script
+    public void ActivateDemonKingEvolution()
+    {
+        evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
+        evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+    }
+    
 }

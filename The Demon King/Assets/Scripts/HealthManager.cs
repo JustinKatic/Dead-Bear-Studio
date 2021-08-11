@@ -27,7 +27,7 @@ public class HealthManager : MonoBehaviourPun
 
     protected float TimeBeforeHealthRegen = 3f;
     protected int curAttackerId;
-    
+
     public Canvas HealthBar;
     public Transform HealthBarContainer;
     public Image healthBarPrefab;
@@ -39,14 +39,14 @@ public class HealthManager : MonoBehaviourPun
 
     // [HideInInspector] public Slider statusBar = null;
 
-     public int CurrentHealth = 0;
+    public int CurrentHealth = 0;
     [HideInInspector] public bool beingDevoured = false;
     [HideInInspector] public bool canBeDevoured = false;
     [HideInInspector] public bool isStunned = false;
 
     protected IEnumerator myDevourCo;
-    
-    
+
+
     private void Update()
     {
         //Run following if local player
@@ -66,14 +66,14 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
-    
+
     //This is run when the player has been stunned
     [PunRPC]
     protected void Stunned()
     {
         if (!isStunned)
             StartCoroutine(StunnedCorutine());
-        
+
         IEnumerator StunnedCorutine()
         {
             OnStunStart();
@@ -83,7 +83,7 @@ public class HealthManager : MonoBehaviourPun
             OnStunEnd();
         }
     }
-    
+
     protected void Heal(int amountToHeal)
     {
         //Only running on local player
