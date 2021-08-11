@@ -11,7 +11,6 @@ public class ExperienceManager : MonoBehaviourPun
     public float CamShoulderOffsetXIncreaseAmount = .1f;
     public float PercentOfExpToLoseOnDeath = .20f;
 
-
     [Header("EVOLUTION TYPES")]
     public ExperienceBranch green;
     public ExperienceBranch red;
@@ -23,6 +22,7 @@ public class ExperienceManager : MonoBehaviourPun
     public MinionType blueMinion;
 
     private EvolutionManager evolutionManager;
+    private DemonKingEvolution demonKingEvolution;
 
     private Vector3 BaseScale;
     private float baseCamDist;
@@ -37,10 +37,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     private HealthManager healthManager;
     
-    [HideInInspector] public bool CanEvolveToDemonKing = false;
-    [HideInInspector] public bool AmITheDemonKing = false;
-
-
+   
     private void Awake()
     {
         healthManager = GetComponent<HealthManager>();
@@ -54,6 +51,8 @@ public class ExperienceManager : MonoBehaviourPun
             baseCamShoulderX = vCam.ShoulderOffset.x;
 
             evolutionManager = GetComponent<EvolutionManager>();
+            demonKingEvolution = GetComponent<DemonKingEvolution>();
+            
             SetSliders();
             SetStartingActiveEvolution();
         }
@@ -297,5 +296,12 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level1Evolution;
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
         }
+    }
+
+    //This function is called by DemonKingEvolution script
+    public void ActivateDemonKingEvolution()
+    {
+        evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
+        evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
 }

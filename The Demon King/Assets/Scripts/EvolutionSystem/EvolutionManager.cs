@@ -23,6 +23,7 @@ public class EvolutionManager : MonoBehaviourPun
     private PlayerController playerController;
     private ExperienceManager experienceManager;
     private HealthManager healthManager;
+    private DemonKingEvolution demonKingEvolution;
 
     private bool evolving = false;
 
@@ -60,6 +61,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             //get required components
             playerController = GetComponent<PlayerController>();
+            demonKingEvolution = GetComponent<DemonKingEvolution>();
 
             //sets shootPoint and anim of this player to the activeEvolutions
             currentActiveShootPoint = activeEvolution.ShootPoint;
@@ -78,7 +80,7 @@ public class EvolutionManager : MonoBehaviourPun
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         //If can evolve change evolution to my next evolution
-        if (experienceManager.CanEvolve() && !evolving)
+        if (experienceManager.CanEvolve() && !evolving && !demonKingEvolution.AmITheDemonKing)
         {
             ChangeEvolution(nextEvolution, true);
         }
