@@ -39,35 +39,26 @@ public class PlayerHealthManager : HealthManager
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
     }
-
-    [PunRPC]
-    void OnDevour(int attackerID)
+    
+    protected override void OnDevourStart()
     {
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+        canBeDevoured = false;
 
-        IEnumerator DevourCorutine()
+        if (photonView.IsMine)
         {
-            canBeDevoured = false;
+            beingDevoured = true;
+        }    }
 
-            if (photonView.IsMine)
-            {
-                beingDevoured = true;
-            }
-
-            yield return new WaitForSeconds(DevourTime);
-
-            if (photonView.IsMine)
-            {
-                PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
-                PlayerWhoDevouredMeController.vCam.m_Priority = 12;
-                KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
-                KilledByUIPanel.SetActive(true);
-                photonView.RPC("Respawn", RpcTarget.All);
-            }
-        }
-    }
-
+    protected override void OnDevourEnd(int attackerID)
+    {
+        if (photonView.IsMine)
+        {
+            PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+            PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+            KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+            KilledByUIPanel.SetActive(true);
+            photonView.RPC("Respawn", RpcTarget.All);
+        }    }
 
     [PunRPC]
     public void Respawn()

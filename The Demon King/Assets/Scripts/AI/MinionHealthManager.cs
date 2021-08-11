@@ -54,27 +54,18 @@ public class MinionHealthManager : HealthManager
                 photonView.RPC("Stunned", RpcTarget.All);
         }
     }
-
-    [PunRPC]
-    void OnDevour()
+    protected override void OnDevourStart()
     {
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+        canBeDevoured = false;
 
-
-        IEnumerator DevourCorutine()
+        if (photonView.IsMine)
         {
-            canBeDevoured = false;
+            beingDevoured = true;
+        }    }
 
-            if (photonView.IsMine)
-            {
-                beingDevoured = true;
-            }
-
-            yield return new WaitForSeconds(DevourTime);
-
-            Respawn();
-        }
+    protected override void OnDevourEnd(int attackerID)
+    {
+        Respawn();
     }
 
     public void Respawn()
@@ -87,16 +78,13 @@ public class MinionHealthManager : HealthManager
             col.enabled = false;
             hudCanvas.enabled = false;
 
-
-
             if (PhotonNetwork.IsMasterClient)
             {
                 agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
             yield return new WaitForSeconds(respawnTimer);
-
-
+            
             if (photonView.IsMine)
             {
                 CurrentHealth = MaxHealth;

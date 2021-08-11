@@ -77,7 +77,7 @@ public class Devour : MonoBehaviourPun
         if (Physics.Raycast(ray, out hit, 20, ~LayersForDevourToIgnore))
         {
             //If raycast hits player or minion
-            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion"))
+            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion")|| hit.transform.CompareTag("DemonKingCrown"))
             {
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
                     return;
@@ -104,7 +104,7 @@ public class Devour : MonoBehaviourPun
                         {
                             isTargetPlayer = false;
 
-                            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
+                            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, 0);
 
                         }
 
@@ -127,6 +127,11 @@ public class Devour : MonoBehaviourPun
                                     targetBeingDevouredPV.GetComponent<DemonKingEvolution>().ChangeFromTheDemonKing();
                                     gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
                                 }
+                            }
+                            else if (hit.transform.CompareTag("DemonKingCrown"))
+                            {
+                                targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, 0);
+                                gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
                             }
 
                             targetBeingDevouredPV = null;

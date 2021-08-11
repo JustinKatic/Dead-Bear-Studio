@@ -67,6 +67,40 @@ public class HealthManager : MonoBehaviourPun
         }
     }
 
+    protected void Heal(int amountToHeal)
+    {
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters health bars on all players in network
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        HealthRegenTimer = TimeBeforeHealthRegen;
+    }
+
+    [PunRPC]
+    public virtual void OnDevour(int attackerID)
+    {
+        myDevourCo = DevourCorutine();
+        StartCoroutine(myDevourCo);
+
+        IEnumerator DevourCorutine()
+        {
+            OnDevourStart();
+
+            yield return new WaitForSeconds(DevourTime);
+            
+            OnDevourEnd(attackerID);
+        }
+    }
+    //Overrides for inherited classes
+    protected virtual void OnDevourStart()
+    {
+
+    }
+
+    protected virtual void OnDevourEnd(int attackerID)
+    {
+
+    }
     //This is run when the player has been stunned
     [PunRPC]
     protected void Stunned()
@@ -83,16 +117,7 @@ public class HealthManager : MonoBehaviourPun
             OnStunEnd();
         }
     }
-
-    protected void Heal(int amountToHeal)
-    {
-        //Only running on local player
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        //Updates this charcters health bars on all players in network
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-        HealthRegenTimer = TimeBeforeHealthRegen;
-    }
-
+    
     //Overrides for inherited classes
     protected virtual void OnStunStart()
     {
