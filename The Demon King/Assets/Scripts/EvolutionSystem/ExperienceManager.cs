@@ -202,11 +202,13 @@ public class ExperienceManager : MonoBehaviourPun
 
         UpdateActiveBranchUI(branchType);
 
-        if (branchType == CurrentActiveEvolutionBranch)
-            ScaleSize(branchType.ExpBar.CurrentExp);
+            if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
+                ScaleSize(branchType.ExpBar.CurrentExp);
 
-        if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
-            ScaleSize(branchType.ExpBar.CurrentExp);
+            //if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
+                //ScaleSize(branchType.ExpBar.CurrentExp);
+        
+
 
         // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
