@@ -304,6 +304,7 @@ public class ExperienceManager : MonoBehaviourPun
     {
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+        transform.localScale = new Vector3(2,2,2);
     }
     
 }

@@ -5,22 +5,27 @@ using UnityEngine;
 
 public class CrownHealthManager : HealthManager
 {
+    public GameObject model;
+
+    private Collider col;
     // Start is called before the first frame update
     void Start()
     {
         isStunned = true;
         MaxHealth = 0;
         canBeDevoured = true;
+        col = GetComponent<Collider>();
     }
 
     [PunRPC]
     public void Respawn()
     {
-        gameObject.SetActive(true);
-
+        model.SetActive(true);
+        col.enabled = true;
     }
     protected override void OnDevourEnd(int attackerID)
     {
-        gameObject.SetActive(false);
+        col.enabled = false;
+        model.SetActive(false);
     }
 }
