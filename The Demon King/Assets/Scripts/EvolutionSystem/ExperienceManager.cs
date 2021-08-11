@@ -37,8 +37,8 @@ public class ExperienceManager : MonoBehaviourPun
     private Cinemachine3rdPersonFollow vCam;
 
     private HealthManager healthManager;
-    
-   
+
+
     private void Awake()
     {
         healthManager = GetComponent<HealthManager>();
@@ -53,7 +53,7 @@ public class ExperienceManager : MonoBehaviourPun
 
             evolutionManager = GetComponent<EvolutionManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
-            
+
             SetSliders();
             SetStartingActiveEvolution();
         }
@@ -255,7 +255,10 @@ public class ExperienceManager : MonoBehaviourPun
         UpdateExpBarOnDecrease(red, decreaseValue);
         UpdateExpBarOnDecrease(green, decreaseValue);
         UpdateExpBarOnDecrease(blue, decreaseValue);
+    }
 
+    public void CheckIfNeedToDevolve()
+    {
         if (CurrentActiveEvolutionBranch == red)
         {
             DevolveIfExpDroppedBelowThreshold(red);
@@ -304,7 +307,7 @@ public class ExperienceManager : MonoBehaviourPun
     {
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-        transform.localScale = new Vector3(2,2,2);
+        transform.localScale = new Vector3(2, 2, 2);
     }
-    
+
 }

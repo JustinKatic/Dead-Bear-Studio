@@ -90,6 +90,7 @@ public class PlayerHealthManager : HealthManager
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
+                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
                 if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
                 {
                     playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
@@ -110,10 +111,11 @@ public class PlayerHealthManager : HealthManager
                     PlayerWhoDevouredMeController.vCam.Priority = 10;
                     KilledByUIPanel.SetActive(false);
                 }
+                experienceManager.CheckIfNeedToDevolve();
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+
             }
             else
             {
