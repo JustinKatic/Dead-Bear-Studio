@@ -45,8 +45,7 @@ public class HealthManager : MonoBehaviourPun
     [HideInInspector] public bool isStunned = false;
 
     protected IEnumerator myDevourCo;
-
-
+    
     private void Update()
     {
         //Run following if local player

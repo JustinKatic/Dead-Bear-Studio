@@ -16,7 +16,6 @@ public class DemonKingEvolution : MonoBehaviourPun
         {
             experienceManager = GetComponent<ExperienceManager>();
         }
-        
     }
 
     public void ChangeToTheDemonKing()
