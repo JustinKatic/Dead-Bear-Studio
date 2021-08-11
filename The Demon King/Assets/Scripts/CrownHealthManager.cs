@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class CrownHealthManager : HealthManager
 {
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +19,7 @@ public class CrownHealthManager : HealthManager
         gameObject.SetActive(true);
 
     }
-    [PunRPC]
-    public override void OnDevour(int attackerID)
+    protected override void OnDevourEnd(int attackerID)
     {
         gameObject.SetActive(false);
 
