@@ -154,7 +154,8 @@ public class PlayerController : MonoBehaviourPun
 
     private void LateUpdate()
     {
-        CameraRotation();
+        if (photonView.IsMine)
+            CameraRotation();
     }
 
     private void Update()
@@ -193,7 +194,7 @@ public class PlayerController : MonoBehaviourPun
             //Get value from input system for directional movement
             playerInputs = CharacterInputs.Player.Move.ReadValue<Vector2>();
 
-            playerLookInput = CharacterInputs.Player.Look.ReadValue<Vector2>();
+            playerLookInput = CharacterInputs.PlayerLook.Look.ReadValue<Vector2>();
 
             //Add gravity to player
             playerYVelocity += gravity * Time.deltaTime;
@@ -267,8 +268,11 @@ public class PlayerController : MonoBehaviourPun
     {
         //Run following if local player 
         if (photonView.IsMine)
+        {
             //Enable the player inputs
             CharacterInputs.Player.Enable();
+            CharacterInputs.PlayerLook.Enable();
+        }
     }
 
     //Disable character input
@@ -276,8 +280,11 @@ public class PlayerController : MonoBehaviourPun
     {
         //Run following if local player
         if (photonView.IsMine)
+        {
             //Disable the player inputs
             CharacterInputs.Player.Disable();
+            CharacterInputs.PlayerLook.Disable();
+        }
     }
 
     public void EnableMovement()
