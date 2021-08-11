@@ -20,6 +20,8 @@ public class PlayerHealthManager : HealthManager
     public GameObject KilledByUIPanel;
     public TextMeshProUGUI KilledByText;
 
+    private PlayerController playerWhoLastShotMeController;
+
 
 
     void Awake()
@@ -39,7 +41,7 @@ public class PlayerHealthManager : HealthManager
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
     }
-    
+
     protected override void OnDevourStart()
     {
         canBeDevoured = false;
@@ -47,7 +49,8 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             beingDevoured = true;
-        }    }
+        }
+    }
 
     protected override void OnDevourEnd(int attackerID)
     {
@@ -57,11 +60,19 @@ public class PlayerHealthManager : HealthManager
             PlayerWhoDevouredMeController.vCam.m_Priority = 12;
             KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
             KilledByUIPanel.SetActive(true);
-            photonView.RPC("Respawn", RpcTarget.All);
-        }    }
+            photonView.RPC("Respawn", RpcTarget.All, true);
+        }
+    }
 
     [PunRPC]
-    public void Respawn()
+    void Suicide(int playerWhoKilledSelfID)
+    {
+        PhotonView playerWhoKilledSelfPV = PhotonView.Find(playerWhoKilledSelfID);
+        experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().ExperienceValue);
+    }
+
+    [PunRPC]
+    public void Respawn(bool DidIDieFromPlayer)
     {
         StartCoroutine(ResetPlayer());
 
@@ -79,6 +90,11 @@ public class PlayerHealthManager : HealthManager
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
+                if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
+                {
+                    playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
+                    playerWhoLastShotMeController = null;
+                }
             }
             else
             {
@@ -113,7 +129,7 @@ public class PlayerHealthManager : HealthManager
     }
 
     [PunRPC]
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, int attackerID)
     {
         //Runing following if local player
         if (photonView.IsMine)
@@ -126,6 +142,8 @@ public class PlayerHealthManager : HealthManager
                 return;
             //Remove health
             CurrentHealth -= damage;
+
+            playerWhoLastShotMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
 
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
