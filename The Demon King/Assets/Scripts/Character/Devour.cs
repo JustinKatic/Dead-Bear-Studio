@@ -20,9 +20,11 @@ public class Devour : MonoBehaviourPun
     private ExperienceManager experienceManager;
 
     [HideInInspector] public PhotonView targetBeingDevouredPV = null;
+    private bool isTargetPlayer = false;
 
     private void Awake()
     {
+        
         experienceManager = GetComponent<ExperienceManager>();
         //Run following if local player
         if (photonView.IsMine)
@@ -95,10 +97,16 @@ public class Devour : MonoBehaviourPun
                         //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
                         if (targetBeingDevouredPV.gameObject.tag == "Player")
                         {
+                            isTargetPlayer = true;
                             targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, playerController.id);
                         }
                         else
+                        {
+                            isTargetPlayer = false;
+
                             targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
+
+                        }
 
                         IsDevouring = true;
                         playerController.currentAnim.SetBool("Devouring", true);
@@ -111,13 +119,23 @@ public class Devour : MonoBehaviourPun
                             playerController.currentAnim.SetBool("Devouring", false);
                             IsDevouring = false;
                             playerController.EnableMovement();
-                            targetBeingDevouredPV = null;
 
+                            if (isTargetPlayer)
+                            {
+                                if (targetBeingDevouredPV.GetComponent<DemonKingEvolution>().AmITheDemonKing)
+                                {
+                                    targetBeingDevouredPV.GetComponent<DemonKingEvolution>().ChangeFromTheDemonKing();
+                                    gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
+                                }
+                            }
+
+                            targetBeingDevouredPV = null;
                             experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
                         }
                     }
                 }
             }
+
         }
     }
 }

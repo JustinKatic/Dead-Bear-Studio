@@ -10,6 +10,7 @@ public class ExperienceManager : MonoBehaviourPun
     public float CamDistanceIncreaseAmount = .5f;
     public float CamShoulderOffsetXIncreaseAmount = .1f;
     public float PercentOfExpToLoseOnDeath = .20f;
+    public float DemonKingExpLossDeath = 0.4f;
 
     [Header("EVOLUTION TYPES")]
     public ExperienceBranch green;
@@ -249,11 +250,11 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
-    public void DecreaseExperince()
+    public void DecreaseExperince(float decreaseValue)
     {
-        UpdateExpBarOnDecrease(red);
-        UpdateExpBarOnDecrease(green);
-        UpdateExpBarOnDecrease(blue);
+        UpdateExpBarOnDecrease(red, decreaseValue);
+        UpdateExpBarOnDecrease(green, decreaseValue);
+        UpdateExpBarOnDecrease(blue, decreaseValue);
 
         if (CurrentActiveEvolutionBranch == red)
         {
@@ -272,9 +273,9 @@ public class ExperienceManager : MonoBehaviourPun
     }
 
 
-    void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate)
+    void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
     {
-        branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * PercentOfExpToLoseOnDeath), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
+        branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
         branchToUpdate.ExpBar.UpdateExpSlider();
     }
 
@@ -304,4 +305,5 @@ public class ExperienceManager : MonoBehaviourPun
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
+    
 }

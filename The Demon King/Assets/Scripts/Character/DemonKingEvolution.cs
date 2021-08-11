@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class DemonKingEvolution : MonoBehaviourPun
 {
-    [HideInInspector] public bool CanEvolveToDemonKing = true;
     [HideInInspector] public bool AmITheDemonKing = false;
 
     private ExperienceManager experienceManager;
@@ -24,9 +23,17 @@ public class DemonKingEvolution : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {            
-            AmITheDemonKing = true;
             photonView.RPC("AnnounceDemonKing", RpcTarget.All);
             experienceManager.ActivateDemonKingEvolution();
+        }
+        
+    }
+    public void ChangeFromTheDemonKing()
+    {
+        if (photonView.IsMine)
+        {            
+            photonView.RPC("DevouredAsDemonKing", RpcTarget.All);
+            experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
         }
         
     }
@@ -34,13 +41,12 @@ public class DemonKingEvolution : MonoBehaviourPun
     [PunRPC]
     public void AnnounceDemonKing()
     {
-        // Tell everyone they Can,t evolve to the Demon King
-        if (!photonView.IsMine)
-        {
-            CanEvolveToDemonKing = false;
-        }
-
+        AmITheDemonKing = true;
     }
     
-    
+    [PunRPC]
+    public void DevouredAsDemonKing()
+    {
+        AmITheDemonKing = false;
+    }
 }

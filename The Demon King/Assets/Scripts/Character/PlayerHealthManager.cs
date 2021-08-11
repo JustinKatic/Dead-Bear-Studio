@@ -106,7 +106,7 @@ public class PlayerHealthManager : HealthManager
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                experienceManager.DecreaseExperince();
+                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
             }
             else
             {
