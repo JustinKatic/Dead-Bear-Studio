@@ -31,7 +31,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
-    [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
+    private List<MinionType> minionTypes = new List<MinionType>();
 
     private Cinemachine3rdPersonFollow vCam;
 
@@ -40,6 +40,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void Awake()
     {
+
         healthManager = GetComponent<HealthManager>();
         //If local
         if (photonView.IsMine)
@@ -66,6 +67,10 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void SetMyMinionTypeOnStart()
     {
+        minionTypes.Add(greenMinion);
+        minionTypes.Add(redMinion);
+        minionTypes.Add(blueMinion);
+        
         //Get a random location
         int randomMinionType = Random.Range(0, minionTypes.Count);
         photonView.RPC("SetMinionType", RpcTarget.All, randomMinionType);
@@ -188,6 +193,11 @@ public class ExperienceManager : MonoBehaviourPun
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
             vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
         }
+        else
+        {
+            vCam.CameraDistance = baseCamDist;
+            vCam.ShoulderOffset.x = baseCamShoulderX;
+        }
     }
 
 
@@ -201,9 +211,11 @@ public class ExperienceManager : MonoBehaviourPun
 
             if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
                 ScaleSize(branchType.ExpBar.CurrentExp);
-        
 
-        // if experience is greater than level 2
+            //if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
+                //ScaleSize(branchType.ExpBar.CurrentExp);
+
+                // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
         {
             if (evolutionManager.activeEvolution != branchType.Level2Evolution)
@@ -302,7 +314,7 @@ public class ExperienceManager : MonoBehaviourPun
     {
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
-        transform.localScale = new Vector3(2, 2, 2);
+        ScaleSize(CurrentActiveEvolutionBranch.ExpBar.level2ExpNeeded.value);
     }
 
 }
