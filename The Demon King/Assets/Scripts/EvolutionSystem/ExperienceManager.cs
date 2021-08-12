@@ -40,11 +40,6 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void Awake()
     {
-
-    }
-
-    private void Start()
-    {
         healthManager = GetComponent<HealthManager>();
         //If local
 
@@ -62,6 +57,10 @@ public class ExperienceManager : MonoBehaviourPun
             SetSliders();
             SetStartingActiveEvolution();
         }
+    }
+
+    private void Start()
+    {
 
         if (photonView.IsMine)
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);

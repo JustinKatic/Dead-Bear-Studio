@@ -33,10 +33,6 @@ public class EvolutionManager : MonoBehaviourPun
 
     private void Awake()
     {
-    }
-
-    void Start()
-    {
         //Run on all player objects
         //Gets list of all evolutions on this player
         evolutions = GetComponentsInChildren<Evolutions>(true).ToList();
@@ -45,7 +41,10 @@ public class EvolutionManager : MonoBehaviourPun
         experienceManager = GetComponent<ExperienceManager>();
 
         healthManager = GetComponent<HealthManager>();
+    }
 
+    void Start()
+    {
         //Loops through all evolutions on model and looks for active model and sets that as active evolution
         foreach (var evolution in evolutions)
         {
