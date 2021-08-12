@@ -18,7 +18,7 @@ public class CrownHealthManager : HealthManager
     }
 
     [PunRPC]
-    public void Respawn()
+    public void CrownRespawn()
     {
         model.SetActive(true);
         col.enabled = true;

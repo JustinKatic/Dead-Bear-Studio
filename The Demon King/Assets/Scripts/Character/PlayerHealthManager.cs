@@ -21,7 +21,8 @@ public class PlayerHealthManager : HealthManager
     public TextMeshProUGUI KilledByText;
 
     private PlayerController playerWhoLastShotMeController;
-
+    private DemonKingEvolution demonKingEvolution;
+    private PhotonView demonKingCrownPV;
 
 
     void Awake()
@@ -38,8 +39,11 @@ public class PlayerHealthManager : HealthManager
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
             experienceManager = GetComponent<ExperienceManager>();
+            demonKingEvolution = GetComponent<DemonKingEvolution>();
+            demonKingCrownPV = FindObjectOfType<CrownHealthManager>().GetComponent<PhotonView>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
+        
     }
 
     protected override void OnDevourStart()
@@ -91,11 +95,21 @@ public class PlayerHealthManager : HealthManager
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
                 experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+                
+                //Check if the player died via no player death
                 if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
                 {
+                    //Give the last player who hit exp
                     playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
                     playerWhoLastShotMeController = null;
                 }
+                //If the player died off the side as the demon king respawn back at the crown spawn
+  
+                if (demonKingEvolution.AmITheDemonKing)
+                { 
+                    demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
+                }
+                
             }
             else
             {
