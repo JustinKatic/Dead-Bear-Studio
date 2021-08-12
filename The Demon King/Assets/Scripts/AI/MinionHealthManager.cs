@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.AI;
 
 public class MinionHealthManager : HealthManager
 {
@@ -13,6 +14,7 @@ public class MinionHealthManager : HealthManager
     private Canvas hudCanvas;
     public GameObject PlayerWhoShotMe;
     public State state;
+    private NavMeshAgent agent;
 
     void Awake()
     {
@@ -21,7 +23,7 @@ public class MinionHealthManager : HealthManager
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
-        //state = GetComponent<State>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
 
@@ -52,32 +54,21 @@ public class MinionHealthManager : HealthManager
                 photonView.RPC("Stunned", RpcTarget.All);
         }
     }
-
-    [PunRPC]
-    void OnDevour()
+    protected override void OnBeingDevourStart()
     {
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+        canBeDevoured = false;
+        beingDevoured = true;
+    
 
-        IEnumerator DevourCorutine()
+        if (photonView.IsMine)
         {
-            if (photonView.IsMine)
-            {
-                beingDevoured = true;
-            }
+            beingDevoured = true;
+        }    
+    }
 
-            yield return new WaitForSeconds(DevourTime);
-
-            Respawn();
-
-            if (photonView.IsMine)
-            {
-                CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                isStunned = false;
-                beingDevoured = false;
-            }
-        }
+    protected override void OnBeingDevourEnd(int attackerID)
+    {
+        Respawn();
     }
 
     public void Respawn()
@@ -89,47 +80,53 @@ public class MinionHealthManager : HealthManager
             model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
-            canBeDevoured = false;
-
+            stunnedTimer = 0;
 
             if (PhotonNetwork.IsMasterClient)
             {
-                transform.position = RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position;
+                agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
             yield return new WaitForSeconds(respawnTimer);
 
-
+            if (photonView.IsMine)
+            {
+                CurrentHealth = MaxHealth;
+                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+            }
+            beingDevoured = false;
             model.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
+            canBeDevoured = false;
+            isStunned = false;
         }
     }
 
-    protected override void OnStunStart()
+    protected override void OnBeingStunnedStart()
     {
         //Things that affect everyone
         canBeDevoured = true;
+        isStunned = true;
 
         //Things that only affect local
         if (photonView.IsMine)
         {
-            isStunned = true;
             Debug.Log("Play Stun Anim");
         }
     }
 
-    protected override void OnStunEnd()
+    protected override void OnBeingStunnedEnd()
     {
         if (!beingDevoured)
         {
             //Things that affect everyone
             canBeDevoured = false;
+            isStunned = false;
 
             //Things that only affect local
             if (photonView.IsMine)
             {
-                isStunned = false;
                 Heal(1);
                 Debug.Log("Stop Playing Stun Anim");
             }

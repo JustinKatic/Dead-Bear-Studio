@@ -20,6 +20,7 @@ public class Devour : MonoBehaviourPun
     private ExperienceManager experienceManager;
 
     [HideInInspector] public PhotonView targetBeingDevouredPV = null;
+    private bool isTargetPlayer = false;
 
     private void Awake()
     {
@@ -45,6 +46,7 @@ public class Devour : MonoBehaviourPun
             {
                 //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
                 targetBeingDevouredPV.RPC("InterruptDevourOnSelf", RpcTarget.All);
+                PhotonNetwork.SendAllOutgoingCommands();
                 IsDevouring = false;
                 targetBeingDevouredPV = null;
             }
@@ -75,7 +77,7 @@ public class Devour : MonoBehaviourPun
         if (Physics.Raycast(ray, out hit, 20, ~LayersForDevourToIgnore))
         {
             //If raycast hits player or minion
-            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion"))
+            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
                     return;
@@ -86,16 +88,26 @@ public class Devour : MonoBehaviourPun
                 //check if the target can be devoured
                 if (hitPlayerHealth.canBeDevoured)
                 {
-                    //Get the photon view of hit target
-                    targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
-
-                    //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-                    targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All);
-
                     //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
                     IEnumerator DevourCorutine()
                     {
+                        //Get the photon view of hit target
+                        targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
+                        //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
+                        if (targetBeingDevouredPV.gameObject.tag == "Player")
+                        {
+                            isTargetPlayer = true;
+                            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, playerController.id);
+                        }
+                        else
+                        {
+                            isTargetPlayer = false;
+
+                            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, 0);
+
+                        }
+
                         IsDevouring = true;
                         playerController.currentAnim.SetBool("Devouring", true);
                         playerController.DisableMovement();
@@ -107,15 +119,28 @@ public class Devour : MonoBehaviourPun
                             playerController.currentAnim.SetBool("Devouring", false);
                             IsDevouring = false;
                             playerController.EnableMovement();
+
+                            if (isTargetPlayer)
+                            {
+                                if (targetBeingDevouredPV.GetComponent<DemonKingEvolution>().AmITheDemonKing)
+                                {
+                                    targetBeingDevouredPV.GetComponent<DemonKingEvolution>().ChangeFromTheDemonKing();
+                                    gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
+                                }
+                            }
+                            else if (hit.transform.CompareTag("DemonKingCrown"))
+                            {
+                                targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, 0);
+                                gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
+                            }
+
                             targetBeingDevouredPV = null;
-                            
-                            healthManager.MyMinionType = hitPlayerHealth.MyMinionType;
-                            experienceManager.AddExpereince(healthManager.MyMinionType, hitPlayerHealth.ExperienceValue);
-                            
+                            experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
                         }
                     }
                 }
             }
+
         }
     }
 }

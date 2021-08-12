@@ -8,11 +8,11 @@ using Photon.Pun;
 [System.Serializable]
 public class Evolutions : MonoBehaviourPun
 {
-    public MinionType MyType;
+    public MinionType MyMinionType;
     public int MaxHealth;
 
-    public Animator animator;
-    public Transform ShootPoint;
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public Transform ShootPoint;
 
 
     private void Awake()
