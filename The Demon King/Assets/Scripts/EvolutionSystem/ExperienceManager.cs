@@ -29,7 +29,6 @@ public class ExperienceManager : MonoBehaviourPun
     private float baseCamDist;
     private float baseCamShoulderX;
 
-
     [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
     private List<MinionType> minionTypes = new List<MinionType>();
@@ -163,7 +162,6 @@ public class ExperienceManager : MonoBehaviourPun
     }
 
 
-
     //Sets can evolve based of branch type passed in
     public void ChangeEvolutionBools(ExperienceBranch branch)
     {
@@ -208,7 +206,6 @@ public class ExperienceManager : MonoBehaviourPun
     {
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
         branchType.ExpBar.UpdateExpSlider();
-
 
         UpdateActiveBranchUI(branchType);
 

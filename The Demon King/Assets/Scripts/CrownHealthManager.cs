@@ -23,7 +23,7 @@ public class CrownHealthManager : HealthManager
         model.SetActive(true);
         col.enabled = true;
     }
-    protected override void OnDevourEnd(int attackerID)
+    protected override void OnBeingDevourEnd(int attackerID)
     {
         col.enabled = false;
         model.SetActive(false);
