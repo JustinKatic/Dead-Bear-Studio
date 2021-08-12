@@ -94,7 +94,18 @@ public class PlayerHealthManager : HealthManager
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
-                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+                //If the player died off the side as the demon king respawn back at the crown spawn
+  
+                if (demonKingEvolution.AmITheDemonKing)
+                { 
+                    demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
+                    experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
+                    demonKingEvolution.ChangeFromTheDemonKing();
+                }
+                else
+                {
+                    experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+                }
                 
                 //Check if the player died via no player death
                 if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
@@ -103,13 +114,7 @@ public class PlayerHealthManager : HealthManager
                     playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
                     playerWhoLastShotMeController = null;
                 }
-                //If the player died off the side as the demon king respawn back at the crown spawn
-  
-                if (demonKingEvolution.AmITheDemonKing)
-                { 
-                    demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
-                }
-                
+
             }
             else
             {
@@ -291,7 +296,5 @@ public class PlayerHealthManager : HealthManager
             }
         }
     }
-
-
 
 }

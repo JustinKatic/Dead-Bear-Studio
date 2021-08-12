@@ -61,7 +61,8 @@ public class MinionHealthManager : HealthManager
         if (photonView.IsMine)
         {
             beingDevoured = true;
-        }    }
+        }    
+    }
 
     protected override void OnDevourEnd(int attackerID)
     {

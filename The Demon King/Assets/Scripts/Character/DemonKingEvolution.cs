@@ -32,7 +32,6 @@ public class DemonKingEvolution : MonoBehaviourPun
         if (photonView.IsMine)
         {            
             photonView.RPC("DevouredAsDemonKing", RpcTarget.All);
-            experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
         }
         
     }
