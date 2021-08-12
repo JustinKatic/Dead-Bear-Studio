@@ -88,6 +88,7 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 photonView.RPC("StunRPC", RpcTarget.All, false);
+                stunnedTimer = 0;
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
@@ -108,8 +109,7 @@ public class PlayerHealthManager : HealthManager
                 if (demonKingEvolution.AmITheDemonKing)
                 { 
                     demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
-                }
-                
+                }             
             }
             else
             {

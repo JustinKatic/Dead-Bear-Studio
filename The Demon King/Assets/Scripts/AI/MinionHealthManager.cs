@@ -57,7 +57,6 @@ public class MinionHealthManager : HealthManager
     protected override void OnBeingDevourStart()
     {
         canBeDevoured = false;
-
         beingDevoured = true;
     }
 
@@ -75,6 +74,7 @@ public class MinionHealthManager : HealthManager
             model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
+            stunnedTimer = 0;
 
             if (PhotonNetwork.IsMasterClient)
             {

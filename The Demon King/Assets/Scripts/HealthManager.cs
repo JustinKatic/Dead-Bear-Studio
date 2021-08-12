@@ -20,6 +20,9 @@ public class HealthManager : MonoBehaviourPun
     public float DevourTime = 3f;
     public float stunnedDuration;
 
+    public float stunnedTimer;
+
+
 
     public MinionType MyMinionType;
     public int ExperienceValue;
@@ -45,12 +48,22 @@ public class HealthManager : MonoBehaviourPun
     public bool isStunned = false;
 
     protected IEnumerator myDevourCo;
-    
+
     private void Update()
     {
         //Run following if local player
         if (photonView.IsMine)
         {
+            if (isStunned)
+            {
+                stunnedTimer += Time.deltaTime;
+                if (stunnedTimer >= stunnedDuration)
+                {
+                    OnBeingStunnedEnd();
+                    stunnedTimer = 0;
+                }
+            }
+
             if (beingDevoured || isStunned)
                 return;
             //Heal every X seconds if not at max health
@@ -86,7 +99,7 @@ public class HealthManager : MonoBehaviourPun
             OnBeingDevourStart();
 
             yield return new WaitForSeconds(DevourTime);
-            
+
             OnBeingDevourEnd(attackerID);
         }
     }
@@ -105,18 +118,9 @@ public class HealthManager : MonoBehaviourPun
     protected void Stunned()
     {
         if (!isStunned)
-            StartCoroutine(StunnedCorutine());
-
-        IEnumerator StunnedCorutine()
-        {
             OnBeingStunnedStart();
-
-            yield return new WaitForSeconds(stunnedDuration);
-
-            OnBeingStunnedEnd();
-        }
     }
-    
+
     //Overrides for inherited classes
     protected virtual void OnBeingStunnedStart()
     {
