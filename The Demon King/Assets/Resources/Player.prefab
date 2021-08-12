@@ -4398,7 +4398,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowLayerWeightsInspector: 1
   ShowParameterInspector: 1
-  m_SynchronizeParameters: []
+  m_SynchronizeParameters:
+  - Type: 1
+    SynchronizeType: 1
+    Name: InputX
+  - Type: 1
+    SynchronizeType: 1
+    Name: InputY
+  - Type: 4
+    SynchronizeType: 1
+    Name: JumpStarted
+  - Type: 4
+    SynchronizeType: 1
+    Name: Falling
+  - Type: 4
+    SynchronizeType: 1
+    Name: HasLanded
+  - Type: 4
+    SynchronizeType: 1
+    Name: Stunned
+  - Type: 4
+    SynchronizeType: 1
+    Name: Devouring
+  - Type: 9
+    SynchronizeType: 1
+    Name: Attack
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -5235,6 +5259,7 @@ MonoBehaviour:
   CamDistanceIncreaseAmount: 0.25
   CamShoulderOffsetXIncreaseAmount: 0.1
   PercentOfExpToLoseOnDeath: 0.2
+  DemonKingExpLossDeath: 0.4
   green:
     Level0Evolution: {fileID: 1241169556992600606}
     Level1Evolution: {fileID: 3301691708715608449}
@@ -5302,7 +5327,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da6a5faf9f213e541b9431a02077d633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CanEvolveToDemonKing: 1
   AmITheDemonKing: 0
 --- !u!1 &6257699379011065199
 GameObject:
@@ -8554,15 +8578,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8580,6 +8604,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 65ead2c0946a51f4ba0674feb45154fd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
 --- !u!4 &5019030354914077969 stripped
@@ -8773,7 +8801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
       propertyPath: m_TagString

@@ -29,7 +29,6 @@ public class ExperienceManager : MonoBehaviourPun
     private float baseCamDist;
     private float baseCamShoulderX;
 
-
     [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
     [SerializeField] private List<MinionType> minionTypes = new List<MinionType>();
@@ -37,8 +36,8 @@ public class ExperienceManager : MonoBehaviourPun
     private Cinemachine3rdPersonFollow vCam;
 
     private HealthManager healthManager;
-    
-   
+
+
     private void Awake()
     {
         healthManager = GetComponent<HealthManager>();
@@ -53,7 +52,7 @@ public class ExperienceManager : MonoBehaviourPun
 
             evolutionManager = GetComponent<EvolutionManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
-            
+
             SetSliders();
             SetStartingActiveEvolution();
         }
@@ -158,7 +157,6 @@ public class ExperienceManager : MonoBehaviourPun
     }
 
 
-
     //Sets can evolve based of branch type passed in
     public void ChangeEvolutionBools(ExperienceBranch branch)
     {
@@ -199,14 +197,11 @@ public class ExperienceManager : MonoBehaviourPun
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
         branchType.ExpBar.UpdateExpSlider();
 
-
         UpdateActiveBranchUI(branchType);
 
-        if (branchType == CurrentActiveEvolutionBranch)
-            ScaleSize(branchType.ExpBar.CurrentExp);
-
-        if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
-            ScaleSize(branchType.ExpBar.CurrentExp);
+            if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
+                ScaleSize(branchType.ExpBar.CurrentExp);
+        
 
         // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
@@ -255,7 +250,10 @@ public class ExperienceManager : MonoBehaviourPun
         UpdateExpBarOnDecrease(red, decreaseValue);
         UpdateExpBarOnDecrease(green, decreaseValue);
         UpdateExpBarOnDecrease(blue, decreaseValue);
+    }
 
+    public void CheckIfNeedToDevolve()
+    {
         if (CurrentActiveEvolutionBranch == red)
         {
             DevolveIfExpDroppedBelowThreshold(red);
@@ -304,6 +302,7 @@ public class ExperienceManager : MonoBehaviourPun
     {
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+        transform.localScale = new Vector3(2, 2, 2);
     }
-    
+
 }

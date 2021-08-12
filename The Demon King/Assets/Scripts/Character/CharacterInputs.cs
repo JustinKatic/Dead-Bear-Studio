@@ -59,14 +59,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""d16db478-d7cd-4ff4-8e7a-6ced5fa37868"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """"
-                },
-                {
                     ""name"": ""Evolve"",
                     ""type"": ""Button"",
                     ""id"": ""13ef0cca-1f95-4722-9cd3-b2a15125191b"",
@@ -174,17 +166,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""67f3ba4a-c0e4-45a9-85a2-70fe73f8a436"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": ""InvertVector2(invertX=false)"",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""2c231873-4597-452d-bb90-39d2e4e81156"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
@@ -217,6 +198,33 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""PlayerLook"",
+            ""id"": ""1506ea37-ee2f-4a08-8afb-13ac23dee6cd"",
+            ""actions"": [
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""f712900d-8bd1-47e9-b16d-87274ef56271"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""3405cb66-5f89-4e0d-b01a-330bb7ec7f75"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": ""InvertVector2(invertX=false)"",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -228,9 +236,11 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         m_Player_Ability1 = m_Player.FindAction("Ability1", throwIfNotFound: true);
         m_Player_Ability2 = m_Player.FindAction("Ability2", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Evolve = m_Player.FindAction("Evolve", throwIfNotFound: true);
         m_Player_Devolve = m_Player.FindAction("Devolve", throwIfNotFound: true);
+        // PlayerLook
+        m_PlayerLook = asset.FindActionMap("PlayerLook", throwIfNotFound: true);
+        m_PlayerLook_Look = m_PlayerLook.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -285,7 +295,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Ability1;
     private readonly InputAction m_Player_Ability2;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Evolve;
     private readonly InputAction m_Player_Devolve;
     public struct PlayerActions
@@ -297,7 +306,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         public InputAction @Ability1 => m_Wrapper.m_Player_Ability1;
         public InputAction @Ability2 => m_Wrapper.m_Player_Ability2;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Evolve => m_Wrapper.m_Player_Evolve;
         public InputAction @Devolve => m_Wrapper.m_Player_Devolve;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
@@ -324,9 +332,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Look.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLook;
                 @Evolve.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvolve;
                 @Evolve.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvolve;
                 @Evolve.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnEvolve;
@@ -352,9 +357,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Look.started += instance.OnLook;
-                @Look.performed += instance.OnLook;
-                @Look.canceled += instance.OnLook;
                 @Evolve.started += instance.OnEvolve;
                 @Evolve.performed += instance.OnEvolve;
                 @Evolve.canceled += instance.OnEvolve;
@@ -365,6 +367,39 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // PlayerLook
+    private readonly InputActionMap m_PlayerLook;
+    private IPlayerLookActions m_PlayerLookActionsCallbackInterface;
+    private readonly InputAction m_PlayerLook_Look;
+    public struct PlayerLookActions
+    {
+        private @CharacterInputs m_Wrapper;
+        public PlayerLookActions(@CharacterInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Look => m_Wrapper.m_PlayerLook_Look;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerLook; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerLookActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerLookActions instance)
+        {
+            if (m_Wrapper.m_PlayerLookActionsCallbackInterface != null)
+            {
+                @Look.started -= m_Wrapper.m_PlayerLookActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerLookActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerLookActionsCallbackInterface.OnLook;
+            }
+            m_Wrapper.m_PlayerLookActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
+            }
+        }
+    }
+    public PlayerLookActions @PlayerLook => new PlayerLookActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -372,8 +407,11 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         void OnAbility1(InputAction.CallbackContext context);
         void OnAbility2(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
         void OnEvolve(InputAction.CallbackContext context);
         void OnDevolve(InputAction.CallbackContext context);
+    }
+    public interface IPlayerLookActions
+    {
+        void OnLook(InputAction.CallbackContext context);
     }
 }

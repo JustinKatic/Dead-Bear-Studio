@@ -54,27 +54,15 @@ public class MinionHealthManager : HealthManager
                 photonView.RPC("Stunned", RpcTarget.All);
         }
     }
-
-    [PunRPC]
-    void OnDevour()
+    protected override void OnBeingDevourStart()
     {
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+        canBeDevoured = false;
+        beingDevoured = true;
+    }
 
-
-        IEnumerator DevourCorutine()
-        {
-            canBeDevoured = false;
-
-            if (photonView.IsMine)
-            {
-                beingDevoured = true;
-            }
-
-            yield return new WaitForSeconds(DevourTime);
-
-            Respawn();
-        }
+    protected override void OnBeingDevourEnd(int attackerID)
+    {
+        Respawn();
     }
 
     public void Respawn()
@@ -86,8 +74,7 @@ public class MinionHealthManager : HealthManager
             model.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
-
-
+            stunnedTimer = 0;
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -96,13 +83,12 @@ public class MinionHealthManager : HealthManager
 
             yield return new WaitForSeconds(respawnTimer);
 
-
             if (photonView.IsMine)
             {
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                beingDevoured = false;
             }
+            beingDevoured = false;
             model.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
@@ -111,30 +97,30 @@ public class MinionHealthManager : HealthManager
         }
     }
 
-    protected override void OnStunStart()
+    protected override void OnBeingStunnedStart()
     {
         //Things that affect everyone
         canBeDevoured = true;
+        isStunned = true;
 
         //Things that only affect local
         if (photonView.IsMine)
         {
-            isStunned = true;
             Debug.Log("Play Stun Anim");
         }
     }
 
-    protected override void OnStunEnd()
+    protected override void OnBeingStunnedEnd()
     {
         if (!beingDevoured)
         {
             //Things that affect everyone
             canBeDevoured = false;
+            isStunned = false;
 
             //Things that only affect local
             if (photonView.IsMine)
             {
-                isStunned = false;
                 Heal(1);
                 Debug.Log("Stop Playing Stun Anim");
             }

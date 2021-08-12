@@ -20,9 +20,4 @@ public class DemonKingCrown : MonoBehaviour
 
     }
 
-    [PunRPC]
-    public void CrownPickedUp()
-    {
-        gameObject.SetActive(false);
-    }
 }

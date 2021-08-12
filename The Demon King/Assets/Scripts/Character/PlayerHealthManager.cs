@@ -20,6 +20,9 @@ public class PlayerHealthManager : HealthManager
     public GameObject KilledByUIPanel;
     public TextMeshProUGUI KilledByText;
 
+    private PlayerController playerWhoLastShotMeController;
+    private DemonKingEvolution demonKingEvolution;
+    private PhotonView demonKingCrownPV;
 
 
     void Awake()
@@ -36,41 +39,44 @@ public class PlayerHealthManager : HealthManager
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
             experienceManager = GetComponent<ExperienceManager>();
+            demonKingEvolution = GetComponent<DemonKingEvolution>();
+            demonKingCrownPV = FindObjectOfType<CrownHealthManager>().GetComponent<PhotonView>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
+        
     }
 
-    [PunRPC]
-    void OnDevour(int attackerID)
+    protected override void OnBeingDevourStart()
     {
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+        canBeDevoured = false;
 
-        IEnumerator DevourCorutine()
+        if (photonView.IsMine)
         {
-            canBeDevoured = false;
-
-            if (photonView.IsMine)
-            {
-                beingDevoured = true;
-            }
-
-            yield return new WaitForSeconds(DevourTime);
-
-            if (photonView.IsMine)
-            {
-                PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
-                PlayerWhoDevouredMeController.vCam.m_Priority = 12;
-                KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
-                KilledByUIPanel.SetActive(true);
-                photonView.RPC("Respawn", RpcTarget.All);
-            }
+            beingDevoured = true;
         }
     }
 
+    protected override void OnBeingDevourEnd(int attackerID)
+    {
+        if (photonView.IsMine)
+        {
+            PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+            PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+            KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+            KilledByUIPanel.SetActive(true);
+            photonView.RPC("Respawn", RpcTarget.All, true);
+        }
+    }
 
     [PunRPC]
-    public void Respawn()
+    void Suicide(int playerWhoKilledSelfID)
+    {
+        PhotonView playerWhoKilledSelfPV = PhotonView.Find(playerWhoKilledSelfID);
+        experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().ExperienceValue);
+    }
+
+    [PunRPC]
+    public void Respawn(bool DidIDieFromPlayer)
     {
         StartCoroutine(ResetPlayer());
 
@@ -82,12 +88,28 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 photonView.RPC("StunRPC", RpcTarget.All, false);
+                stunnedTimer = 0;
                 GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
                 player.DisableMovement();
                 player.cc.enabled = false;
                 transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
                 player.cc.enabled = true;
                 player.currentAnim.SetBool("Stunned", false);
+                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+                
+                //Check if the player died via no player death
+                if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
+                {
+                    //Give the last player who hit exp
+                    playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
+                    playerWhoLastShotMeController = null;
+                }
+                //If the player died off the side as the demon king respawn back at the crown spawn
+  
+                if (demonKingEvolution.AmITheDemonKing)
+                { 
+                    demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
+                }             
             }
             else
             {
@@ -103,10 +125,11 @@ public class PlayerHealthManager : HealthManager
                     PlayerWhoDevouredMeController.vCam.Priority = 10;
                     KilledByUIPanel.SetActive(false);
                 }
+                experienceManager.CheckIfNeedToDevolve();
                 player.EnableMovement();
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-                experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+
             }
             else
             {
@@ -122,7 +145,7 @@ public class PlayerHealthManager : HealthManager
     }
 
     [PunRPC]
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, int attackerID)
     {
         //Runing following if local player
         if (photonView.IsMine)
@@ -135,6 +158,8 @@ public class PlayerHealthManager : HealthManager
                 return;
             //Remove health
             CurrentHealth -= damage;
+
+            playerWhoLastShotMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
 
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
@@ -232,7 +257,7 @@ public class PlayerHealthManager : HealthManager
             StunVFX.SetActive(false);
     }
 
-    protected override void OnStunStart()
+    protected override void OnBeingStunnedStart()
     {
         //Things that affect everyone
         canBeDevoured = true;
@@ -248,7 +273,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    protected override void OnStunEnd()
+    protected override void OnBeingStunnedEnd()
     {
         if (!beingDevoured)
         {
@@ -266,7 +291,4 @@ public class PlayerHealthManager : HealthManager
             }
         }
     }
-
-
-
 }
