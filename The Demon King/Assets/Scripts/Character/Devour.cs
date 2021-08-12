@@ -24,7 +24,6 @@ public class Devour : MonoBehaviourPun
 
     private void Awake()
     {
-        
         experienceManager = GetComponent<ExperienceManager>();
         //Run following if local player
         if (photonView.IsMine)
@@ -47,6 +46,7 @@ public class Devour : MonoBehaviourPun
             {
                 //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
                 targetBeingDevouredPV.RPC("InterruptDevourOnSelf", RpcTarget.All);
+                PhotonNetwork.SendAllOutgoingCommands();
                 IsDevouring = false;
                 targetBeingDevouredPV = null;
             }
@@ -77,7 +77,7 @@ public class Devour : MonoBehaviourPun
         if (Physics.Raycast(ray, out hit, 20, ~LayersForDevourToIgnore))
         {
             //If raycast hits player or minion
-            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion")|| hit.transform.CompareTag("DemonKingCrown"))
+            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
                     return;

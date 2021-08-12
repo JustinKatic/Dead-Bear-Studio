@@ -42,7 +42,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    protected override void OnDevourStart()
+    protected override void OnBeingDevourStart()
     {
         canBeDevoured = false;
 
@@ -52,7 +52,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    protected override void OnDevourEnd(int attackerID)
+    protected override void OnBeingDevourEnd(int attackerID)
     {
         if (photonView.IsMine)
         {
@@ -243,7 +243,7 @@ public class PlayerHealthManager : HealthManager
             StunVFX.SetActive(false);
     }
 
-    protected override void OnStunStart()
+    protected override void OnBeingStunnedStart()
     {
         //Things that affect everyone
         canBeDevoured = true;
@@ -259,7 +259,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    protected override void OnStunEnd()
+    protected override void OnBeingStunnedEnd()
     {
         if (!beingDevoured)
         {
@@ -277,7 +277,4 @@ public class PlayerHealthManager : HealthManager
             }
         }
     }
-
-
-
 }

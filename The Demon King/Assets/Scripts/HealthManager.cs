@@ -40,9 +40,9 @@ public class HealthManager : MonoBehaviourPun
     // [HideInInspector] public Slider statusBar = null;
 
     public int CurrentHealth = 0;
-    [HideInInspector] public bool beingDevoured = false;
-    [HideInInspector] public bool canBeDevoured = false;
-    [HideInInspector] public bool isStunned = false;
+    public bool beingDevoured = false;
+    public bool canBeDevoured = false;
+    public bool isStunned = false;
 
     protected IEnumerator myDevourCo;
     
@@ -83,20 +83,20 @@ public class HealthManager : MonoBehaviourPun
 
         IEnumerator DevourCorutine()
         {
-            OnDevourStart();
+            OnBeingDevourStart();
 
             yield return new WaitForSeconds(DevourTime);
             
-            OnDevourEnd(attackerID);
+            OnBeingDevourEnd(attackerID);
         }
     }
     //Overrides for inherited classes
-    protected virtual void OnDevourStart()
+    protected virtual void OnBeingDevourStart()
     {
 
     }
 
-    protected virtual void OnDevourEnd(int attackerID)
+    protected virtual void OnBeingDevourEnd(int attackerID)
     {
 
     }
@@ -109,21 +109,21 @@ public class HealthManager : MonoBehaviourPun
 
         IEnumerator StunnedCorutine()
         {
-            OnStunStart();
+            OnBeingStunnedStart();
 
             yield return new WaitForSeconds(stunnedDuration);
 
-            OnStunEnd();
+            OnBeingStunnedEnd();
         }
     }
     
     //Overrides for inherited classes
-    protected virtual void OnStunStart()
+    protected virtual void OnBeingStunnedStart()
     {
 
     }
 
-    protected virtual void OnStunEnd()
+    protected virtual void OnBeingStunnedEnd()
     {
 
     }
