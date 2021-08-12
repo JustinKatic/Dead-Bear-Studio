@@ -41,8 +41,13 @@ public class ExperienceManager : MonoBehaviourPun
     private void Awake()
     {
 
+    }
+
+    private void Start()
+    {
         healthManager = GetComponent<HealthManager>();
         //If local
+
         if (photonView.IsMine)
         {
             SetMyMinionTypeOnStart();
@@ -57,10 +62,7 @@ public class ExperienceManager : MonoBehaviourPun
             SetSliders();
             SetStartingActiveEvolution();
         }
-    }
 
-    private void Start()
-    {
         if (photonView.IsMine)
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
@@ -70,7 +72,7 @@ public class ExperienceManager : MonoBehaviourPun
         minionTypes.Add(greenMinion);
         minionTypes.Add(redMinion);
         minionTypes.Add(blueMinion);
-        
+
         //Get a random location
         int randomMinionType = Random.Range(0, minionTypes.Count);
         photonView.RPC("SetMinionType", RpcTarget.All, randomMinionType);
@@ -79,6 +81,7 @@ public class ExperienceManager : MonoBehaviourPun
     [PunRPC]
     void SetMinionType(int minionType)
     {
+        // if (healthManager.MyMinionType != null)
         healthManager.MyMinionType = minionTypes[minionType];
     }
 
@@ -209,13 +212,13 @@ public class ExperienceManager : MonoBehaviourPun
 
         UpdateActiveBranchUI(branchType);
 
-            if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
-                ScaleSize(branchType.ExpBar.CurrentExp);
+        if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
+            ScaleSize(branchType.ExpBar.CurrentExp);
 
-            //if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
-                //ScaleSize(branchType.ExpBar.CurrentExp);
+        //if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
+        //ScaleSize(branchType.ExpBar.CurrentExp);
 
-                // if experience is greater than level 2
+        // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
         {
             if (evolutionManager.activeEvolution != branchType.Level2Evolution)

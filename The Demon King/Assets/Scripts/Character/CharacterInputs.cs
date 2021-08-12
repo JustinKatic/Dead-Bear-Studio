@@ -225,6 +225,33 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DisplayScoreBoard"",
+            ""id"": ""6faad154-8540-4496-b2c7-0627ded36c00"",
+            ""actions"": [
+                {
+                    ""name"": ""DisplayScoreBoard"",
+                    ""type"": ""Button"",
+                    ""id"": ""c7dd31d6-ead3-4559-a1dc-2583b8f0fce6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""da02979f-1459-4154-9735-8d233f1181f5"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DisplayScoreBoard"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -241,6 +268,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         // PlayerLook
         m_PlayerLook = asset.FindActionMap("PlayerLook", throwIfNotFound: true);
         m_PlayerLook_Look = m_PlayerLook.FindAction("Look", throwIfNotFound: true);
+        // DisplayScoreBoard
+        m_DisplayScoreBoard = asset.FindActionMap("DisplayScoreBoard", throwIfNotFound: true);
+        m_DisplayScoreBoard_DisplayScoreBoard = m_DisplayScoreBoard.FindAction("DisplayScoreBoard", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -400,6 +430,39 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         }
     }
     public PlayerLookActions @PlayerLook => new PlayerLookActions(this);
+
+    // DisplayScoreBoard
+    private readonly InputActionMap m_DisplayScoreBoard;
+    private IDisplayScoreBoardActions m_DisplayScoreBoardActionsCallbackInterface;
+    private readonly InputAction m_DisplayScoreBoard_DisplayScoreBoard;
+    public struct DisplayScoreBoardActions
+    {
+        private @CharacterInputs m_Wrapper;
+        public DisplayScoreBoardActions(@CharacterInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @DisplayScoreBoard => m_Wrapper.m_DisplayScoreBoard_DisplayScoreBoard;
+        public InputActionMap Get() { return m_Wrapper.m_DisplayScoreBoard; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DisplayScoreBoardActions set) { return set.Get(); }
+        public void SetCallbacks(IDisplayScoreBoardActions instance)
+        {
+            if (m_Wrapper.m_DisplayScoreBoardActionsCallbackInterface != null)
+            {
+                @DisplayScoreBoard.started -= m_Wrapper.m_DisplayScoreBoardActionsCallbackInterface.OnDisplayScoreBoard;
+                @DisplayScoreBoard.performed -= m_Wrapper.m_DisplayScoreBoardActionsCallbackInterface.OnDisplayScoreBoard;
+                @DisplayScoreBoard.canceled -= m_Wrapper.m_DisplayScoreBoardActionsCallbackInterface.OnDisplayScoreBoard;
+            }
+            m_Wrapper.m_DisplayScoreBoardActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @DisplayScoreBoard.started += instance.OnDisplayScoreBoard;
+                @DisplayScoreBoard.performed += instance.OnDisplayScoreBoard;
+                @DisplayScoreBoard.canceled += instance.OnDisplayScoreBoard;
+            }
+        }
+    }
+    public DisplayScoreBoardActions @DisplayScoreBoard => new DisplayScoreBoardActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -413,5 +476,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     public interface IPlayerLookActions
     {
         void OnLook(InputAction.CallbackContext context);
+    }
+    public interface IDisplayScoreBoardActions
+    {
+        void OnDisplayScoreBoard(InputAction.CallbackContext context);
     }
 }

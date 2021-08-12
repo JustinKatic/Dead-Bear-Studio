@@ -2,10 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 public class DemonKingEvolution : MonoBehaviourPun
 {
     [HideInInspector] public bool AmITheDemonKing = false;
+
+    public float timeSpentAsDemonKing = 0;
 
     private ExperienceManager experienceManager;
 
@@ -15,25 +19,43 @@ public class DemonKingEvolution : MonoBehaviourPun
         if (photonView.IsMine)
         {
             experienceManager = GetComponent<ExperienceManager>();
+
+            Hashtable hash = new Hashtable();
+            hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine)
+        {
+            if (AmITheDemonKing)
+            {
+                timeSpentAsDemonKing += Time.deltaTime;
+                Hashtable hash = new Hashtable();
+                hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            }
         }
     }
 
     public void ChangeToTheDemonKing()
     {
         if (photonView.IsMine)
-        {            
+        {
             photonView.RPC("AnnounceDemonKing", RpcTarget.All);
             experienceManager.ActivateDemonKingEvolution();
         }
-        
+
     }
     public void ChangeFromTheDemonKing()
     {
         if (photonView.IsMine)
-        {            
+        {
             photonView.RPC("DevouredAsDemonKing", RpcTarget.All);
         }
-        
+
     }
 
     [PunRPC]
@@ -41,7 +63,7 @@ public class DemonKingEvolution : MonoBehaviourPun
     {
         AmITheDemonKing = true;
     }
-    
+
     [PunRPC]
     public void DevouredAsDemonKing()
     {

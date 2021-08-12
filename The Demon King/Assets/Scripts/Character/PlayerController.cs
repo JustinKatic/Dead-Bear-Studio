@@ -272,6 +272,7 @@ public class PlayerController : MonoBehaviourPun
             //Enable the player inputs
             CharacterInputs.Player.Enable();
             CharacterInputs.PlayerLook.Enable();
+            CharacterInputs.DisplayScoreBoard.Enable();
         }
     }
 
@@ -284,6 +285,7 @@ public class PlayerController : MonoBehaviourPun
             //Disable the player inputs
             CharacterInputs.Player.Disable();
             CharacterInputs.PlayerLook.Disable();
+            CharacterInputs.DisplayScoreBoard.Disable();
         }
     }
 
