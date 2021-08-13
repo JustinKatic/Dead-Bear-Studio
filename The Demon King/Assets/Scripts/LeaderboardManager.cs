@@ -64,6 +64,5 @@ public class LeaderboardManager : MonoBehaviourPun
         }
 
         LeaderBoardHUD.SetActive(true);
-
     }
 }
