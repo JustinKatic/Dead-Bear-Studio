@@ -43,7 +43,6 @@ public class PlayerHealthManager : HealthManager
             demonKingCrownPV = FindObjectOfType<CrownHealthManager>().GetComponent<PhotonView>();
             photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
         }
-        
     }
 
     protected override void OnBeingDevourStart()

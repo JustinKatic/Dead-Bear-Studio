@@ -71,8 +71,6 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void SetMyMinionTypeOnStart()
     {
-
-
         //Get a random location
         int randomMinionType = Random.Range(0, minionTypes.Count);
         photonView.RPC("SetMinionType", RpcTarget.All, randomMinionType);
@@ -284,7 +282,6 @@ public class ExperienceManager : MonoBehaviourPun
             DevolveIfExpDroppedBelowThreshold(blue);
         }
     }
-
 
     void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
     {
