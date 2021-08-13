@@ -41,7 +41,11 @@ public class ExperienceManager : MonoBehaviourPun
     private void Awake()
     {
         healthManager = GetComponent<HealthManager>();
+
         //If local
+        minionTypes.Add(greenMinion);
+        minionTypes.Add(redMinion);
+        minionTypes.Add(blueMinion);
 
         if (photonView.IsMine)
         {
@@ -68,9 +72,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void SetMyMinionTypeOnStart()
     {
-        minionTypes.Add(greenMinion);
-        minionTypes.Add(redMinion);
-        minionTypes.Add(blueMinion);
+
 
         //Get a random location
         int randomMinionType = Random.Range(0, minionTypes.Count);
