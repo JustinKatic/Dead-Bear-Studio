@@ -99,9 +99,13 @@ public class PlayerHealthManager : HealthManager
   
                 if (demonKingEvolution.AmITheDemonKing)
                 { 
-                    demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
                     experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
                     demonKingEvolution.ChangeFromTheDemonKing();
+                    
+                    if (!DidIDieFromPlayer)
+                    {
+                        demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
+                    }
                 }
                 else
                 {
@@ -115,12 +119,6 @@ public class PlayerHealthManager : HealthManager
                     playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
                     playerWhoLastShotMeController = null;
                 }
-                //If the player died off the side as the demon king respawn back at the crown spawn
-  
-                if (demonKingEvolution.AmITheDemonKing)
-                { 
-                    demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
-                }             
             }
             else
             {
