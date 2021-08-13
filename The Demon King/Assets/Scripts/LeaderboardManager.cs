@@ -45,6 +45,12 @@ public class LeaderboardManager : MonoBehaviourPun
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
+        DisplayLeaderboard(false);
+    }
+
+
+    public void DisplayLeaderboard(bool DidAWinOccur)
+    {
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             LeaderboardContainerInfo leaderboardContainerInfo = new LeaderboardContainerInfo();
@@ -64,5 +70,10 @@ public class LeaderboardManager : MonoBehaviourPun
         }
 
         LeaderBoardHUD.SetActive(true);
+
+        if(DidAWinOccur)
+        {
+            //DO SOME COOL THINGS HERE IF A WIN OCCURED
+        }
     }
 }

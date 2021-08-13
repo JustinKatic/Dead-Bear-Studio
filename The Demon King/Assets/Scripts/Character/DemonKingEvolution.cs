@@ -10,20 +10,19 @@ public class DemonKingEvolution : MonoBehaviourPun
     [HideInInspector] public bool AmITheDemonKing = false;
 
     public float timeSpentAsDemonKing = 0;
-
     public float TimeRequiredToWin = 10;
-
     private ExperienceManager experienceManager;
+    private LeaderboardManager leaderboardManager;
 
-    private PlayerController playerController;
+    private bool hasPlayerWon = false;
 
     // Start is called before the first frame update
     void Start()
     {
         if (photonView.IsMine)
         {
-            playerController = GetComponent<PlayerController>();
             experienceManager = GetComponent<ExperienceManager>();
+            leaderboardManager = GetComponentInChildren<LeaderboardManager>();
 
             Hashtable hash = new Hashtable();
             hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
@@ -42,18 +41,15 @@ public class DemonKingEvolution : MonoBehaviourPun
                 hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
                 PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
             }
-            if (timeSpentAsDemonKing >= TimeRequiredToWin)
+            if (!hasPlayerWon && timeSpentAsDemonKing >= TimeRequiredToWin)
             {
-                photonView.RPC("PlayerWon", RpcTarget.All, playerController.id);
+                hasPlayerWon = true;
+                leaderboardManager.DisplayLeaderboard(true);
             }
         }
     }
 
-    [PunRPC]
-    void PlayerWon(int WinnersID)
-    {
-        Debug.Log("The Winner is: " + GameManager.instance.GetPlayer(WinnersID).photonPlayer.NickName;
-    }
+
 
     public void ChangeToTheDemonKing()
     {
