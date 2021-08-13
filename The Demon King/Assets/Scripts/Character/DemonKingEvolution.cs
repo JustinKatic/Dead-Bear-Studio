@@ -44,8 +44,23 @@ public class DemonKingEvolution : MonoBehaviourPun
             if (!hasPlayerWon && timeSpentAsDemonKing >= TimeRequiredToWin)
             {
                 hasPlayerWon = true;
-                leaderboardManager.DisplayLeaderboard(true);
+                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+                foreach (var player in players)
+                {
+                    player.GetPhotonView().RPC("DisplayLeaderboardOnWin", RpcTarget.All);
+                }
             }
+        }
+    }
+
+    [PunRPC]
+    void DisplayLeaderboardOnWin()
+    {
+        if (photonView.IsMine)
+        {
+            leaderboardManager.DidAWinOccur = true;
+            leaderboardManager.DisplayLeaderboard();
         }
     }
 
