@@ -73,85 +73,7 @@ public class PlayerHealthManager : HealthManager
         PhotonView playerWhoKilledSelfPV = PhotonView.Find(playerWhoKilledSelfID);
         experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().ExperienceValue);
     }
-
-    [PunRPC]
-    public void Respawn(bool DidIDieFromPlayer)
-    {
-        StartCoroutine(ResetPlayer());
-
-        IEnumerator ResetPlayer()
-        {
-            Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
-            currentActiveEvolution?.gameObject.SetActive(false);
-
-            if (photonView.IsMine)
-            {
-                photonView.RPC("StunRPC", RpcTarget.All, false);
-                stunnedTimer = 0;
-                GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
-                player.DisableMovement();
-                player.cc.enabled = false;
-                transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
-                player.cc.enabled = true;
-                player.currentAnim.SetBool("Stunned", false);
-                //If the player died off the side as the demon king respawn back at the crown spawn
-  
-                if (demonKingEvolution.AmITheDemonKing)
-                { 
-                    experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
-                    demonKingEvolution.ChangeFromTheDemonKing();
-                    
-                    if (!DidIDieFromPlayer)
-                    {
-                        demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
-                    }
-                }
-                else
-                {
-                    experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
-                }
-                
-                //Check if the player died via no player death
-                if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
-                {
-                    //Give the last player who hit exp
-                    playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
-                    playerWhoLastShotMeController = null;
-                }
-            }
-            else
-            {
-                overheadHealthBar.enabled = false;
-            }
-
-            yield return new WaitForSeconds(RespawnTime);
-
-            if (photonView.IsMine)
-            {
-                if (PlayerWhoDevouredMeController != null)
-                {
-                    PlayerWhoDevouredMeController.vCam.Priority = 10;
-                    KilledByUIPanel.SetActive(false);
-                }
-                experienceManager.CheckIfNeedToDevolve();
-                player.EnableMovement();
-                CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-
-            }
-            else
-            {
-                overheadHealthBar.enabled = true;
-            }
-            if (gameObject.GetComponentInChildren<Evolutions>() == null)
-                currentActiveEvolution?.gameObject.SetActive(true);
-
-            canBeDevoured = false;
-            beingDevoured = false;
-            isStunned = false;
-        }
-    }
-
+    
     [PunRPC]
     public void TakeDamage(int damage, int attackerID)
     {
@@ -180,6 +102,107 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("Stunned", RpcTarget.All);
         }
     }
+
+    #region PlayerRespawn
+ [PunRPC]
+    public void Respawn(bool DidIDieFromPlayer)
+    {
+        StartCoroutine(ResetPlayer());
+
+        IEnumerator ResetPlayer()
+        {
+            Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
+            currentActiveEvolution?.gameObject.SetActive(false);
+
+            if (photonView.IsMine)
+            {
+                CheckIfIWasTheDemonKing(DidIDieFromPlayer);
+                DisablePlayerOnRespawn();
+                
+                //Check if the player died via no player death
+                if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
+                {
+                    //Give the last player who hit exp
+                    playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
+                    playerWhoLastShotMeController = null;
+                }
+            }
+            else
+            {
+                overheadHealthBar.enabled = false;
+            }
+
+            yield return new WaitForSeconds(RespawnTime);
+
+            if (photonView.IsMine)
+            {
+                EnablePlayerOnRespawn();
+            }
+            else
+            {
+                overheadHealthBar.enabled = true;
+            }
+            if (gameObject.GetComponentInChildren<Evolutions>() == null)
+                currentActiveEvolution?.gameObject.SetActive(true);
+
+            canBeDevoured = false;
+            beingDevoured = false;
+            isStunned = false;
+        }
+    }
+
+    void CheckIfIWasTheDemonKing(bool DidIDieFromPlayer)
+    {
+        //If the player died off the side as the demon king respawn back at the crown spawn
+  
+        if (demonKingEvolution.AmITheDemonKing)
+        { 
+            experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
+            demonKingEvolution.ChangeFromTheDemonKing();
+                    
+            if (!DidIDieFromPlayer)
+            {
+                demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
+            }
+        }
+        else
+        {
+            experienceManager.DecreaseExperince(experienceManager.PercentOfExpToLoseOnDeath);
+        }
+    }
+
+    void DisablePlayerOnRespawn()
+    {
+        photonView.RPC("StunRPC", RpcTarget.All, false);
+        stunnedTimer = 0;
+        GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
+        player.DisableMovement();
+        player.cc.enabled = false;
+        transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
+        player.cc.enabled = true;
+        player.currentAnim.SetBool("Stunned", false);
+
+    }
+
+    void EnablePlayerOnRespawn()
+    {
+        if (PlayerWhoDevouredMeController != null)
+        {
+            PlayerWhoDevouredMeController.vCam.Priority = 10;
+            KilledByUIPanel.SetActive(false);
+        }
+        experienceManager.CheckIfNeedToDevolve();
+        player.EnableMovement();
+        CurrentHealth = MaxHealth;
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+
+    }
+    
+
+    #endregion
+    
+    #region HealthBar
+
     [PunRPC]
     protected void SetHealth(int MaxHealthValue)
     {
@@ -189,35 +212,12 @@ public class PlayerHealthManager : HealthManager
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            foreach (Image healthBar in healthBarsOverhead)
-            {
-                Destroy(healthBar.gameObject);
-            }
-            healthBarsOverhead.Clear();
-
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = 0; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainerOverhead);
-                healthBarsOverhead.Add(healthBar);
-            }
+            AddImagesToHealthBar(healthBarsOverhead,HealthBarContainerOverhead, MaxHealthValue);
         }
         //Run following if local player
         else
         {
-            foreach (Image healthBar in healthBars)
-            {
-                Destroy(healthBar.gameObject);
-            }
-            healthBars.Clear();
-
-
-            //Adds additional health bars to playerhealthBarContainer.
-            for (int i = 0; i < MaxHealthValue; i++)
-            {
-                Image healthBar = Instantiate(healthBarPrefab, HealthBarContainer);
-                healthBars.Add(healthBar);
-            }
+            AddImagesToHealthBar(healthBars,HealthBarContainer, MaxHealthValue);
 
             if (CurrentHealth > MaxHealth)
                 CurrentHealth = MaxHealth;
@@ -232,30 +232,18 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         if (photonView.IsMine)
         {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBars[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBars[i].color = new Color(255, 0, 0, 0);
-            }
+            //Function in Health Manager
+            FillBarsOfHealth(CurrentHealth, healthBars);
         }
         else
         {
-            for (int i = 0; i < MaxHealth; i++)
-            {
-                //Change health bar red if the bar we are looking at is < currentHealth
-                if (i < CurrentHealth)
-                    healthBarsOverhead[i].color = Color.red;
-                //Change health bar transparent if the bar we are looking at is > currentHealth
-                else
-                    healthBarsOverhead[i].color = new Color(255, 0, 0, 0);
-            }
+            //Function in Health Manager
+            FillBarsOfHealth(CurrentHealth, healthBarsOverhead);
         }
     }
-
+    #endregion
+    
+    #region Stun
     [PunRPC]
     void StunRPC(bool start)
     {
@@ -299,4 +287,9 @@ public class PlayerHealthManager : HealthManager
             }
         }
     }
+    
+
+    #endregion
+
+  
 }

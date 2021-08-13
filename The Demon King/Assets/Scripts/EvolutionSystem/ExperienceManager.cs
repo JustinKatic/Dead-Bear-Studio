@@ -69,6 +69,8 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
 
+    #region ExperienceManagerSetup
+
     private void SetMyMinionTypeOnStart()
     {
         //Get a random location
@@ -108,40 +110,7 @@ public class ExperienceManager : MonoBehaviourPun
         evolutionManager.nextEvolution = branchType.Level0Evolution;
         branchType.ExpBar.ActiveExpBarBackground.SetActive(true);
     }
-
-    void UpdateActiveBranchUI(ExperienceBranch branchType)
-    {
-        if (branchType == red)
-        {
-            red.ExpBar.ActiveExpBarBackground.SetActive(true);
-            green.ExpBar.ActiveExpBarBackground.SetActive(false);
-            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
-        }
-        else if (branchType == green)
-        {
-            red.ExpBar.ActiveExpBarBackground.SetActive(false);
-            green.ExpBar.ActiveExpBarBackground.SetActive(true);
-            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
-        }
-        else if (branchType == blue)
-        {
-            red.ExpBar.ActiveExpBarBackground.SetActive(false);
-            green.ExpBar.ActiveExpBarBackground.SetActive(false);
-            blue.ExpBar.ActiveExpBarBackground.SetActive(true);
-        }
-    }
-
-    //This runs inside the evolution Manager when the evolution button has been pressed
-    public bool CanEvolve()
-    {
-        //Check if I can evolve into any of these types is yes reset can evolve and return true else return false
-        if (red.CanEvolve || blue.CanEvolve || green.CanEvolve)
-        {
-            return true;
-        }
-        return false;
-    }
-
+    
     public void SetCanEvolveFalse()
     {
         //Player has evolved, can not evolve again
@@ -165,45 +134,31 @@ public class ExperienceManager : MonoBehaviourPun
     }
 
 
-    //Sets can evolve based of branch type passed in
-    public void ChangeEvolutionBools(ExperienceBranch branch)
+    #endregion
+
+    #region ExperienceBranchFunctions
+
+    void UpdateActiveBranchUI(ExperienceBranch branchType)
     {
-        if (branch == red)
+        if (branchType == red)
         {
-            red.CanEvolve = true;
-            green.CanEvolve = false;
-            blue.CanEvolve = false;
+            red.ExpBar.ActiveExpBarBackground.SetActive(true);
+            green.ExpBar.ActiveExpBarBackground.SetActive(false);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
         }
-        else if (branch == green)
+        else if (branchType == green)
         {
-            red.CanEvolve = false;
-            green.CanEvolve = true;
-            blue.CanEvolve = false;
+            red.ExpBar.ActiveExpBarBackground.SetActive(false);
+            green.ExpBar.ActiveExpBarBackground.SetActive(true);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(false);
         }
-        else if (branch == blue)
+        else if (branchType == blue)
         {
-            red.CanEvolve = false;
-            green.CanEvolve = false;
-            blue.CanEvolve = true;
+            red.ExpBar.ActiveExpBarBackground.SetActive(false);
+            green.ExpBar.ActiveExpBarBackground.SetActive(false);
+            blue.ExpBar.ActiveExpBarBackground.SetActive(true);
         }
     }
-
-    public void ScaleSize(float CurrentExp)
-    {
-        transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
-        if (CurrentExp >= 1)
-        {
-            vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
-            vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
-        }
-        else
-        {
-            vCam.CameraDistance = baseCamDist;
-            vCam.ShoulderOffset.x = baseCamShoulderX;
-        }
-    }
-
-
     //Update the correct branch based off the given parameters
     void UpdateBranchType(ExperienceBranch branchType, int value)
     {
@@ -214,10 +169,7 @@ public class ExperienceManager : MonoBehaviourPun
 
         if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
             ScaleSize(branchType.ExpBar.CurrentExp);
-
-        //if (branchType.Level0Evolution.MyMinionType == evolutionManager.activeEvolution.MyMinionType)
-        //ScaleSize(branchType.ExpBar.CurrentExp);
-
+        
         // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
         {
@@ -239,7 +191,7 @@ public class ExperienceManager : MonoBehaviourPun
             }
         }
     }
-
+  
     //Add the experience based of minion type eaten
     public void AddExpereince(MinionType minionType, int expValue)
     {
@@ -266,7 +218,61 @@ public class ExperienceManager : MonoBehaviourPun
         UpdateExpBarOnDecrease(green, decreaseValue);
         UpdateExpBarOnDecrease(blue, decreaseValue);
     }
+    void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
+    {
+        branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
+        branchToUpdate.ExpBar.UpdateExpSlider();
+    }
+    #endregion
 
+    #region EvolutionFunctions
+    //Sets can evolve based of branch type passed in
+    public void ChangeEvolutionBools(ExperienceBranch branch)
+    {
+        if (branch == red)
+        {
+            red.CanEvolve = true;
+            green.CanEvolve = false;
+            blue.CanEvolve = false;
+        }
+        else if (branch == green)
+        {
+            red.CanEvolve = false;
+            green.CanEvolve = true;
+            blue.CanEvolve = false;
+        }
+        else if (branch == blue)
+        {
+            red.CanEvolve = false;
+            green.CanEvolve = false;
+            blue.CanEvolve = true;
+        }
+    }
+    //This runs inside the evolution Manager when the evolution button has been pressed
+    public bool CanEvolve()
+    {
+        //Check if I can evolve into any of these types is yes reset can evolve and return true else return false
+        if (red.CanEvolve || blue.CanEvolve || green.CanEvolve)
+        {
+            return true;
+        }
+        return false;
+    }
+    
+    public void ScaleSize(float CurrentExp)
+    {
+        transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
+        if (CurrentExp >= 1)
+        {
+            vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
+            vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
+        }
+        else
+        {
+            vCam.CameraDistance = baseCamDist;
+            vCam.ShoulderOffset.x = baseCamShoulderX;
+        }
+    }
     public void CheckIfNeedToDevolve()
     {
         if (CurrentActiveEvolutionBranch == red)
@@ -284,13 +290,6 @@ public class ExperienceManager : MonoBehaviourPun
             DevolveIfExpDroppedBelowThreshold(blue);
         }
     }
-
-    void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
-    {
-        branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
-        branchToUpdate.ExpBar.UpdateExpSlider();
-    }
-
     void DevolveIfExpDroppedBelowThreshold(ExperienceBranch CurrentActiveEvolutionBranch)
     {
         ExperienceBar currentExpBar = CurrentActiveEvolutionBranch.ExpBar;
@@ -310,7 +309,6 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
         }
     }
-
     //This function is called by DemonKingEvolution script
     public void ActivateDemonKingEvolution()
     {
@@ -318,5 +316,6 @@ public class ExperienceManager : MonoBehaviourPun
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
         ScaleSize(CurrentActiveEvolutionBranch.ExpBar.level2ExpNeeded.value);
     }
-
+    #endregion
+    
 }
