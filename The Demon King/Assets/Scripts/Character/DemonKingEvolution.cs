@@ -11,6 +11,8 @@ public class DemonKingEvolution : MonoBehaviourPun
 
     public float timeSpentAsDemonKing = 0;
 
+    public float TimeRequiredToWin = 10;
+
     private ExperienceManager experienceManager;
 
     // Start is called before the first frame update
@@ -37,7 +39,17 @@ public class DemonKingEvolution : MonoBehaviourPun
                 hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
                 PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
             }
+            if (timeSpentAsDemonKing >= TimeRequiredToWin)
+            {
+                photonView.RPC("PlayerWon", RpcTarget.All, photonView.ViewID);
+            }
         }
+    }
+
+    [PunRPC]
+    void PlayerWon(int WinnersID)
+    {
+        Debug.Log("The Winner is: " + GameManager.instance.GetPlayer(WinnersID).GetComponent<PlayerController>().photonPlayer.NickName);
     }
 
     public void ChangeToTheDemonKing()
