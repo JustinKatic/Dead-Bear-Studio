@@ -81,6 +81,8 @@ public class ExperienceManager : MonoBehaviourPun
     {
         // if (healthManager.MyMinionType != null)
         healthManager.MyMinionType = minionTypes[minionType];
+
+
     }
 
     void SetStartingActiveEvolution()
