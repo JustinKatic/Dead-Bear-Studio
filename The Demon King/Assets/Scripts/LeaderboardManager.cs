@@ -7,6 +7,7 @@ using Photon.Realtime;
 using System.Linq;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 struct LeaderboardContainerInfo
@@ -24,6 +25,7 @@ public class LeaderboardManager : MonoBehaviourPun
     List<LeaderboardContainerInfo> leaderboardPlayerContainerInfo = new List<LeaderboardContainerInfo>();
     public List<PlayerLeaderboardPanel> playerLeaderboardSlot = new List<PlayerLeaderboardPanel>();
 
+    public bool DidAWinOccur = false;
 
 
 
@@ -39,18 +41,20 @@ public class LeaderboardManager : MonoBehaviourPun
 
     private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        LeaderBoardHUD.SetActive(false);
-        leaderboardPlayerContainerInfo.Clear();
+        if (!DidAWinOccur)
+            LeaderBoardHUD.SetActive(false);
     }
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        DisplayLeaderboard(false);
+        DisplayLeaderboard();
     }
 
 
-    public void DisplayLeaderboard(bool DidAWinOccur)
+    public void DisplayLeaderboard()
     {
+        leaderboardPlayerContainerInfo.Clear();
+
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             LeaderboardContainerInfo leaderboardContainerInfo = new LeaderboardContainerInfo();
@@ -71,9 +75,24 @@ public class LeaderboardManager : MonoBehaviourPun
 
         LeaderBoardHUD.SetActive(true);
 
-        if(DidAWinOccur)
+        if (DidAWinOccur)
         {
-            //DO SOME COOL THINGS HERE IF A WIN OCCURED
+            StartCoroutine(ReturnToLobby());
         }
     }
+
+    IEnumerator ReturnToLobby()
+    {
+        yield return new WaitForSeconds(4f);
+
+        PhotonNetwork.LeaveRoom();
+        while (PhotonNetwork.InRoom)
+            yield return null;
+        {
+            Destroy(NetworkManager.instance.gameObject);
+            PhotonNetwork.LoadLevel("Menu");
+        }
+
+    }
+
 }
