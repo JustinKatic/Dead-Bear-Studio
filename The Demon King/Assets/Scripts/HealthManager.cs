@@ -154,7 +154,7 @@ public class HealthManager : MonoBehaviourPun
         for (int i = 0; i < MaxHealth; i++)
         {
             //Change health bar red if the bar we are looking at is < currentHealth
-            if (i < CurrentHealth)
+            if (i < currentHealth)
                 bar[i].color = Color.red;
             //Change health bar transparent if the bar we are looking at is > currentHealth
             else

@@ -92,7 +92,5 @@ public class LeaderboardManager : MonoBehaviourPun
             Destroy(NetworkManager.instance.gameObject);
             PhotonNetwork.LoadLevel("Menu");
         }
-
     }
-
 }
