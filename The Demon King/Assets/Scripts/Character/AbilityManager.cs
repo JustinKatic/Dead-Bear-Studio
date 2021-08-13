@@ -8,13 +8,6 @@ using UnityEngine.InputSystem;
 
 public class AbilityManager : MonoBehaviourPun
 {
-    [Header("HeavyArcVariables")]
-    private LineRenderer lineRenderer;
-    //Number of points on the line
-    public int numPoints = 50;
-    //Distance between points on the line
-    public float timeBetweenPoints = .1f;
-
     [Header("ProjectileVariables")]
     public float primaryProjectilePower;
     public float blastPower = 5;
@@ -22,7 +15,6 @@ public class AbilityManager : MonoBehaviourPun
     public int damage;
     private Vector3 shootAngle;
     public float primaryProjectileDelay = 0.3f;
-    public float secondaryProjectileDelay = 0.7f;
 
     [Header("LayersForRaycastToIgnore")]
     public LayerMask PrimaryProjectileLayersToIgnore;
@@ -33,7 +25,6 @@ public class AbilityManager : MonoBehaviourPun
 
 
     [Header("ProjectilePrefabs")]
-    public GameObject heavyProjectile;
     public GameObject primaryProjectile;
 
     [Header("GameObjects")]
@@ -51,7 +42,6 @@ public class AbilityManager : MonoBehaviourPun
     void Awake()
     {
         player = GetComponent<PlayerController>();
-        lineRenderer = GetComponent<LineRenderer>();
         cam = Camera.main;
 
         if (photonView.IsMine)
@@ -63,7 +53,6 @@ public class AbilityManager : MonoBehaviourPun
         {
             Destroy(recticle.gameObject);
             Destroy(AoeZone);
-            Destroy(lineRenderer);
         }
     }
     private void Start()
@@ -72,9 +61,7 @@ public class AbilityManager : MonoBehaviourPun
         {
             player.CharacterInputs.Player.Ability1.performed += OnAbility1;
             player.CharacterInputs.Player.Ability1.canceled += OnAbility1Cancelled;
-
-            player.CharacterInputs.Player.Ability2.performed += OnAbility2;
-            player.CharacterInputs.Player.Ability2.canceled += OnAbility2Cancelled;
+            
         }
     }
 
@@ -91,34 +78,6 @@ public class AbilityManager : MonoBehaviourPun
     private void OnAbility1Cancelled(InputAction.CallbackContext obj)
     {
 
-    }
-
-    private void OnAbility2(InputAction.CallbackContext obj)
-    {
-        if (canCast)
-        {
-            HeavyProjectileAim();
-            StartCoroutine(CanCast(secondaryProjectileDelay));
-        }
-    }
-
-    private void OnAbility2Cancelled(InputAction.CallbackContext obj)
-    {
-        player.currentAnim.SetTrigger("Attack");
-        HeavyProjectileAimCancelled();
-    }
-
-
-
-    private void Update()
-    {
-        if (!photonView.IsMine)
-            return;
-
-        if (isAiming)
-        {
-            HeavyProjectileAim();
-        }
     }
 
     public void ShootPrimaryProjectile()
@@ -145,74 +104,6 @@ public class AbilityManager : MonoBehaviourPun
         PrimaryProjectileController projectileScript = createdPrimaryProjectile.GetComponent<PrimaryProjectileController>();
         projectileScript.Initialize(damage, player.id);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
-    }
-
-
-    public void ShootHeavyProjectile()
-    {
-        if (isAiming)
-        {
-            SpawnHeavyProjectile(shootPoint.position, shootPoint.transform.forward, shootAngle, blastPower);
-        }
-    }
-
-    void SpawnHeavyProjectile(Vector3 pos, Vector3 dir, Vector3 shootDir, float power)
-    {
-        GameObject createdHeavyProjectile = PhotonNetwork.Instantiate("HeavyProjectile", pos, Quaternion.identity);
-        createdHeavyProjectile.transform.forward = dir;
-
-        HeavyProjectileController projectileSctipt = createdHeavyProjectile.GetComponent<HeavyProjectileController>();
-
-        projectileSctipt.Initialize(damage, player.id);
-        projectileSctipt.rb.velocity = shootDir * power;
-    }
-
-    public void HeavyProjectileAim()
-    {
-        shootPoint = evolutionManager.currentActiveShootPoint;
-
-        shootPoint.rotation = Quaternion.Euler(cam.transform.eulerAngles.x, shootPoint.eulerAngles.y, shootPoint.eulerAngles.z);
-        //Enables the Arc for the heavy projectile and disables the primary reticule
-        lineRenderer.enabled = true;
-        recticle.SetActive(false);
-        AoeZone.SetActive(true);
-
-        shootAngle = new Vector3(shootPoint.forward.x, shootPoint.forward.y + shootYAngle, shootPoint.forward.z);
-
-        lineRenderer.positionCount = numPoints;
-        List<Vector3> points = new List<Vector3>();
-        // Calculate the trajectory of the projectile based off the given position and velocity
-        Vector3 startingPosition = shootPoint.position;
-        Vector3 startingVelocity = shootAngle * blastPower;
-
-        //Creates a list of points for the Line renderer based off the given points and distance between points
-        //Continues adding to the list if an object has not been hit with a collidable layer
-        for (float t = 0; t < numPoints; t += timeBetweenPoints)
-        {
-            Vector3 newPoint = startingPosition + t * startingVelocity;
-            newPoint.y = startingPosition.y + startingVelocity.y * t + Physics.gravity.y / 2f * t * t;
-            points.Add(newPoint);
-
-            if (Physics.OverlapSphere(newPoint, .4f, collidableLayers).Length > 0)
-            {
-                lineRenderer.positionCount = points.Count;
-                break;
-            }
-        }
-        AoeZone.transform.position = new Vector3(points[points.Count - 1].x, points[points.Count - 1].y, points[points.Count - 1].z);
-        lineRenderer.SetPositions(points.ToArray());
-        isAiming = true;
-    }
-
-    //Set the Aoe zone to and line renderer to inactive 
-    //Set the reticule back to active for the primary attack
-    public void HeavyProjectileAimCancelled()
-    {
-        ShootHeavyProjectile();
-        AoeZone.SetActive(false);
-        isAiming = false;
-        lineRenderer.enabled = false;
-        recticle.SetActive(true);
     }
 
     public IEnumerator CanCast(float timer)
