@@ -78,15 +78,9 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
+    
 
-    protected void Heal(int amountToHeal)
-    {
-        //Only running on local player
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        //Updates this charcters health bars on all players in network
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-        HealthRegenTimer = TimeBeforeHealthRegen;
-    }
+    #region Devour
 
     [PunRPC]
     public virtual void OnDevour(int attackerID)
@@ -113,6 +107,18 @@ public class HealthManager : MonoBehaviourPun
     {
 
     }
+    
+    [PunRPC]
+    protected void InterruptDevourOnSelf()
+    {
+        beingDevoured = false;
+        StopCoroutine(myDevourCo);
+    }
+
+    #endregion
+
+    #region Stun
+
     //This is run when the player has been stunned
     [PunRPC]
     protected void Stunned()
@@ -132,10 +138,45 @@ public class HealthManager : MonoBehaviourPun
 
     }
 
-    [PunRPC]
-    protected void InterruptDevourOnSelf()
+    #endregion
+
+    #region HealthFunctions
+    protected void Heal(int amountToHeal)
     {
-        beingDevoured = false;
-        StopCoroutine(myDevourCo);
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters health bars on all players in network
+        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        HealthRegenTimer = TimeBeforeHealthRegen;
     }
+    protected void FillBarsOfHealth(int currentHealth, List<Image> bar)
+    {
+        for (int i = 0; i < MaxHealth; i++)
+        {
+            //Change health bar red if the bar we are looking at is < currentHealth
+            if (i < CurrentHealth)
+                bar[i].color = Color.red;
+            //Change health bar transparent if the bar we are looking at is > currentHealth
+            else
+                bar[i].color = new Color(255, 0, 0, 0);
+        }
+    }
+    protected void AddImagesToHealthBar(List<Image> bar,Transform barType, int maxHealthValue)
+    {
+        foreach (Image healthBar in bar)
+        {
+            Destroy(healthBar.gameObject);
+        }
+        bar.Clear();
+
+        //Adds additional health bars to playerhealthBarContainer.
+        for (int i = 0; i < maxHealthValue; i++)
+        {
+            Image healthBar = Instantiate(healthBarPrefab, barType);
+            bar.Add(healthBar);
+        }
+    }
+
+    #endregion
+    
 }
