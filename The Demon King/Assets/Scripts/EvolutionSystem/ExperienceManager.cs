@@ -65,7 +65,6 @@ public class ExperienceManager : MonoBehaviourPun
 
     private void Start()
     {
-
         if (photonView.IsMine)
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
@@ -283,7 +282,6 @@ public class ExperienceManager : MonoBehaviourPun
             DevolveIfExpDroppedBelowThreshold(blue);
         }
     }
-
 
     void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
     {
