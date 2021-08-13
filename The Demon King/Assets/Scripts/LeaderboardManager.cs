@@ -9,39 +9,61 @@ using UnityEngine.UI;
 using TMPro;
 
 
+struct LeaderboardContainerInfo
+{
+    public string PlayerNickName;
+    public float TimeSpentAsDemonKing;
+}
+
+
 public class LeaderboardManager : MonoBehaviourPun
 {
     PlayerController playerController;
+    public GameObject LeaderBoardHUD;
 
-    List<LeaderboardHelper> leaderboardHelper = new List<LeaderboardHelper>();
+    List<LeaderboardContainerInfo> leaderboardPlayerContainerInfo = new List<LeaderboardContainerInfo>();
+    public List<PlayerLeaderboardPanel> playerLeaderboardSlot = new List<PlayerLeaderboardPanel>();
+
+
 
 
     private void Start()
     {
         if (photonView.IsMine)
         {
-            playerController = GetComponent<PlayerController>();
-            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.performed += DisplayScoreBoard_performed;
+            playerController = GetComponentInParent<PlayerController>();
+            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
+            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
         }
     }
 
-    private void DisplayScoreBoard_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        LeaderBoardHUD.SetActive(false);
+        leaderboardPlayerContainerInfo.Clear();
+    }
+
+    private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            LeaderboardHelper helper = new LeaderboardHelper();
-            helper.PlayerNickName = player.NickName;
-            helper.TimeSpentAsDemonKing = (float)player.CustomProperties["TimeAsDemonKing"];
-            leaderboardHelper.Add(helper);
+            LeaderboardContainerInfo leaderboardContainerInfo = new LeaderboardContainerInfo();
+            leaderboardContainerInfo.PlayerNickName = player.NickName;
+            leaderboardContainerInfo.TimeSpentAsDemonKing = (float)player.CustomProperties["TimeAsDemonKing"];
+            leaderboardPlayerContainerInfo.Add(leaderboardContainerInfo);
         }
 
-        List<LeaderboardHelper> sortedList = leaderboardHelper.OrderByDescending(o => o.TimeSpentAsDemonKing).ToList();
+        List<LeaderboardContainerInfo> playerSortedList = leaderboardPlayerContainerInfo.OrderByDescending(o => o.TimeSpentAsDemonKing).ToList();
 
-        foreach (var item in sortedList)
+        int i = 0;
+        foreach (LeaderboardContainerInfo player in playerSortedList)
         {
-            Debug.Log(item.PlayerNickName + "  " + item.TimeSpentAsDemonKing);
+            playerLeaderboardSlot[i].PlayerName.text = player.PlayerNickName;
+            playerLeaderboardSlot[i].TimeSpentAsDemonKing.text = Mathf.Round(player.TimeSpentAsDemonKing).ToString();
+            i++;
         }
 
-        leaderboardHelper.Clear();
+        LeaderBoardHUD.SetActive(true);
+
     }
 }
