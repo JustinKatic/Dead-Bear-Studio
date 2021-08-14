@@ -212,12 +212,11 @@ public class PlayerController : MonoBehaviourPun
             //Add gravity to player
             playerYVelocity += gravity * Time.deltaTime;
 
-
             //Get the players current movement velocity based of inputs and relative direction
             if (cc.isGrounded)
             {
                 playerMoveVelocity = (transform.right * playerInputs.x + transform.forward * playerInputs.y) * MoveSpeed;
-                if (cc.velocity.magnitude >= 0.2)
+                if (cc.velocity.magnitude > 0.2)
                 {
                     if (!isWalking)
                     {
@@ -247,7 +246,7 @@ public class PlayerController : MonoBehaviourPun
 
                 playerMoveVelocity.y = tempPlayerYVel;
 
-                if (isWalking)
+                if (isWalking && cc.velocity.y >= 2.7f)
                 {
                     isWalking = false;
                     walkSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
