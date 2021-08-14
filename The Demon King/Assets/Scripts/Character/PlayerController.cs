@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviourPun
                     isFalling = false;
                 }
             }
-            else if (!cc.isGrounded && !isJumping)
+            else if (!cc.isGrounded && !isJumping && cc.velocity.y >= 2.7f)
             {
                 currentAnim.SetBool("Falling", true);
                 currentAnim.SetBool("HasLanded", false);
