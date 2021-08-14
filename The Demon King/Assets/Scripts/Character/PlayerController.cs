@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float MoveSpeed = 5f;
     [SerializeField] float AirSpeed = 5f;
     [SerializeField] float InAirAcceleration = 7f;
+    public float InAirDrag = 2f;
+
 
 
     [SerializeField] float jumpHeight;
@@ -239,7 +241,9 @@ public class PlayerController : MonoBehaviourPun
                 playerMoveVelocity += (transform.right * playerInputs.x + transform.forward * playerInputs.y) * InAirAcceleration * Time.deltaTime;
                 float tempPlayerYVel = playerMoveVelocity.y;
                 playerMoveVelocity.y = 0;
+                playerMoveVelocity -= Vector3.Normalize(playerMoveVelocity) * InAirDrag * Time.deltaTime;
                 playerMoveVelocity = Vector3.ClampMagnitude(playerMoveVelocity, AirSpeed);
+
                 playerMoveVelocity.y = tempPlayerYVel;
 
                 if (isWalking)
