@@ -126,7 +126,7 @@ public class PlayerController : MonoBehaviourPun
 
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (cc.isGrounded)
+        if (IsGrounded())
         {
             //Sets Y velocity to jump value
             playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviourPun
         if (photonView.IsMine)
         {
             //pushes player onto ground
-            if (cc.isGrounded && playerYVelocity < 0)
+            if (IsGrounded() && playerYVelocity < 0)
             {
                 playerYVelocity = -2f;
                 //Set jumping false and allow CC to stepUp
@@ -196,7 +196,7 @@ public class PlayerController : MonoBehaviourPun
                     isFalling = false;
                 }
             }
-            else if (!cc.isGrounded && !isJumping)
+            else if (!IsGrounded() && !isJumping)
             {
                 currentAnim.SetBool("Falling", true);
                 currentAnim.SetBool("HasLanded", false);
@@ -212,8 +212,9 @@ public class PlayerController : MonoBehaviourPun
             //Add gravity to player
             playerYVelocity += gravity * Time.deltaTime;
 
+
             //Get the players current movement velocity based of inputs and relative direction
-            if (cc.isGrounded)
+            if (IsGrounded())
             {
                 playerMoveVelocity = (transform.right * playerInputs.x + transform.forward * playerInputs.y) * MoveSpeed;
                 if (cc.velocity.magnitude >= 0.2)
@@ -294,6 +295,20 @@ public class PlayerController : MonoBehaviourPun
         }
     }
 
+
+    private bool IsGrounded()
+    {
+        float floorDistanceFromFoot = cc.stepOffset +2f;
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.down, out hit, floorDistanceFromFoot) || cc.isGrounded)
+        {
+            Debug.DrawRay(transform.position, Vector3.down * floorDistanceFromFoot, Color.yellow);
+            return true;
+        }
+
+        return false;
+    }
 
     //Push rigidbodys collideded with
     void OnControllerColliderHit(ControllerColliderHit hit)
