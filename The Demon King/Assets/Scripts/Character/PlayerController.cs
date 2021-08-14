@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviourPun
     FMOD.Studio.EventInstance walkSoundEvent;
 
 
+
     //Player Components
 
 
@@ -138,7 +139,16 @@ public class PlayerController : MonoBehaviourPun
             currentAnim.SetBool("Falling", true);
             currentAnim.SetBool("HasLanded", false);
             isFalling = true;
+
+            FMODUnity.RuntimeManager.PlayOneShotAttached(evolutionManager.activeEvolution.JumpSound, gameObject);
+            photonView.RPC("PlayJumpOneShot", RpcTarget.Others, evolutionManager.activeEvolution.JumpSound);
         }
+    }
+
+    [PunRPC]
+    void PlayJumpOneShot(string jumpSound)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(evolutionManager.activeEvolution.JumpSound, gameObject);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
@@ -196,7 +206,7 @@ public class PlayerController : MonoBehaviourPun
                     isFalling = false;
                 }
             }
-            else if (!cc.isGrounded && !isJumping && cc.velocity.y >= 2.7f)
+            else if (!cc.isGrounded && !isJumping)
             {
                 currentAnim.SetBool("Falling", true);
                 currentAnim.SetBool("HasLanded", false);
@@ -246,7 +256,7 @@ public class PlayerController : MonoBehaviourPun
 
                 playerMoveVelocity.y = tempPlayerYVel;
 
-                if (isWalking && cc.velocity.y >= 2.7f)
+                if (isWalking)
                 {
                     isWalking = false;
                     walkSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);

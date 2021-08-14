@@ -14,6 +14,9 @@ public class Evolutions : MonoBehaviourPun
     [FMODUnity.EventRef]
     public string WalkSound;
 
+    [FMODUnity.EventRef]
+    public string JumpSound;
+
 
     [HideInInspector] public Animator animator;
     [HideInInspector] public Transform ShootPoint;
