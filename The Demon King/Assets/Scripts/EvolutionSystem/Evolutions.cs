@@ -11,8 +11,13 @@ public class Evolutions : MonoBehaviourPun
     public MinionType MyMinionType;
     public int MaxHealth;
 
+    [FMODUnity.EventRef]
+    public string WalkSound;
+
+
     [HideInInspector] public Animator animator;
     [HideInInspector] public Transform ShootPoint;
+
 
 
     private void Awake()

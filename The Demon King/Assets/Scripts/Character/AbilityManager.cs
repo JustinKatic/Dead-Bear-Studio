@@ -10,16 +10,11 @@ public class AbilityManager : MonoBehaviourPun
 {
     [Header("ProjectileVariables")]
     public float primaryProjectilePower;
-    public float blastPower = 5;
-    public float shootYAngle;
     public int damage;
-    private Vector3 shootAngle;
     public float primaryProjectileDelay = 0.3f;
 
     [Header("LayersForRaycastToIgnore")]
     public LayerMask PrimaryProjectileLayersToIgnore;
-    // The physics layer that will cause the line to stop being drawn
-    public LayerMask collidableLayers;
 
     private EvolutionManager evolutionManager;
 
@@ -30,9 +25,7 @@ public class AbilityManager : MonoBehaviourPun
     [Header("GameObjects")]
     public Transform shootPoint;
     public GameObject recticle;
-    public GameObject AoeZone;
 
-    [HideInInspector] public bool isAiming = false;
     private bool canCast = true;
 
 
@@ -52,7 +45,6 @@ public class AbilityManager : MonoBehaviourPun
         if (!photonView.IsMine)
         {
             Destroy(recticle.gameObject);
-            Destroy(AoeZone);
         }
     }
     private void Start()

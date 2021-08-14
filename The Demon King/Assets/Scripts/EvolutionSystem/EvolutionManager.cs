@@ -19,6 +19,9 @@ public class EvolutionManager : MonoBehaviourPun
 
     [HideInInspector] public Transform currentActiveShootPoint;
 
+    [HideInInspector] public string currentActiveWalkSound;
+
+
     //Components
     private PlayerController playerController;
     private ExperienceManager experienceManager;
@@ -64,6 +67,7 @@ public class EvolutionManager : MonoBehaviourPun
 
             //sets shootPoint and anim of this player to the activeEvolutions
             currentActiveShootPoint = activeEvolution.ShootPoint;
+            currentActiveWalkSound = activeEvolution.WalkSound;
             playerController.currentAnim = activeEvolution.animator;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
@@ -144,6 +148,7 @@ public class EvolutionManager : MonoBehaviourPun
         experienceManager.CurrentActiveEvolutionBranch = nextBranchType;
         experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
         currentActiveShootPoint = activeEvolution.ShootPoint;
+        currentActiveWalkSound = activeEvolution.WalkSound;
         playerController.currentAnim = activeEvolution.animator;
         photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
     }
