@@ -22,7 +22,10 @@ public struct AnimationSounds
     public string FallingSound;
 
     [FMODUnity.EventRef]
-    public string LandingSound;
+    public string LandingNormalSound;
+
+    [FMODUnity.EventRef]
+    public string LandingBigSound;
 }
 
 [System.Serializable]

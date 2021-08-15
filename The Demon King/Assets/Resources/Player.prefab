@@ -873,7 +873,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!1 &640282019216046467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1743,7 +1744,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!1 &1701456943621856593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3450,7 +3452,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!1 &2636128737031437593
 GameObject:
   m_ObjectHideFlags: 0
@@ -6087,7 +6090,8 @@ MonoBehaviour:
     JumpSound: event:/Jump
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
 --- !u!1 &5716519496366139246
 GameObject:
   m_ObjectHideFlags: 0
@@ -6702,6 +6706,7 @@ MonoBehaviour:
   InAirAcceleration: 10.5
   InAirDrag: 5
   jumpHeight: 2
+  BigGroundLandingEffectVel: -20
   pushPower: 2
   SlopeLimit: 45
   StepOffset: 0.3
@@ -7113,7 +7118,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!1 &6227531864582453576
 GameObject:
   m_ObjectHideFlags: 0
@@ -8156,7 +8162,8 @@ MonoBehaviour:
     JumpSound: event:/Jump
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!114 &4702031696571119893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8438,7 +8445,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!114 &6319024470315461494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8883,7 +8891,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!1 &7155631412221652740
 GameObject:
   m_ObjectHideFlags: 0
@@ -9099,7 +9108,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!114 &2717997437182540647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9570,7 +9580,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!1 &7398430384744488097
 GameObject:
   m_ObjectHideFlags: 0
@@ -11315,7 +11326,8 @@ MonoBehaviour:
     JumpSound: 
     ShootSound: 
     FallingSound: 
-    LandingSound: 
+    LandingNormalSound: 
+    LandingBigSound: 
 --- !u!114 &9125713179519391656
 MonoBehaviour:
   m_ObjectHideFlags: 0

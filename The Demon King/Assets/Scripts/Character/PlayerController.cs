@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviourPun
 
 
     [SerializeField] float jumpHeight;
+    [SerializeField] float BigGroundLandingEffectVel = -20f;
     [SerializeField] float pushPower = 2f;
     [SerializeField] float SlopeLimit = 45f;
     [SerializeField] float StepOffset = 0.3f;
@@ -104,7 +105,6 @@ public class PlayerController : MonoBehaviourPun
             gameObject.layer = LayerMask.NameToLayer("Player");
 
             evolutionManager = GetComponent<EvolutionManager>();
-
         }
     }
 
@@ -193,6 +193,14 @@ public class PlayerController : MonoBehaviourPun
                     currentAnim.SetBool("HasLanded", true);
                     currentAnim.SetBool("Falling", false);
                     isFalling = false;
+                    if (playerMoveVelocity.y <= BigGroundLandingEffectVel)
+                    {
+                        playerSoundManager.PlayJumpLandBigSound();
+                    }
+                    else
+                    {
+                        playerSoundManager.PlayJumpLandNormalSound();
+                    }
                 }
             }
             else if (!cc.isGrounded && !isJumping)
@@ -226,7 +234,6 @@ public class PlayerController : MonoBehaviourPun
 
                 playerMoveVelocity.y = tempPlayerYVel;
             }
-
 
             //Add jump and gravity values to current movements Y
             playerMoveVelocity.y = playerYVelocity;
