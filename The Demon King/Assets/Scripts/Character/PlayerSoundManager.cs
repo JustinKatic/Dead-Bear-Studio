@@ -8,23 +8,23 @@ public struct AnimationSounds
 {
     [FMODUnity.EventRef]
     public string WalkSound;
-    
+
     [FMODUnity.EventRef]
     public string JumpSound;
-    
+
     [FMODUnity.EventRef]
     public string ShootSound;
-    
+
     [FMODUnity.EventRef]
     public string FallingSound;
-    
+
     [FMODUnity.EventRef]
     public string LandingSound;
 }
 
 public class PlayerSoundManager : MonoBehaviourPun
 {
-    [HideInInspector]public AnimationSounds animationSounds = new AnimationSounds();
+    [HideInInspector] public AnimationSounds animationSounds = new AnimationSounds();
 
     FMOD.Studio.EventInstance footStepEvent;
 
@@ -39,23 +39,22 @@ public class PlayerSoundManager : MonoBehaviourPun
         footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
-    private void FootStepSound()
+    public void FootStepSound()
     {
         if (photonView.IsMine)
         {
             if (!IsPlaying(footStepEvent) && cc.velocity.magnitude >= 0.2f)
             {
-                
                 footStepEvent.start();
-                photonView.RPC("PlayWalkSoundRPC", RpcTarget.Others);
+                photonView.RPC("PlayWalkSoundRPC", RpcTarget.Others, animationSounds.WalkSound);
             }
         }
     }
 
     [PunRPC]
-    void PlayWalkSoundRPC()
+    void PlayWalkSoundRPC(string walkSound)
     {
-        footStepEvent.start();
+        FMODUnity.RuntimeManager.PlayOneShotAttached(walkSound, gameObject);
     }
 
     bool IsPlaying(FMOD.Studio.EventInstance instance)
@@ -76,13 +75,13 @@ public class PlayerSoundManager : MonoBehaviourPun
         FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.JumpSound, gameObject);
         photonView.RPC("PlayJumpOneShot", RpcTarget.Others, animationSounds.JumpSound);
     }
-    
-    
+
+
     [PunRPC]
     void PlayJumpOneShot(string jumpSound)
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
     }
 
-    
+
 }
