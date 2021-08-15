@@ -6089,7 +6089,7 @@ MonoBehaviour:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
     ShootSound: 
-    FallingSound: 
+    FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
     LandingBigSound: event:/JumpLandSoundBig
 --- !u!1 &5716519496366139246
@@ -6707,6 +6707,7 @@ MonoBehaviour:
   InAirDrag: 5
   jumpHeight: 2
   BigGroundLandingEffectVel: -20
+  velocityToStartFallingSFX: -5
   pushPower: 2
   SlopeLimit: 45
   StepOffset: 0.3
@@ -8161,7 +8162,7 @@ MonoBehaviour:
     WalkSound: 
     JumpSound: event:/Jump
     ShootSound: 
-    FallingSound: 
+    FallingSound: event:/Falling
     LandingNormalSound: 
     LandingBigSound: 
 --- !u!114 &4702031696571119893
@@ -9107,7 +9108,7 @@ MonoBehaviour:
     WalkSound: event:/Jump
     JumpSound: 
     ShootSound: 
-    FallingSound: 
+    FallingSound: event:/Falling
     LandingNormalSound: 
     LandingBigSound: 
 --- !u!114 &2717997437182540647
@@ -11325,7 +11326,7 @@ MonoBehaviour:
     WalkSound: event:/Jump
     JumpSound: 
     ShootSound: 
-    FallingSound: 
+    FallingSound: event:/Falling
     LandingNormalSound: 
     LandingBigSound: 
 --- !u!114 &9125713179519391656

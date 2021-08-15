@@ -9,6 +9,10 @@ public class PlayerSoundManager : MonoBehaviourPun
     [HideInInspector] public AnimationSounds animationSounds = new AnimationSounds();
 
     FMOD.Studio.EventInstance footStepEvent;
+    FMOD.Studio.EventInstance fallingEvent;
+
+    private bool createNewFallingInstance = true;
+
 
     CharacterController cc;
     private void Start()
@@ -22,6 +26,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         //Update position of 3d sound instance
         footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        fallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     //Checks if instance is currently playing a sound already
@@ -102,4 +107,37 @@ public class PlayerSoundManager : MonoBehaviourPun
         FMODUnity.RuntimeManager.PlayOneShotAttached(LandingBigSound, gameObject);
     }
     #endregion
+
+    public void PlayFallingSound()
+    {
+        if (createNewFallingInstance)
+        {
+            createNewFallingInstance = false;
+            fallingEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.FallingSound);
+            fallingEvent.start();
+            photonView.RPC("PlayFallingSound_RPC", RpcTarget.Others, animationSounds.FallingSound);
+        }
+    }
+
+    [PunRPC]
+    void PlayFallingSound_RPC(string FallingSound)
+    {
+        fallingEvent = FMODUnity.RuntimeManager.CreateInstance(FallingSound);
+        fallingEvent.start();
+    }
+
+    public void StopFallingSound()
+    {
+        createNewFallingInstance = true;
+        fallingEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        fallingEvent.release();
+        photonView.RPC("StopFallingSound_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StopFallingSound_RPC()
+    {
+        fallingEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        fallingEvent.release();
+    }
 }

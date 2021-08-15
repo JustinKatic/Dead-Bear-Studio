@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviourPun
 
     [SerializeField] float jumpHeight;
     [SerializeField] float BigGroundLandingEffectVel = -20f;
+    [SerializeField] float velocityToStartFallingSFX = -10f;
     [SerializeField] float pushPower = 2f;
     [SerializeField] float SlopeLimit = 45f;
     [SerializeField] float StepOffset = 0.3f;
@@ -193,6 +194,9 @@ public class PlayerController : MonoBehaviourPun
                     currentAnim.SetBool("HasLanded", true);
                     currentAnim.SetBool("Falling", false);
                     isFalling = false;
+                    playerSoundManager.StopFallingSound();
+
+
                     if (playerMoveVelocity.y <= BigGroundLandingEffectVel)
                     {
                         playerSoundManager.PlayJumpLandBigSound();
@@ -233,6 +237,11 @@ public class PlayerController : MonoBehaviourPun
                 playerMoveVelocity = Vector3.ClampMagnitude(playerMoveVelocity, AirSpeed);
 
                 playerMoveVelocity.y = tempPlayerYVel;
+
+                if (playerMoveVelocity.y <= velocityToStartFallingSFX)
+                {
+                    playerSoundManager.PlayFallingSound();
+                }
             }
 
             //Add jump and gravity values to current movements Y
