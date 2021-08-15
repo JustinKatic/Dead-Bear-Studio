@@ -18,8 +18,7 @@ public class Evolutions : MonoBehaviourPun
 
     [HideInInspector] public Animator animator;
     [HideInInspector] public Transform ShootPoint;
-
-
+    public AnimationSounds ModelAnimationSounds;
 
     private void Awake()
     {

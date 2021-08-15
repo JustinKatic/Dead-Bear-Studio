@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviourPun
     [Header("Components")]
     public CharacterInputs CharacterInputs;
 
+
     private float startMoveSpeed;
     private float playerYVelocity;
     private Vector2 playerInputs;
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviourPun
     //Player Components
 
 
-
+    private PlayerSoundManager playerSoundManager;
     public Animator currentAnim = null;
     private Camera mainCamera;
     public CinemachineVirtualCamera vCam;
@@ -83,6 +84,7 @@ public class PlayerController : MonoBehaviourPun
             //Get Components
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
+            playerSoundManager = GetComponent<PlayerSoundManager>();
             mainCamera = Camera.main;
 
             vCam.m_Priority = 11;
@@ -133,16 +135,9 @@ public class PlayerController : MonoBehaviourPun
             currentAnim.SetBool("Falling", true);
             currentAnim.SetBool("HasLanded", false);
             isFalling = true;
+            playerSoundManager.PlayJumpSound();
 
-            FMODUnity.RuntimeManager.PlayOneShotAttached(evolutionManager.activeEvolution.JumpSound, gameObject);
-            photonView.RPC("PlayJumpOneShot", RpcTarget.Others, evolutionManager.activeEvolution.JumpSound);
         }
-    }
-
-    [PunRPC]
-    void PlayJumpOneShot(string jumpSound)
-    {
-        FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

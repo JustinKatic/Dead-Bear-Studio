@@ -868,6 +868,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!1 &640282019216046467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1732,6 +1738,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!1 &1701456943621856593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3433,6 +3445,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!1 &2636128737031437593
 GameObject:
   m_ObjectHideFlags: 0
@@ -6065,6 +6083,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
+  ModelAnimationSounds:
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!114 &8496830603348622122
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6652,6 +6676,7 @@ GameObject:
   - component: {fileID: 2167992170115965614}
   - component: {fileID: 1525102547616031452}
   - component: {fileID: 8847069703338608600}
+  - component: {fileID: 1245533819151930133}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -6741,7 +6766,6 @@ MonoBehaviour:
   - {fileID: 1232484753288378551}
   - {fileID: 6319024470315461494}
   - {fileID: 6529767910247717006}
-  - {fileID: 488187974238222180}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -7011,7 +7035,6 @@ MonoBehaviour:
       level1ExpNeeded: {fileID: 0}
       level2ExpNeeded: {fileID: 0}
   currentActiveShootPoint: {fileID: 0}
-  currentActiveJumpSound: 
   EvolveVFX: {fileID: 6562903123907493806}
 --- !u!114 &1525102547616031452
 MonoBehaviour:
@@ -7096,6 +7119,24 @@ MonoBehaviour:
   AmITheDemonKing: 0
   timeSpentAsDemonKing: 0
   TimeRequiredToWin: 300
+--- !u!114 &1245533819151930133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6202528700522376440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 680cc517d6a76244791f4d88ff2f5f61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!1 &6227531864582453576
 GameObject:
   m_ObjectHideFlags: 0
@@ -8133,6 +8174,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 190322414822078646}
   ShootPoint: {fileID: 4886548998357426947}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: event:/Jump
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!114 &4702031696571119893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8409,6 +8456,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!114 &6319024470315461494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8848,6 +8901,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 5125816748761906387}
   ShootPoint: {fileID: 2776606519705937495}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!1 &7155631412221652740
 GameObject:
   m_ObjectHideFlags: 0
@@ -9058,6 +9117,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 4169665842805246883}
   ShootPoint: {fileID: 2634334833534024359}
+  ModelAnimationSounds:
+    WalkSound: event:/Jump
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!114 &2717997437182540647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9523,6 +9588,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
+  ModelAnimationSounds:
+    WalkSound: 
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!1 &7398430384744488097
 GameObject:
   m_ObjectHideFlags: 0
@@ -11262,6 +11333,12 @@ MonoBehaviour:
   JumpSound: event:/Jump
   animator: {fileID: 2429296978554322117}
   ShootPoint: {fileID: 192005156663591814}
+  ModelAnimationSounds:
+    WalkSound: event:/Jump
+    JumpSound: 
+    ShootSound: 
+    FallingSound: 
+    LandingSound: 
 --- !u!114 &9125713179519391656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11841,14 +11918,14 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 65ead2c0946a51f4ba0674feb45154fd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
---- !u!4 &2041464504904575065 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
-  m_PrefabInstance: {fileID: 2008047276279893938}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1666170827543392995 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
+  m_PrefabInstance: {fileID: 2008047276279893938}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2041464504904575065 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
   m_PrefabInstance: {fileID: 2008047276279893938}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3980470442253400125
@@ -12071,14 +12148,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 6038971492639900967}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &190322414822078646 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d5912c49bb7542d40922852392f966b4, type: 3}
-  m_PrefabInstance: {fileID: 6038971492639900967}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6849928038898874486 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+  m_PrefabInstance: {fileID: 6038971492639900967}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &190322414822078646 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 6038971492639900967}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7545558352684398130
@@ -12170,14 +12247,14 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 5e296daf7a5e7c441b605f9f141e5e5b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5912c49bb7542d40922852392f966b4, type: 3}
---- !u!4 &8015717026037322201 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5912c49bb7542d40922852392f966b4, type: 3}
-  m_PrefabInstance: {fileID: 7545558352684398130}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &4169665842805246883 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+  m_PrefabInstance: {fileID: 7545558352684398130}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8015717026037322201 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 7545558352684398130}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7239075182171720547 stripped
@@ -12258,14 +12335,14 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 65ead2c0946a51f4ba0674feb45154fd, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
---- !u!4 &7779438630627432064 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
-  m_PrefabInstance: {fileID: 7817306993181503851}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6970954964307774522 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
+  m_PrefabInstance: {fileID: 7817306993181503851}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7779438630627432064 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ef26b9758d62f9a4583069b73e927d1a, type: 3}
   m_PrefabInstance: {fileID: 7817306993181503851}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7940230125058933478
@@ -12432,6 +12509,11 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 5e296daf7a5e7c441b605f9f141e5e5b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+--- !u!1 &8943415224705580037 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+  m_PrefabInstance: {fileID: 8132389401832997204}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8599258930060011199 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5912c49bb7542d40922852392f966b4, type: 3}
@@ -12440,11 +12522,6 @@ Transform:
 --- !u!95 &2429296978554322117 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d5912c49bb7542d40922852392f966b4, type: 3}
-  m_PrefabInstance: {fileID: 8132389401832997204}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &8943415224705580037 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 8132389401832997204}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8962146663166581195
