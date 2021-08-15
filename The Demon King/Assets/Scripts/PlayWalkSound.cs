@@ -1,18 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class PlayWalkSound : MonoBehaviour
+public class PlayWalkSound : MonoBehaviourPun
 {
     [FMODUnity.EventRef]
     public string WalkSound;
 
     FMOD.Studio.EventInstance footStepEvent;
 
+    CharacterController cc;
+
+
 
 
     private void Start()
     {
+        cc = GetComponentInParent<CharacterController>();
         footStepEvent = FMODUnity.RuntimeManager.CreateInstance(WalkSound);
     }
 
@@ -23,8 +28,17 @@ public class PlayWalkSound : MonoBehaviour
 
     private void FootStepSound()
     {
-        if (!IsPlaying(footStepEvent))
+        if (!IsPlaying(footStepEvent) && cc.velocity.magnitude >= 0.2f)
+        {
             footStepEvent.start();
+            photonView.RPC("PlayWalkSoundRPC", RpcTarget.Others);
+        }
+    }
+
+    [PunRPC]
+    void PlayWalkSoundRPC()
+    {
+        footStepEvent.start();
     }
 
     bool IsPlaying(FMOD.Studio.EventInstance instance)
