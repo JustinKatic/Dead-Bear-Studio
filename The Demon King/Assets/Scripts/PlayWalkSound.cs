@@ -28,10 +28,14 @@ public class PlayWalkSound : MonoBehaviourPun
 
     private void FootStepSound()
     {
-        if (!IsPlaying(footStepEvent) && cc.velocity.magnitude >= 0.2f)
+        if (photonView.IsMine)
         {
-            footStepEvent.start();
-            photonView.RPC("PlayWalkSoundRPC", RpcTarget.Others);
+            if (!IsPlaying(footStepEvent) && cc.velocity.magnitude >= 0.2f)
+            {
+                
+                footStepEvent.start();
+                photonView.RPC("PlayWalkSoundRPC", RpcTarget.Others);
+            }
         }
     }
 

@@ -142,7 +142,7 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     void PlayJumpOneShot(string jumpSound)
     {
-        FMODUnity.RuntimeManager.PlayOneShotAttached(evolutionManager.activeEvolution.JumpSound, gameObject);
+        FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

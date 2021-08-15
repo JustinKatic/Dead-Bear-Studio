@@ -17,7 +17,7 @@ public class AttackState : State
         {
             return StunnedState;
         }
-        else if (!CheckIfPlayerIsInMyAttackDistance())
+        else if (!CheckIfPlayerIsInMyAttackDistance() || target == null)
         {
             return WanderState;
         }
@@ -38,6 +38,9 @@ public class AttackState : State
 
     bool CheckIfPlayerIsInMyAttackDistance()
     {
+        if (target == null)
+            return false;
+
         float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
 
         if (distanceToTarget < AttackRange)
