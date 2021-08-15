@@ -3,24 +3,6 @@ using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
 
-[System.Serializable]
-public struct AnimationSounds
-{
-    [FMODUnity.EventRef]
-    public string WalkSound;
-
-    [FMODUnity.EventRef]
-    public string JumpSound;
-
-    [FMODUnity.EventRef]
-    public string ShootSound;
-
-    [FMODUnity.EventRef]
-    public string FallingSound;
-
-    [FMODUnity.EventRef]
-    public string LandingSound;
-}
 
 public class PlayerSoundManager : MonoBehaviourPun
 {
@@ -31,7 +13,8 @@ public class PlayerSoundManager : MonoBehaviourPun
     CharacterController cc;
     private void Start()
     {
-        cc = GetComponentInParent<CharacterController>();
+        if (photonView.IsMine)
+            cc = GetComponentInParent<CharacterController>();
     }
 
     private void Update()

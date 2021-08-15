@@ -5,6 +5,26 @@ using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 
+
+[System.Serializable]
+public struct AnimationSounds
+{
+    [FMODUnity.EventRef]
+    public string WalkSound;
+
+    [FMODUnity.EventRef]
+    public string JumpSound;
+
+    [FMODUnity.EventRef]
+    public string ShootSound;
+
+    [FMODUnity.EventRef]
+    public string FallingSound;
+
+    [FMODUnity.EventRef]
+    public string LandingSound;
+}
+
 [System.Serializable]
 public class Evolutions : MonoBehaviourPun
 {
@@ -14,7 +34,6 @@ public class Evolutions : MonoBehaviourPun
 
     [FMODUnity.EventRef]
     public string JumpSound;
-
 
     [HideInInspector] public Animator animator;
     [HideInInspector] public Transform ShootPoint;
