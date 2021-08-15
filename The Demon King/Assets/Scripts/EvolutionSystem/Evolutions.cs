@@ -11,8 +11,6 @@ public class Evolutions : MonoBehaviourPun
     public MinionType MyMinionType;
     public int MaxHealth;
 
-    [FMODUnity.EventRef]
-    public string WalkSound;
 
     [FMODUnity.EventRef]
     public string JumpSound;

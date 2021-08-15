@@ -38,12 +38,6 @@ public class PlayerController : MonoBehaviourPun
 
     private EvolutionManager evolutionManager;
 
-    private bool isWalking = false;
-
-
-
-    FMOD.Studio.EventInstance walkSoundEvent;
-
 
 
     //Player Components
@@ -226,25 +220,6 @@ public class PlayerController : MonoBehaviourPun
             if (cc.isGrounded)
             {
                 playerMoveVelocity = (transform.right * playerInputs.x + transform.forward * playerInputs.y) * MoveSpeed;
-                if (cc.velocity.magnitude > 0.2)
-                {
-                    if (!isWalking)
-                    {
-                        isWalking = true;
-                        walkSoundEvent = FMODUnity.RuntimeManager.CreateInstance(evolutionManager.currentActiveWalkSound);
-                        walkSoundEvent.start();
-                        photonView.RPC("WalkSound", RpcTarget.Others, evolutionManager.currentActiveWalkSound, true);
-                    }
-                }
-                else
-                {
-                    if (isWalking)
-                    {
-                        isWalking = false;
-                        walkSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                        photonView.RPC("WalkSound", RpcTarget.Others, evolutionManager.currentActiveWalkSound, false);
-                    }
-                }
             }
             else
             {
@@ -255,13 +230,6 @@ public class PlayerController : MonoBehaviourPun
                 playerMoveVelocity = Vector3.ClampMagnitude(playerMoveVelocity, AirSpeed);
 
                 playerMoveVelocity.y = tempPlayerYVel;
-
-                if (isWalking)
-                {
-                    isWalking = false;
-                    walkSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-                    photonView.RPC("WalkSound", RpcTarget.Others, evolutionManager.currentActiveWalkSound, false);
-                }
             }
 
 
@@ -276,22 +244,8 @@ public class PlayerController : MonoBehaviourPun
             currentAnim.SetFloat("InputX", playerInputs.x, 0.1f, Time.deltaTime);
             currentAnim.SetFloat("InputY", playerInputs.y, 0.1f, Time.deltaTime);
         }
-        walkSoundEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
-    [PunRPC]
-    void WalkSound(string walkSound, bool isWalking)
-    {
-        if (isWalking)
-        {
-            walkSoundEvent = FMODUnity.RuntimeManager.CreateInstance(walkSound);
-            walkSoundEvent.start();
-        }
-        else
-        {
-            walkSoundEvent.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-        }
-    }
 
     private void FixedUpdate()
     {
