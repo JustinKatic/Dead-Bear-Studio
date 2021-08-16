@@ -869,12 +869,24 @@ MonoBehaviour:
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
   ModelAnimationSounds:
-    WalkSound: 
-    JumpSound: 
-    ShootSound: 
-    FallingSound: 
-    LandingNormalSound: 
-    LandingBigSound: 
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: event:/CastFireball
+    FallingSound: event:/Falling
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
+--- !u!114 &8519015812198544670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610048305480391202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &640282019216046467
 GameObject:
   m_ObjectHideFlags: 0
@@ -1722,6 +1734,18 @@ MonoBehaviour:
     LayerIndex: 0
   - SynchronizeType: 1
     LayerIndex: 1
+--- !u!114 &7110883245610637485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1666170827543392995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8870621111966871590
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1740,12 +1764,12 @@ MonoBehaviour:
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
   ModelAnimationSounds:
-    WalkSound: 
-    JumpSound: 
-    ShootSound: 
-    FallingSound: 
-    LandingNormalSound: 
-    LandingBigSound: 
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: event:/CastFireball
+    FallingSound: event:/Falling
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
 --- !u!1 &1701456943621856593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3363,6 +3387,7 @@ GameObject:
   - component: {fileID: 6928585086133416898}
   - component: {fileID: 3688983044720211104}
   - component: {fileID: 1605393421765240169}
+  - component: {fileID: 2402420605735256353}
   m_Layer: 0
   m_Name: BlueMiximo
   m_TagString: BlueEvolutionOne
@@ -3448,12 +3473,24 @@ MonoBehaviour:
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
   ModelAnimationSounds:
-    WalkSound: 
-    JumpSound: 
-    ShootSound: 
-    FallingSound: 
-    LandingNormalSound: 
-    LandingBigSound: 
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: event:/CastFireball
+    FallingSound: event:/Falling
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
+--- !u!114 &2402420605735256353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2597820053798484417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2636128737031437593
 GameObject:
   m_ObjectHideFlags: 0
@@ -8165,6 +8202,18 @@ MonoBehaviour:
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
     LandingBigSound: event:/JumpLandSoundBig
+--- !u!114 &4497991100314788320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849928038898874486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4702031696571119893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8442,12 +8491,24 @@ MonoBehaviour:
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
   ModelAnimationSounds:
-    WalkSound: 
-    JumpSound: 
-    ShootSound: 
-    FallingSound: 
-    LandingNormalSound: 
-    LandingBigSound: 
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: event:/CastFireball
+    FallingSound: event:/Falling
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
+--- !u!114 &4841224420272922232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6970954964307774522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6319024470315461494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8826,6 +8887,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5920614707514846785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7129256394635837367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &6046875219551290773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8888,12 +8961,12 @@ MonoBehaviour:
   animator: {fileID: 5125816748761906387}
   ShootPoint: {fileID: 2776606519705937495}
   ModelAnimationSounds:
-    WalkSound: 
-    JumpSound: 
-    ShootSound: 
-    FallingSound: 
-    LandingNormalSound: 
-    LandingBigSound: 
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: event:/CastFireball
+    FallingSound: event:/Falling
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
 --- !u!1 &7155631412221652740
 GameObject:
   m_ObjectHideFlags: 0
@@ -9153,6 +9226,18 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &8105302648544116099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239075182171720547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7275172442728732272
 GameObject:
   m_ObjectHideFlags: 0
@@ -9492,6 +9577,7 @@ GameObject:
   - component: {fileID: 1832043728642683635}
   - component: {fileID: 3553168802850372906}
   - component: {fileID: 3301691708715608449}
+  - component: {fileID: 6906969517634957171}
   m_Layer: 0
   m_Name: GreenMiximo
   m_TagString: GreenEvolutionOne
@@ -9577,12 +9663,24 @@ MonoBehaviour:
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
   ModelAnimationSounds:
-    WalkSound: 
-    JumpSound: 
-    ShootSound: 
-    FallingSound: 
-    LandingNormalSound: 
-    LandingBigSound: 
+    WalkSound: event:/Walk
+    JumpSound: event:/Jump
+    ShootSound: event:/CastFireball
+    FallingSound: event:/Falling
+    LandingNormalSound: event:/JumpLandSound
+    LandingBigSound: event:/JumpLandSoundBig
+--- !u!114 &6906969517634957171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398030229556012930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7398430384744488097
 GameObject:
   m_ObjectHideFlags: 0
@@ -11329,6 +11427,18 @@ MonoBehaviour:
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
     LandingBigSound: event:/JumpLandSoundBig
+--- !u!114 &8478966842432542367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943415224705580037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &9125713179519391656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12133,9 +12243,9 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 5e296daf7a5e7c441b605f9f141e5e5b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d5912c49bb7542d40922852392f966b4, type: 3}
---- !u!4 &6071984721074479820 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+--- !u!1 &6849928038898874486 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 6038971492639900967}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &190322414822078646 stripped
@@ -12143,9 +12253,9 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 6038971492639900967}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6849928038898874486 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d5912c49bb7542d40922852392f966b4, type: 3}
+--- !u!4 &6071984721074479820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d5912c49bb7542d40922852392f966b4, type: 3}
   m_PrefabInstance: {fileID: 6038971492639900967}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7545558352684398130
