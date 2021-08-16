@@ -42,6 +42,7 @@ public class PlayerSoundManager : MonoBehaviourPun
         //Update position of 3d sound instance
         footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         fallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        devourEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     //Checks if instance is currently playing a sound already
