@@ -175,11 +175,11 @@ MonoBehaviour:
   Path: ../DeadBearGamesFmodAudio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637647135281695852
+  lastModified: 637647305114700829
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1150
+    Value: 1326
   Exists: 1
 --- !u!114 &-3729847648104504279
 MonoBehaviour:
@@ -195,6 +195,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/JumpLandSound
   guid: ba34aa1bee88be4fbbc35b5789957ceb
+  Banks:
+  - {fileID: 2860168429813936064}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-3357510555734428566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Stunned
+  m_EditorClassIdentifier: 
+  Path: event:/Stunned
+  guid: a3ee11bf7722334495b146edfc902d8c
   Banks:
   - {fileID: 2860168429813936064}
   IsStream: 0
@@ -253,13 +276,40 @@ MonoBehaviour:
   - {fileID: 8140192767267043114}
   - {fileID: 6605816898598281887}
   - {fileID: -8670360771626761429}
+  - {fileID: 8677205669542273713}
+  - {fileID: -3357510555734428566}
+  - {fileID: 1868028539080869928}
+  - {fileID: 168239544150558669}
   EditorParameters: []
   MasterBanks:
   - {fileID: 2860168429813936064}
   StringsBanks:
   - {fileID: -3806746353477742753}
-  stringsBankWriteTime: 637647135281695852
+  stringsBankWriteTime: 637647305114700829
   cacheVersion: 6
+--- !u!114 &168239544150558669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/NormalEvolve
+  m_EditorClassIdentifier: 
+  Path: event:/NormalEvolve
+  guid: f7da805602342c45a552afc69d59a2f3
+  Banks:
+  - {fileID: 2860168429813936064}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &872789805535944878
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +333,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 150857
+--- !u!114 &1868028539080869928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DemonKingEvolve
+  m_EditorClassIdentifier: 
+  Path: event:/DemonKingEvolve
+  guid: 5e7f0f0ecb57b842a86d15367439d7e9
+  Banks:
+  - {fileID: 2860168429813936064}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &2860168429813936064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -298,7 +371,7 @@ MonoBehaviour:
   Path: ../DeadBearGamesFmodAudio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637647135281675903
+  lastModified: 637647305114670911
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -362,6 +435,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Falling
   guid: 70a1fbe55ff70e44be315aedec51b73b
+  Banks:
+  - {fileID: 2860168429813936064}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8677205669542273713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Devouring
+  m_EditorClassIdentifier: 
+  Path: event:/Devouring
+  guid: 14e2bd9e3f2b4c4fa6cb224beba1482b
   Banks:
   - {fileID: 2860168429813936064}
   IsStream: 0

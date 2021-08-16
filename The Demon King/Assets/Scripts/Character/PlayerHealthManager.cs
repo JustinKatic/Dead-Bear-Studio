@@ -117,6 +117,7 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
+                PlayerSoundManager.Instance.StopStunnedSound();
                 DisablePlayerOnRespawn();
                 
                 //Check if the player died via no player death
@@ -266,6 +267,7 @@ public class PlayerHealthManager : HealthManager
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
             player.DisableMovement();
+            PlayerSoundManager.Instance.PlayStunnedSound();
         }
     }
 
@@ -284,6 +286,7 @@ public class PlayerHealthManager : HealthManager
                 player.EnableMovement();
                 Heal(1);
                 player.currentAnim.SetBool("Stunned", false);
+                PlayerSoundManager.Instance.StopStunnedSound();
             }
         }
     }

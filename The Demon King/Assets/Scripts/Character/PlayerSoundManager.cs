@@ -11,16 +11,19 @@ public class PlayerSoundManager : MonoBehaviourPun
     FMOD.Studio.EventInstance footStepEvent;
     FMOD.Studio.EventInstance fallingEvent;
     FMOD.Studio.EventInstance devourEvent;
+    FMOD.Studio.EventInstance stunnedEvent;
+
 
 
     private bool createNewFallingInstance = true;
 
     private bool createNewDevourInstance = true;
 
+    private bool createNewStunnedInstance = true;
+
+
 
     CharacterController cc;
-
-
 
     public static PlayerSoundManager Instance;
 
@@ -43,6 +46,7 @@ public class PlayerSoundManager : MonoBehaviourPun
         footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         fallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         devourEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        stunnedEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     //Checks if instance is currently playing a sound already
@@ -204,6 +208,41 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         devourEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         devourEvent.release();
+    }
+    #endregion
+
+    #region Stunned Sound
+    public void PlayStunnedSound()
+    {
+        if (createNewStunnedInstance)
+        {
+            createNewStunnedInstance = false;
+            stunnedEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.StunSound);
+            stunnedEvent.start();
+            photonView.RPC("PlayStunnedSound_RPC", RpcTarget.Others, animationSounds.StunSound);
+        }
+    }
+
+    [PunRPC]
+    void PlayStunnedSound_RPC(string stunnedSound)
+    {
+        stunnedEvent = FMODUnity.RuntimeManager.CreateInstance(stunnedSound);
+        stunnedEvent.start();
+    }
+
+    public void StopStunnedSound()
+    {
+        createNewStunnedInstance = true;
+        stunnedEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        stunnedEvent.release();
+        photonView.RPC("StopStunnedSound_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StopStunnedSound_RPC()
+    {
+        stunnedEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        stunnedEvent.release();
     }
 
     #endregion
