@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviourPun
     //Player Components
 
 
-    private PlayerSoundManager playerSoundManager;
     public Animator currentAnim = null;
     private Camera mainCamera;
     public CinemachineVirtualCamera vCam;
@@ -86,7 +85,7 @@ public class PlayerController : MonoBehaviourPun
             //Get Components
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
-            playerSoundManager = GetComponent<PlayerSoundManager>();
+            //playerSoundManager = GetComponent<PlayerSoundManager>();
             mainCamera = Camera.main;
 
             vCam.m_Priority = 11;
@@ -136,7 +135,7 @@ public class PlayerController : MonoBehaviourPun
             currentAnim.SetBool("Falling", true);
             currentAnim.SetBool("HasLanded", false);
             isFalling = true;
-            playerSoundManager.PlayJumpSound();
+            PlayerSoundManager.Instance.PlayJumpSound();
 
         }
     }
@@ -194,16 +193,16 @@ public class PlayerController : MonoBehaviourPun
                     currentAnim.SetBool("HasLanded", true);
                     currentAnim.SetBool("Falling", false);
                     isFalling = false;
-                    playerSoundManager.StopFallingSound();
+                    PlayerSoundManager.Instance.StopFallingSound();
 
 
                     if (playerMoveVelocity.y <= BigGroundLandingEffectVel)
                     {
-                        playerSoundManager.PlayJumpLandBigSound();
+                        PlayerSoundManager.Instance.PlayJumpLandBigSound();
                     }
                     else
                     {
-                        playerSoundManager.PlayJumpLandNormalSound();
+                        PlayerSoundManager.Instance.PlayJumpLandNormalSound();
                     }
                 }
             }
@@ -240,7 +239,7 @@ public class PlayerController : MonoBehaviourPun
 
                 if (playerMoveVelocity.y <= velocityToStartFallingSFX)
                 {
-                    playerSoundManager.PlayFallingSound();
+                    PlayerSoundManager.Instance.PlayFallingSound();// playerSoundManager.PlayFallingSound();
                 }
             }
 

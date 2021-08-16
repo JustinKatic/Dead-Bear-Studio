@@ -53,7 +53,6 @@ public class AbilityManager : MonoBehaviourPun
         {
             player.CharacterInputs.Player.Ability1.performed += OnAbility1;
             player.CharacterInputs.Player.Ability1.canceled += OnAbility1Cancelled;
-            
         }
     }
 
@@ -64,6 +63,7 @@ public class AbilityManager : MonoBehaviourPun
             ShootPrimaryProjectile();
             player.currentAnim.SetTrigger("Attack");
             StartCoroutine(CanCast(primaryProjectileDelay));
+            PlayerSoundManager.Instance.PlayAbility1Sound();
         }
     }
 

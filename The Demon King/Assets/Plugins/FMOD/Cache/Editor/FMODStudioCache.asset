@@ -23,6 +23,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 150857
+--- !u!114 &-8670360771626761429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Ability1TravellingSound
+  m_EditorClassIdentifier: 
+  Path: event:/Ability1TravellingSound
+  guid: d0a2790740496644a437d26fd0c77d45
+  Banks:
+  - {fileID: 2860168429813936064}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-8160843140431617007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,11 +175,11 @@ MonoBehaviour:
   Path: ../DeadBearGamesFmodAudio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637646657421114737
+  lastModified: 637647135281695852
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1052
+    Value: 1150
   Exists: 1
 --- !u!114 &-3729847648104504279
 MonoBehaviour:
@@ -194,7 +217,7 @@ MonoBehaviour:
   m_Name: event:/Walk
   m_EditorClassIdentifier: 
   Path: event:/Walk
-  guid: b91f9379c3640040916f4232a6fc3a74
+  guid: eae5cf1b312de94aa5ed10db17dbb594
   Banks:
   - {fileID: 2860168429813936064}
   IsStream: 0
@@ -203,7 +226,7 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
-  Length: 0
+  Length: 500
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,12 +251,14 @@ MonoBehaviour:
   - {fileID: -3729847648104504279}
   - {fileID: -8160843140431617007}
   - {fileID: 8140192767267043114}
+  - {fileID: 6605816898598281887}
+  - {fileID: -8670360771626761429}
   EditorParameters: []
   MasterBanks:
   - {fileID: 2860168429813936064}
   StringsBanks:
   - {fileID: -3806746353477742753}
-  stringsBankWriteTime: 637646657421114737
+  stringsBankWriteTime: 637647135281695852
   cacheVersion: 6
 --- !u!114 &872789805535944878
 MonoBehaviour:
@@ -273,7 +298,7 @@ MonoBehaviour:
   Path: ../DeadBearGamesFmodAudio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637646657421084824
+  lastModified: 637647135281675903
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -291,6 +316,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Shoot
   guid: 7fc7f7009c389c4c8d8539fe2fcdf049
+  Banks:
+  - {fileID: 2860168429813936064}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6605816898598281887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/CastFireball
+  m_EditorClassIdentifier: 
+  Path: event:/CastFireball
+  guid: 263c2e2206542b48befe5fab57c60f3a
   Banks:
   - {fileID: 2860168429813936064}
   IsStream: 0

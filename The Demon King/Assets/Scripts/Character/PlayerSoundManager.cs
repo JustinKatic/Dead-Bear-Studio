@@ -13,8 +13,18 @@ public class PlayerSoundManager : MonoBehaviourPun
 
     private bool createNewFallingInstance = true;
 
-
     CharacterController cc;
+
+
+
+    public static PlayerSoundManager Instance;
+
+    private void Awake()
+    {
+        if (photonView.IsMine)
+            Instance = this;
+    }
+
     private void Start()
     {
         if (photonView.IsMine)
@@ -65,7 +75,6 @@ public class PlayerSoundManager : MonoBehaviourPun
     }
     #endregion
 
-
     #region Jump Sound
     public void PlayJumpSound()
     {
@@ -108,6 +117,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     }
     #endregion
 
+    #region Falling Sound
     public void PlayFallingSound()
     {
         if (createNewFallingInstance)
@@ -140,4 +150,19 @@ public class PlayerSoundManager : MonoBehaviourPun
         fallingEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         fallingEvent.release();
     }
+    #endregion
+
+    #region CastAbility1 Sound
+    public void PlayAbility1Sound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.ShootSound, gameObject);
+        //photonView.RPC("PlayAbility1Sound_RPC", RpcTarget.Others, animationSounds.ShootSound);
+    }
+
+    [PunRPC]
+    void PlayAbility1Sound_RPC(string ShootSound)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(ShootSound, gameObject);
+    }
+    #endregion
 }

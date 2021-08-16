@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5702969984431027922}
   - component: {fileID: 7854647913868946783}
   - component: {fileID: 8559847245418659414}
-  - component: {fileID: -6351623248016926934}
+  - component: {fileID: -4502578231962321859}
   m_Layer: 8
   m_Name: PrimaryProjectile
   m_TagString: Projectile
@@ -170,7 +170,7 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-6351623248016926934
+--- !u!114 &-4502578231962321859
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -179,20 +179,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2324771704206079354}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: d255043468bd33a47b4aacb9025efb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CollisionTag: 
-  Event: event:/Explosion
-  PlayEvent: 12
-  StopEvent: 0
-  AllowFadeout: 1
-  TriggerOnce: 0
-  Preload: 0
-  Params: []
-  OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 20
+  OnDestorySound: event:/Explosion
+  AbilityTravelSound: event:/Ability1TravellingSound
 --- !u!1001 &4974099813897098938
 PrefabInstance:
   m_ObjectHideFlags: 0
