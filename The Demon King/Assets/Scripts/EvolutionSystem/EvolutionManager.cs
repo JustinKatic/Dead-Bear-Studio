@@ -15,10 +15,9 @@ public class EvolutionManager : MonoBehaviourPun
     [HideInInspector] public Evolutions activeEvolution;
     [HideInInspector] public Evolutions nextEvolution;
     [HideInInspector] public ExperienceBranch nextBranchType;
-    private PlayerSoundManager playerSoundManager;
-    
+
     [HideInInspector] public Transform currentActiveShootPoint;
-    
+
     //Components
     private PlayerController playerController;
     private ExperienceManager experienceManager;
@@ -42,7 +41,6 @@ public class EvolutionManager : MonoBehaviourPun
 
 
         healthManager = GetComponent<HealthManager>();
-        playerSoundManager = GetComponent<PlayerSoundManager>();
     }
 
     void Start()
@@ -66,7 +64,7 @@ public class EvolutionManager : MonoBehaviourPun
 
             //sets shootPoint and anim of this player to the activeEvolutions
             currentActiveShootPoint = activeEvolution.ShootPoint;
-            playerSoundManager.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
+            PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
 
             playerController.currentAnim = activeEvolution.animator;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
@@ -116,22 +114,27 @@ public class EvolutionManager : MonoBehaviourPun
 
     public void ChangeEvolution(Evolutions evolution, bool ShouldPlayTransition)
     {
-        if (ShouldPlayTransition)
-        {
-            photonView.RPC("EvolutionVFX", RpcTarget.All, true);
-            playerController.DisableMovement();
-            changeEvolutionCo = ChangeEvolutionAfterX();
-            StartCoroutine(changeEvolutionCo);
-        }
-        else
-        {
-            SwapEvolution(evolution);
-        }
+        changeEvolutionCo = ChangeEvolutionAfterX();
+        StartCoroutine(changeEvolutionCo);
 
         IEnumerator ChangeEvolutionAfterX()
         {
+            if (ShouldPlayTransition)
+            {
+                PlayerSoundManager.Instance.PlayEvolveSound();
+                photonView.RPC("EvolutionVFX", RpcTarget.All, true);
+                playerController.DisableMovement();
+            }
+            else
+            {
+                SwapEvolution(evolution);
+            }
             evolving = true;
+
+
             yield return new WaitForSeconds(TimeToEvolve);
+
+            PlayerSoundManager.Instance.StopEvolveSound();
             evolving = false;
             photonView.RPC("EvolutionVFX", RpcTarget.All, false);
             playerController.EnableMovement();
@@ -148,7 +151,7 @@ public class EvolutionManager : MonoBehaviourPun
         experienceManager.CurrentActiveEvolutionBranch = nextBranchType;
         experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
         currentActiveShootPoint = activeEvolution.ShootPoint;
-        playerSoundManager.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
+        PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
         photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
     }
@@ -157,6 +160,7 @@ public class EvolutionManager : MonoBehaviourPun
     {
         StopCoroutine(changeEvolutionCo);
         photonView.RPC("EvolutionVFX", RpcTarget.All, false);
+        PlayerSoundManager.Instance.StopEvolveSound();
         evolving = false;
         experienceManager.ChangeEvolutionBools(nextBranchType);
     }

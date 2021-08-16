@@ -12,14 +12,23 @@ public class PlayerSoundManager : MonoBehaviourPun
     FMOD.Studio.EventInstance fallingEvent;
     FMOD.Studio.EventInstance devourEvent;
     FMOD.Studio.EventInstance stunnedEvent;
+    FMOD.Studio.EventInstance evolveEvent;
+
 
 
 
     private bool createNewFallingInstance = true;
+    private bool UpdateFallingSoundPos = false;
 
     private bool createNewDevourInstance = true;
+    private bool UpdateDevourSoundPos = false;
 
     private bool createNewStunnedInstance = true;
+    private bool UpdateStunnedSoundPos = false;
+
+    private bool createNewEvolveInstance = true;
+    private bool UpdateEvolveSoundPos = false;
+
 
 
 
@@ -44,9 +53,17 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         //Update position of 3d sound instance
         footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        fallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        devourEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-        stunnedEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
+        //Only update position if a sound instance is in use
+        if (UpdateFallingSoundPos)
+            fallingEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (UpdateDevourSoundPos)
+            devourEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (UpdateStunnedSoundPos)
+            stunnedEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (UpdateEvolveSoundPos)
+            evolveEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+
     }
 
     //Checks if instance is currently playing a sound already
@@ -135,7 +152,9 @@ public class PlayerSoundManager : MonoBehaviourPun
             createNewFallingInstance = false;
             fallingEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.FallingSound);
             fallingEvent.start();
+            UpdateFallingSoundPos = true;
             photonView.RPC("PlayFallingSound_RPC", RpcTarget.Others, animationSounds.FallingSound);
+
         }
     }
 
@@ -144,11 +163,13 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         fallingEvent = FMODUnity.RuntimeManager.CreateInstance(FallingSound);
         fallingEvent.start();
+        UpdateFallingSoundPos = true;
     }
 
     public void StopFallingSound()
     {
         createNewFallingInstance = true;
+        UpdateFallingSoundPos = false;
         fallingEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         fallingEvent.release();
         photonView.RPC("StopFallingSound_RPC", RpcTarget.Others);
@@ -159,6 +180,8 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         fallingEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         fallingEvent.release();
+        UpdateFallingSoundPos = false;
+
     }
     #endregion
 
@@ -184,6 +207,7 @@ public class PlayerSoundManager : MonoBehaviourPun
             createNewDevourInstance = false;
             devourEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.DevourSound);
             devourEvent.start();
+            UpdateDevourSoundPos = true;
             photonView.RPC("PlayDevourSound_RPC", RpcTarget.Others, animationSounds.DevourSound);
         }
     }
@@ -193,6 +217,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         devourEvent = FMODUnity.RuntimeManager.CreateInstance(devourSound);
         devourEvent.start();
+        UpdateDevourSoundPos = true;
     }
 
     public void StopDevourSound()
@@ -200,6 +225,7 @@ public class PlayerSoundManager : MonoBehaviourPun
         createNewDevourInstance = true;
         devourEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         devourEvent.release();
+        UpdateDevourSoundPos = false;
         photonView.RPC("StopDevourSound_RPC", RpcTarget.Others);
     }
 
@@ -208,6 +234,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         devourEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         devourEvent.release();
+        UpdateDevourSoundPos = false;
     }
     #endregion
 
@@ -219,6 +246,7 @@ public class PlayerSoundManager : MonoBehaviourPun
             createNewStunnedInstance = false;
             stunnedEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.StunSound);
             stunnedEvent.start();
+            UpdateStunnedSoundPos = true;
             photonView.RPC("PlayStunnedSound_RPC", RpcTarget.Others, animationSounds.StunSound);
         }
     }
@@ -228,6 +256,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         stunnedEvent = FMODUnity.RuntimeManager.CreateInstance(stunnedSound);
         stunnedEvent.start();
+        UpdateStunnedSoundPos = true;
     }
 
     public void StopStunnedSound()
@@ -235,6 +264,7 @@ public class PlayerSoundManager : MonoBehaviourPun
         createNewStunnedInstance = true;
         stunnedEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         stunnedEvent.release();
+        UpdateStunnedSoundPos = false;
         photonView.RPC("StopStunnedSound_RPC", RpcTarget.Others);
     }
 
@@ -243,6 +273,47 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         stunnedEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         stunnedEvent.release();
+        UpdateStunnedSoundPos = false;
+    }
+
+    #endregion
+
+    #region NormalEvolveSound
+    public void PlayEvolveSound()
+    {
+        if (createNewEvolveInstance)
+        {
+            createNewEvolveInstance = false;
+            evolveEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.EvolveSound);
+            evolveEvent.start();
+            UpdateEvolveSoundPos = true;
+            photonView.RPC("PlayEvolveSound_RPC", RpcTarget.Others, animationSounds.EvolveSound);
+        }
+    }
+
+    [PunRPC]
+    void PlayEvolveSound_RPC(string evolveSound)
+    {
+        evolveEvent = FMODUnity.RuntimeManager.CreateInstance(evolveSound);
+        evolveEvent.start();
+        UpdateEvolveSoundPos = true;
+    }
+
+    public void StopEvolveSound()
+    {
+        createNewEvolveInstance = true;
+        evolveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        evolveEvent.release();
+        UpdateEvolveSoundPos = false;
+        photonView.RPC("StopEvolveSound_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StopEvolveSound_RPC()
+    {
+        evolveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        evolveEvent.release();
+        UpdateEvolveSoundPos = false;
     }
 
     #endregion
