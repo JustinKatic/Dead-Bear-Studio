@@ -10,8 +10,13 @@ public class PlayerSoundManager : MonoBehaviourPun
 
     FMOD.Studio.EventInstance footStepEvent;
     FMOD.Studio.EventInstance fallingEvent;
+    FMOD.Studio.EventInstance devourEvent;
+
 
     private bool createNewFallingInstance = true;
+
+    private bool createNewDevourInstance = true;
+
 
     CharacterController cc;
 
@@ -164,5 +169,41 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(ShootSound, gameObject);
     }
+    #endregion
+
+    #region Devour Sound
+    public void PlayDevourSound()
+    {
+        if (createNewDevourInstance)
+        {
+            createNewDevourInstance = false;
+            devourEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.DevourSound);
+            devourEvent.start();
+            photonView.RPC("PlayDevourSound_RPC", RpcTarget.Others, animationSounds.DevourSound);
+        }
+    }
+
+    [PunRPC]
+    void PlayDevourSound_RPC(string devourSound)
+    {
+        devourEvent = FMODUnity.RuntimeManager.CreateInstance(devourSound);
+        devourEvent.start();
+    }
+
+    public void StopDevourSound()
+    {
+        createNewDevourInstance = true;
+        devourEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        devourEvent.release();
+        photonView.RPC("StopDevourSound_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StopDevourSound_RPC()
+    {
+        devourEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        devourEvent.release();
+    }
+
     #endregion
 }

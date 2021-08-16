@@ -26,6 +26,18 @@ public struct AnimationSounds
 
     [FMODUnity.EventRef]
     public string LandingBigSound;
+
+    [FMODUnity.EventRef]
+    public string DevourSound;
+
+    [FMODUnity.EventRef]
+    public string StunSound;
+
+    [FMODUnity.EventRef]
+    public string EvolveSound;
+
+    [FMODUnity.EventRef]
+    public string DemonKingEvolveSound;
 }
 
 [System.Serializable]

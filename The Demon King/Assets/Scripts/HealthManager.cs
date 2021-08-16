@@ -78,7 +78,7 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
-    
+
 
     #region Devour
 
@@ -107,7 +107,7 @@ public class HealthManager : MonoBehaviourPun
     {
 
     }
-    
+
     [PunRPC]
     protected void InterruptDevourOnSelf()
     {
@@ -161,7 +161,7 @@ public class HealthManager : MonoBehaviourPun
                 bar[i].color = new Color(255, 0, 0, 0);
         }
     }
-    protected void AddImagesToHealthBar(List<Image> bar,Transform barType, int maxHealthValue)
+    protected void AddImagesToHealthBar(List<Image> bar, Transform barType, int maxHealthValue)
     {
         foreach (Image healthBar in bar)
         {
@@ -178,5 +178,5 @@ public class HealthManager : MonoBehaviourPun
     }
 
     #endregion
-    
+
 }

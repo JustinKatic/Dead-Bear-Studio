@@ -50,6 +50,7 @@ public class Devour : MonoBehaviourPun
                 PhotonNetwork.SendAllOutgoingCommands();
                 IsDevouring = false;
                 targetBeingDevouredPV = null;
+                PlayerSoundManager.Instance.StopDevourSound();
             }
         }
     }
@@ -95,7 +96,9 @@ public class Devour : MonoBehaviourPun
                     {
                         //Get the photon view of hit target
                         targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
-                        
+
+                        PlayerSoundManager.Instance.PlayDevourSound();
+
                         CallDevourOnTarget();
                         
                         yield return new WaitForSeconds(healthManager.DevourTime);
@@ -155,5 +158,8 @@ public class Devour : MonoBehaviourPun
         experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
         targetBeingDevouredPV = null;
         hitPlayerHealth = null;
+
+        PlayerSoundManager.Instance.StopDevourSound();
+
     }
 }
