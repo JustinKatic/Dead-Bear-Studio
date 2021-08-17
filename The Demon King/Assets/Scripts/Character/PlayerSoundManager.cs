@@ -57,7 +57,8 @@ public class PlayerSoundManager : MonoBehaviourPun
     private void Update()
     {
         //Update position of 3d sound instance
-        footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (photonView.IsMine)
+            footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
 
         //Only update position if a sound instance is in use
         if (UpdateFallingSoundPos)

@@ -5,9 +5,15 @@ using Photon.Pun;
 
 public class CallEnemyWalkEvent : MonoBehaviourPun
 {
+    EnemySoundManager enemySoundManager;
+
+    private void Start()
+    {
+        enemySoundManager = GetComponent<EnemySoundManager>();
+    }
     private void FootStepSound()
     {
         if (photonView.IsMine)
-            Debug.Log("PlayMinionWalkSound");
+            enemySoundManager.PlayFootStepSound();
     }
 }
