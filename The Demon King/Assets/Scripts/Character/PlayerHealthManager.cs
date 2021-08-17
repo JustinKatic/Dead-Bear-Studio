@@ -16,6 +16,7 @@ public class PlayerHealthManager : HealthManager
     private PlayerController PlayerWhoDevouredMeController;
 
     public float RespawnTime = 6;
+    public int AmountOfHealthAddedAfterStunned = 3;
 
     public GameObject KilledByUIPanel;
     public TextMeshProUGUI KilledByText;
@@ -283,7 +284,7 @@ public class PlayerHealthManager : HealthManager
                 photonView.RPC("StunRPC", RpcTarget.All, false);
                 isStunned = false;
                 player.EnableMovement();
-                Heal(1);
+                Heal(AmountOfHealthAddedAfterStunned);
                 player.currentAnim.SetBool("Stunned", false);
                 PlayerSoundManager.Instance.StopStunnedSound();
             }
