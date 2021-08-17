@@ -18,29 +18,19 @@ public class EnemySoundManager : MonoBehaviourPun
 
     private void Update()
     {
-        //Update position of 3d sound instance
-        if (photonView.IsMine)
-            footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        footStepEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     public void PlayFootStepSound()
     {
-        if (photonView.IsMine)
+        if (!IsPlaying(footStepEvent))
         {
-            if (!IsPlaying(footStepEvent))
-            {
-                Debug.Log("Enemy footstep");
-                footStepEvent.start();
-                photonView.RPC("PlayEnemyFootStepSoundRPC", RpcTarget.Others, WalkSound);
-            }
+            Debug.Log("Enemy footstep");
+            footStepEvent.start();
         }
     }
 
-    [PunRPC]
-    void PlayEnemyFootStepSoundRPC(string walkSound)
-    {
-        FMODUnity.RuntimeManager.PlayOneShotAttached(walkSound, gameObject);
-    }
+
 
     bool IsPlaying(FMOD.Studio.EventInstance instance)
     {

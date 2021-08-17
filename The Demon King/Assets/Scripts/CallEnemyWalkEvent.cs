@@ -13,7 +13,6 @@ public class CallEnemyWalkEvent : MonoBehaviourPun
     }
     private void FootStepSound()
     {
-        if (photonView.IsMine)
-            enemySoundManager.PlayFootStepSound();
+        enemySoundManager.PlayFootStepSound();
     }
 }
