@@ -36,9 +36,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private List<RoomInfo> roomList = new List<RoomInfo>();
 
     private string sceneName;
+    private string roomName;
 
     void Start()
     {
+        
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
@@ -80,6 +82,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnBackButton()
     {
         SetScreen(mainScreen);
+        ChatManager.instance.chatClient.Unsubscribe(new string[] {roomName });
+
     }
 
     // MAIN SCREEN
@@ -119,7 +123,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
-        NetworkManager.instance.CreateRoom(roomNameInput.text);
+        roomName = roomNameInput.text;
+        NetworkManager.instance.CreateRoom(roomName);
     }
 
     // LOBBY SCREEN
@@ -130,6 +135,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+        ChatManager.instance.currentChatRoom = roomName;
+        ChatManager.instance.chatClient.Subscribe(roomName);
     }
 
     // called when a player leaves the room - update the lobby UI
