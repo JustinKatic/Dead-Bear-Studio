@@ -25,7 +25,6 @@ public class EnemySoundManager : MonoBehaviourPun
     {
         if (!IsPlaying(footStepEvent))
         {
-            Debug.Log("Enemy footstep");
             footStepEvent.start();
         }
     }

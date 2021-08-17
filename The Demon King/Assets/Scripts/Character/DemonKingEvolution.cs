@@ -12,6 +12,7 @@ public class DemonKingEvolution : MonoBehaviourPun
     public float timeSpentAsDemonKing = 0;
     public float TimeRequiredToWin = 10;
     public float ScaleAmount = 10;
+    public GameObject DemonkingBeaconVFX;
     private ExperienceManager experienceManager;
     private LeaderboardManager leaderboardManager;
 
@@ -87,11 +88,15 @@ public class DemonKingEvolution : MonoBehaviourPun
     public void AnnounceDemonKing()
     {
         AmITheDemonKing = true;
+        if (!photonView.IsMine)
+            DemonkingBeaconVFX.SetActive(true);
     }
 
     [PunRPC]
     public void DevouredAsDemonKing()
     {
         AmITheDemonKing = false;
+        if (!photonView.IsMine)
+            DemonkingBeaconVFX.SetActive(false);
     }
 }

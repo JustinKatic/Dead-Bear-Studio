@@ -169,7 +169,6 @@ public class EvolutionManager : MonoBehaviourPun
 
             playerController.EnableMovement();
 
-
             SwapEvolution(evolution);
         }
     }
