@@ -13,6 +13,8 @@ public class PlayerSoundManager : MonoBehaviourPun
     FMOD.Studio.EventInstance devourEvent;
     FMOD.Studio.EventInstance stunnedEvent;
     FMOD.Studio.EventInstance evolveEvent;
+    FMOD.Studio.EventInstance DemonKingEvolveEvent;
+
 
 
 
@@ -28,6 +30,9 @@ public class PlayerSoundManager : MonoBehaviourPun
 
     private bool createNewEvolveInstance = true;
     private bool UpdateEvolveSoundPos = false;
+
+    private bool createNewDemonKingEvolveInstance = true;
+    private bool UpdateDemonKingEvolveSoundPos = false;
 
 
 
@@ -63,7 +68,8 @@ public class PlayerSoundManager : MonoBehaviourPun
             stunnedEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (UpdateEvolveSoundPos)
             evolveEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
-
+        if (UpdateDemonKingEvolveSoundPos)
+            DemonKingEvolveEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     //Checks if instance is currently playing a sound already
@@ -314,6 +320,46 @@ public class PlayerSoundManager : MonoBehaviourPun
         evolveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         evolveEvent.release();
         UpdateEvolveSoundPos = false;
+    }
+
+    #endregion
+
+    #region DemonKingEvolve Sound
+    public void PlayDemonKingEvolveSound()
+    {
+        if (createNewDemonKingEvolveInstance)
+        {
+            createNewDemonKingEvolveInstance = false;
+            DemonKingEvolveEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.DemonKingEvolveSound);
+            DemonKingEvolveEvent.start();
+            UpdateDemonKingEvolveSoundPos = true;
+            photonView.RPC("PlayDemonKingEvolveSound_RPC", RpcTarget.Others, animationSounds.DemonKingEvolveSound);
+        }
+    }
+
+    [PunRPC]
+    void PlayDemonKingEvolveSound_RPC(string DemonKingEvolveSound)
+    {
+        DemonKingEvolveEvent = FMODUnity.RuntimeManager.CreateInstance(DemonKingEvolveSound);
+        DemonKingEvolveEvent.start();
+        UpdateDemonKingEvolveSoundPos = true;
+    }
+
+    public void StopDemonKingEvolveSound()
+    {
+        createNewDemonKingEvolveInstance = true;
+        DemonKingEvolveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        DemonKingEvolveEvent.release();
+        UpdateDemonKingEvolveSoundPos = false;
+        photonView.RPC("StopDemonKingEvolveSound_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StopDemonKingEvolveSound_RPC()
+    {
+        DemonKingEvolveEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        DemonKingEvolveEvent.release();
+        UpdateDemonKingEvolveSoundPos = false;
     }
 
     #endregion

@@ -11,6 +11,7 @@ public class DemonKingEvolution : MonoBehaviourPun
 
     public float timeSpentAsDemonKing = 0;
     public float TimeRequiredToWin = 10;
+    public float ScaleAmount = 10;
     private ExperienceManager experienceManager;
     private LeaderboardManager leaderboardManager;
 
@@ -73,7 +74,6 @@ public class DemonKingEvolution : MonoBehaviourPun
             photonView.RPC("AnnounceDemonKing", RpcTarget.All);
             experienceManager.ActivateDemonKingEvolution();
         }
-
     }
     public void ChangeFromTheDemonKing()
     {
@@ -81,7 +81,6 @@ public class DemonKingEvolution : MonoBehaviourPun
         {
             photonView.RPC("DevouredAsDemonKing", RpcTarget.All);
         }
-
     }
 
     [PunRPC]

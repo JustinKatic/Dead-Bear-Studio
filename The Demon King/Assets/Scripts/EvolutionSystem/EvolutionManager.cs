@@ -27,6 +27,7 @@ public class EvolutionManager : MonoBehaviourPun
     private bool evolving = false;
 
     public GameObject EvolveVFX;
+    public GameObject DemonKingEvolveVFX;
 
     private IEnumerator changeEvolutionCo;
 
@@ -111,6 +112,15 @@ public class EvolutionManager : MonoBehaviourPun
             EvolveVFX.SetActive(false);
     }
 
+    [PunRPC]
+    void DemonKingEvolutionVFX(bool enabled)
+    {
+        if (enabled)
+            DemonKingEvolveVFX.SetActive(true);
+        else
+            DemonKingEvolveVFX.SetActive(false);
+    }
+
 
 
     public void ChangeEvolution(Evolutions evolution, bool ShouldPlayTransition)
@@ -122,8 +132,17 @@ public class EvolutionManager : MonoBehaviourPun
         {
             if (ShouldPlayTransition)
             {
-                PlayerSoundManager.Instance.PlayEvolveSound();
-                photonView.RPC("EvolutionVFX", RpcTarget.All, true);
+                if (demonKingEvolution.AmITheDemonKing)
+                {
+                    photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, true);
+                    PlayerSoundManager.Instance.PlayDemonKingEvolveSound();
+                }
+                else
+                {
+                    photonView.RPC("EvolutionVFX", RpcTarget.All, true);
+                    PlayerSoundManager.Instance.PlayEvolveSound();
+                }
+
                 playerController.DisableMovement();
             }
             else
@@ -136,9 +155,18 @@ public class EvolutionManager : MonoBehaviourPun
             yield return new WaitForSeconds(TimeToEvolve);
 
             healthManager.invulnerable = false;
-            PlayerSoundManager.Instance.StopEvolveSound();
             evolving = false;
-            photonView.RPC("EvolutionVFX", RpcTarget.All, false);
+            if (demonKingEvolution.AmITheDemonKing)
+            {
+                photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, false);
+                PlayerSoundManager.Instance.StopDemonKingEvolveSound();
+            }
+            else
+            {
+                photonView.RPC("EvolutionVFX", RpcTarget.All, false);
+                PlayerSoundManager.Instance.StopEvolveSound();
+            }
+
             playerController.EnableMovement();
 
 
@@ -152,7 +180,12 @@ public class EvolutionManager : MonoBehaviourPun
         photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
         activeEvolution = evolution;
         experienceManager.CurrentActiveEvolutionBranch = nextBranchType;
-        experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
+
+        if (demonKingEvolution.AmITheDemonKing)
+            experienceManager.ScaleSize(demonKingEvolution.ScaleAmount);
+        else
+            experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
+
         currentActiveShootPoint = activeEvolution.ShootPoint;
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
