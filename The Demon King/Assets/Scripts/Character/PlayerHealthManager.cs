@@ -73,7 +73,7 @@ public class PlayerHealthManager : HealthManager
         PhotonView playerWhoKilledSelfPV = PhotonView.Find(playerWhoKilledSelfID);
         experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().ExperienceValue);
     }
-    
+
     [PunRPC]
     public void TakeDamage(int damage, int attackerID)
     {
@@ -99,12 +99,12 @@ public class PlayerHealthManager : HealthManager
 
             //call Stunned() on all player on network if no health left
             if (CurrentHealth <= 0)
-                photonView.RPC("Stunned", RpcTarget.All);
+                OnBeingStunnedStart();
         }
     }
 
     #region PlayerRespawn
- [PunRPC]
+    [PunRPC]
     public void Respawn(bool DidIDieFromPlayer)
     {
         StartCoroutine(ResetPlayer());
@@ -119,7 +119,7 @@ public class PlayerHealthManager : HealthManager
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
                 DisablePlayerOnRespawn();
-                
+
                 //Check if the player died via no player death
                 if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
                 {
@@ -155,12 +155,12 @@ public class PlayerHealthManager : HealthManager
     void CheckIfIWasTheDemonKing(bool DidIDieFromPlayer)
     {
         //If the player died off the side as the demon king respawn back at the crown spawn
-  
+
         if (demonKingEvolution.AmITheDemonKing)
-        { 
+        {
             experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
             demonKingEvolution.ChangeFromTheDemonKing();
-                    
+
             if (!DidIDieFromPlayer)
             {
                 demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
@@ -198,10 +198,10 @@ public class PlayerHealthManager : HealthManager
         photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
     }
-    
+
 
     #endregion
-    
+
     #region HealthBar
 
     [PunRPC]
@@ -213,12 +213,12 @@ public class PlayerHealthManager : HealthManager
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            AddImagesToHealthBar(healthBarsOverhead,HealthBarContainerOverhead, MaxHealthValue);
+            AddImagesToHealthBar(healthBarsOverhead, HealthBarContainerOverhead, MaxHealthValue);
         }
         //Run following if local player
         else
         {
-            AddImagesToHealthBar(healthBars,HealthBarContainer, MaxHealthValue);
+            AddImagesToHealthBar(healthBars, HealthBarContainer, MaxHealthValue);
 
             if (CurrentHealth > MaxHealth)
                 CurrentHealth = MaxHealth;
@@ -243,22 +243,25 @@ public class PlayerHealthManager : HealthManager
         }
     }
     #endregion
-    
+
     #region Stun
     [PunRPC]
     void StunRPC(bool start)
     {
         if (start)
+        {
             StunVFX.SetActive(true);
+            canBeDevoured = true;
+        }
         else
+        {
             StunVFX.SetActive(false);
+            canBeDevoured = false;
+        }
     }
 
     protected override void OnBeingStunnedStart()
     {
-        //Things that affect everyone
-        canBeDevoured = true;
-
         //Things that only affect local
         if (photonView.IsMine)
         {
@@ -275,9 +278,6 @@ public class PlayerHealthManager : HealthManager
     {
         if (!beingDevoured)
         {
-            //Things that affect everyone
-            canBeDevoured = false;
-
             //Things that only affect local
             if (photonView.IsMine)
             {
@@ -290,9 +290,9 @@ public class PlayerHealthManager : HealthManager
             }
         }
     }
-    
+
 
     #endregion
 
-  
+
 }

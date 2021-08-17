@@ -13,6 +13,7 @@ public class MinionHealthManager : HealthManager
     private Collider col;
     private Canvas hudCanvas;
     public GameObject PlayerWhoShotMe;
+    public GameObject StunVFX;
     public State state;
     private NavMeshAgent agent;
 
@@ -51,19 +52,17 @@ public class MinionHealthManager : HealthManager
 
             //call Stunned() on all player on network if no health left
             if (CurrentHealth <= 0)
-                photonView.RPC("Stunned", RpcTarget.All);
+                OnBeingStunnedStart();
         }
     }
     protected override void OnBeingDevourStart()
     {
         canBeDevoured = false;
-        beingDevoured = true;
-    
 
         if (photonView.IsMine)
         {
             beingDevoured = true;
-        }    
+        }
     }
 
     protected override void OnBeingDevourEnd(int attackerID)
@@ -84,12 +83,13 @@ public class MinionHealthManager : HealthManager
 
             if (PhotonNetwork.IsMasterClient)
             {
+                photonView.RPC("StunRPC", RpcTarget.All, false);
                 agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
             yield return new WaitForSeconds(respawnTimer);
 
-            if (photonView.IsMine)
+            if (PhotonNetwork.IsMasterClient)
             {
                 CurrentHealth = MaxHealth;
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
@@ -103,16 +103,28 @@ public class MinionHealthManager : HealthManager
         }
     }
 
+    [PunRPC]
+    void StunRPC(bool start)
+    {
+        if (start)
+        {
+            StunVFX.SetActive(true);
+            canBeDevoured = true;
+        }
+        else
+        {
+            StunVFX.SetActive(false);
+            canBeDevoured = false;
+        }
+    }
+
     protected override void OnBeingStunnedStart()
     {
-        //Things that affect everyone
-        canBeDevoured = true;
-        isStunned = true;
-
         //Things that only affect local
         if (photonView.IsMine)
         {
-            Debug.Log("Play Stun Anim");
+            photonView.RPC("StunRPC", RpcTarget.All, true);
+            isStunned = true;
         }
     }
 
@@ -120,15 +132,13 @@ public class MinionHealthManager : HealthManager
     {
         if (!beingDevoured)
         {
-            //Things that affect everyone
-            canBeDevoured = false;
-            isStunned = false;
-
             //Things that only affect local
             if (photonView.IsMine)
             {
+                photonView.RPC("StunRPC", RpcTarget.All, false);
+
+                isStunned = false;
                 Heal(1);
-                Debug.Log("Stop Playing Stun Anim");
             }
         }
     }
@@ -140,13 +150,13 @@ public class MinionHealthManager : HealthManager
         MaxHealth = MaxHealthValue;
         //Function in Health Manager
         AddImagesToHealthBar(healthBarsOverhead, HealthBarContainerOverhead, MaxHealthValue);
-        
+
         photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
     }
     [PunRPC]
     public void UpdateHealthBar(int CurrentHealth)
     {
         //Function in Health Manager
-        FillBarsOfHealth(CurrentHealth,healthBarsOverhead);
+        FillBarsOfHealth(CurrentHealth, healthBarsOverhead);
     }
 }

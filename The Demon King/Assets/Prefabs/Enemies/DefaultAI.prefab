@@ -568,6 +568,7 @@ Transform:
   - {fileID: 1534572014935968441}
   - {fileID: 1534572014454437787}
   - {fileID: 8883723147540276528}
+  - {fileID: 4584023088287820717}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -609,6 +610,7 @@ MonoBehaviour:
   HealthRegenTimer: 3
   DevourTime: 3
   stunnedDuration: 3
+  stunnedTimer: 0
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   ExperienceValue: 1
   HealthBar: {fileID: 0}
@@ -623,6 +625,8 @@ MonoBehaviour:
   model: {fileID: 1534572014454437786}
   respawnTimer: 3
   PlayerWhoShotMe: {fileID: 0}
+  StunVFX: {fileID: 1454501024303921940}
+  state: {fileID: 0}
 --- !u!114 &1534572014928822931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,3 +1117,74 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 1152
+--- !u!1001 &2430023340440043307
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1534572014928822959}
+    m_Modifications:
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861345902572962879, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_Name
+      value: StunnedFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 3861345902572962879, guid: e607382845f6cb141b63770a7318f801, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e607382845f6cb141b63770a7318f801, type: 3}
+--- !u!1 &1454501024303921940 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3861345902572962879, guid: e607382845f6cb141b63770a7318f801, type: 3}
+  m_PrefabInstance: {fileID: 2430023340440043307}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4584023088287820717 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2172025762641843334, guid: e607382845f6cb141b63770a7318f801, type: 3}
+  m_PrefabInstance: {fileID: 2430023340440043307}
+  m_PrefabAsset: {fileID: 0}

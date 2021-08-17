@@ -119,14 +119,6 @@ public class HealthManager : MonoBehaviourPun
 
     #region Stun
 
-    //This is run when the player has been stunned
-    [PunRPC]
-    protected void Stunned()
-    {
-        if (!isStunned)
-            OnBeingStunnedStart();
-    }
-
     //Overrides for inherited classes
     protected virtual void OnBeingStunnedStart()
     {
