@@ -35,6 +35,7 @@ public class ChaseState : State
 
     private void PlayChaseState()
     {
+        anim.SetBool("Walking", true);
         agent.SetDestination(target.transform.position);
     }
 

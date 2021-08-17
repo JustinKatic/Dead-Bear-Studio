@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class CallWalkSoundEvent : MonoBehaviourPun
+public class CallPlayerWalkSoundEvent : MonoBehaviourPun
 {
     private void FootStepSound()
     {

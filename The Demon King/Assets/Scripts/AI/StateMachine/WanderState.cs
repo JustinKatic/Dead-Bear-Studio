@@ -49,6 +49,7 @@ public class WanderState : State
             dest = RandomPoint(20f);
             agent.isStopped = false;
             wanderPosFound = true;
+            anim.SetBool("Walking", true);
         }
         float distanceToDestination = Vector3.Distance(gameObject.transform.position, dest);
         agent.SetDestination(dest);
