@@ -364,4 +364,19 @@ public class PlayerSoundManager : MonoBehaviourPun
     }
 
     #endregion
+
+    #region DemonKingAnnouncement Sound
+    public void PlayDemonKingAnnouncementSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.DemonKingAnnouncementSound, gameObject);
+        photonView.RPC("PlayDemonKingAnnouncementSound_RPC", RpcTarget.Others, animationSounds.DemonKingAnnouncementSound);
+    }
+
+    [PunRPC]
+    void PlayDemonKingAnnouncementSound_RPC(string jumpSound)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
+    }
+
+    #endregion
 }

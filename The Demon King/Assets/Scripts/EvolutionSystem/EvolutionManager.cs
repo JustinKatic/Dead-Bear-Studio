@@ -160,6 +160,7 @@ public class EvolutionManager : MonoBehaviourPun
             {
                 photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, false);
                 PlayerSoundManager.Instance.StopDemonKingEvolveSound();
+                PlayerSoundManager.Instance.PlayDemonKingAnnouncementSound();
             }
             else
             {

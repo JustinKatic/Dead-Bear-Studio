@@ -30,7 +30,6 @@ public class EnemySoundManager : MonoBehaviourPun
     }
 
 
-
     bool IsPlaying(FMOD.Studio.EventInstance instance)
     {
         FMOD.Studio.PLAYBACK_STATE state;

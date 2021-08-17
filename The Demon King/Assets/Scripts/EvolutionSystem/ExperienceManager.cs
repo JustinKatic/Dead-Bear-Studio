@@ -315,7 +315,6 @@ public class ExperienceManager : MonoBehaviourPun
         healthManager.invulnerable = true;
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, true);
-        //ScaleSize(CurrentActiveEvolutionBranch.ExpBar.level2ExpNeeded.value);
     }
     #endregion
 }

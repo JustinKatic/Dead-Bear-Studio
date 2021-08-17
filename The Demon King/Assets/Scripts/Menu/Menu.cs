@@ -26,7 +26,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public TextMeshProUGUI roomInfoText;
     public Button startGameButton;
     [SerializeField] private TMP_Dropdown sceneDropdown;
-    
+
 
     [Header("Lobby Browser")]
     public RectTransform roomListContainer;
@@ -40,7 +40,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-        
+
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
@@ -82,8 +82,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnBackButton()
     {
         SetScreen(mainScreen);
-        ChatManager.instance.chatClient.Unsubscribe(new string[] {roomName });
-
+        ChatManager.instance.chatClient.Unsubscribe(new string[] { roomName });
     }
 
     // MAIN SCREEN
@@ -118,7 +117,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLevelSelectionChanged(Dropdown.OptionData sceneNameSelection)
     {
         sceneName = sceneNameSelection.text;
-        
+
     }
 
     public void OnCreateButton(TMP_InputField roomNameInput)
@@ -135,8 +134,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
-        ChatManager.instance.currentChatRoom = roomName;
-        ChatManager.instance.chatClient.Subscribe(roomName);
+        // ChatManager.instance.currentChatRoom = roomName;
+        //ChatManager.instance.chatClient.Subscribe(roomName);
     }
 
     // called when a player leaves the room - update the lobby UI
@@ -168,7 +167,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // hide the room
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-        
+
         //Name of scene is the current dropdown selection
         if (sceneDropdown != null)
         {

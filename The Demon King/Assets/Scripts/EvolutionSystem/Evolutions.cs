@@ -38,6 +38,9 @@ public struct AnimationSounds
 
     [FMODUnity.EventRef]
     public string DemonKingEvolveSound;
+
+    [FMODUnity.EventRef]
+    public string DemonKingAnnouncementSound;
 }
 
 [System.Serializable]
