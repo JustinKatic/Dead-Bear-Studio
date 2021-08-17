@@ -21,7 +21,7 @@ public class EvolutionManager : MonoBehaviourPun
     //Components
     private PlayerController playerController;
     private ExperienceManager experienceManager;
-    private HealthManager healthManager;
+    private PlayerHealthManager healthManager;
     private DemonKingEvolution demonKingEvolution;
 
     private bool evolving = false;
@@ -39,8 +39,7 @@ public class EvolutionManager : MonoBehaviourPun
         //gets access to exp manager on this player
         experienceManager = GetComponent<ExperienceManager>();
 
-
-        healthManager = GetComponent<HealthManager>();
+        healthManager = GetComponent<PlayerHealthManager>();
     }
 
     void Start()
@@ -112,6 +111,8 @@ public class EvolutionManager : MonoBehaviourPun
             EvolveVFX.SetActive(false);
     }
 
+
+
     public void ChangeEvolution(Evolutions evolution, bool ShouldPlayTransition)
     {
         changeEvolutionCo = ChangeEvolutionAfterX();
@@ -134,10 +135,12 @@ public class EvolutionManager : MonoBehaviourPun
 
             yield return new WaitForSeconds(TimeToEvolve);
 
+            healthManager.invulnerable = false;
             PlayerSoundManager.Instance.StopEvolveSound();
             evolving = false;
             photonView.RPC("EvolutionVFX", RpcTarget.All, false);
             playerController.EnableMovement();
+
 
             SwapEvolution(evolution);
         }

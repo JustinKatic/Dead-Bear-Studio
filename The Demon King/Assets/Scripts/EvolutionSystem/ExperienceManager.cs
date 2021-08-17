@@ -35,12 +35,12 @@ public class ExperienceManager : MonoBehaviourPun
 
     private Cinemachine3rdPersonFollow vCam;
 
-    private HealthManager healthManager;
+    private PlayerHealthManager healthManager;
 
 
     private void Awake()
     {
-        healthManager = GetComponent<HealthManager>();
+        healthManager = GetComponent<PlayerHealthManager>();
 
         //If local
         minionTypes.Add(greenMinion);
@@ -110,7 +110,7 @@ public class ExperienceManager : MonoBehaviourPun
         evolutionManager.nextEvolution = branchType.Level0Evolution;
         branchType.ExpBar.ActiveExpBarBackground.SetActive(true);
     }
-    
+
     public void SetCanEvolveFalse()
     {
         //Player has evolved, can not evolve again
@@ -169,7 +169,7 @@ public class ExperienceManager : MonoBehaviourPun
 
         if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
             ScaleSize(branchType.ExpBar.CurrentExp);
-        
+
         // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
         {
@@ -191,7 +191,7 @@ public class ExperienceManager : MonoBehaviourPun
             }
         }
     }
-  
+
     //Add the experience based of minion type eaten
     public void AddExpereince(MinionType minionType, int expValue)
     {
@@ -258,7 +258,7 @@ public class ExperienceManager : MonoBehaviourPun
         }
         return false;
     }
-    
+
     public void ScaleSize(float CurrentExp)
     {
         transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
@@ -312,10 +312,10 @@ public class ExperienceManager : MonoBehaviourPun
     //This function is called by DemonKingEvolution script
     public void ActivateDemonKingEvolution()
     {
+        healthManager.invulnerable = true;
         evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
-        evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
+        evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, true);
         ScaleSize(CurrentActiveEvolutionBranch.ExpBar.level2ExpNeeded.value);
     }
     #endregion
-    
 }

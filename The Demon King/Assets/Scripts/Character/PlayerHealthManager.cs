@@ -24,6 +24,8 @@ public class PlayerHealthManager : HealthManager
     private DemonKingEvolution demonKingEvolution;
     private PhotonView demonKingCrownPV;
 
+    [HideInInspector] public bool invulnerable = false;
+
 
     void Awake()
     {
@@ -80,12 +82,9 @@ public class PlayerHealthManager : HealthManager
         //Runing following if local player
         if (photonView.IsMine)
         {
-            //Return if already being devoured
-            if (beingDevoured)
+            if (invulnerable || CurrentHealth <= 0 || beingDevoured)
                 return;
 
-            if (CurrentHealth <= 0)
-                return;
             //Remove health
             CurrentHealth -= damage;
 
