@@ -77,6 +77,15 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+
+    [PunRPC]
+    protected override void InterruptDevourOnSelf()
+    {
+        base.InterruptDevourOnSelf();
+        if (photonView.IsMine)
+            debuffTimer.StopBeingDevouredTimer();
+    }
+
     [PunRPC]
     void Suicide(int playerWhoKilledSelfID)
     {
@@ -209,6 +218,7 @@ public class PlayerHealthManager : HealthManager
     }
 
 
+
     #endregion
 
     #region HealthBar
@@ -300,12 +310,6 @@ public class PlayerHealthManager : HealthManager
                 PlayerSoundManager.Instance.StopStunnedSound();
             }
         }
-    }
-
-    protected override void InterruptDevourOnSelf()
-    {
-        base.InterruptDevourOnSelf();
-        debuffTimer.StopBeingDevouredTimer();
     }
 
 
