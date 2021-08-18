@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Photon.Chat;
+using Photon.Chat.Demo;
 using Photon.Pun;
 using TMPro;
 using UnityEngine;
@@ -13,18 +14,21 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     // instance
     public static ChatManager instance;
     
-    [SerializeField] private string userID;
+    [HideInInspector] public string userID;
 
     [HideInInspector]public string currentChatRoom;
     public TMP_InputField InputFieldChat;   // set in inspector
+    public TMP_Text CurrentChannelText;     // set in inspector
+    public int HistoryLengthToFetch; // set in inspector. Up to a certain degree, previously sent messages can be fetched for context
+
+    protected internal ChatAppSettings chatAppSettings;
+
 
     // Start is called before the first frame update
     void Start()
     {
         DontDestroyOnLoad(this.gameObject);
-
-        chatClient = new ChatClient(this);
-        chatClient.Connect(PhotonNetwork.PhotonServerSettings.AppSettings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues(userId: userID ));
+        
     }
     
     void Awake()
@@ -44,9 +48,21 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void DebugReturn(DebugLevel level, string message)
     {
-        throw new System.NotImplementedException();
-    }
 
+        if (level == ExitGames.Client.Photon.DebugLevel.ERROR)
+        {
+            Debug.LogError(message);
+        }
+        else if (level == ExitGames.Client.Photon.DebugLevel.WARNING)
+        {
+            Debug.LogWarning(message);
+        }
+        else
+        {
+            Debug.Log(message);
+        }    
+    }
+    
     public void OnDisconnected()
     {
         throw new System.NotImplementedException();
@@ -54,17 +70,28 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnConnected()
     {
-        throw new System.NotImplementedException();
+        Debug.Log(userID + "Connection Successful");
+        this.chatClient.SetOnlineStatus(ChatUserStatus.Online); // You can set your online state (without a mesage).
+        chatClient.Subscribe(currentChatRoom, HistoryLengthToFetch);
+
     }
 
     public void OnChatStateChange(ChatState state)
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnGetMessages(string channelName, string[] senders, object[] messages)
     {
-        throw new System.NotImplementedException();
+        if (channelName.Equals(this.currentChatRoom))
+        {
+            // update text
+            this.ShowChannel(this.currentChatRoom);
+        }
+
+        foreach (var message in messages)
+        {
+            Debug.Log(message.ToString());
+        }
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)
@@ -123,23 +150,9 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     }
     public void OnEnterSend()
     {
-        if (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter))
-        {
-            this.SendChatMessage(this.InputFieldChat.text);
-            this.InputFieldChat.text = "";
-        }
+        this.SendChatMessage(this.InputFieldChat.text);
+        this.InputFieldChat.text = "";
     }
-
-    public void OnClickSend()
-    {
-        if (this.InputFieldChat != null)
-        {
-            this.SendChatMessage(this.InputFieldChat.text);
-            this.InputFieldChat.text = "";
-        }
-        
-    }
-
     private void SendChatMessage(string inputLine)
     {
         if (string.IsNullOrEmpty(inputLine))
@@ -148,8 +161,47 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         }
 
         inputLine = userID + ":" + inputLine;
-        this.chatClient.PublishMessage(this.currentChatRoom, inputLine);
+        CurrentChannelText.text = inputLine;
+        this.chatClient.PublishMessage(currentChatRoom, inputLine);
 
+    }
+    public void ShowChannel(string channelName)
+    {
+        if (string.IsNullOrEmpty(channelName))
+        {
+            return;
+        }
+
+        ChatChannel channel = null;
+        bool found = this.chatClient.TryGetChannel(channelName, out channel);
+        if (!found)
+        {
+            Debug.Log("ShowChannel failed to find channel: " + channelName);
+            return;
+        }
+
+        this.currentChatRoom = channelName;
+        this.CurrentChannelText.text = channel.ToStringMessages();
+        Debug.Log("ShowChannel: " + this.currentChatRoom);
+
+    }
+    public void Connect()
+    {
+        chatClient = new ChatClient(this);
+        chatAppSettings = PhotonNetwork.PhotonServerSettings.AppSettings.GetChatSettings();
+        chatClient.UseBackgroundWorkerForSending = true;
+        chatClient.AuthValues = new AuthenticationValues(this.userID);
+        chatClient.ConnectUsingSettings(this.chatAppSettings);
+        
+        Debug.Log("Connecting as: " + this.userID);
+    }
+    public void StartChat(string roomName, string playerName)
+    {
+        ChatManager chatNewComponent = FindObjectOfType<ChatManager>();
+        chatNewComponent.userID = playerName;
+        currentChatRoom = roomName;
+        chatNewComponent.Connect();
+        this.enabled = true;
     }
     
 }

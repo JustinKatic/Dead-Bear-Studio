@@ -123,7 +123,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
         roomName = roomNameInput.text;
-        NetworkManager.instance.CreateRoom(roomName);
+        NetworkManager.instance.CreateRoom(roomNameInput.text);
     }
 
     // LOBBY SCREEN
@@ -134,8 +134,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
-        // ChatManager.instance.currentChatRoom = roomName;
-        //ChatManager.instance.chatClient.Subscribe(roomName);
+        ChatManager.instance.StartChat(roomName, PhotonNetwork.NickName);
+
     }
 
     // called when a player leaves the room - update the lobby UI
