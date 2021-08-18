@@ -23,7 +23,7 @@ public class Devour : MonoBehaviourPun
     private HealthManager hitPlayerHealth;
     private bool isTargetPlayer = false;
 
-    private DebuffTimer debuffTimer;
+    private PlayerTimers debuffTimer;
 
     private void Awake()
     {
@@ -35,7 +35,7 @@ public class Devour : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             cam = Camera.main;
             healthManager = GetComponent<HealthManager>();
-            debuffTimer = GetComponentInChildren<DebuffTimer>();
+            debuffTimer = GetComponentInChildren<PlayerTimers>();
 
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
