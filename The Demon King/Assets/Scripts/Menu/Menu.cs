@@ -36,7 +36,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private List<RoomInfo> roomList = new List<RoomInfo>();
 
     private string sceneName;
-    private string roomName;
+    private string currentRoomName;
 
     void Start()
     {
@@ -82,7 +82,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnBackButton()
     {
         SetScreen(mainScreen);
-        ChatManager.instance.chatClient.Unsubscribe(new string[] { roomName });
+        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
     }
 
     // MAIN SCREEN
@@ -122,8 +122,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
-        roomName = roomNameInput.text;
-        NetworkManager.instance.CreateRoom(roomName);
+        currentRoomName = roomNameInput.text;
+        NetworkManager.instance.CreateRoom(roomNameInput.text);
     }
 
     // LOBBY SCREEN
@@ -134,8 +134,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
-        // ChatManager.instance.currentChatRoom = roomName;
-        //ChatManager.instance.chatClient.Subscribe(roomName);
+        ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
+
     }
 
     // called when a player leaves the room - update the lobby UI
@@ -202,6 +202,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
+        currentRoomName = roomName;
+
         PhotonNetwork.JoinRoom(roomName);
     }
 
