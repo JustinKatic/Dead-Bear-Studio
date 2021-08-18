@@ -26,6 +26,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public TextMeshProUGUI roomInfoText;
     public Button startGameButton;
     [SerializeField] private TMP_Dropdown sceneDropdown;
+    public Button RoomPrivacyButton;
+    public bool setRoomToPrivate = false;
 
 
     [Header("Lobby Browser")]
@@ -150,6 +152,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
+        sceneDropdown.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        RoomPrivacyButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
 
         // display all the players
         playerListText.text = "";
@@ -260,5 +264,23 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
 
         return null;
+    }
+    public void SetRoomPrivacy()
+    {
+        if (setRoomToPrivate)
+        {
+            setRoomToPrivate = false;
+            RoomPrivacyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Public";
+            PhotonNetwork.CurrentRoom.IsVisible = true;
+            Debug.Log("Public");
+        }
+        else
+        {
+            setRoomToPrivate = true;
+            RoomPrivacyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Private";
+            PhotonNetwork.CurrentRoom.IsVisible = false;
+            Debug.Log("Private");
+
+        }
     }
 }
