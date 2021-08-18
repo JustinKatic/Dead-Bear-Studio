@@ -72,7 +72,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         Debug.Log(userID + "Connection Successful");
         this.chatClient.SetOnlineStatus(ChatUserStatus.Online); // You can set your online state (without a mesage).
-        chatClient.Subscribe(currentChatRoom, HistoryLengthToFetch);
+        chatClient.Subscribe(currentChatRoom);
 
     }
 
@@ -202,6 +202,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         currentChatRoom = roomName;
         chatNewComponent.Connect();
         this.enabled = true;
+        
     }
     
 }
