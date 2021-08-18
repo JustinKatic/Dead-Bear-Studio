@@ -109,10 +109,16 @@ public class HealthManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    protected void InterruptDevourOnSelf()
+    protected virtual void InterruptDevourOnSelf()
     {
         beingDevoured = false;
         StopCoroutine(myDevourCo);
+
+        if (photonView.IsMine)
+        {
+            OnBeingStunnedEnd();
+            stunnedTimer = 0;
+        }
     }
 
     #endregion

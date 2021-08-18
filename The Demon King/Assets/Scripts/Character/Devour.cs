@@ -23,6 +23,8 @@ public class Devour : MonoBehaviourPun
     private HealthManager hitPlayerHealth;
     private bool isTargetPlayer = false;
 
+    private PlayerTimers debuffTimer;
+
     private void Awake()
     {
         experienceManager = GetComponent<ExperienceManager>();
@@ -33,6 +35,7 @@ public class Devour : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             cam = Camera.main;
             healthManager = GetComponent<HealthManager>();
+            debuffTimer = GetComponentInChildren<PlayerTimers>();
 
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
@@ -51,6 +54,7 @@ public class Devour : MonoBehaviourPun
                 IsDevouring = false;
                 targetBeingDevouredPV = null;
                 PlayerSoundManager.Instance.StopDevourSound();
+                debuffTimer.StopDevourTimer();
             }
         }
     }
@@ -98,9 +102,10 @@ public class Devour : MonoBehaviourPun
                         targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
 
                         PlayerSoundManager.Instance.PlayDevourSound();
+                        debuffTimer.StartDevourTimer(healthManager.DevourTime);
 
                         CallDevourOnTarget();
-                        
+
                         yield return new WaitForSeconds(healthManager.DevourTime);
 
                         if (!healthManager.isStunned)
@@ -131,6 +136,7 @@ public class Devour : MonoBehaviourPun
         IsDevouring = true;
         playerController.currentAnim.SetBool("Devouring", true);
         playerController.DisableMovement();
+
     }
 
     void DevouringHasCompleted()
@@ -139,6 +145,8 @@ public class Devour : MonoBehaviourPun
         playerController.currentAnim.SetBool("Devouring", false);
         IsDevouring = false;
         playerController.EnableMovement();
+        debuffTimer.StopDevourTimer();
+
 
         // If the target is a player
         if (isTargetPlayer)

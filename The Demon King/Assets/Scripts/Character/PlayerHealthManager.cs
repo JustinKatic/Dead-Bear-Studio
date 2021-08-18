@@ -27,7 +27,7 @@ public class PlayerHealthManager : HealthManager
 
     [HideInInspector] public bool invulnerable = false;
 
-    private DebuffTimer debuffTimer;
+    private PlayerTimers debuffTimer;
 
 
 
@@ -41,7 +41,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
-            debuffTimer = GetComponentInChildren<DebuffTimer>();
+            debuffTimer = GetComponentInChildren<PlayerTimers>();
             Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
@@ -58,6 +58,8 @@ public class PlayerHealthManager : HealthManager
 
         if (photonView.IsMine)
         {
+            debuffTimer.StopStunTimer();
+            debuffTimer.StartBeingDevouredTimer(DevourTime);
             beingDevoured = true;
         }
     }
@@ -66,12 +68,22 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
+            debuffTimer.StopBeingDevouredTimer();
             PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
             PlayerWhoDevouredMeController.vCam.m_Priority = 12;
             KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
             KilledByUIPanel.SetActive(true);
             photonView.RPC("Respawn", RpcTarget.All, true);
         }
+    }
+
+
+    [PunRPC]
+    protected override void InterruptDevourOnSelf()
+    {
+        base.InterruptDevourOnSelf();
+        if (photonView.IsMine)
+            debuffTimer.StopBeingDevouredTimer();
     }
 
     [PunRPC]
@@ -120,6 +132,9 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                debuffTimer.StopStunTimer();
+                debuffTimer.StopBeingDevouredTimer();
+
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
                 DisablePlayerOnRespawn();
@@ -186,7 +201,6 @@ public class PlayerHealthManager : HealthManager
         transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
         player.cc.enabled = true;
         player.currentAnim.SetBool("Stunned", false);
-
     }
 
     void EnablePlayerOnRespawn()
@@ -200,8 +214,8 @@ public class PlayerHealthManager : HealthManager
         player.EnableMovement();
         CurrentHealth = MaxHealth;
         photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-
     }
+
 
 
     #endregion
@@ -270,7 +284,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             photonView.RPC("StunRPC", RpcTarget.All, true);
-            debuffTimer.StartTimer(stunnedDuration);
+            debuffTimer.StartStunTimer(stunnedDuration);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
@@ -287,7 +301,7 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 photonView.RPC("StunRPC", RpcTarget.All, false);
-                debuffTimer.StopTimer();
+                debuffTimer.StopStunTimer();
                 isStunned = false;
                 player.EnableMovement();
                 Heal(AmountOfHealthAddedAfterStunned);
