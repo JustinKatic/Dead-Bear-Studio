@@ -27,6 +27,9 @@ public class PlayerHealthManager : HealthManager
 
     [HideInInspector] public bool invulnerable = false;
 
+    private DebuffTimer debuffTimer;
+
+
 
     void Awake()
     {
@@ -38,6 +41,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
+            debuffTimer = GetComponentInChildren<DebuffTimer>();
             Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
@@ -266,6 +270,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             photonView.RPC("StunRPC", RpcTarget.All, true);
+            debuffTimer.StartTimer(stunnedDuration);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
@@ -282,6 +287,7 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 photonView.RPC("StunRPC", RpcTarget.All, false);
+                debuffTimer.StopTimer();
                 isStunned = false;
                 player.EnableMovement();
                 Heal(AmountOfHealthAddedAfterStunned);
