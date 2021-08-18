@@ -58,6 +58,8 @@ public class PlayerHealthManager : HealthManager
 
         if (photonView.IsMine)
         {
+            debuffTimer.StopStunTimer();
+            debuffTimer.StartBeingDevouredTimer(DevourTime);
             beingDevoured = true;
         }
     }
@@ -66,6 +68,7 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
+            debuffTimer.StopBeingDevouredTimer();
             PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
             PlayerWhoDevouredMeController.vCam.m_Priority = 12;
             KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
@@ -120,6 +123,9 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                debuffTimer.StopStunTimer();
+                debuffTimer.StopBeingDevouredTimer();
+
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
                 DisablePlayerOnRespawn();
@@ -200,7 +206,6 @@ public class PlayerHealthManager : HealthManager
         player.EnableMovement();
         CurrentHealth = MaxHealth;
         photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-
     }
 
 
@@ -270,7 +275,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             photonView.RPC("StunRPC", RpcTarget.All, true);
-            debuffTimer.StartTimer(stunnedDuration);
+            debuffTimer.StartStunTimer(stunnedDuration);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
@@ -287,7 +292,7 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 photonView.RPC("StunRPC", RpcTarget.All, false);
-                debuffTimer.StopTimer();
+                debuffTimer.StopStunTimer();
                 isStunned = false;
                 player.EnableMovement();
                 Heal(AmountOfHealthAddedAfterStunned);
@@ -295,6 +300,12 @@ public class PlayerHealthManager : HealthManager
                 PlayerSoundManager.Instance.StopStunnedSound();
             }
         }
+    }
+
+    protected override void InterruptDevourOnSelf()
+    {
+        base.InterruptDevourOnSelf();
+        debuffTimer.StopBeingDevouredTimer();
     }
 
 

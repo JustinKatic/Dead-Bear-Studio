@@ -10,18 +10,24 @@ using UnityEngine;
 public class ChatManager : MonoBehaviourPun, IChatClientListener
 {
     [HideInInspector] public ChatClient chatClient;
-    
+    protected internal ChatAppSettings chatAppSettings;
     // instance
     public static ChatManager instance;
     
-    [HideInInspector] public string userID;
-
     [HideInInspector]public string currentChatRoom;
+    
+    
     public TMP_InputField InputFieldChat;   // set in inspector
     public TMP_Text CurrentChannelText;     // set in inspector
     public int HistoryLengthToFetch; // set in inspector. Up to a certain degree, previously sent messages can be fetched for context
 
-    protected internal ChatAppSettings chatAppSettings;
+    [SerializeField] private Color32 textColorJoinedRoom;
+    private string joinRoomMessage = "Has Joined The Chat";
+    
+    [SerializeField] private Color32 textColorUserName;
+    [HideInInspector] public string userID;
+
+    [SerializeField] private Color32 textColorMessage;
 
 
     // Start is called before the first frame update
@@ -101,10 +107,11 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnSubscribed(string[] channels, bool[] results)
     {
+        
         // in this demo, we simply send a message into each channel. This is NOT a must have!
         foreach (string channel in channels)
         {
-            chatClient.PublishMessage(channel, userID + ":" + "says 'hi'."); // you don't HAVE to send a msg on join but you could.
+            chatClient.PublishMessage(channel,joinRoomMessage); // you don't HAVE to send a msg on join but you could.
         }
 
         Debug.Log("OnSubscribed: " + string.Join(", ", channels));    
@@ -160,7 +167,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
             return;
         }
 
-        inputLine = userID + ":" + inputLine;
         CurrentChannelText.text = inputLine;
         this.chatClient.PublishMessage(currentChatRoom, inputLine);
 
