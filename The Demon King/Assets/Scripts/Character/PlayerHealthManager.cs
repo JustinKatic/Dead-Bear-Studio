@@ -27,7 +27,7 @@ public class PlayerHealthManager : HealthManager
 
     [HideInInspector] public bool invulnerable = false;
 
-    private DebuffTimer debuffTimer;
+    private PlayerTimers debuffTimer;
 
 
 
@@ -41,7 +41,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
-            debuffTimer = GetComponentInChildren<DebuffTimer>();
+            debuffTimer = GetComponentInChildren<PlayerTimers>();
             Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
             player = GetComponent<PlayerController>();
@@ -201,7 +201,6 @@ public class PlayerHealthManager : HealthManager
         transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
         player.cc.enabled = true;
         player.currentAnim.SetBool("Stunned", false);
-
     }
 
     void EnablePlayerOnRespawn()

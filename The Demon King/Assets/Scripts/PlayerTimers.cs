@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DebuffTimer : MonoBehaviour
+public class PlayerTimers : MonoBehaviour
 {
     [SerializeField] private Image stunImg;
     [SerializeField] private Image devouringImg;
