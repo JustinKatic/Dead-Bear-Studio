@@ -1,13 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Pun;
 using Photon.Realtime;
 using System.Linq;
-using UnityEngine.UI;
-using TMPro;
-using UnityEngine.SceneManagement;
 
 
 struct LeaderboardContainerInfo

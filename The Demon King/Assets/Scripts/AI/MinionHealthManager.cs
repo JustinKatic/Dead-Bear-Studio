@@ -7,14 +7,16 @@ using UnityEngine.AI;
 
 public class MinionHealthManager : HealthManager
 {
-    public GameObject model;
-    public float respawnTimer;
+    [Header("Model To Disable On Death")]
+    [SerializeField] GameObject myModel;
+
+    [HideInInspector] public GameObject PlayerWhoShotMe;
+    [HideInInspector] public State state;
+
+
     private GameObject[] RespawnPositions;
     private Collider col;
     private Canvas hudCanvas;
-    public GameObject PlayerWhoShotMe;
-    public GameObject StunVFX;
-    public State state;
     private NavMeshAgent agent;
 
     void Awake()
@@ -43,7 +45,7 @@ public class MinionHealthManager : HealthManager
             //Remove health
             CurrentHealth -= damage;
             //Reset health regen timer
-            HealthRegenTimer = TimeBeforeHealthRegen;
+            healthRegenTimer = TimeBeforeHealthRegen;
 
             //Updates this charcters status bar on all players in network
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
@@ -76,7 +78,7 @@ public class MinionHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            model.SetActive(false);
+            myModel.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
             stunnedTimer = 0;
@@ -87,7 +89,7 @@ public class MinionHealthManager : HealthManager
                 agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
-            yield return new WaitForSeconds(respawnTimer);
+            yield return new WaitForSeconds(RespawnTime);
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -95,7 +97,7 @@ public class MinionHealthManager : HealthManager
                 photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
             }
             beingDevoured = false;
-            model.SetActive(true);
+            myModel.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
             canBeDevoured = false;

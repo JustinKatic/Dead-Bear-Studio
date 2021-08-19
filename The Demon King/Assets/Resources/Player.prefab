@@ -7734,24 +7734,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 3
-  HealthRegenTimer: 3
-  DevourTime: 3
+  TimeBeforeHealthRegen: 3
+  RespawnTime: 6
+  AmountOfHealthAddedAfterStunned: 3
+  devourTime: 3
   stunnedDuration: 5
-  stunnedTimer: 0
+  MyExperienceWorth: 2
   MyMinionType: {fileID: 0}
-  ExperienceValue: 2
-  HealthBar: {fileID: 3312725423054840195}
-  HealthBarContainer: {fileID: 4936490446833085617}
   healthBarPrefab: {fileID: 4320337310133678998, guid: c80f99395e78a4b4fb29543589e7c83a, type: 3}
   HealthBarContainerOverhead: {fileID: 2321971606810513418}
   overheadHealthBar: {fileID: 7205868124803793034}
-  CurrentHealth: 0
+  StunVFX: {fileID: 192310513985731586}
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0
-  StunVFX: {fileID: 192310513985731586}
-  RespawnTime: 6
-  AmountOfHealthAddedAfterStunned: 3
+  HealthBarContainer: {fileID: 4936490446833085617}
+  MyHUDCanvas: {fileID: 3312725423054840195}
   KilledByUIPanel: {fileID: 5427081095411140894}
   KilledByText: {fileID: 1955643790634158098}
   invulnerable: 0
