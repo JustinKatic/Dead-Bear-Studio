@@ -16,9 +16,6 @@ public class PlayerSoundManager : MonoBehaviourPun
     FMOD.Studio.EventInstance DemonKingEvolveEvent;
 
 
-
-
-
     private bool createNewFallingInstance = true;
     private bool UpdateFallingSoundPos = false;
 
@@ -33,8 +30,6 @@ public class PlayerSoundManager : MonoBehaviourPun
 
     private bool createNewDemonKingEvolveInstance = true;
     private bool UpdateDemonKingEvolveSoundPos = false;
-
-
 
 
     CharacterController cc;

@@ -190,7 +190,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 174589706744222170}
   m_LocalRotation: {x: 0.15073387, y: 0.6291408, z: -0.12594306, w: 0.7520636}
-  m_LocalPosition: {x: 1, y: 1.63, z: -7}
+  m_LocalPosition: {x: 0, y: 1.63, z: -7}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 7219376492991244888}
@@ -7499,10 +7499,10 @@ MonoBehaviour:
   id: 0
   gravity: -9.82
   turnSpeed: 15
-  MoveSpeed: 5
+  MoveSpeed: 5.4
   AirSpeed: 5
-  InAirAcceleration: 10.5
-  InAirDrag: 5
+  InAirAcceleration: 13
+  InAirDrag: 3
   jumpHeight: 2
   VelocityToStartPlayingFalling: -7
   BigGroundLandingEffectVel: -20
@@ -7734,24 +7734,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 3
-  HealthRegenTimer: 3
-  DevourTime: 3
+  TimeBeforeHealthRegen: 3
+  RespawnTime: 6
+  AmountOfHealthAddedAfterStunned: 3
+  devourTime: 3
   stunnedDuration: 5
-  stunnedTimer: 0
+  MyExperienceWorth: 2
   MyMinionType: {fileID: 0}
-  ExperienceValue: 2
-  HealthBar: {fileID: 3312725423054840195}
-  HealthBarContainer: {fileID: 4936490446833085617}
   healthBarPrefab: {fileID: 4320337310133678998, guid: c80f99395e78a4b4fb29543589e7c83a, type: 3}
   HealthBarContainerOverhead: {fileID: 2321971606810513418}
   overheadHealthBar: {fileID: 7205868124803793034}
-  CurrentHealth: 0
+  StunVFX: {fileID: 192310513985731586}
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0
-  StunVFX: {fileID: 192310513985731586}
-  RespawnTime: 6
-  AmountOfHealthAddedAfterStunned: 3
+  HealthBarContainer: {fileID: 4936490446833085617}
+  MyHUDCanvas: {fileID: 3312725423054840195}
   KilledByUIPanel: {fileID: 5427081095411140894}
   KilledByText: {fileID: 1955643790634158098}
   invulnerable: 0
@@ -7834,7 +7832,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ScaleAmount: 0.1
   CamDistanceIncreaseAmount: 0.25
-  CamShoulderOffsetXIncreaseAmount: 0.1
+  CamShoulderOffsetXIncreaseAmount: 1
+  CamShoulderOffsetYIncreaseAmount: 0
   PercentOfExpToLoseOnDeath: 0.2
   DemonKingExpLossDeath: 0.4
   green:
@@ -12940,7 +12939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0, y: 0, z: 0}
-  ShoulderOffset: {x: 0.5, y: -0.4, z: 0}
+  ShoulderOffset: {x: 0, y: -0.4, z: 0}
   VerticalArmLength: 0.4
   CameraSide: 1
   CameraDistance: 3.5

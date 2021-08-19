@@ -8,7 +8,9 @@ public class ExperienceManager : MonoBehaviourPun
     [Header("Modifible stats")]
     public float ScaleAmount = 0.1f;
     public float CamDistanceIncreaseAmount = .5f;
-    public float CamShoulderOffsetXIncreaseAmount = .1f;
+    public float CamShoulderOffsetXIncreaseAmount = 0f;
+    public float CamShoulderOffsetYIncreaseAmount = 0f;
+
     public float PercentOfExpToLoseOnDeath = .20f;
     public float DemonKingExpLossDeath = 0.4f;
 
@@ -28,6 +30,8 @@ public class ExperienceManager : MonoBehaviourPun
     private Vector3 BaseScale;
     private float baseCamDist;
     private float baseCamShoulderX;
+    private float baseCamShoulderY;
+
 
     [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
@@ -54,6 +58,8 @@ public class ExperienceManager : MonoBehaviourPun
             BaseScale = transform.localScale;
             baseCamDist = vCam.CameraDistance;
             baseCamShoulderX = vCam.ShoulderOffset.x;
+            baseCamShoulderY = vCam.ShoulderOffset.y;
+
 
             evolutionManager = GetComponent<EvolutionManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
@@ -266,6 +272,8 @@ public class ExperienceManager : MonoBehaviourPun
         {
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
             vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
+            vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetYIncreaseAmount;
+
         }
         else
         {

@@ -1,32 +1,30 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
-using Photon.Realtime;
-using UnityEngine.UI;
+
 
 public class PlayerHealthManager : HealthManager
 {
+
+    [Header("HealthBar Hud")]
+    [SerializeField] protected Transform HealthBarContainer;
+
+    [Header("Player Hud UI")]
+    [SerializeField] protected Canvas MyHUDCanvas;
+
+    [Header("Kill Cam UI")]
+    [SerializeField] GameObject KilledByUIPanel;
+    [SerializeField] TextMeshProUGUI KilledByText;
+
+
     private PlayerController player;
     private ExperienceManager experienceManager;
-    public GameObject StunVFX;
-
     private PlayerController PlayerWhoDevouredMeController;
-
-    public float RespawnTime = 6;
-    public int AmountOfHealthAddedAfterStunned = 3;
-
-    public GameObject KilledByUIPanel;
-    public TextMeshProUGUI KilledByText;
-
     private PlayerController playerWhoLastShotMeController;
     private DemonKingEvolution demonKingEvolution;
     private PhotonView demonKingCrownPV;
-
     [HideInInspector] public bool invulnerable = false;
-
     private PlayerTimers debuffTimer;
 
 
@@ -36,7 +34,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            Destroy(HealthBar.gameObject);
+            Destroy(MyHUDCanvas.gameObject);
         }
         //Run following if local player
         else
@@ -90,7 +88,7 @@ public class PlayerHealthManager : HealthManager
     void Suicide(int playerWhoKilledSelfID)
     {
         PhotonView playerWhoKilledSelfPV = PhotonView.Find(playerWhoKilledSelfID);
-        experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().ExperienceValue);
+        experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().MyExperienceWorth);
     }
 
     [PunRPC]
@@ -110,7 +108,7 @@ public class PlayerHealthManager : HealthManager
             photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
 
             //Reset health regen timer
-            HealthRegenTimer = TimeBeforeHealthRegen;
+            healthRegenTimer = TimeBeforeHealthRegen;
 
 
             //call Stunned() on all player on network if no health left
@@ -284,7 +282,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             photonView.RPC("StunRPC", RpcTarget.All, true);
-            debuffTimer.StartStunTimer(stunnedDuration);
+            debuffTimer.StartStunTimer(StunnedDuration);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);

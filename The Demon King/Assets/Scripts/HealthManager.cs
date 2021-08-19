@@ -8,44 +8,44 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviourPun
 {
-
     [Header("HealthStats")]
-    [Tooltip("Max health value")]
-    public int MaxHealth = 3;
-    [Tooltip("Time before health regen, Reset on dmg taken")]
-    public float HealthRegenTimer = 3f;
-
-    [Header("Stun/Devour Duration")]
-    [Tooltip("Time spent being devoured")]
-    public float DevourTime = 3f;
-    public float stunnedDuration;
-
-    public float stunnedTimer;
+    [SerializeField] protected int MaxHealth = 3;
+    [SerializeField] protected float TimeBeforeHealthRegen = 3f;
+    [SerializeField] protected float RespawnTime = 6;
+    [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
 
 
+    [SerializeField] private float devourTime = 3;
+    [SerializeField] private float stunnedDuration = 3;
 
-    public MinionType MyMinionType;
-    public int ExperienceValue;
+    public float DevourTime { get { return devourTime; } private set { devourTime = value; } }
+    public float StunnedDuration { get { return stunnedDuration; } private set { stunnedDuration = value; } }
+
+    [Header("Evolution Stats")]
+    public int MyExperienceWorth = 2;
+    [HideInInspector] public MinionType MyMinionType;
+
+    [Header("healthBar Health UI IMG")]
+    [SerializeField] protected Image healthBarPrefab;
+
+    [Header("Overhead healthBar Hud")]
+    [SerializeField] protected Transform HealthBarContainerOverhead;
+    [SerializeField] protected Canvas overheadHealthBar;
+
+    [Header("VFX Effects")]
+    [SerializeField] protected GameObject StunVFX;
 
 
-    protected float TimeBeforeHealthRegen = 3f;
-    protected int curAttackerId;
-
-    public Canvas HealthBar;
-    public Transform HealthBarContainer;
-    public Image healthBarPrefab;
     protected List<Image> healthBars = new List<Image>();
     protected List<Image> healthBarsOverhead = new List<Image>();
-    public Transform HealthBarContainerOverhead;
-    public Canvas overheadHealthBar;
+    protected float healthRegenTimer = 3f;
+    protected float stunnedTimer;
+    protected int curAttackerId;
 
-
-    // [HideInInspector] public Slider statusBar = null;
-
-    public int CurrentHealth = 0;
-    public bool beingDevoured = false;
-    public bool canBeDevoured = false;
-    public bool isStunned = false;
+    protected int CurrentHealth = 0;
+    [HideInInspector] public bool beingDevoured = false;
+    [HideInInspector] public bool canBeDevoured = false;
+    [HideInInspector] public bool isStunned = false;
 
     protected IEnumerator myDevourCo;
 
@@ -57,7 +57,7 @@ public class HealthManager : MonoBehaviourPun
             if (isStunned)
             {
                 stunnedTimer += Time.deltaTime;
-                if (stunnedTimer >= stunnedDuration)
+                if (stunnedTimer >= StunnedDuration)
                 {
                     OnBeingStunnedEnd();
                     stunnedTimer = 0;
@@ -69,8 +69,8 @@ public class HealthManager : MonoBehaviourPun
             //Heal every X seconds if not at max health
             if (CurrentHealth < MaxHealth)
             {
-                HealthRegenTimer -= Time.deltaTime;
-                if (HealthRegenTimer <= 0)
+                healthRegenTimer -= Time.deltaTime;
+                if (healthRegenTimer <= 0)
                 {
                     if (!beingDevoured || !isStunned)
                         Heal(1);
@@ -145,7 +145,7 @@ public class HealthManager : MonoBehaviourPun
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
         //Updates this charcters health bars on all players in network
         photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-        HealthRegenTimer = TimeBeforeHealthRegen;
+        healthRegenTimer = TimeBeforeHealthRegen;
     }
     protected void FillBarsOfHealth(int currentHealth, List<Image> bar)
     {
