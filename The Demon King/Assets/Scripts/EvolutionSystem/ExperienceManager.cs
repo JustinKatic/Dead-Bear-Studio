@@ -8,7 +8,7 @@ public class ExperienceManager : MonoBehaviourPun
     [Header("Modifible stats")]
     public float ScaleAmount = 0.1f;
     public float CamDistanceIncreaseAmount = .5f;
-    public float CamShoulderOffsetXIncreaseAmount = .1f;
+    public float CamShoulderOffsetXIncreaseAmount = 0f;
     public float CamShoulderOffsetYIncreaseAmount = 0f;
 
     public float PercentOfExpToLoseOnDeath = .20f;
