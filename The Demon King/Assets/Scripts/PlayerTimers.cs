@@ -8,6 +8,8 @@ public class PlayerTimers : MonoBehaviour
     [SerializeField] private Image stunImg;
     [SerializeField] private Image devouringImg;
     [SerializeField] private Image beingDevouredImg;
+    [SerializeField] private Image evolveingImg;
+
 
 
     private float TimeToCompleteAnimation;
@@ -15,6 +17,8 @@ public class PlayerTimers : MonoBehaviour
     private bool playStun = false;
     private bool playDevouring = false;
     private bool playBeingDevoured = false;
+    private bool playEvolve = false;
+
 
 
 
@@ -60,7 +64,19 @@ public class PlayerTimers : MonoBehaviour
     }
     #endregion
 
+    #region EvolveTimer
+    public void StartEvolveTimer(float Duration)
+    {
+        StartTimer(evolveingImg, Duration);
+        playEvolve = true;
+    }
 
+    public void StopEvolveTimer()
+    {
+        StopTimer(evolveingImg);
+        playEvolve = false;
+    }
+    #endregion
 
     public void Update()
     {
@@ -68,13 +84,17 @@ public class PlayerTimers : MonoBehaviour
         {
             LerpFillImg(stunImg);
         }
-        if (playDevouring)
+        else if (playDevouring)
         {
             LerpFillImg(devouringImg);
         }
-        if (playBeingDevoured)
+        else if (playBeingDevoured)
         {
             LerpFillImg(beingDevouredImg);
+        }
+        else if (playEvolve)
+        {
+            LerpFillImg(evolveingImg);
         }
     }
 

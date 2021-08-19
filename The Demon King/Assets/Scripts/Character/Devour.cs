@@ -163,7 +163,7 @@ public class Devour : MonoBehaviourPun
             gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
         }
         // ADd experience to my bar and reset the target to null
-        experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.ExperienceValue);
+        experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.MyExperienceWorth);
         targetBeingDevouredPV = null;
         hitPlayerHealth = null;
 

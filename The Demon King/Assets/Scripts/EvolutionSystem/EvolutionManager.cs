@@ -23,6 +23,7 @@ public class EvolutionManager : MonoBehaviourPun
     private ExperienceManager experienceManager;
     private PlayerHealthManager healthManager;
     private DemonKingEvolution demonKingEvolution;
+    private PlayerTimers playerTimers;
 
     private bool evolving = false;
 
@@ -41,6 +42,7 @@ public class EvolutionManager : MonoBehaviourPun
         experienceManager = GetComponent<ExperienceManager>();
 
         healthManager = GetComponent<PlayerHealthManager>();
+
     }
 
     void Start()
@@ -61,6 +63,7 @@ public class EvolutionManager : MonoBehaviourPun
             //get required components
             playerController = GetComponent<PlayerController>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
+            playerTimers = GetComponentInChildren<PlayerTimers>();
 
             //sets shootPoint and anim of this player to the activeEvolutions
             currentActiveShootPoint = activeEvolution.ShootPoint;
@@ -143,6 +146,7 @@ public class EvolutionManager : MonoBehaviourPun
                     PlayerSoundManager.Instance.PlayEvolveSound();
                 }
 
+                playerTimers.StartEvolveTimer(TimeToEvolve);
                 playerController.DisableMovement();
             }
             else
@@ -151,11 +155,11 @@ public class EvolutionManager : MonoBehaviourPun
             }
             evolving = true;
 
-
             yield return new WaitForSeconds(TimeToEvolve);
 
             healthManager.invulnerable = false;
             evolving = false;
+            playerTimers.StopEvolveTimer();
             if (demonKingEvolution.AmITheDemonKing)
             {
                 photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, false);
@@ -195,6 +199,7 @@ public class EvolutionManager : MonoBehaviourPun
     void InteruptEvolution()
     {
         StopCoroutine(changeEvolutionCo);
+        playerTimers.StopEvolveTimer();
         photonView.RPC("EvolutionVFX", RpcTarget.All, false);
         PlayerSoundManager.Instance.StopEvolveSound();
         evolving = false;

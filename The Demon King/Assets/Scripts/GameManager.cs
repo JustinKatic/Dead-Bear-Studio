@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
-using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviourPun
 {
@@ -21,6 +18,9 @@ public class GameManager : MonoBehaviourPun
 
     void Awake()
     {
+        if (!PhotonNetwork.IsConnected)
+            SceneManager.LoadScene("Menu");
+
         instance = this;
     }
 
