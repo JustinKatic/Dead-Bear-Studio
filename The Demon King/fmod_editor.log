@@ -7,7 +7,7 @@
 [LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x8000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x8000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
-[LOG] AsyncManager::init                       : manager 00000273ABB5ED88 isAsync 0 updatePeriod 0.02
+[LOG] AsyncManager::init                       : manager 0000027319482848 isAsync 0 updatePeriod 0.02
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x8000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
@@ -21,14 +21,14 @@
 [LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081852FF3E8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
 [LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
 [LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
 [LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
 [LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
-[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 000002710A185E18
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 00000273ABC498B8
 [LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
 [LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
 [LOG] SystemI::createSoundInternal             : Sample 0/1: name='ui_okay', format=5, channels=2, frequency=48000, lengthbytes=10880, lengthpcm=44042, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.133728.
@@ -37,533 +37,1214 @@
 [LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081852FF3E8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
 [LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
 [LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
 [LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
 [LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
-[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000027319A15BF8
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 000002711B8A23B8
 [LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
 [LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
 [LOG] SystemI::createSoundInternal             : Sample 0/1: name='footsteps_player_grass_03', format=5, channels=1, frequency=48000, lengthbytes=4416, lengthpcm=24030, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.259521.
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027105D37C08 : node = 000002732A54E740
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105D37C08
+[LOG] SystemI::createSound                     : setdata soundi = 00000271171F2DA8 : node = 0000027314C67750
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271171F2DA8
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54E850
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314C67860
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000081852FF3E8
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000081851FF0C8
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->useropen           = 00007FFA27FA7D70
 [LOG] SystemI::createSoundInternal             :     exinfo->userclose          = 00007FFA27FA7D40
 [LOG] SystemI::createSoundInternal             :     exinfo->userread           = 00007FFA27FA7E40
 [LOG] SystemI::createSoundInternal             :     exinfo->userseek           = 00007FFA27FA7F00
-[LOG] SystemI::createSoundInternal             :     exinfo->fileuserdata       = 0000027108004D68
+[LOG] SystemI::createSoundInternal             :     exinfo->fileuserdata       = 0000027115B1AF58
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::DSPCodecPoolRegister            :     register codec pool for pool type 5
 [LOG] SystemI::createSoundInternal             :     Sample 0/1: name='223611__ctcollab__fire-ball-release', format=5, channels=2, frequency=48000, lengthbytes=10720, lengthpcm=39986, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.167297.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105D37C08
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000002731E0E0828 : node = 000002732A54E9C0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731E0E0828
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54EAD0
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731E0E0828
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271171F2DA8
 [LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
 [LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081852FF3E8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
 [LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
 [LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
 [LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
 [LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
-[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 000002710A1893B8
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 000002711B8A44B8
 [LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
 [LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
 [LOG] SystemI::createSoundInternal             : Sample 0/1: name='weapons_explosion_small', format=5, channels=2, frequency=48000, lengthbytes=13792, lengthpcm=47597, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.802582.
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731E0E0828)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813D58)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027328A80618)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000002731E0E0828 : node = 000002732A54E880
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731E0E0828
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54E990
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731E0E0828
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731E0E0828)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813D58)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027328A80618)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027105D37DB8 : node = 000002732A54E880
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105D37DB8
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54E990
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105D37DB8
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105D37DB8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3816118)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFFDE8)
-[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
-[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081852FF3E8
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
-[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
-[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
-[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
-[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 00000271080097A8
-[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
-[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
-[LOG] SystemI::createSoundInternal             : Sample 0/1: name='52271__dparke4__zombie', format=5, channels=2, frequency=48000, lengthbytes=85056, lengthpcm=404584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.538587.
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105D37C08)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813878)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF728)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000271181A0F08 : node = 00000273AB53A820
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271181A0F08
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273AB53A930
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271181A0F08
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271181A0F08)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813878)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFFDE8)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000273B3446348 : node = 00000273199E5220
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273B3446348
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273199E5330
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273B3446348
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273B3446348)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813878)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B938E8)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000273DA2133C8 : node = 00000273D9A233C0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273DA2133C8
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A234D0
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273DA2133C8
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273DA2133C8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813878)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731CF608D8)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000273B3444848 : node = 00000273199E6C60
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273B3444848
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273199E6D70
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273B3444848
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273B3444848)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813878)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B93228)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000002711B7AF948 : node = 00000273B2DBF070
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002711B7AF948
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B2DBF180
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002711B7AF948
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002711B7AF948)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3813878)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF578)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000271181A0698 : node = 00000273AB53A460
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271181A0698
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273AB53A570
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271181A0698
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271181A0698)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814098)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFFDE8)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000271181A0698 : node = 00000273AB53A460
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271181A0698
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273AB53A570
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271181A0698
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271181A0698)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814098)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF578)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000002731CF608D8 : node = 0000027318C97F40
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731CF608D8
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027318C98050
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731CF608D8
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731CF608D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814098)
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271171F2DA8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107415C28)
 [LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002732A2CEBE8)
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027105D37DB8 : node = 000002732A54ED80
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105D37DB8
+[LOG] SystemI::createSound                     : setdata soundi = 0000027329F72268 : node = 000002731A7D84D0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027329F72268
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54EE90
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731A7D85E0
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105D37DB8
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105D37DB8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814238)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731CF608D8)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027329F72268
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027329F72268)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107415C28)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002732A2CF0F8)
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000002711B7AF0D8 : node = 00000273B2DBE530
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002711B7AF0D8
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13568 : node = 00000273D9A23780
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13568
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B2DBE640
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A23890
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002711B7AF0D8
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002711B7AF0D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814238)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002732A2CEA38)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000271181A0BA8 : node = 00000273AB53ABE0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271181A0BA8
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273AB53ACF0
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271181A0BA8
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271181A0BA8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814238)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002732A2CF2A8)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 000002711B7AF288 : node = 00000273B2DBE670
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002711B7AF288
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B2DBE780
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002711B7AF288
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002711B7AF288)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814238)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731CF60C38)
-[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
-[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027105D37C08 : node = 000002732A54E380
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105D37C08
-[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
-[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
-[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
-[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
-[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54E490
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
-[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
-[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105D37C08
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105D37C08)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3814238)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF578)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13568
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13568)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107415C28)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002732A2CEBE8)
 [LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
 [LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081852FF3E8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
 [LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
 [LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
 [LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
 [LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
-[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 00000273DA1F9398
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000027115B1BBB8
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='52271__dparke4__zombie', format=5, channels=2, frequency=48000, lengthbytes=85056, lengthpcm=404584, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.538587.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000027115B1A928
 [LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
 [LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
 [LOG] SystemI::createSoundInternal             : Sample 0/1: name='424994__gregorquendel__fire-effects-textures-glitch-01', format=5, channels=2, frequency=48000, lengthbytes=85312, lengthpcm=283414, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.799834.
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000272E1E8F598 : node = 0000027115E5EC60
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000272E1E8F598
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13DD8 : node = 00000273D9A22100
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13DD8
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027115E5ED70
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A22210
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000272E1E8F598
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000272E1E8F598)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B38143D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731CF612F8)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13DD8
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B93588 : node = 0000027318CB4CE0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B93588
+[LOG] SystemI::createSound                     : setdata soundi = 000002732A2CEBE8 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002732A2CEBE8
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027318CB4DF0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13DD8)
+[LOG] SoundI::release                          :         361053__jorge0000__wind-noise (00000273DA670C18)
+[LOG] SoundI::release                          :         361053__jorge0000__wind-noise (000002731BB13A78)
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B93588
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B93588)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B38143D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF728)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002732A2CEBE8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002732A2CEBE8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B959C8)
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027106169268 : node = 0000027329A00090
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027106169268
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB138C8 : node = 00000273D9A21200
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB138C8
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027329A001A0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A21310
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027106169268
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027106169268)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B38143D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF578)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB138C8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB138C8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6734B8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B3448D78)
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 00000272E1E8F748 : node = 0000027115E5C0A0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000272E1E8F748
+[LOG] SystemI::createSound                     : setdata soundi = 00000271171F2BF8 : node = 0000027314C67390
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271171F2BF8
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027115E5C1B0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314C674A0
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000272E1E8F748
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000272E1E8F748)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B38143D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF728)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271171F2BF8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271171F2BF8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672958)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000271171F2F58)
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027105D37A58 : node = 000002732A54E740
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105D37A58
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13DD8 : node = 00000273D9A24A40
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13DD8
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54E850
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A24B50
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105D37A58
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105D37A58)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B38143D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFF578)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13DD8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13DD8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672478)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B95B78)
 [LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
 [LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
-[LOG] SystemI::createSound                     : setdata soundi = 0000027105D37C08 : node = 000002732A54E4C0
-[LOG] SystemI::createSound                     : add node to async list : head = 0000027113863F68.  list count = 0
-[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105D37C08
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13568 : node = 00000273D9A22C40
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13568
 [LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
 [LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
 [LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
-[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A54E5D0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A22D50
 [LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
 [LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
 [LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
-[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105D37C08
-[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105D37C08)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273B38143D8)
-[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027107DFFDE8)
-[LOG] SoundI::release                          : music_lvl_03_doma_east_theme_bpm_140 (00000273B3449CA8)
-[LOG] SoundI::release                          :     music_lvl_03_doma_east_theme_bpm_140 (0000027107412008)
-[LOG] SoundI::release                          :     music_lvl_03_doma_east_theme_bpm_140 (0000027328A80468)
-[LOG] SoundI::release                          :  (00000273B2BDE608)
-[LOG] SoundI::release                          :     ui_okay (00000273B3815A98)
-[LOG] SoundI::release                          :  (00000272E1F2E768)
-[LOG] SoundI::release                          :     424994__gregorquendel__fire-effects-textures-glitch-01 (00000273B3814238)
-[LOG] SoundI::release                          :  (00000273D9F88BE8)
-[LOG] SoundI::release                          :     223611__ctcollab__fire-ball-release (00000273B3816E18)
-[LOG] SoundI::release                          :  (00000273B2BE0888)
-[LOG] SoundI::release                          :     weapons_explosion_small (00000273B3815DD8)
-[LOG] SoundI::release                          :  (00000273D9F88798)
-[LOG] SoundI::release                          :     52271__dparke4__zombie (00000273B3813D58)
-[LOG] SoundI::release                          :  (0000027318D8F798)
-[LOG] SoundI::release                          :     footsteps_player_grass_03 (00000273B3815C38)
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13568
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13568)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672618)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000271171F2DA8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B96238 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B96238
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B96238
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B96238)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6708D8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000271171F2F58)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B95ED8 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B95ED8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B95ED8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B95ED8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673B38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8BD7898)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B963E8 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B963E8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B963E8
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13DD8 : node = 00000273D9A24680
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13DD8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A24790
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13DD8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13DD8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6722D8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B95D28)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B96088 : node = 000002731DC1BBF0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B96088
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731DC1BD00
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B96088
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B96088)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6722D8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A71EE8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273B344A1B8 : node = 000002731A81EE30
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273B344A1B8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731A81EF40
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273B344A1B8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273B344A1B8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672FD8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A71828)
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B963E8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672E38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B95ED8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027329F72AD8 : node = 000002731A7D8610
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027329F72AD8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731A7D8720
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027329F72AD8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027329F72AD8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670C18)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13718)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D8FE6038 : node = 0000027314ADF400
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D8FE6038
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314ADF510
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D8FE6038
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D8FE6038)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671F98)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13A78)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027329F72C88 : node = 000002731A7D8250
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027329F72C88
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731A7D8360
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027329F72C88
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027329F72C88)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670598)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8FE5468)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027329F72C88 : node = 000002731A7D8390
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027329F72C88
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731A7D84A0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027329F72C88
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027329F72C88)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6710F8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8FE5468)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13F88 : node = 00000273D9A229C0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13F88
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A22AD0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13F88
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13F88)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671DF8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027329F72928)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13F88 : node = 00000273D9A24B80
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13F88
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A24C90
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13F88
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13F88)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670A78)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B96238)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13A78 : node = 00000273D9A22C40
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13A78
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A22D50
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13A78
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13A78)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6708D8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B96238)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027117A71168 : node = 000002732A44B880
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027117A71168
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A44B990
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027117A71168
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027117A71168)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671C58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B963E8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027117A71828 : node = 000002732A44C3C0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027117A71828
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A44C4D0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027117A71828
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027117A71828)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672618)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13F88)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B95ED8 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B95ED8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B95ED8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B95ED8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A71828)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB138C8 : node = 00000273D9A23F00
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB138C8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A24010
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB138C8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB138C8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671F98)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13F88)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB14138 : node = 00000273D9A24180
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB14138
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A24290
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB14138
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB14138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB138C8)
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 00000273DA257ED8
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='386486__iimck__jump', format=5, channels=2, frequency=48000, lengthbytes=5760, lengthpcm=42350, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.988500.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 000002710A7DF758
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='167075__drminky__slime-land', format=5, channels=1, frequency=48000, lengthbytes=2496, lengthpcm=10867, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.105988.
+[LOG] SystemI::createSoundInternal             : Create name='', mode=0x02000202
+[LOG] SystemI::createSoundInternal             : exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 00000081851FF0C8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFA27FA7D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFA27FA7D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFA27FA7E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFA27FA7F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 0000027115B1BBB8
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='555418__kuchtaa__wet-fart', format=5, channels=2, frequency=48000, lengthbytes=9920, lengthpcm=61440, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.925934.
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13A78 : node = 00000273D9A21FC0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13A78
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A220D0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13A78
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13568 : node = 00000273D9A22740
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13568
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A22850
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13568
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13568)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673658)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B959C8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B95D28 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B95D28
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B95D28
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13A78)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670F58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B963E8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B959C8 : node = 000002711C218DC0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B959C8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002711C218ED0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B959C8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B95D28)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671918)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A71828)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002732A2CED98 : node = 000002711C218A00
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002732A2CED98
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002711C218B10
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002732A2CED98
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B959C8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670738)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13DD8)
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002732A2CED98)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673B38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D009A8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027117A71D38 : node = 000002732A449BC0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027117A71D38
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002732A449CD0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027117A71D38
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027117A71D38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671AB8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D007F8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13718 : node = 00000273D9A238C0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13718
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A239D0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13718
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13718)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673178)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A71168)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13718 : node = 00000273D9A22740
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13718
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A22850
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13718
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13718)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670DB8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D007F8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB138C8 : node = 00000273D9A21840
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB138C8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A21950
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB138C8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB138C8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671918)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8FE6C08)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027329F72C88 : node = 000002731A7D8250
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027329F72C88
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731A7D8360
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027329F72C88
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000271171F2F58 : node = 0000027314C67610
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271171F2F58
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314C67720
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271171F2F58
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027329F72C88)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002731BB13F88)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B96088 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B96088
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B96088
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271171F2F58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670738)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D009A8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B95D28 : node = 00000273B32E2530
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B95D28
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B32E2640
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B95D28
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B96088)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671F98)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A703E8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002711752E748 : node = 0000027115E6B650
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002711752E748
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027115E6B760
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002711752E748
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B95D28)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673B38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027117A71168)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 0000027105AAF5A8 : node = 0000027329A00A90
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 0000027105AAF5A8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027329A00BA0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 0000027105AAF5A8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002711752E748)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671438)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B96088)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B96238 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B96238
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B96238
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (0000027105AAF5A8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA6715D8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B95B78)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B963E8 : node = 00000273B32E2A30
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B963E8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B32E2B40
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B963E8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B96238)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673B38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8BD7898)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B95D28 : node = 00000273B32E28F0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B95D28
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B32E2A00
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B95D28
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B963E8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670738)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (000002732A2CF608)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D9B95ED8 : node = 00000273B32E23F0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D9B95ED8
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273B32E2500
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D9B95ED8
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B95D28)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673318)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (0000027329F72778)
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D9B95ED8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670738)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D007F8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB13718 : node = 00000273D9A21340
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB13718
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A21450
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB13718
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB13718)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670F58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D007F8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB14138 : node = 00000273D9A23F00
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB14138
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A24010
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB14138
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB14138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671AB8)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8FE5E88)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000271171F2F58 : node = 0000027314C674D0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271171F2F58
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314C675E0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271171F2F58
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271171F2F58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671C58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D007F8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D8FE6C08 : node = 0000027314ADF400
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D8FE6C08
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314ADF510
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D8FE6C08
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D8FE6C08)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673318)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D00B58)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB14138 : node = 00000273D9A21AC0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB14138
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A21BD0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB14138
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB14138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673B38)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8D007F8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731DC1C088 : node = 000002711C113320
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731DC1C088
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002711C113430
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731DC1C088
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731DC1C088)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671918)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000271171F2A48)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000273D8D00B58 : node = 000002731E783720
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000273D8D00B58
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 000002731E783830
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000273D8D00B58
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000273D8D00B58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA673658)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B95ED8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB14138 : node = 00000273D9A21E80
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB14138
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A21F90
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB14138
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB14138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA672958)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B959C8)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 00000271171F2F58 : node = 0000027314C67110
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 00000271171F2F58
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 0000027314C67220
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 00000271171F2F58
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (00000271171F2F58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA671C58)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D8FE5E88)
+[LOG] SystemI::createSound                     : filename = ../DeadBearGamesFmodAudio/Build\Desktop/Master.bank : mode 02010082
+[LOG] SystemI::createSound                     : FMOD_NONBLOCKING specified.  Putting into queue to be opened asynchronously!
+[LOG] SystemI::createSound                     : setdata soundi = 000002731BB14138 : node = 00000273D9A215C0
+[LOG] SystemI::createSound                     : add node to async list : head = 000002711849A698.  list count = 0
+[LOG] AsyncThread::threadFunc                  : Starting Asynchronous operation on sound 000002731BB14138
+[LOG] SystemI::createSoundInternal             :     Create name='../DeadBearGamesFmodAudio/Build\Desktop/Master.bank', mode=0x02010082
+[LOG] SystemI::createSoundInternal             :     exinfo->cbsize             = 224
+[LOG] SystemI::createSoundInternal             :     exinfo->length             = 2606208
+[LOG] SystemI::createSoundInternal             :     exinfo->fileoffset         = 19392
+[LOG] SystemI::createSoundInternal             :     exinfo->numsubsounds       = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlist      = 00000273D9A216D0
+[LOG] SystemI::createSoundInternal             :     exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             :     exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             :     exinfo->initialseekpostype = 1
+[LOG] SystemI::createSoundInternal             :     Stream 0/1: name='361053__jorge0000__wind-noise', format=5, channels=2, frequency=48000, lengthbytes=108640, lengthpcm=443077, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.031494.
+[LOG] AsyncThread::threadFunc                  : Finished Asynchronous operation on sound 000002731BB14138
+[LOG] SoundI::release                          : 361053__jorge0000__wind-noise (000002731BB14138)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273DA670738)
+[LOG] SoundI::release                          :     361053__jorge0000__wind-noise (00000273D9B95D28)
+[LOG] SoundI::release                          : music_lvl_03_doma_east_theme_bpm_140 (000002732A2CEA38)
+[LOG] SoundI::release                          :     music_lvl_03_doma_east_theme_bpm_140 (0000027314FDBDB8)
+[LOG] SoundI::release                          :     music_lvl_03_doma_east_theme_bpm_140 (000002732A2CF458)
+[LOG] SoundI::release                          :  (00000273D8F307D8)
+[LOG] SoundI::release                          :     ui_okay (000002731A58B728)
+[LOG] SoundI::release                          :  (000002711C3397C8)
+[LOG] SoundI::release                          :     52271__dparke4__zombie (0000027314556518)
+[LOG] SoundI::release                          :  (000002711C339AA8)
+[LOG] SoundI::release                          :     424994__gregorquendel__fire-effects-textures-glitch-01 (00000273DA673998)
+[LOG] SoundI::release                          :  (000002711C339D88)
+[LOG] SoundI::release                          :     555418__kuchtaa__wet-fart (00000273DA670598)
+[LOG] SoundI::release                          :  (000002711C339938)
+[LOG] SoundI::release                          :     223611__ctcollab__fire-ball-release (000002731E424518)
+[LOG] SoundI::release                          :  (00000271062FFF78)
+[LOG] SoundI::release                          :     weapons_explosion_small (000002731E423818)
+[LOG] SoundI::release                          :  (0000027118196D78)
+[LOG] SoundI::release                          :     386486__iimck__jump (00000273DA670C18)
+[LOG] SoundI::release                          :  (00000273D906C728)
+[LOG] SoundI::release                          :     167075__drminky__slime-land (00000273DA6727B8)
+[LOG] SoundI::release                          :  (00000271062FFB28)
+[LOG] SoundI::release                          :     footsteps_player_grass_03 (00000273D88464D8)
 [LOG] Thread::callback                         : FMOD Studio update thread finished.
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
