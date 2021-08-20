@@ -36,6 +36,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = (byte)maxPlayers;
         RoomName = roomName.ToUpper();
+        options.IsVisible = true;
 
         PhotonNetwork.CreateRoom(RoomName, options);
     }
