@@ -5,11 +5,21 @@ using UnityEngine.UI;
 
 public class PlayerTimers : MonoBehaviour
 {
-    [SerializeField] private Image stunImg;
-    [SerializeField] private Image devouringImg;
-    [SerializeField] private Image beingDevouredImg;
-    [SerializeField] private Image evolveingImg;
+    [Header("Stun")]
+    [SerializeField] private Image StunParent;
+    [SerializeField] private Image stunTimerImg;
 
+    [Header("Devour")]
+    [SerializeField] private Image DevourParent;
+    [SerializeField] private Image devouringTimerImg;
+
+    [Header("Being Devour")]
+    [SerializeField] private Image BeingDevouredParent;
+    [SerializeField] private Image beingDevouredTimerImg;
+
+    [Header("Evolve")]
+    [SerializeField] private Image EvolveParent;
+    [SerializeField] private Image evolveingTimerImg;
 
 
     private float TimeToCompleteAnimation;
@@ -25,13 +35,13 @@ public class PlayerTimers : MonoBehaviour
     #region StunTimer
     public void StartStunTimer(float Duration)
     {
-        StartTimer(stunImg, Duration);
+        StartTimer(StunParent, Duration);
         playStun = true;
     }
 
     public void StopStunTimer()
     {
-        StopTimer(stunImg);
+        StopTimer(StunParent);
         playStun = false;
     }
     #endregion
@@ -39,13 +49,13 @@ public class PlayerTimers : MonoBehaviour
     #region DevourTimer
     public void StartDevourTimer(float Duration)
     {
-        StartTimer(devouringImg, Duration);
+        StartTimer(DevourParent, Duration);
         playDevouring = true;
     }
 
     public void StopDevourTimer()
     {
-        StopTimer(devouringImg);
+        StopTimer(DevourParent);
         playDevouring = false;
     }
     #endregion
@@ -53,13 +63,13 @@ public class PlayerTimers : MonoBehaviour
     #region BeingDevouredTimer
     public void StartBeingDevouredTimer(float Duration)
     {
-        StartTimer(beingDevouredImg, Duration);
+        StartTimer(BeingDevouredParent, Duration);
         playBeingDevoured = true;
     }
 
     public void StopBeingDevouredTimer()
     {
-        StopTimer(beingDevouredImg);
+        StopTimer(BeingDevouredParent);
         playBeingDevoured = false;
     }
     #endregion
@@ -67,13 +77,13 @@ public class PlayerTimers : MonoBehaviour
     #region EvolveTimer
     public void StartEvolveTimer(float Duration)
     {
-        StartTimer(evolveingImg, Duration);
+        StartTimer(EvolveParent, Duration);
         playEvolve = true;
     }
 
     public void StopEvolveTimer()
     {
-        StopTimer(evolveingImg);
+        StopTimer(EvolveParent);
         playEvolve = false;
     }
     #endregion
@@ -82,19 +92,19 @@ public class PlayerTimers : MonoBehaviour
     {
         if (playStun)
         {
-            LerpFillImg(stunImg);
+            LerpFillImg(stunTimerImg);
         }
         else if (playDevouring)
         {
-            LerpFillImg(devouringImg);
+            LerpFillImg(devouringTimerImg);
         }
         else if (playBeingDevoured)
         {
-            LerpFillImg(beingDevouredImg);
+            LerpFillImg(beingDevouredTimerImg);
         }
         else if (playEvolve)
         {
-            LerpFillImg(evolveingImg);
+            LerpFillImg(evolveingTimerImg);
         }
     }
 
@@ -105,15 +115,15 @@ public class PlayerTimers : MonoBehaviour
         ImgToChange.fillAmount = Mathf.Lerp(1, 0, percent);
     }
 
-    void StartTimer(Image ImgToUseAsTimer, float Duration)
+    void StartTimer(Image ParentImg, float Duration)
     {
         ActiveTime = 0;
         TimeToCompleteAnimation = Duration;
-        ImgToUseAsTimer.gameObject.SetActive(true);
+        ParentImg.gameObject.SetActive(true);
     }
 
-    void StopTimer(Image ImgToStop)
+    void StopTimer(Image ParentImg)
     {
-        ImgToStop.gameObject.SetActive(false);
+        ParentImg.gameObject.SetActive(false);
     }
 }
