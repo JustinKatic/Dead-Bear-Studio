@@ -48,18 +48,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 0
-  HealthRegenTimer: 0
-  DevourTime: 3
+  TimeBeforeHealthRegen: 3
+  RespawnTime: 6
+  AmountOfHealthAddedAfterStunned: 3
+  devourTime: 3
   stunnedDuration: 0
-  stunnedTimer: 0
+  MyExperienceWorth: 2
   MyMinionType: {fileID: 0}
-  ExperienceValue: 0
-  HealthBar: {fileID: 0}
-  HealthBarContainer: {fileID: 0}
   healthBarPrefab: {fileID: 0}
   HealthBarContainerOverhead: {fileID: 0}
   overheadHealthBar: {fileID: 0}
-  CurrentHealth: 0
+  StunVFX: {fileID: 0}
   beingDevoured: 0
   canBeDevoured: 0
   isStunned: 0
@@ -126,7 +125,7 @@ Transform:
   m_GameObject: {fileID: 3273467621492479102}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 60, z: 4}
+  m_LocalScale: {x: 4, y: 1, z: 4}
   m_Children: []
   m_Father: {fileID: 5758765751408525325}
   m_RootOrder: 1
@@ -141,7 +140,7 @@ VisualEffect:
   m_Enabled: 1
   m_Asset: {fileID: 8926484042661614526, guid: ff4746a2e35c4c948b33f2809c2904e9, type: 3}
   m_InitialEventName: OnPlay
-  m_InitialEventNameOverriden: 0
+  m_InitialEventNameOverriden: 1
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
   m_ResourceVersion: 1
@@ -169,13 +168,16 @@ VisualEffect:
       - m_Value: 0.2
         m_Name: Speed
         m_Overridden: 1
+      - m_Value: 1
+        m_Name: ParticleSpeed
+        m_Overridden: 0
     m_Vector2f:
       m_Array: []
     m_Vector3f:
       m_Array: []
     m_Vector4f:
       m_Array:
-      - m_Value: {x: 1, y: 0, z: 0.047058824, w: 0}
+      - m_Value: {x: 0.06698584, y: 0, z: 0.0031522748, w: 0.56078434}
         m_Name: Color
         m_Overridden: 1
       - m_Value: {x: 0.5188679, y: 0.11634799, z: 0.012237449, w: 1}
