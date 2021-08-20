@@ -9,7 +9,7 @@ using Photon.Realtime;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
-    [Header("Screens")]
+      [Header("Screens")]
     [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject createRoomScreen;
     [SerializeField] private GameObject lobbyScreen;
@@ -25,11 +25,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [Header("Lobby")]
     [SerializeField] private TextMeshProUGUI playerListText;
     [SerializeField] private TextMeshProUGUI roomInfoText;
-    [SerializeField] private TextMeshProUGUI codeInfoText;
     [SerializeField] private Button startGameButton;
     [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private Button RoomPrivacyButton;
-    public bool setRoomToPrivate = false;
+    [SerializeField] private TextMeshProUGUI privacyRoomText;
+
+    public bool roomIsPublic = true;
     public string CurrentRoomCode;
 
 
@@ -41,6 +42,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
+    private List<RoomInfo> allOpenRooms = new List<RoomInfo>();
+
 
     private string sceneName;
     private string currentRoomName;
@@ -85,7 +88,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnBackButton()
     {
         SetScreen(mainScreen);
-        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
     }
 
     // MAIN SCREEN
@@ -125,9 +127,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
-        currentRoomName = roomNameInput.text;
+        currentRoomName = roomNameInput.text.ToUpper();
         NetworkManager.instance.CreateRoom(roomNameInput.text);
-        
     }
 
     // LOBBY SCREEN
@@ -136,19 +137,21 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // set the screen to be the Lobby and update the UI for all players
     public override void OnJoinedRoom()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CurrentRoomCode = GenerateRandomRoomCode();
-            codeInfoText.text = CurrentRoomCode;
-            ExitGames.Client.Photon.Hashtable roomCustomProperties = new ExitGames.Client.Photon.Hashtable();
-            roomCustomProperties["CurrentRoomCode"] = CurrentRoomCode;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(roomCustomProperties);
-            //Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["RoomCode"].ToString());
-        }
+
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
+        roomIsPublic = PhotonNetwork.CurrentRoom.IsVisible;
+        
+        if (roomIsPublic)
+        {
+            privacyRoomText.text = "Public";
+        }
+        else
+        {
+            privacyRoomText.text = "Private";
 
+        }
     }
 
     // called when a player leaves the room - update the lobby UI
@@ -200,7 +203,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLeaveLobbyButton()
     {
         PhotonNetwork.LeaveRoom();
-
+        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
+        currentRoomName = null;
         SetScreen(mainScreen);
     }
 
@@ -229,6 +233,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         foreach (RoomInfo roomInfo in allRooms)
         {
+            //Adds rooms to a list that is used for searching private rooms
+            if (roomInfo.IsOpen && !allOpenRooms.Contains(roomInfo))
+                allOpenRooms.Add(roomInfo);
+            else if(roomInfo.RemovedFromList && roomInfo.PlayerCount > 0 && roomInfo.PlayerCount < roomInfo.MaxPlayers)
+                allOpenRooms.Remove(roomInfo);
+            
+            //Updates a list of rooms with open and visible rooms
             if (roomInfo.RemovedFromList)
                 roomList.Remove(FindRoom(roomInfo.Name));
             else if (FindRoom(roomInfo.Name) == null)
@@ -261,8 +272,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
             string roomName = roomList[x].Name;
 
-            buttonComp.onClick.RemoveAllListeners();
-            buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
+            buttonComp.onClick.RemoveAllListeners();          
+            buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });           
         }
     }
 
@@ -280,17 +291,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     //Button Event that will change to the bool true if currently false and false if true
     public void SetRoomPrivacy()
     {
-        if (setRoomToPrivate)
+        if (!roomIsPublic)
         {
-            setRoomToPrivate = false;
-            RoomPrivacyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Public";
+            roomIsPublic = true;
+            privacyRoomText.text = "Public";
             PhotonNetwork.CurrentRoom.IsVisible = true;
             Debug.Log("Public");
         }
         else
         {
-            setRoomToPrivate = true;
-            RoomPrivacyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Private";
+            roomIsPublic = false;
+            privacyRoomText.text = "Private";
             PhotonNetwork.CurrentRoom.IsVisible = false;
             Debug.Log("Private");
 
@@ -299,18 +310,23 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void SearchForRoom(string codeEntered)
     {
-        codeEntered.ToUpper();
-        
-        for (int i = 0; i < roomList.Count; i++)
-        {
-            if ((string)roomList[i].CustomProperties["CurrentRoomCode"] == codeEntered)
-                NetworkManager.instance.JoinRoom(roomList[i].Name);
-        }
+        if (codeEntered == null)
+            return;
 
+        for (int i = 0; i < allOpenRooms.Count; i++)
+        {
+            if (allOpenRooms[i].Name.Contains(codeEntered.ToUpper()))
+            {
+                OnJoinRoomButton(allOpenRooms[i].Name);
+            }
+        }
     }
 
     public void GetSearchRoomCodeValue()
     {
+        if (roomSearchBar.text == "")
+            return;
+        
         SearchForRoom(roomSearchBar.text);
     }
 
@@ -327,9 +343,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         //Check if the room code matches another room, recreate room Code
         //Until it Doesnt match another room
-        for (int i = 0; i < roomList.Count; i++)
+        for (int i = 0; i < allOpenRooms.Count; i++)
         {
-            if ((string)roomList[i].CustomProperties["RoomCode"] == generatedString.ToString())
+            if (allOpenRooms[i].Name.Contains(generatedString.ToString()) )
                 GenerateRandomRoomCode();
         }
 

@@ -9,9 +9,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public int maxPlayers = 10;
 
+    public string RoomName;
+    
     // instance
     public static NetworkManager instance;
-
     void Awake ()
     {
         instance = this;
@@ -34,8 +35,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = (byte)maxPlayers;
+        RoomName = roomName.ToUpper();
+        options.IsVisible = true;
 
-        PhotonNetwork.CreateRoom(roomName, options);
+        PhotonNetwork.CreateRoom(RoomName, options);
     }
     
     // joins a room of the requested room name
