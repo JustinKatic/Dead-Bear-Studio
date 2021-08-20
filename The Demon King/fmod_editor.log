@@ -7,7 +7,11 @@
 [LOG] OutputWASAPI::init                       : Output buffer size: 4096 samples, latency: 0.00ms, period: 10.00ms, DSP buffer: 1024 * 4
 [LOG] Thread::initThread                       : Init FMOD stream thread. Affinity: 0x8000000000000003, Priority: 0xFFFF7FFB, Stack Size: 98304, Semaphore: No, Sleep Time: 10, Looping: Yes.
 [LOG] Thread::initThread                       : Init FMOD mixer thread. Affinity: 0x8000000000000001, Priority: 0xFFFF7FFA, Stack Size: 81920, Semaphore: No, Sleep Time: 0, Looping: Yes.
+<<<<<<< HEAD
 [LOG] AsyncManager::init                       : manager 00000238809A6868 isAsync 0 updatePeriod 0.02
+=======
+[LOG] AsyncManager::init                       : manager 000001C987EFC1B8 isAsync 0 updatePeriod 0.02
+>>>>>>> DevelopmentBranch
 [LOG] AsyncManager::init                       : done
 [LOG] PlaybackSystem::init                     : 
 [LOG] Thread::initThread                       : Init FMOD Studio sample load thread. Affinity: 0x8000000000000003, Priority: 0xFFFF7FFD, Stack Size: 98304, Semaphore: No, Sleep Time: 1, Looping: No.
@@ -21,6 +25,7 @@
 [LOG] SystemI::createSoundInternal             : exinfo->length             = 2606208
 [LOG] SystemI::createSoundInternal             : exinfo->fileoffset         = 19392
 [LOG] SystemI::createSoundInternal             : exinfo->numsubsounds       = 1
+<<<<<<< HEAD
 [LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000E138E5F338
 [LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
 [LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
@@ -922,6 +927,24 @@
 [LOG] SoundI::release                          :     footsteps_player_grass_03 (000002388FC6F258)
 [LOG] SoundI::release                          :  (0000023AA79057D8)
 [LOG] SoundI::release                          :     weapons_explosion_small (0000023A5F76E068)
+=======
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlist      = 000000C0876FF5D8
+[LOG] SystemI::createSoundInternal             : exinfo->inclusionlistnum   = 1
+[LOG] SystemI::createSoundInternal             : exinfo->suggestedsoundtype = 5
+[LOG] SystemI::createSoundInternal             : exinfo->useropen           = 00007FFEBEE77D70
+[LOG] SystemI::createSoundInternal             : exinfo->userclose          = 00007FFEBEE77D40
+[LOG] SystemI::createSoundInternal             : exinfo->userread           = 00007FFEBEE77E40
+[LOG] SystemI::createSoundInternal             : exinfo->userseek           = 00007FFEBEE77F00
+[LOG] SystemI::createSoundInternal             : exinfo->fileuserdata       = 000001C98B11D0D8
+[LOG] SystemI::createSoundInternal             : exinfo->initialseekpostype = 1
+[LOG] SystemI::DSPCodecPoolRegister            : register codec pool for pool type 5
+[LOG] SystemI::createSoundInternal             : Sample 0/1: name='ui_okay', format=5, channels=2, frequency=48000, lengthbytes=10880, lengthpcm=44042, pcmblocksize=0, loopstart=0, loopend=0, mode=0x00000000, channelmask=0x00000000, channelorder=0, peakvolume=0.133728.
+[LOG] SoundI::release                          : music_lvl_03_doma_east_theme_bpm_140 (000001CA62475F28)
+[LOG] SoundI::release                          :     music_lvl_03_doma_east_theme_bpm_140 (000001C98DCBD778)
+[LOG] SoundI::release                          :     music_lvl_03_doma_east_theme_bpm_140 (000001C98D76E0B8)
+[LOG] SoundI::release                          :  (000001CA6159A7E8)
+[LOG] SoundI::release                          :     ui_okay (000001C98DCBD918)
+>>>>>>> DevelopmentBranch
 [LOG] Thread::callback                         : FMOD Studio update thread finished.
 [LOG] Thread::callback                         : FMOD Studio bank load thread finished.
 [LOG] Profile::disconnectAll                   : Profiler disconnecting all clients
