@@ -81,7 +81,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{d83b1231-33c5-41cb-bcf0-bff4d839d29a}">
 		<property name="volume">
-			<value>-10</value>
+			<value>-17</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{ea16c9ff-d39a-4184-994d-86e139724915}</destination>
@@ -95,7 +95,7 @@
 	</object>
 	<object class="MultiSound" id="{e00835fa-8b40-410e-9beb-99d9f7c02484}">
 		<relationship name="sounds">
-			<destination>{9464856a-5a55-4d11-844e-9a8e2778ca5e}</destination>
+			<destination>{216a0e5e-6880-42f6-9f30-41ccf43f6a11}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusEffectChain" id="{a8c3c3cd-e717-4050-b47d-447e726f5689}">
@@ -121,11 +121,11 @@
 	<object class="MixerBusEffectChain" id="{ea16c9ff-d39a-4184-994d-86e139724915}">
 		<relationship name="effects">
 			<destination>{c3e5460a-defc-4ad4-ac87-6aa1bb73bde7}</destination>
-			<destination>{8e9ea0e0-a011-4a63-8c08-bd903ce70d19}</destination>
+			<destination>{bf5aad19-24fd-4fb1-bc93-c2bacc1424a4}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{caa01d8f-c054-4aec-ab95-d7027f457b79}" />
-	<object class="SingleSound" id="{9464856a-5a55-4d11-844e-9a8e2778ca5e}">
+	<object class="SingleSound" id="{216a0e5e-6880-42f6-9f30-41ccf43f6a11}">
 		<relationship name="audioFile">
 			<destination>{67d60e29-b5b4-4e53-beef-d2be2d777e94}</destination>
 		</relationship>
@@ -138,15 +138,21 @@
 	</object>
 	<object class="MixerBusPanner" id="{3b0e5423-c203-4fe2-a1af-da0dc1f83534}" />
 	<object class="MixerBusFader" id="{c3e5460a-defc-4ad4-ac87-6aa1bb73bde7}" />
-	<object class="CompressorEffect" id="{8e9ea0e0-a011-4a63-8c08-bd903ce70d19}">
-		<property name="attackTime">
-			<value>64</value>
+	<object class="SFXReverbEffect" id="{bf5aad19-24fd-4fb1-bc93-c2bacc1424a4}">
+		<property name="earlyDelay">
+			<value>10.5</value>
 		</property>
-		<property name="releaseTime">
-			<value>300</value>
+		<property name="diffusion">
+			<value>99.5</value>
 		</property>
-		<property name="gain">
-			<value>8.5</value>
+		<property name="density">
+			<value>50.5</value>
+		</property>
+		<property name="earlyLateMix">
+			<value>66</value>
+		</property>
+		<property name="wetLevel">
+			<value>-11</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{771c1058-ea00-4492-8a02-d5962988eb9c}" />
