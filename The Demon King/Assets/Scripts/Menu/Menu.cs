@@ -261,8 +261,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
             string roomName = roomList[x].Name;
 
-            buttonComp.onClick.RemoveAllListeners();
-            buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
+            buttonComp.onClick.RemoveAllListeners();          
+            buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });           
         }
     }
 
