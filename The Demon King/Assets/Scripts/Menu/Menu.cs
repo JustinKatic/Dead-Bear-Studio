@@ -9,7 +9,7 @@ using Photon.Realtime;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
-    [Header("Screens")]
+      [Header("Screens")]
     [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject createRoomScreen;
     [SerializeField] private GameObject lobbyScreen;
@@ -25,7 +25,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [Header("Lobby")]
     [SerializeField] private TextMeshProUGUI playerListText;
     [SerializeField] private TextMeshProUGUI roomInfoText;
-    [SerializeField] private TextMeshProUGUI codeInfoText;
     [SerializeField] private Button startGameButton;
     [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private Button RoomPrivacyButton;
@@ -41,6 +40,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
+    private List<RoomInfo> allOpenRooms = new List<RoomInfo>();
+
 
     private string sceneName;
     private string currentRoomName;
@@ -125,7 +126,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
-        currentRoomName = roomNameInput.text;
+        currentRoomName = roomNameInput.text.ToUpper();
         NetworkManager.instance.CreateRoom(roomNameInput.text);
         
     }
@@ -136,15 +137,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // set the screen to be the Lobby and update the UI for all players
     public override void OnJoinedRoom()
     {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            CurrentRoomCode = GenerateRandomRoomCode();
-            codeInfoText.text = CurrentRoomCode;
-            ExitGames.Client.Photon.Hashtable roomCustomProperties = new ExitGames.Client.Photon.Hashtable();
-            roomCustomProperties["CurrentRoomCode"] = CurrentRoomCode;
-            PhotonNetwork.CurrentRoom.SetCustomProperties(roomCustomProperties);
-            //Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["RoomCode"].ToString());
-        }
+
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
@@ -229,6 +222,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         foreach (RoomInfo roomInfo in allRooms)
         {
+            //Adds rooms to a list that is used for searching private rooms
+            if (roomInfo.IsOpen && !allOpenRooms.Contains(roomInfo))
+                allOpenRooms.Add(roomInfo);
+            else if(roomInfo.RemovedFromList && roomInfo.PlayerCount > 0 && roomInfo.PlayerCount < roomInfo.MaxPlayers)
+                allOpenRooms.Remove(roomInfo);
+            
+            //Updates a list of rooms with open and visible rooms
             if (roomInfo.RemovedFromList)
                 roomList.Remove(FindRoom(roomInfo.Name));
             else if (FindRoom(roomInfo.Name) == null)
@@ -299,14 +299,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void SearchForRoom(string codeEntered)
     {
-        codeEntered.ToUpper();
-        
-        for (int i = 0; i < roomList.Count; i++)
+        for (int i = 0; i < allOpenRooms.Count; i++)
         {
-            if ((string)roomList[i].CustomProperties["CurrentRoomCode"] == codeEntered)
-                NetworkManager.instance.JoinRoom(roomList[i].Name);
+            if (allOpenRooms[i].Name.Contains(codeEntered.ToUpper()))
+            {
+                OnJoinRoomButton(allOpenRooms[i].Name);
+            }
         }
-
     }
 
     public void GetSearchRoomCodeValue()
@@ -327,9 +326,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         //Check if the room code matches another room, recreate room Code
         //Until it Doesnt match another room
-        for (int i = 0; i < roomList.Count; i++)
+        for (int i = 0; i < allOpenRooms.Count; i++)
         {
-            if ((string)roomList[i].CustomProperties["RoomCode"] == generatedString.ToString())
+            if (allOpenRooms[i].Name.Contains(generatedString.ToString()) )
                 GenerateRandomRoomCode();
         }
 
