@@ -310,6 +310,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void SearchForRoom(string codeEntered)
     {
+        if (codeEntered == null)
+            return;
+
         for (int i = 0; i < allOpenRooms.Count; i++)
         {
             if (allOpenRooms[i].Name.Contains(codeEntered.ToUpper()))
@@ -321,6 +324,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void GetSearchRoomCodeValue()
     {
+        if (roomSearchBar.text == "")
+            return;
+        
         SearchForRoom(roomSearchBar.text);
     }
 
