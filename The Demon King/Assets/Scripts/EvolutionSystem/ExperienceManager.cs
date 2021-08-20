@@ -176,6 +176,7 @@ public class ExperienceManager : MonoBehaviourPun
         if (branchType == CurrentActiveEvolutionBranch && !demonKingEvolution.AmITheDemonKing)
             ScaleSize(branchType.ExpBar.CurrentExp);
 
+
         // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
         {
@@ -272,13 +273,14 @@ public class ExperienceManager : MonoBehaviourPun
         {
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
             vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
-            vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetYIncreaseAmount;
+            vCam.ShoulderOffset.y = baseCamShoulderY + CurrentExp * CamShoulderOffsetYIncreaseAmount;
 
         }
         else
         {
             vCam.CameraDistance = baseCamDist;
             vCam.ShoulderOffset.x = baseCamShoulderX;
+            vCam.ShoulderOffset.y = baseCamShoulderY;
         }
     }
     public void CheckIfNeedToDevolve()
