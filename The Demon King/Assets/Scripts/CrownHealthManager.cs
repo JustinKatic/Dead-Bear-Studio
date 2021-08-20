@@ -6,6 +6,8 @@ using UnityEngine;
 public class CrownHealthManager : HealthManager
 {
     public GameObject model;
+    public GameObject VFX;
+
 
     private Collider col;
     // Start is called before the first frame update
@@ -21,11 +23,21 @@ public class CrownHealthManager : HealthManager
     public void CrownRespawn()
     {
         model.SetActive(true);
+        VFX.SetActive(true);
         col.enabled = true;
     }
-    protected override void OnBeingDevourEnd(int attackerID)
+
+
+    [PunRPC]
+    public void DespawnCrown()
     {
         col.enabled = false;
         model.SetActive(false);
+        VFX.SetActive(false);
+    }
+
+    protected override void OnBeingDevourEnd(int attackerID)
+    {
+        photonView.RPC("DespawnCrown", RpcTarget.All);
     }
 }
