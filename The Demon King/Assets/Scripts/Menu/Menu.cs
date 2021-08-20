@@ -28,7 +28,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private Button startGameButton;
     [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private Button RoomPrivacyButton;
-    public bool setRoomToPrivate = false;
+    [SerializeField] private TextMeshProUGUI privacyRoomText;
+
+    public bool roomIsPublic = true;
     public string CurrentRoomCode;
 
 
@@ -86,7 +88,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnBackButton()
     {
         SetScreen(mainScreen);
-        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
     }
 
     // MAIN SCREEN
@@ -128,7 +129,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         currentRoomName = roomNameInput.text.ToUpper();
         NetworkManager.instance.CreateRoom(roomNameInput.text);
-        
     }
 
     // LOBBY SCREEN
@@ -141,7 +141,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SetScreen(lobbyScreen);
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
+        roomIsPublic = PhotonNetwork.CurrentRoom.IsVisible;
+        
+        if (roomIsPublic)
+        {
+            privacyRoomText.text = "Public";
+        }
+        else
+        {
+            privacyRoomText.text = "Private";
 
+        }
     }
 
     // called when a player leaves the room - update the lobby UI
@@ -193,7 +203,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLeaveLobbyButton()
     {
         PhotonNetwork.LeaveRoom();
-
+        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
+        currentRoomName = null;
         SetScreen(mainScreen);
     }
 
@@ -280,17 +291,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     //Button Event that will change to the bool true if currently false and false if true
     public void SetRoomPrivacy()
     {
-        if (setRoomToPrivate)
+        if (!roomIsPublic)
         {
-            setRoomToPrivate = false;
-            RoomPrivacyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Public";
+            roomIsPublic = true;
+            privacyRoomText.text = "Public";
             PhotonNetwork.CurrentRoom.IsVisible = true;
             Debug.Log("Public");
         }
         else
         {
-            setRoomToPrivate = true;
-            RoomPrivacyButton.GetComponentInChildren<TextMeshProUGUI>().text = "Private";
+            roomIsPublic = false;
+            privacyRoomText.text = "Private";
             PhotonNetwork.CurrentRoom.IsVisible = false;
             Debug.Log("Private");
 

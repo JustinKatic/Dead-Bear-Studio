@@ -23,6 +23,8 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     [SerializeField] private Color32 textColorJoinedRoom;
     private string joinRoomMessage = "Has Joined The Chat";
+    private string leaveRoomMessage = "Has Left";
+
     
     [SerializeField] private Color32 textColorUserName;
     [HideInInspector] public string userID;
@@ -119,7 +121,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnUnsubscribed(string[] channels)
     {
-        throw new System.NotImplementedException();
 
     }
 
