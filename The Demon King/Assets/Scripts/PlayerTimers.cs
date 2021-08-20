@@ -112,7 +112,7 @@ public class PlayerTimers : MonoBehaviour
     {
         ActiveTime += Time.deltaTime;
         float percent = ActiveTime / TimeToCompleteAnimation;
-        ImgToChange.fillAmount = Mathf.Lerp(1, 0, percent);
+        ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
     }
 
     void StartTimer(Image ParentImg, float Duration)
