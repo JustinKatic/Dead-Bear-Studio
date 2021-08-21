@@ -81,9 +81,9 @@ public class PlayerHealthManager : HealthManager
 
 
     [PunRPC]
-    protected override void InterruptDevourOnSelf()
+    protected override void InterruptDevourOnSelf_RPC()
     {
-        base.InterruptDevourOnSelf();
+        base.InterruptDevourOnSelf_RPC();
         if (photonView.IsMine)
             debuffTimer.StopBeingDevouredTimer();
     }

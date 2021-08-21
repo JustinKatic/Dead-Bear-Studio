@@ -86,8 +86,13 @@ public class HealthManager : MonoBehaviourPun
 
     #region Devour
 
+    public void OnDevour(int attackerID)
+    {
+        photonView.RPC("OnDevour_RPC", RpcTarget.All, attackerID);
+    }
+
     [PunRPC]
-    public virtual void OnDevour(int attackerID)
+    public virtual void OnDevour_RPC(int attackerID)
     {
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
@@ -112,8 +117,13 @@ public class HealthManager : MonoBehaviourPun
 
     }
 
+    public void InterruptDevourOnSelf()
+    {
+        photonView.RPC("InterruptDevourOnSelf_RPC", RpcTarget.All);
+    }
+
     [PunRPC]
-    protected virtual void InterruptDevourOnSelf()
+    protected virtual void InterruptDevourOnSelf_RPC()
     {
         beingDevoured = false;
         StopCoroutine(myDevourCo);
