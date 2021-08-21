@@ -4,11 +4,12 @@ using System.Linq;
 using UnityEngine;
 using Photon.Pun;
 
-
 public class EvolutionManager : MonoBehaviourPun
 {
     [Header("Modifiable stats")]
-    public float TimeToEvolve = 3f;
+    [SerializeField] private float TimeToEvolve = 3f;
+    [SerializeField] private GameObject EvolveVFX;
+    [SerializeField] private GameObject DemonKingEvolveVFX;
 
     //List to hold all evolutions
     [HideInInspector] public List<Evolutions> evolutions = new List<Evolutions>();
@@ -27,22 +28,18 @@ public class EvolutionManager : MonoBehaviourPun
 
     private bool evolving = false;
 
-    public GameObject EvolveVFX;
-    public GameObject DemonKingEvolveVFX;
-
     private IEnumerator changeEvolutionCo;
 
+
+    #region Start Up
     private void Awake()
     {
         //Run on all player objects
         //Gets list of all evolutions on this player
         evolutions = GetComponentsInChildren<Evolutions>(true).ToList();
 
-        //gets access to exp manager on this player
         experienceManager = GetComponent<ExperienceManager>();
-
         healthManager = GetComponent<PlayerHealthManager>();
-
     }
 
     void Start()
@@ -73,13 +70,20 @@ public class EvolutionManager : MonoBehaviourPun
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
     }
+    #endregion
 
+    #region Update Loops
     private void Update()
     {
-        if (evolving && healthManager.isStunned)
-            InteruptEvolution();
+        if (photonView.IsMine)
+        {
+            if (evolving && healthManager.isStunned)
+                InteruptEvolution();
+        }
     }
+    #endregion
 
+    #region Evolve
     //called on evolve performed Input (Run locally)
     private void Evolve_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
@@ -90,9 +94,13 @@ public class EvolutionManager : MonoBehaviourPun
         }
     }
 
+    void Evolve(string currentModelsTag, string nextModelsTag)
+    {
+        photonView.RPC("Evolve_RPC", RpcTarget.All, currentModelsTag, nextModelsTag);
+    }
 
     [PunRPC]
-    public void Evolve(string currentModelsTag, string nextModelsTag)
+    public void Evolve_RPC(string currentModelsTag, string nextModelsTag)
     {
         foreach (var evolution in evolutions)
         {
@@ -106,26 +114,6 @@ public class EvolutionManager : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
-    void EvolutionVFX(bool enabled)
-    {
-        if (enabled)
-            EvolveVFX.SetActive(true);
-        else
-            EvolveVFX.SetActive(false);
-    }
-
-    [PunRPC]
-    void DemonKingEvolutionVFX(bool enabled)
-    {
-        if (enabled)
-            DemonKingEvolveVFX.SetActive(true);
-        else
-            DemonKingEvolveVFX.SetActive(false);
-    }
-
-
-
     public void ChangeEvolution(Evolutions evolution, bool ShouldPlayTransition)
     {
         changeEvolutionCo = ChangeEvolutionAfterX();
@@ -137,12 +125,12 @@ public class EvolutionManager : MonoBehaviourPun
             {
                 if (demonKingEvolution.AmITheDemonKing)
                 {
-                    photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, true);
+                    PlayDemonKingEvolveVFX(true);
                     PlayerSoundManager.Instance.PlayDemonKingEvolveSound();
                 }
                 else
                 {
-                    photonView.RPC("EvolutionVFX", RpcTarget.All, true);
+                    PlayEvolveVFX(true);
                     PlayerSoundManager.Instance.PlayEvolveSound();
                 }
 
@@ -162,13 +150,13 @@ public class EvolutionManager : MonoBehaviourPun
             playerTimers.StopEvolveTimer();
             if (demonKingEvolution.AmITheDemonKing)
             {
-                photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, false);
+                PlayDemonKingEvolveVFX(false);
                 PlayerSoundManager.Instance.StopDemonKingEvolveSound();
                 PlayerSoundManager.Instance.PlayDemonKingAnnouncementSound();
             }
             else
             {
-                photonView.RPC("EvolutionVFX", RpcTarget.All, false);
+                PlayEvolveVFX(false);
                 PlayerSoundManager.Instance.StopEvolveSound();
             }
 
@@ -178,10 +166,20 @@ public class EvolutionManager : MonoBehaviourPun
         }
     }
 
+    void InteruptEvolution()
+    {
+        StopCoroutine(changeEvolutionCo);
+        playerTimers.StopEvolveTimer();
+        PlayEvolveVFX(false);
+        PlayerSoundManager.Instance.StopEvolveSound();
+        evolving = false;
+        experienceManager.ChangeEvolutionBools(nextBranchType);
+    }
+
     void SwapEvolution(Evolutions evolution)
     {
         experienceManager.SetCanEvolveFalse();
-        photonView.RPC("Evolve", RpcTarget.All, activeEvolution.tag, nextEvolution.tag);
+        Evolve(activeEvolution.tag, nextEvolution.tag);
         activeEvolution = evolution;
         experienceManager.CurrentActiveEvolutionBranch = nextBranchType;
 
@@ -195,14 +193,35 @@ public class EvolutionManager : MonoBehaviourPun
         playerController.currentAnim = activeEvolution.animator;
         healthManager.SetHealth(activeEvolution.MaxHealth);
     }
+    #endregion
 
-    void InteruptEvolution()
+    #region Play VFX
+    void PlayEvolveVFX(bool Enabled)
     {
-        StopCoroutine(changeEvolutionCo);
-        playerTimers.StopEvolveTimer();
-        photonView.RPC("EvolutionVFX", RpcTarget.All, false);
-        PlayerSoundManager.Instance.StopEvolveSound();
-        evolving = false;
-        experienceManager.ChangeEvolutionBools(nextBranchType);
+        photonView.RPC("PlayEvolveVFX_RPC", RpcTarget.All, Enabled);
     }
+
+    [PunRPC]
+    void PlayEvolveVFX_RPC(bool enabled)
+    {
+        if (enabled)
+            EvolveVFX.SetActive(true);
+        else
+            EvolveVFX.SetActive(false);
+    }
+
+    void PlayDemonKingEvolveVFX(bool Enabled)
+    {
+        photonView.RPC("DemonKingEvolutionVFX", RpcTarget.All, Enabled);
+    }
+
+    [PunRPC]
+    void DemonKingEvolutionVFX(bool enabled)
+    {
+        if (enabled)
+            DemonKingEvolveVFX.SetActive(true);
+        else
+            DemonKingEvolveVFX.SetActive(false);
+    }
+    #endregion
 }

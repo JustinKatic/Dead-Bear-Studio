@@ -1,75 +1,61 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine.InputSystem;
 
 public class AbilityManager : MonoBehaviourPun
 {
     [Header("ProjectileVariables")]
-    public float primaryProjectilePower;
-    public int damage;
-    public float primaryProjectileDelay = 0.3f;
+    [SerializeField] private float primaryProjectilePower;
+    [SerializeField] private int damage;
+    [SerializeField] private float shootTimer = 0.3f;
 
     [Header("LayersForRaycastToIgnore")]
-    public LayerMask PrimaryProjectileLayersToIgnore;
-
-    private EvolutionManager evolutionManager;
-
+    [SerializeField] private LayerMask PrimaryProjectileLayersToIgnore;
 
     [Header("ProjectilePrefabs")]
-    public GameObject primaryProjectile;
+    [SerializeField] private GameObject primaryProjectile;
 
     [Header("GameObjects")]
-    public Transform shootPoint;
-    public GameObject recticle;
+    [SerializeField] private Transform shootPoint;
+    [SerializeField] private GameObject recticle;
 
-    private bool canCast = true;
+    private bool canShoot = true;
 
-
+    //Components
+    private EvolutionManager evolutionManager;
     private PlayerController player;
     private Camera cam;
 
+    #region Start Up
     void Awake()
     {
-        player = GetComponent<PlayerController>();
-        cam = Camera.main;
-
         if (photonView.IsMine)
         {
             evolutionManager = GetComponent<EvolutionManager>();
+            player = GetComponent<PlayerController>();
+            cam = Camera.main;
         }
-
-        if (!photonView.IsMine)
-        {
+        else
             Destroy(recticle.gameObject);
-        }
     }
     private void Start()
     {
         if (photonView.IsMine)
-        {
             player.CharacterInputs.Player.Ability1.performed += OnAbility1;
-            player.CharacterInputs.Player.Ability1.canceled += OnAbility1Cancelled;
-        }
     }
+    #endregion
 
+    #region Shoot Projectile
     private void OnAbility1(InputAction.CallbackContext obj)
     {
-        if (canCast)
+        if (canShoot)
         {
             ShootPrimaryProjectile();
             player.currentAnim.SetTrigger("Attack");
-            StartCoroutine(CanCast(primaryProjectileDelay));
+            StartCoroutine(CanCast(shootTimer));
             PlayerSoundManager.Instance.PlayAbility1Sound();
         }
-    }
-
-    private void OnAbility1Cancelled(InputAction.CallbackContext obj)
-    {
-
     }
 
     public void ShootPrimaryProjectile()
@@ -87,7 +73,6 @@ public class AbilityManager : MonoBehaviourPun
         }
     }
 
-    [PunRPC]
     void SpawnPrimaryProjectile(Vector3 pos, Vector3 dir, float power, Vector3 hitPoint)
     {
         GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("PrimaryProjectile", pos, Quaternion.identity);
@@ -100,9 +85,9 @@ public class AbilityManager : MonoBehaviourPun
 
     public IEnumerator CanCast(float timer)
     {
-        canCast = false;
+        canShoot = false;
         yield return new WaitForSeconds(timer);
-        canCast = true;
-
+        canShoot = true;
     }
+    #endregion
 }
