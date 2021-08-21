@@ -6,15 +6,14 @@ using UnityEngine.AI;
 
 public abstract class State : MonoBehaviour
 {
-    public abstract State RunCurrentState();
+    public abstract void RunCurrentState();
     protected NavMeshAgent agent;
-    protected MinionHealthManager healthManager;
     protected Animator anim;
+    [HideInInspector]public GameObject target;
 
     private void Awake()
     {
         agent = GetComponentInParent<NavMeshAgent>();
-        healthManager = GetComponentInParent<MinionHealthManager>();
         anim = GetComponentInParent<Animator>();       
     }
 }
