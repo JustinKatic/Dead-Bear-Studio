@@ -6,23 +6,27 @@ using Cinemachine;
 public class ExperienceManager : MonoBehaviourPun
 {
     [Header("Modifible stats")]
-    public float ScaleAmount = 0.1f;
-    public float CamDistanceIncreaseAmount = .5f;
-    public float CamShoulderOffsetXIncreaseAmount = 0f;
-    public float CamShoulderOffsetYIncreaseAmount = 0f;
+    [SerializeField] private float ScaleAmount = 0.1f;
+    [SerializeField] private float CamDistanceIncreaseAmount = .5f;
+    [SerializeField] private float CamShoulderOffsetXIncreaseAmount = 0f;
+    [SerializeField] private float CamShoulderOffsetYIncreaseAmount = 0f;
 
-    public float PercentOfExpToLoseOnDeath = .20f;
-    public float DemonKingExpLossDeath = 0.4f;
+    [SerializeField] private float percentOfExpToLoseOnDeath = .20f;
+    public float PercentOfExpToLoseOnDeath { get { return percentOfExpToLoseOnDeath; } private set { percentOfExpToLoseOnDeath = value; } }
+
+    [SerializeField] private float demonKingExpLossDeath = 0.4f;
+    public float DemonKingExpLossDeath { get { return demonKingExpLossDeath; } private set { demonKingExpLossDeath = value; } }
+
 
     [Header("EVOLUTION TYPES")]
-    public ExperienceBranch green;
-    public ExperienceBranch red;
-    public ExperienceBranch blue;
+    [SerializeField] private ExperienceBranch green;
+    [SerializeField] private ExperienceBranch red;
+    [SerializeField] private ExperienceBranch blue;
 
     [Header("MINION TYPES")]
-    public MinionType redMinion;
-    public MinionType greenMinion;
-    public MinionType blueMinion;
+    [SerializeField] private MinionType redMinion;
+    [SerializeField] private MinionType greenMinion;
+    [SerializeField] private MinionType blueMinion;
 
     private EvolutionManager evolutionManager;
     private DemonKingEvolution demonKingEvolution;
@@ -41,7 +45,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     private PlayerHealthManager healthManager;
 
-
+    #region Start Up
     private void Awake()
     {
         healthManager = GetComponent<PlayerHealthManager>();
@@ -74,6 +78,7 @@ public class ExperienceManager : MonoBehaviourPun
         if (photonView.IsMine)
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
+    #endregion
 
     #region ExperienceManagerSetup
 
@@ -81,16 +86,18 @@ public class ExperienceManager : MonoBehaviourPun
     {
         //Get a random location
         int randomMinionType = Random.Range(0, minionTypes.Count);
-        photonView.RPC("SetMinionType", RpcTarget.All, randomMinionType);
+        SetMyMionionType(randomMinionType);
+    }
+
+    void SetMyMionionType(int minionType)
+    {
+        photonView.RPC("SetMinionType_RPC", RpcTarget.All, minionType);
     }
 
     [PunRPC]
-    void SetMinionType(int minionType)
+    void SetMinionType_RPC(int minionType)
     {
-        // if (healthManager.MyMinionType != null)
         healthManager.MyMinionType = minionTypes[minionType];
-
-
     }
 
     void SetStartingActiveEvolution()

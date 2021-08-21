@@ -8066,7 +8066,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   primaryProjectilePower: 50
   damage: 1
-  primaryProjectileDelay: 0.3
+  shootTimer: 0.3
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 384
@@ -8221,7 +8221,7 @@ MonoBehaviour:
   LayersForDevourToIgnore:
     serializedVersion: 2
     m_Bits: 448
-  targetBeingDevouredPV: {fileID: 0}
+  targetBeingDevouredHealthManager: {fileID: 0}
 --- !u!54 &2724262678194230827
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -8251,6 +8251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeToEvolve: 3
+  EvolveVFX: {fileID: 6562903123907493806}
+  DemonKingEvolveVFX: {fileID: 6562903123907493806}
   evolutions: []
   activeEvolution: {fileID: 0}
   nextEvolution: {fileID: 0}
@@ -8267,8 +8269,6 @@ MonoBehaviour:
       level1ExpNeeded: {fileID: 0}
       level2ExpNeeded: {fileID: 0}
   currentActiveShootPoint: {fileID: 0}
-  EvolveVFX: {fileID: 6562903123907493806}
-  DemonKingEvolveVFX: {fileID: 6562903123907493806}
 --- !u!114 &1525102547616031452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8285,8 +8285,8 @@ MonoBehaviour:
   CamDistanceIncreaseAmount: 0.25
   CamShoulderOffsetXIncreaseAmount: 0
   CamShoulderOffsetYIncreaseAmount: 0.075
-  PercentOfExpToLoseOnDeath: 0.2
-  DemonKingExpLossDeath: 0.4
+  percentOfExpToLoseOnDeath: 0.2
+  demonKingExpLossDeath: 0.4
   green:
     Level0Evolution: {fileID: 1241169556992600606}
     Level1Evolution: {fileID: 3301691708715608449}
