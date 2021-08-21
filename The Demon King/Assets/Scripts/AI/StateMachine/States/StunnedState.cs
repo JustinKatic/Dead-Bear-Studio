@@ -4,18 +4,9 @@ using UnityEngine;
 
 public class StunnedState : State
 {
-    public WanderState WanderState;
-    public override State RunCurrentState()
+    public override void RunCurrentState()
     {
-        if (!healthManager.isStunned)
-        {
-            return WanderState;
-        }
-        else
-        {
-            PlayStunnedState();
-            return this;
-        }
+        PlayStunnedState();
     }
 
     private void PlayStunnedState()
