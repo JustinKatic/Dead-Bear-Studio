@@ -6,25 +6,23 @@ using Photon.Realtime;
 
 public class Devour : MonoBehaviourPun
 {
-    [Tooltip("Range the player can devour from")]
-    public float devourRange;
+    [SerializeField] private float devourRange;
+    [SerializeField] private Transform devourPoint;
+    [SerializeField] private LayerMask LayersForDevourToIgnore;
 
+    private bool IsDevouring;
+    private bool isTargetPlayer = false;
+    [HideInInspector] public HealthManager targetBeingDevouredHealthManager = null;
+
+    //Components
+    private Camera cam;
     private PlayerController playerController;
     private HealthManager healthManager;
-    private Camera cam;
-    private bool IsDevouring;
-    public Transform devourPoint;
-
-    public LayerMask LayersForDevourToIgnore;
-
     private ExperienceManager experienceManager;
-
-    [HideInInspector] public PhotonView targetBeingDevouredPV = null;
     private HealthManager hitPlayerHealth;
-    private bool isTargetPlayer = false;
-
     private PlayerTimers debuffTimer;
 
+    #region Start Up
     private void Awake()
     {
         experienceManager = GetComponent<ExperienceManager>();
@@ -41,7 +39,9 @@ public class Devour : MonoBehaviourPun
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
         }
     }
+    #endregion
 
+    #region Update loops
     private void Update()
     {
         if (photonView.IsMine)
@@ -49,16 +49,18 @@ public class Devour : MonoBehaviourPun
             if (IsDevouring && healthManager.isStunned)
             {
                 //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
-                targetBeingDevouredPV.RPC("InterruptDevourOnSelf", RpcTarget.All);
+                targetBeingDevouredHealthManager.InterruptDevourOnSelf();
                 PhotonNetwork.SendAllOutgoingCommands();
                 IsDevouring = false;
-                targetBeingDevouredPV = null;
+                targetBeingDevouredHealthManager = null;
                 PlayerSoundManager.Instance.StopDevourSound();
                 debuffTimer.StopDevourTimer();
             }
         }
     }
+    #endregion
 
+    #region Devour
     //Called when the interact key is pressed
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
@@ -99,7 +101,7 @@ public class Devour : MonoBehaviourPun
                     IEnumerator DevourCorutine()
                     {
                         //Get the photon view of hit target
-                        targetBeingDevouredPV = hit.collider.gameObject.GetPhotonView();
+                        targetBeingDevouredHealthManager = hit.collider.gameObject.GetComponent<HealthManager>();
 
                         PlayerSoundManager.Instance.PlayDevourSound();
                         debuffTimer.StartDevourTimer(healthManager.DevourTime);
@@ -115,22 +117,21 @@ public class Devour : MonoBehaviourPun
                     }
                 }
             }
-
         }
     }
 
     void CallDevourOnTarget()
     {
         //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-        if (targetBeingDevouredPV.gameObject.tag == "Player")
+        if (targetBeingDevouredHealthManager.gameObject.tag == "Player")
         {
             isTargetPlayer = true;
-            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, playerController.id);
+            targetBeingDevouredHealthManager.OnDevour(playerController.id);
         }
         else
         {
             isTargetPlayer = false;
-            targetBeingDevouredPV.RPC("OnDevour", RpcTarget.All, 0);
+            targetBeingDevouredHealthManager.OnDevour(0);
         }
 
         IsDevouring = true;
@@ -152,9 +153,9 @@ public class Devour : MonoBehaviourPun
         if (isTargetPlayer)
         {
             //If the target is the demon king, become the king and remove the other player as king
-            if (targetBeingDevouredPV.GetComponent<DemonKingEvolution>().AmITheDemonKing)
+            if (targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().AmITheDemonKing)
             {
-                targetBeingDevouredPV.GetComponent<DemonKingEvolution>().ChangeFromTheDemonKing();
+                targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().ChangeFromTheDemonKing();
                 gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
             }
         }
@@ -164,10 +165,10 @@ public class Devour : MonoBehaviourPun
         }
         // ADd experience to my bar and reset the target to null
         experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.MyExperienceWorth);
-        targetBeingDevouredPV = null;
+        targetBeingDevouredHealthManager = null;
         hitPlayerHealth = null;
 
         PlayerSoundManager.Instance.StopDevourSound();
-
     }
+    #endregion
 }

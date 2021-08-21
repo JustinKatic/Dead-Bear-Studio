@@ -45,16 +45,16 @@ public class PrimaryProjectileController : MonoBehaviourPun
             if (objTag.Equals("Player"))
             {
                 //tell the player who was hit to take damage
-                PlayerController player = GameManager.instance.GetPlayer(other.gameObject);
-                if (player.id != attackerId)
-                    player.photonView.RPC("TakeDamage", player.photonPlayer, damage, attackerId);
+                PlayerHealthManager playerHealth = other.GetComponent<PlayerHealthManager>();
+                if (playerHealth.PlayerId != attackerId)
+                    playerHealth.TakeDamage(damage, attackerId);
             }
             //If tag is Minion
             else if (objTag.Equals("Minion"))
             {
                 //tell the minion who was hit to take damage
-                PhotonView hitView = other.gameObject.GetComponent<PhotonView>();
-                hitView.RPC("TakeDamage", RpcTarget.All, damage, attackerId);
+                MinionHealthManager minionHealth = other.gameObject.GetComponent<MinionHealthManager>();
+                minionHealth.TakeDamage(damage, attackerId);
             }
             PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);

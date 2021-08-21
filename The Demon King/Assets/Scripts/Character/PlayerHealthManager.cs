@@ -6,7 +6,6 @@ using Photon.Pun;
 
 public class PlayerHealthManager : HealthManager
 {
-
     [Header("HealthBar Hud")]
     [SerializeField] protected Transform HealthBarContainer;
 
@@ -21,16 +20,19 @@ public class PlayerHealthManager : HealthManager
     private PlayerController player;
     private ExperienceManager experienceManager;
     private PlayerController PlayerWhoDevouredMeController;
-    private PlayerController playerWhoLastShotMeController;
+    private PlayerHealthManager playerWhoLastShotMeHealthManager;
     private DemonKingEvolution demonKingEvolution;
     private PhotonView demonKingCrownPV;
     [HideInInspector] public bool invulnerable = false;
     private PlayerTimers debuffTimer;
 
+    [HideInInspector] public int PlayerId;
 
 
+    #region Startup
     void Awake()
     {
+        player = GetComponent<PlayerController>();
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -42,14 +44,16 @@ public class PlayerHealthManager : HealthManager
             debuffTimer = GetComponentInChildren<PlayerTimers>();
             Destroy(overheadHealthBar.gameObject);
             CurrentHealth = MaxHealth;
-            player = GetComponent<PlayerController>();
             experienceManager = GetComponent<ExperienceManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             demonKingCrownPV = FindObjectOfType<CrownHealthManager>().GetComponent<PhotonView>();
-            photonView.RPC("SetHealth", RpcTarget.All, MaxHealth);
+            PlayerId = player.id;
+            SetHealth(MaxHealth);
         }
     }
+    #endregion
 
+    #region Devour
     protected override void OnBeingDevourStart()
     {
         canBeDevoured = false;
@@ -77,45 +81,51 @@ public class PlayerHealthManager : HealthManager
 
 
     [PunRPC]
-    protected override void InterruptDevourOnSelf()
+    protected override void InterruptDevourOnSelf_RPC()
     {
-        base.InterruptDevourOnSelf();
+        base.InterruptDevourOnSelf_RPC();
         if (photonView.IsMine)
             debuffTimer.StopBeingDevouredTimer();
     }
+    #endregion
 
-    [PunRPC]
-    void Suicide(int playerWhoKilledSelfID)
-    {
-        PhotonView playerWhoKilledSelfPV = PhotonView.Find(playerWhoKilledSelfID);
-        experienceManager.AddExpereince(playerWhoKilledSelfPV.GetComponent<PlayerHealthManager>().MyMinionType, playerWhoKilledSelfPV.GetComponent<HealthManager>().MyExperienceWorth);
-    }
-
-    [PunRPC]
+    #region Take Damage/ Heal Damage
     public void TakeDamage(int damage, int attackerID)
     {
-        //Runing following if local player
-        if (photonView.IsMine)
-        {
-            if (invulnerable || CurrentHealth <= 0 || beingDevoured)
-                return;
-
-            //Remove health
-            CurrentHealth -= damage;
-
-            playerWhoLastShotMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
-
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-
-            //Reset health regen timer
-            healthRegenTimer = TimeBeforeHealthRegen;
-
-
-            //call Stunned() on all player on network if no health left
-            if (CurrentHealth <= 0)
-                OnBeingStunnedStart();
-        }
+        photonView.RPC("TakeDamage_RPC", player.photonPlayer, damage, attackerID);
     }
+
+    [PunRPC]
+    public void TakeDamage_RPC(int damage, int attackerID)
+    {
+        if (invulnerable || CurrentHealth <= 0 || beingDevoured)
+            return;
+
+        //Remove health
+        CurrentHealth -= damage;
+
+        playerWhoLastShotMeHealthManager = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerHealthManager>();
+
+        UpdateHealthBar(CurrentHealth);
+
+        //Reset health regen timer
+        healthRegenTimer = TimeBeforeHealthRegen;
+
+        //call Stunned() on all player on network if no health left
+        if (CurrentHealth <= 0)
+            OnBeingStunnedStart();
+    }
+
+    protected override void Heal(int amountToHeal)
+    {
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters health bars on all players in network
+        UpdateHealthBar(CurrentHealth);
+        healthRegenTimer = TimeBeforeHealthRegen;
+    }
+
+    #endregion
 
     #region PlayerRespawn
     [PunRPC]
@@ -128,21 +138,26 @@ public class PlayerHealthManager : HealthManager
             Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
             currentActiveEvolution?.gameObject.SetActive(false);
 
+            canBeDevoured = false;
+            beingDevoured = false;
+            isStunned = false;
+
             if (photonView.IsMine)
             {
                 debuffTimer.StopStunTimer();
                 debuffTimer.StopBeingDevouredTimer();
+                stunnedTimer = 0;
 
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
                 DisablePlayerOnRespawn();
 
                 //Check if the player died via no player death
-                if (!DidIDieFromPlayer && playerWhoLastShotMeController != null)
+                if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
                 {
                     //Give the last player who hit exp
-                    playerWhoLastShotMeController.photonView.RPC("Suicide", playerWhoLastShotMeController.photonPlayer, photonView.ViewID);
-                    playerWhoLastShotMeController = null;
+                    AwardLastPlayerWhoShotMe(photonView.ViewID);
+                    playerWhoLastShotMeHealthManager = null;
                 }
             }
             else
@@ -162,10 +177,6 @@ public class PlayerHealthManager : HealthManager
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
-
-            canBeDevoured = false;
-            beingDevoured = false;
-            isStunned = false;
         }
     }
 
@@ -211,17 +222,30 @@ public class PlayerHealthManager : HealthManager
         experienceManager.CheckIfNeedToDevolve();
         player.EnableMovement();
         CurrentHealth = MaxHealth;
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        UpdateHealthBar(CurrentHealth);
     }
 
+    void AwardLastPlayerWhoShotMe(int playerWhoKilledSelfID)
+    {
+        playerWhoLastShotMeHealthManager.photonView.RPC("AwardLastPlayerWhoShotMe_RPC", playerWhoLastShotMeHealthManager.player.photonPlayer, photonView.ViewID);
+    }
 
-
+    [PunRPC]
+    void AwardLastPlayerWhoShotMe_RPC(int playerWhoKilledSelfID)
+    {
+        PlayerHealthManager playerWhoKilledSelfHealthManager = PhotonView.Find(playerWhoKilledSelfID).GetComponent<PlayerHealthManager>();
+        experienceManager.AddExpereince(playerWhoKilledSelfHealthManager.MyMinionType, playerWhoKilledSelfHealthManager.MyExperienceWorth);
+    }
     #endregion
 
     #region HealthBar
+    public void SetHealth(int MaxHealthValue)
+    {
+        photonView.RPC("SetHealth_RPC", RpcTarget.All, MaxHealthValue);
+    }
 
     [PunRPC]
-    protected void SetHealth(int MaxHealthValue)
+    protected void SetHealth_RPC(int MaxHealthValue)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
@@ -239,12 +263,17 @@ public class PlayerHealthManager : HealthManager
             if (CurrentHealth > MaxHealth)
                 CurrentHealth = MaxHealth;
 
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+            UpdateHealthBar(CurrentHealth);
         }
     }
 
+    void UpdateHealthBar(int CurrentHealth)
+    {
+        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth);
+    }
+
     [PunRPC]
-    public void UpdateHealthBar(int CurrentHealth)
+    public void UpdateHealthBar_RPC(int CurrentHealth)
     {
         //Run following if local player
         if (photonView.IsMine)
@@ -261,10 +290,15 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region Stun
-    [PunRPC]
-    void StunRPC(bool start)
+    void Stun(bool IsStartOfStun)
     {
-        if (start)
+        photonView.RPC("StunRPC", RpcTarget.All, IsStartOfStun);
+    }
+
+    [PunRPC]
+    void StunRPC(bool IsStartOfStun)
+    {
+        if (IsStartOfStun)
         {
             StunVFX.SetActive(true);
             canBeDevoured = true;
@@ -281,7 +315,7 @@ public class PlayerHealthManager : HealthManager
         //Things that only affect local
         if (photonView.IsMine)
         {
-            photonView.RPC("StunRPC", RpcTarget.All, true);
+            Stun(true);
             debuffTimer.StartStunTimer(StunnedDuration);
             isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
@@ -293,24 +327,14 @@ public class PlayerHealthManager : HealthManager
 
     protected override void OnBeingStunnedEnd()
     {
-        if (!beingDevoured)
-        {
-            //Things that only affect local
-            if (photonView.IsMine)
-            {
-                photonView.RPC("StunRPC", RpcTarget.All, false);
-                debuffTimer.StopStunTimer();
-                isStunned = false;
-                player.EnableMovement();
-                Heal(AmountOfHealthAddedAfterStunned);
-                player.currentAnim.SetBool("Stunned", false);
-                PlayerSoundManager.Instance.StopStunnedSound();
-            }
-        }
+        Stun(false);
+        debuffTimer.StopStunTimer();
+        isStunned = false;
+        player.EnableMovement();
+        Heal(AmountOfHealthAddedAfterStunned);
+        player.currentAnim.SetBool("Stunned", false);
+        PlayerSoundManager.Instance.StopStunnedSound();
     }
-
-
-    #endregion
-
-
 }
+#endregion
+

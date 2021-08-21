@@ -49,6 +49,7 @@ public class HealthManager : MonoBehaviourPun
 
     protected IEnumerator myDevourCo;
 
+    #region Update Loops
     private void Update()
     {
         //Run following if local player
@@ -59,8 +60,11 @@ public class HealthManager : MonoBehaviourPun
                 stunnedTimer += Time.deltaTime;
                 if (stunnedTimer >= StunnedDuration)
                 {
-                    OnBeingStunnedEnd();
-                    stunnedTimer = 0;
+                    if (!beingDevoured)
+                    {
+                        OnBeingStunnedEnd();
+                        stunnedTimer = 0;
+                    }
                 }
             }
 
@@ -78,12 +82,17 @@ public class HealthManager : MonoBehaviourPun
             }
         }
     }
-
+    #endregion
 
     #region Devour
 
+    public void OnDevour(int attackerID)
+    {
+        photonView.RPC("OnDevour_RPC", RpcTarget.All, attackerID);
+    }
+
     [PunRPC]
-    public virtual void OnDevour(int attackerID)
+    public virtual void OnDevour_RPC(int attackerID)
     {
         myDevourCo = DevourCorutine();
         StartCoroutine(myDevourCo);
@@ -108,8 +117,13 @@ public class HealthManager : MonoBehaviourPun
 
     }
 
+    public void InterruptDevourOnSelf()
+    {
+        photonView.RPC("InterruptDevourOnSelf_RPC", RpcTarget.All);
+    }
+
     [PunRPC]
-    protected virtual void InterruptDevourOnSelf()
+    protected virtual void InterruptDevourOnSelf_RPC()
     {
         beingDevoured = false;
         StopCoroutine(myDevourCo);
@@ -139,13 +153,9 @@ public class HealthManager : MonoBehaviourPun
     #endregion
 
     #region HealthFunctions
-    protected void Heal(int amountToHeal)
+    virtual protected void Heal(int amountToHeal)
     {
-        //Only running on local player
-        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
-        //Updates this charcters health bars on all players in network
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
-        healthRegenTimer = TimeBeforeHealthRegen;
+
     }
     protected void FillBarsOfHealth(int currentHealth, List<Image> bar)
     {
@@ -176,5 +186,4 @@ public class HealthManager : MonoBehaviourPun
     }
 
     #endregion
-
 }

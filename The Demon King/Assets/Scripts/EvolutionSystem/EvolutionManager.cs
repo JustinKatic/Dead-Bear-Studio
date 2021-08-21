@@ -193,7 +193,7 @@ public class EvolutionManager : MonoBehaviourPun
         currentActiveShootPoint = activeEvolution.ShootPoint;
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
-        photonView.RPC("SetHealth", RpcTarget.All, activeEvolution.MaxHealth);
+        healthManager.SetHealth(activeEvolution.MaxHealth);
     }
 
     void InteruptEvolution()
