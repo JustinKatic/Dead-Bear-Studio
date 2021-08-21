@@ -13,25 +13,31 @@ public class MinionHealthManager : HealthManager
     [HideInInspector] public GameObject PlayerWhoShotMe;
     [HideInInspector] public State state;
 
-
     private GameObject[] RespawnPositions;
     private Collider col;
     private Canvas hudCanvas;
     private NavMeshAgent agent;
 
+    #region StartUp
     void Awake()
     {
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
-        photonView.RPC("SetAIHealth", RpcTarget.All, MaxHealth);
+        SetAIHealthValues(MaxHealth);
         agent = GetComponent<NavMeshAgent>();
     }
+    #endregion
 
+    #region Take Damage/ Heal Damage
+    public void TakeDamage(int damage, int attackerID)
+    {
+        photonView.RPC("TakeDamage_RPC", RpcTarget.All, damage, attackerID);
+    }
 
     [PunRPC]
-    public void TakeDamage(int damage, int attackerID)
+    public void TakeDamage_RPC(int damage, int attackerID)
     {
         if (photonView.IsMine)
         {
@@ -48,7 +54,7 @@ public class MinionHealthManager : HealthManager
             healthRegenTimer = TimeBeforeHealthRegen;
 
             //Updates this charcters status bar on all players in network
-            photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+            UpdateHealthBar(CurrentHealth);
 
             PlayerWhoShotMe = GameManager.instance.GetPlayer(attackerID).gameObject;
 
@@ -57,6 +63,18 @@ public class MinionHealthManager : HealthManager
                 OnBeingStunnedStart();
         }
     }
+    protected override void Heal(int amountToHeal)
+    {
+        //Only running on local player
+        CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
+        //Updates this charcters health bars on all players in network
+        UpdateHealthBar(CurrentHealth);
+        healthRegenTimer = TimeBeforeHealthRegen;
+    }
+
+    #endregion
+
+    #region Devour
     protected override void OnBeingDevourStart()
     {
         canBeDevoured = false;
@@ -71,7 +89,9 @@ public class MinionHealthManager : HealthManager
     {
         Respawn();
     }
+    #endregion
 
+    #region Respawn
     public void Respawn()
     {
         StartCoroutine(ResetPlayer());
@@ -85,7 +105,7 @@ public class MinionHealthManager : HealthManager
 
             if (PhotonNetwork.IsMasterClient)
             {
-                photonView.RPC("StunRPC", RpcTarget.All, false);
+                Stun(false);
                 agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
             }
 
@@ -94,7 +114,7 @@ public class MinionHealthManager : HealthManager
             if (PhotonNetwork.IsMasterClient)
             {
                 CurrentHealth = MaxHealth;
-                photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+                UpdateHealthBar(CurrentHealth);
             }
             beingDevoured = false;
             myModel.SetActive(true);
@@ -104,9 +124,16 @@ public class MinionHealthManager : HealthManager
             isStunned = false;
         }
     }
+    #endregion
+
+    #region Stun
+    void Stun(bool start)
+    {
+        photonView.RPC("Stun_RPC", RpcTarget.All, start);
+    }
 
     [PunRPC]
-    void StunRPC(bool start)
+    void Stun_RPC(bool start)
     {
         if (start)
         {
@@ -125,7 +152,7 @@ public class MinionHealthManager : HealthManager
         //Things that only affect local
         if (photonView.IsMine)
         {
-            photonView.RPC("StunRPC", RpcTarget.All, true);
+            Stun(true);
             isStunned = true;
         }
     }
@@ -137,7 +164,7 @@ public class MinionHealthManager : HealthManager
             //Things that only affect local
             if (photonView.IsMine)
             {
-                photonView.RPC("StunRPC", RpcTarget.All, false);
+                Stun(false);
 
                 isStunned = false;
                 Heal(1);
@@ -145,20 +172,35 @@ public class MinionHealthManager : HealthManager
         }
     }
 
+    #endregion
+
+    #region HealthBar
+    void SetAIHealthValues(int MaxHealthValue)
+    {
+        photonView.RPC("SetAIHealth_RPC", RpcTarget.All, MaxHealthValue);
+    }
+
     [PunRPC]
-    protected void SetAIHealth(int MaxHealthValue)
+    protected void SetAIHealth_RPC(int MaxHealthValue)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
         //Function in Health Manager
         AddImagesToHealthBar(healthBarsOverhead, HealthBarContainerOverhead, MaxHealthValue);
 
-        photonView.RPC("UpdateHealthBar", RpcTarget.All, CurrentHealth);
+        UpdateHealthBar(CurrentHealth);
     }
+
+    void UpdateHealthBar(int CurrentHealth)
+    {
+        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth);
+    }
+
     [PunRPC]
-    public void UpdateHealthBar(int CurrentHealth)
+    public void UpdateHealthBar_RPC(int CurrentHealth)
     {
         //Function in Health Manager
         FillBarsOfHealth(CurrentHealth, healthBarsOverhead);
     }
+    #endregion
 }
