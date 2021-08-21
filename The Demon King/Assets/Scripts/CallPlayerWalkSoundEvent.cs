@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 public class CallPlayerWalkSoundEvent : MonoBehaviourPun
-{
+{  
     private void FootStepSound()
     {
         if (photonView.IsMine)

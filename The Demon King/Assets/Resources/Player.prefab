@@ -7945,27 +7945,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 842ddfc267cf68b4cb9a9e79567a2275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  gravity: -9.82
-  turnSpeed: 15
-  MoveSpeed: 5.4
-  AirSpeed: 5
-  InAirAcceleration: 13
-  InAirDrag: 3
-  jumpHeight: 2
-  VelocityToStartPlayingFalling: -7
-  BigGroundLandingEffectVel: -20
-  pushPower: 2
+  MaxGroundMoveSpeed: 5.4
+  GroundAcceleration: 5
   SlopeLimit: 45
   StepOffset: 0.3
-  currentAnim: {fileID: 190322414822078646}
-  vCam: {fileID: 0}
-  cc: {fileID: 0}
+  jumpHeight: 2
+  gravity: -9.82
+  MaxAirMoveSpeed: 5
+  InAirAcceleration: 13
+  InAirDrag: 3
+  VelocityToStartFalling: -7
+  VelocityNeededToPlayGroundSlam: -20
+  pushPower: 2
   CinemachineCameraTarget: {fileID: 6504144166585825417}
+  RotationSpeed: 15
   TopClamp: 85
   BottomClamp: -50
   CameraAngleOverride: 0
   MouseSensitivity: 15
+  id: 0
+  currentAnim: {fileID: 190322414822078646}
+  vCam: {fileID: 0}
+  cc: {fileID: 0}
 --- !u!114 &6202528700522376435
 MonoBehaviour:
   m_ObjectHideFlags: 0
