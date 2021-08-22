@@ -35,6 +35,8 @@ public class LeaderboardManager : MonoBehaviourPun
     [SerializeField] private MinionType greenMinion;
     [SerializeField] private MinionType blueMinion;
 
+    bool leaderboardEnabed = false;
+
 
     private Image GetImage(MinionType minionType)
     {
@@ -58,20 +60,28 @@ public class LeaderboardManager : MonoBehaviourPun
         }
     }
 
+    private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+    {
+        leaderboardEnabed = true;
+        DisplayLeaderboard();
+    }
+
     private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
         if (!DidAWinOccur)
+        {
+            leaderboardEnabed = false;
             LeaderBoardHUD.SetActive(false);
+        }
     }
 
-    private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
-    {
-        DisplayLeaderboard();
-    }
 
 
     public void DisplayLeaderboard()
     {
+        if (leaderboardEnabed == false)
+            return;
+
         //Clear current leaderboard data
         leaderBoardList.Clear();
 
@@ -104,6 +114,8 @@ public class LeaderboardManager : MonoBehaviourPun
             playerLeaderboardSlot[i].CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
             i++;
         }
+
+        Invoke("DisplayLeaderboard", 1);
 
         //Display the leaderboard
 

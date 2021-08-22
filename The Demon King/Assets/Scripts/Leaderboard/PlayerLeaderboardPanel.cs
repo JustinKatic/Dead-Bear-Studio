@@ -12,7 +12,7 @@ public class PlayerLeaderboardPanel : MonoBehaviour
     public IntSO TimeRequiredToWin;
     public Image CurrentEvolutionImg;
 
-    private void Start()
+    private void Awake()
     {
         slider = GetComponent<Slider>();
         slider.maxValue = TimeRequiredToWin.value;
