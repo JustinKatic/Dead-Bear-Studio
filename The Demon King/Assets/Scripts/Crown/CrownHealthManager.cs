@@ -36,7 +36,4 @@ public class CrownHealthManager : HealthManager
         VFX.SetActive(ShouldRespawn);
         col.enabled = ShouldRespawn;
     }
-
-
-
 }

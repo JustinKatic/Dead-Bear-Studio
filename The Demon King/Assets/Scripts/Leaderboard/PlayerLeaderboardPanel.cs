@@ -10,6 +10,7 @@ public class PlayerLeaderboardPanel : MonoBehaviour
     public TextMeshProUGUI TimeSpentAsDemonKing;
     private Slider slider;
     public IntSO TimeRequiredToWin;
+    public Image CurrentEvolutionImg;
 
     private void Start()
     {

@@ -74,6 +74,7 @@ public class DemonKingEvolution : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            AmITheDemonKing = true;
             AnnounceDemonKing();
             experienceManager.ActivateDemonKingEvolution();
         }
@@ -82,15 +83,14 @@ public class DemonKingEvolution : MonoBehaviourPun
 
     public void AnnounceDemonKing()
     {
-        photonView.RPC("AnnounceDemonKing_RPC", RpcTarget.All);
+        photonView.RPC("AnnounceDemonKing_RPC", RpcTarget.Others);
     }
 
     [PunRPC]
     public void AnnounceDemonKing_RPC()
     {
         AmITheDemonKing = true;
-        if (!photonView.IsMine)
-            DemonkingBeaconVFX.SetActive(true);
+        DemonkingBeaconVFX.SetActive(true);
     }
 
     public void KilledAsDemonKing()
