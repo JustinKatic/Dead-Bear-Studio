@@ -19,8 +19,10 @@ public class Devour : MonoBehaviourPun
     private PlayerController playerController;
     private HealthManager healthManager;
     private ExperienceManager experienceManager;
-    private HealthManager hitPlayerHealth;
+    private HealthManager hitHealthManager;
     private PlayerTimers debuffTimer;
+
+    DemonKingEvolution demonKingEvolution;
 
     #region Start Up
     private void Awake()
@@ -34,6 +36,8 @@ public class Devour : MonoBehaviourPun
             cam = Camera.main;
             healthManager = GetComponent<HealthManager>();
             debuffTimer = GetComponentInChildren<PlayerTimers>();
+
+            demonKingEvolution = GetComponent<DemonKingEvolution>();
 
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
@@ -91,10 +95,10 @@ public class Devour : MonoBehaviourPun
                     return;
 
                 //Get the healthManager of hit target
-                hitPlayerHealth = hit.transform.gameObject.GetComponent<HealthManager>();
+                hitHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
 
                 //check if the target can be devoured
-                if (hitPlayerHealth.canBeDevoured)
+                if (hitHealthManager.canBeDevoured)
                 {
                     //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
@@ -150,23 +154,21 @@ public class Devour : MonoBehaviourPun
 
 
         // If the target is a player
-        if (isTargetPlayer)
+        if (isTargetPlayer && targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().AmITheDemonKing)
         {
-            //If the target is the demon king, become the king and remove the other player as king
-            if (targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().AmITheDemonKing)
-            {
-                targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().ChangeFromTheDemonKing();
-                gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
-            }
+            demonKingEvolution.ChangeToTheDemonKing();
         }
-        else if (hitPlayerHealth.gameObject.transform.CompareTag("DemonKingCrown"))
+        else if (hitHealthManager.gameObject.transform.CompareTag("DemonKingCrown"))
         {
-            gameObject.GetComponent<DemonKingEvolution>().ChangeToTheDemonKing();
+            demonKingEvolution.ChangeToTheDemonKing();
         }
-        // ADd experience to my bar and reset the target to null
-        experienceManager.AddExpereince(hitPlayerHealth.MyMinionType, hitPlayerHealth.MyExperienceWorth);
+        else
+        {
+            experienceManager.AddExpereince(hitHealthManager.MyMinionType, hitHealthManager.MyExperienceWorth);
+        }
+        //reset the target to null
         targetBeingDevouredHealthManager = null;
-        hitPlayerHealth = null;
+        hitHealthManager = null;
 
         PlayerSoundManager.Instance.StopDevourSound();
     }
