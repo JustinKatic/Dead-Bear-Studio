@@ -10,7 +10,7 @@ public class DemonKingEvolution : MonoBehaviourPun
     [HideInInspector] public bool AmITheDemonKing = false;
 
     public float timeSpentAsDemonKing = 0;
-    public float TimeRequiredToWin = 10;
+    public IntSO TimeRequiredToWin;
     public float ScaleAmount = 10;
     public GameObject DemonkingBeaconVFX;
     private ExperienceManager experienceManager;
@@ -43,7 +43,7 @@ public class DemonKingEvolution : MonoBehaviourPun
                 hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
                 PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
             }
-            if (!hasPlayerWon && timeSpentAsDemonKing >= TimeRequiredToWin)
+            if (!hasPlayerWon && timeSpentAsDemonKing >= TimeRequiredToWin.value)
             {
                 hasPlayerWon = true;
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");

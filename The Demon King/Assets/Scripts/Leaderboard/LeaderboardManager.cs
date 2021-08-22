@@ -6,7 +6,7 @@ using Photon.Realtime;
 using System.Linq;
 
 
-struct LeaderboardContainerInfo
+struct LeaderBoardList
 {
     public string PlayerNickName;
     public float TimeSpentAsDemonKing;
@@ -18,7 +18,7 @@ public class LeaderboardManager : MonoBehaviourPun
     PlayerController playerController;
     public GameObject LeaderBoardHUD;
 
-    List<LeaderboardContainerInfo> leaderboardPlayerContainerInfo = new List<LeaderboardContainerInfo>();
+    List<LeaderBoardList> leaderBoardList = new List<LeaderBoardList>();
     public List<PlayerLeaderboardPanel> playerLeaderboardSlot = new List<PlayerLeaderboardPanel>();
 
     public bool DidAWinOccur = false;
@@ -49,27 +49,36 @@ public class LeaderboardManager : MonoBehaviourPun
 
     public void DisplayLeaderboard()
     {
-        leaderboardPlayerContainerInfo.Clear();
+        //Clear current leaderboard data
+        leaderBoardList.Clear();
+
+        LeaderBoardHUD.SetActive(true);
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            LeaderboardContainerInfo leaderboardContainerInfo = new LeaderboardContainerInfo();
-            leaderboardContainerInfo.PlayerNickName = player.NickName;
-            leaderboardContainerInfo.TimeSpentAsDemonKing = (float)player.CustomProperties["TimeAsDemonKing"];
-            leaderboardPlayerContainerInfo.Add(leaderboardContainerInfo);
+            LeaderBoardList dataToEnterIntoLeaderboardList = new LeaderBoardList();
+            //get players name
+            dataToEnterIntoLeaderboardList.PlayerNickName = player.NickName;
+            //get players time as demon king
+            dataToEnterIntoLeaderboardList.TimeSpentAsDemonKing = (float)player.CustomProperties["TimeAsDemonKing"];
+            //Add info into leaderboard list
+            leaderBoardList.Add(dataToEnterIntoLeaderboardList);
         }
 
-        List<LeaderboardContainerInfo> playerSortedList = leaderboardPlayerContainerInfo.OrderByDescending(o => o.TimeSpentAsDemonKing).ToList();
+        //Sort leader board list by time spent as demon king and store in sorted leader board list
+        List<LeaderBoardList> sortedLeaderboardList = leaderBoardList.OrderByDescending(o => o.TimeSpentAsDemonKing).ToList();
 
+        //populate GUI slots with each players name and time as demon king using sorted list
         int i = 0;
-        foreach (LeaderboardContainerInfo player in playerSortedList)
+        foreach (LeaderBoardList player in sortedLeaderboardList)
         {
             playerLeaderboardSlot[i].PlayerName.text = player.PlayerNickName;
             playerLeaderboardSlot[i].TimeSpentAsDemonKing.text = Mathf.Round(player.TimeSpentAsDemonKing).ToString();
+            playerLeaderboardSlot[i].UpdateSliderValue((int)Mathf.Round(player.TimeSpentAsDemonKing));
             i++;
         }
 
-        LeaderBoardHUD.SetActive(true);
+        //Display the leaderboard
 
         if (DidAWinOccur)
         {
