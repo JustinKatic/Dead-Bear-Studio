@@ -46,54 +46,60 @@ public class DemonKingEvolution : MonoBehaviourPun
             if (!hasPlayerWon && timeSpentAsDemonKing >= TimeRequiredToWin.value)
             {
                 hasPlayerWon = true;
+
                 GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
 
                 foreach (var player in players)
                 {
-                    player.GetPhotonView().RPC("DisplayLeaderboardOnWin", RpcTarget.All);
+                    DisplayLeaderboardOnWin(player);
                 }
             }
         }
     }
 
+    void DisplayLeaderboardOnWin(GameObject player)
+    {
+        player.GetPhotonView().RPC("DisplayLeaderboardOnWin", RpcTarget.All);
+    }
+
     [PunRPC]
     void DisplayLeaderboardOnWin()
     {
-        if (photonView.IsMine)
-        {
-            leaderboardManager.DidAWinOccur = true;
-            leaderboardManager.DisplayLeaderboard();
-        }
+        leaderboardManager.DidAWinOccur = true;
+        leaderboardManager.DisplayLeaderboard();
     }
-
 
 
     public void ChangeToTheDemonKing()
     {
         if (photonView.IsMine)
         {
-            photonView.RPC("AnnounceDemonKing", RpcTarget.All);
+            AnnounceDemonKing();
             experienceManager.ActivateDemonKingEvolution();
         }
     }
-    public void ChangeFromTheDemonKing()
+
+
+    public void AnnounceDemonKing()
     {
-        if (photonView.IsMine)
-        {
-            photonView.RPC("DevouredAsDemonKing", RpcTarget.All);
-        }
+        photonView.RPC("AnnounceDemonKing_RPC", RpcTarget.All);
     }
 
     [PunRPC]
-    public void AnnounceDemonKing()
+    public void AnnounceDemonKing_RPC()
     {
         AmITheDemonKing = true;
         if (!photonView.IsMine)
             DemonkingBeaconVFX.SetActive(true);
     }
 
+    public void KilledAsDemonKing()
+    {
+        photonView.RPC("KilledAsDemonKing_RPC", RpcTarget.All);
+    }
+
     [PunRPC]
-    public void DevouredAsDemonKing()
+    public void KilledAsDemonKing_RPC()
     {
         AmITheDemonKing = false;
         if (!photonView.IsMine)

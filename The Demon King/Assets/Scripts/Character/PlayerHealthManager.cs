@@ -22,7 +22,7 @@ public class PlayerHealthManager : HealthManager
     private PlayerController PlayerWhoDevouredMeController;
     private PlayerHealthManager playerWhoLastShotMeHealthManager;
     private DemonKingEvolution demonKingEvolution;
-    private PhotonView demonKingCrownPV;
+    private CrownHealthManager demonKingCrownHealthManager;
     [HideInInspector] public bool invulnerable = false;
     private PlayerTimers debuffTimer;
 
@@ -46,7 +46,7 @@ public class PlayerHealthManager : HealthManager
             CurrentHealth = MaxHealth;
             experienceManager = GetComponent<ExperienceManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
-            demonKingCrownPV = FindObjectOfType<CrownHealthManager>().GetComponent<PhotonView>();
+            demonKingCrownHealthManager = FindObjectOfType<CrownHealthManager>();
             PlayerId = player.id;
             SetHealth(MaxHealth);
         }
@@ -75,7 +75,7 @@ public class PlayerHealthManager : HealthManager
             PlayerWhoDevouredMeController.vCam.m_Priority = 12;
             KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
             KilledByUIPanel.SetActive(true);
-            photonView.RPC("Respawn", RpcTarget.All, true);
+            Respawn(true);
         }
     }
 
@@ -128,8 +128,14 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region PlayerRespawn
-    [PunRPC]
+
     public void Respawn(bool DidIDieFromPlayer)
+    {
+        photonView.RPC("Respawn_RPC", RpcTarget.All, DidIDieFromPlayer);
+    }
+
+    [PunRPC]
+    public void Respawn_RPC(bool DidIDieFromPlayer)
     {
         StartCoroutine(ResetPlayer());
 
@@ -187,11 +193,11 @@ public class PlayerHealthManager : HealthManager
         if (demonKingEvolution.AmITheDemonKing)
         {
             experienceManager.DecreaseExperince(experienceManager.DemonKingExpLossDeath);
-            demonKingEvolution.ChangeFromTheDemonKing();
+            demonKingEvolution.KilledAsDemonKing();
 
             if (!DidIDieFromPlayer)
             {
-                demonKingCrownPV.RPC("CrownRespawn", RpcTarget.All);
+                demonKingCrownHealthManager.CrownRespawn(true);
             }
         }
         else
@@ -202,9 +208,9 @@ public class PlayerHealthManager : HealthManager
 
     void DisablePlayerOnRespawn()
     {
-        photonView.RPC("StunRPC", RpcTarget.All, false);
+        Stun(false);
         stunnedTimer = 0;
-        GameManager.instance.photonView.RPC("IncrementSpawnPos", RpcTarget.All);
+        GameManager.instance.IncrementSpawnPos();
         player.DisableMovement();
         player.cc.enabled = false;
         transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
