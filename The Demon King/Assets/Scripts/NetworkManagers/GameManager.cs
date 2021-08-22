@@ -28,22 +28,32 @@ public class GameManager : MonoBehaviourPun
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
 
-        photonView.RPC("ImInGame", RpcTarget.AllBuffered);
+        ImInGame();
+    }
+
+    void ImInGame()
+    {
+        photonView.RPC("ImInGame_RPC", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    void ImInGame()
+    void ImInGame_RPC()
     {
         playersInGame++;
 
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
-            photonView.RPC("SpawnPlayer", RpcTarget.All);
+            SpawnPlayer();
         }
     }
 
+    public void SpawnPlayer()
+    {
+        photonView.RPC("SpawnPlayer_RPC", RpcTarget.All);
+    }
+
     [PunRPC]
-    void SpawnPlayer()
+    void SpawnPlayer_RPC()
     {
         GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
 
@@ -52,8 +62,14 @@ public class GameManager : MonoBehaviourPun
     }
 
 
-    [PunRPC]
     public void IncrementSpawnPos()
+    {
+        photonView.RPC("IncrementSpawnPos_RPC", RpcTarget.All);
+    }
+
+
+    [PunRPC]
+    public void IncrementSpawnPos_RPC()
     {
         spawnIndex++;
 
