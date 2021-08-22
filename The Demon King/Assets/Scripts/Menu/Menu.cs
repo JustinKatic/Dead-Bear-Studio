@@ -21,6 +21,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [Header("Create Room Screen")]
     [SerializeField] private Button createNewRoomButton;
+    [SerializeField] private Toggle privateRoomToggle;
+    [SerializeField] private TMP_Text maxPlayerInput;
+
 
     [Header("Lobby")]
     [SerializeField] private TextMeshProUGUI playerListText;
@@ -29,9 +32,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private Button RoomPrivacyButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
-
-    public bool roomIsPublic = true;
-    public string CurrentRoomCode;
 
 
     [Header("Lobby Browser")]
@@ -44,9 +44,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private List<RoomInfo> roomList = new List<RoomInfo>();
     private List<RoomInfo> allOpenRooms = new List<RoomInfo>();
 
-
+    public bool roomIsPublic = true;
     private string sceneName;
     private string currentRoomName;
+    private float roomMaxPlayers = 2;
 
     void Start()
     {
@@ -58,7 +59,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // enable the cursor since we hide it when we play the game
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-
         // are we in a game?
         if (PhotonNetwork.InRoom)
         {
@@ -100,7 +100,16 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
         findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
     }
-
+    
+    public void OnMaxPlayerSliderValueChanged(Slider maxPlayerValueChange)
+    {
+        roomMaxPlayers = maxPlayerValueChange.value;
+        maxPlayerInput.text = roomMaxPlayers.ToString();
+    }
+    public void OnPrivateRoomValueChanged(Toggle roomPrivacyChange)
+    {
+       roomIsPublic = roomPrivacyChange.isOn;
+    }
 
     // called when the "Create Room" button has been pressed
     public void OnCreateRoomButton()
@@ -128,7 +137,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
         currentRoomName = roomNameInput.text.ToUpper();
-        NetworkManager.instance.CreateRoom(roomNameInput.text);
+        NetworkManager.instance.CreateRoom(roomNameInput.text, (int)roomMaxPlayers, roomIsPublic);
     }
 
     // LOBBY SCREEN

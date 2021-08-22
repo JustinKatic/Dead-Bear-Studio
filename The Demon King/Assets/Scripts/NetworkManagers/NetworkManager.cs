@@ -31,12 +31,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // creates a new room of the requested room name
-    public void CreateRoom (string roomName)
+    public void CreateRoom (string roomName, int roomMaxPlayers, bool publicRoom)
     {
         RoomOptions options = new RoomOptions();
-        options.MaxPlayers = (byte)maxPlayers;
+        //maxPlayers = roomMaxPlayers;
+        options.MaxPlayers = (byte)roomMaxPlayers;
+        
         RoomName = roomName.ToUpper();
-        options.IsVisible = true;
+        options.IsVisible = publicRoom;
 
         PhotonNetwork.CreateRoom(RoomName, options);
     }
