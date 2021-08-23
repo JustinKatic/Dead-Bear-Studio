@@ -25,10 +25,6 @@ public class BasicStateManager : StateManager
             SwitchToTheNextState(stunnedState);
             target = null;
         }
-        else if (chasing)
-        {
-            HasBeenChasingPlayerForX();
-        }
         else if (healthManager.PlayerWhoShotMe != null)
         {
             provokedState.target = healthManager.PlayerWhoShotMe;
@@ -46,6 +42,10 @@ public class BasicStateManager : StateManager
         {
             target = chaseState.target;
             SwitchToTheNextState(chaseState);
+        }
+        else if (chasing)
+        {
+            HasBeenChasingPlayerForX();
         }
         else
         {
