@@ -131,7 +131,8 @@ public class PlayerHealthManager : HealthManager
 
     public void Respawn(bool DidIDieFromPlayer)
     {
-        photonView.RPC("Respawn_RPC", RpcTarget.All, DidIDieFromPlayer);
+        if (photonView.IsMine)
+            photonView.RPC("Respawn_RPC", RpcTarget.All, DidIDieFromPlayer);
     }
 
     [PunRPC]

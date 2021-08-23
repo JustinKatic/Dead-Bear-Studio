@@ -10,6 +10,8 @@ public class ExperienceManager : MonoBehaviourPun
     [SerializeField] private float CamDistanceIncreaseAmount = .5f;
     [SerializeField] private float CamShoulderOffsetXIncreaseAmount = 0f;
     [SerializeField] private float CamShoulderOffsetYIncreaseAmount = 0f;
+    [SerializeField] private float ScaleLerpSpeed = 1f;
+
 
     [SerializeField] private float percentOfExpToLoseOnDeath = .20f;
     public float PercentOfExpToLoseOnDeath { get { return percentOfExpToLoseOnDeath; } private set { percentOfExpToLoseOnDeath = value; } }
@@ -44,6 +46,21 @@ public class ExperienceManager : MonoBehaviourPun
     private Cinemachine3rdPersonFollow vCam;
 
     private PlayerHealthManager healthManager;
+
+
+    Vector3 valueToLerpTowards;
+    bool shouldScale;
+
+
+    private void Update()
+    {
+        if (shouldScale)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, valueToLerpTowards, ScaleLerpSpeed * Time.deltaTime);
+            if (transform.localScale == valueToLerpTowards)
+                shouldScale = false;
+        }
+    }
 
     #region Start Up
     private void Awake()
@@ -273,9 +290,14 @@ public class ExperienceManager : MonoBehaviourPun
         return false;
     }
 
+
+
     public void ScaleSize(float CurrentExp)
     {
-        transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
+        valueToLerpTowards = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
+        shouldScale = true;
+
+        //transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
         if (CurrentExp >= 1)
         {
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
