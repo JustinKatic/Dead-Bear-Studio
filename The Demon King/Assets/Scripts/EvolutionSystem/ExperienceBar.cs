@@ -13,7 +13,7 @@ public class ExperienceBar
 
 
 
-    [HideInInspector] public float CurrentExp;
+    public float CurrentExp;
 
     [Header("EXPERIENCE REQUIRED TO EVOLVE")]
     public IntSO level1ExpNeeded;

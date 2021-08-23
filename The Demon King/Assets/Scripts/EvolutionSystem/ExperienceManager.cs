@@ -319,8 +319,7 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
         }
 
-        else if (currentExpBar.CurrentExp < currentExpBar.level2ExpNeeded.value && currentExpBar.CurrentExp >= currentExpBar.level1ExpNeeded.value
-            && evolutionManager.activeEvolution != CurrentActiveEvolutionBranch.Level1Evolution)
+        else if (currentExpBar.CurrentExp < currentExpBar.level2ExpNeeded.value && currentExpBar.CurrentExp >= currentExpBar.level1ExpNeeded.value)
         {
             evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.Level1Evolution;
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
