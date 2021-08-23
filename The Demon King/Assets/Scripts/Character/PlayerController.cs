@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public CinemachineVirtualCamera vCam;
     [HideInInspector] public CharacterController cc;
 
+    [SerializeField] private GameObject recticle;
+
 
     #region Start Up
     private void Awake()
@@ -70,6 +72,7 @@ public class PlayerController : MonoBehaviourPun
         {
             //Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
             gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
+            Destroy(recticle.gameObject);
         }
         //Run following if local player
         else

@@ -17,8 +17,6 @@ public class EvolutionManager : MonoBehaviourPun
     [HideInInspector] public Evolutions nextEvolution;
     [HideInInspector] public ExperienceBranch nextBranchType;
 
-    [HideInInspector] public Transform currentActiveShootPoint;
-
     //Components
     private PlayerController playerController;
     private ExperienceManager experienceManager;
@@ -62,8 +60,6 @@ public class EvolutionManager : MonoBehaviourPun
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             playerTimers = GetComponentInChildren<PlayerTimers>();
 
-            //sets shootPoint and anim of this player to the activeEvolutions
-            currentActiveShootPoint = activeEvolution.ShootPoint;
             PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
 
             playerController.currentAnim = activeEvolution.animator;
@@ -188,7 +184,6 @@ public class EvolutionManager : MonoBehaviourPun
         else
             experienceManager.ScaleSize(nextBranchType.ExpBar.CurrentExp);
 
-        currentActiveShootPoint = activeEvolution.ShootPoint;
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
         healthManager.SetHealth(activeEvolution.MaxHealth);

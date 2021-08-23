@@ -188,7 +188,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     #endregion
 
     #region CastAbility1 Sound
-    public void PlayAbility1Sound()
+    public void PlayCastAbilitySound()
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.ShootSound, gameObject);
         //photonView.RPC("PlayAbility1Sound_RPC", RpcTarget.Others, animationSounds.ShootSound);
