@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -6,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using Random = UnityEngine.Random;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
@@ -32,7 +34,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private Button RoomPrivacyButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
-
+    public List<SceneInformation> scenes;
+    
 
     [Header("Lobby Browser")]
     [SerializeField] private RectTransform roomListContainer;
@@ -45,13 +48,21 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private List<RoomInfo> allOpenRooms = new List<RoomInfo>();
 
     public bool roomIsPublic = true;
-    private string sceneName;
+    [HideInInspector] public string sceneName;
     private string currentRoomName;
     private float roomMaxPlayers = 2;
 
     void Start()
     {
+   
+        List<string> sceneNames = new List<string>();
 
+        foreach (var scene in scenes)
+        {
+            sceneNames.Add(scene.SceneName);
+        }
+        
+        sceneDropdown.AddOptions(sceneNames);
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
@@ -128,16 +139,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         createNewRoomButton.interactable = !string.IsNullOrEmpty(playerRoomNameInput.text);
     }
-    public void OnLevelSelectionChanged(Dropdown.OptionData sceneNameSelection)
-    {
-        sceneName = sceneNameSelection.text;
-
-    }
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
         currentRoomName = roomNameInput.text.ToUpper();
-        NetworkManager.instance.CreateRoom(roomNameInput.text, (int)roomMaxPlayers, roomIsPublic);
+        NetworkManager.instance.CreateRoom(roomNameInput.text, (int)roomMaxPlayers);
     }
 
     // LOBBY SCREEN
@@ -146,11 +152,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // set the screen to be the Lobby and update the UI for all players
     public override void OnJoinedRoom()
     {
-
         SetScreen(lobbyScreen);
+        
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
-        roomIsPublic = PhotonNetwork.CurrentRoom.IsVisible;
+         PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
         
         if (roomIsPublic)
         {
@@ -173,6 +179,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [PunRPC]
     void UpdateLobbyUI()
     {
+     
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
         sceneDropdown.gameObject.SetActive(PhotonNetwork.IsMasterClient);
@@ -194,6 +201,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // hide the room
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
+        startGameButton.interactable = false;
 
         //Name of scene is the current dropdown selection
         if (sceneDropdown != null)
@@ -206,6 +214,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         // tell everyone to load into the Game scene
         NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, sceneName);
+        
+        startGameButton.interactable = NetworkManager.instance.levelNotLoading;
     }
 
     // called when the "Leave Lobby" button has been pressed
