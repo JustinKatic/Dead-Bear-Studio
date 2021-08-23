@@ -10,7 +10,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int maxPlayers = 10;
 
     public string RoomName;
-    
+    public bool levelNotLoading = true;
+
     // instance
     public static NetworkManager instance;
     void Awake ()
@@ -31,14 +32,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // creates a new room of the requested room name
-    public void CreateRoom (string roomName, int roomMaxPlayers, bool publicRoom)
+    public void CreateRoom (string roomName, int roomMaxPlayers)
     {
         RoomOptions options = new RoomOptions();
-        //maxPlayers = roomMaxPlayers;
         options.MaxPlayers = (byte)roomMaxPlayers;
         
         RoomName = roomName.ToUpper();
-        options.IsVisible = publicRoom;
 
         PhotonNetwork.CreateRoom(RoomName, options);
     }
@@ -53,6 +52,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ChangeScene (string sceneName)
     {
+        levelNotLoading = false;
         //Checks if the scene is found within the build settings, otherwise load game as default
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
@@ -63,6 +63,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
         }
+
+        levelNotLoading = true;
     }
 
     // called when we disconnect from the Photon server
