@@ -6,11 +6,12 @@ using Photon.Pun;
 
 public class PlayerHealthManager : HealthManager
 {
-    [Header("HealthBar Hud")]
-    [SerializeField] protected Transform HealthBarContainer;
-
     [Header("Player Hud UI")]
     [SerializeField] protected Canvas MyHUDCanvas;
+    [SerializeField] protected Transform HealthBarContainer;
+    [SerializeField] private GameObject ExperienceBarContainer;
+
+        
 
     [Header("Kill Cam UI")]
     [SerializeField] GameObject KilledByUIPanel;
@@ -154,6 +155,9 @@ public class PlayerHealthManager : HealthManager
                 debuffTimer.StopStunTimer();
                 debuffTimer.StopBeingDevouredTimer();
                 debuffTimer.StartRespawnTimer(RespawnTime);
+                HealthBarContainer.gameObject.SetActive(false);
+                ExperienceBarContainer.SetActive(false);
+
                 stunnedTimer = 0;
 
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
@@ -230,6 +234,8 @@ public class PlayerHealthManager : HealthManager
         debuffTimer.StopRespawnTimer();
         experienceManager.CheckIfNeedToDevolve();
         player.EnableMovement();
+        HealthBarContainer.gameObject.SetActive(true);
+        ExperienceBarContainer.SetActive(true);
         CurrentHealth = MaxHealth;
         UpdateHealthBar(CurrentHealth);
     }
