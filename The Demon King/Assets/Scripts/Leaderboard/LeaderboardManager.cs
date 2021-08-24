@@ -75,7 +75,12 @@ public class LeaderboardManager : MonoBehaviourPun
         }
     }
 
-
+    public string FormatTime(float time)
+    {
+        int minutes = (int)time / 60;
+        int seconds = (int)time - 60 * minutes;
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
 
     public void DisplayLeaderboard()
     {
@@ -109,7 +114,7 @@ public class LeaderboardManager : MonoBehaviourPun
         {
             playerLeaderboardSlot[i].gameObject.SetActive(true);
             playerLeaderboardSlot[i].PlayerName.text = player.PlayerNickName;
-            playerLeaderboardSlot[i].TimeSpentAsDemonKing.text = Mathf.Round(player.TimeSpentAsDemonKing).ToString();
+            playerLeaderboardSlot[i].TimeSpentAsDemonKing.text = FormatTime(Mathf.Round(player.TimeSpentAsDemonKing));
             playerLeaderboardSlot[i].UpdateSliderValue((int)Mathf.Round(player.TimeSpentAsDemonKing));
             playerLeaderboardSlot[i].CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
             i++;
