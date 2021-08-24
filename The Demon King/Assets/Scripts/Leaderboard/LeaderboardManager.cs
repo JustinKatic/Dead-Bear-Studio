@@ -35,7 +35,7 @@ public class LeaderboardManager : MonoBehaviourPun
     [SerializeField] private MinionType greenMinion;
     [SerializeField] private MinionType blueMinion;
 
-    bool leaderboardEnabed = false;
+    [HideInInspector] public bool leaderboardEnabed = false;
 
 
     private Image GetImage(MinionType minionType)
@@ -115,7 +115,6 @@ public class LeaderboardManager : MonoBehaviourPun
             i++;
         }
 
-        Invoke("DisplayLeaderboard", 1);
 
         //Display the leaderboard
 
@@ -123,6 +122,8 @@ public class LeaderboardManager : MonoBehaviourPun
         {
             StartCoroutine(ReturnToLobby());
         }
+        else
+            Invoke("DisplayLeaderboard", 1);
     }
 
     IEnumerator ReturnToLobby()

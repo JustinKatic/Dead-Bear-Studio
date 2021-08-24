@@ -36,22 +36,25 @@ public class DemonKingEvolution : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            if (AmITheDemonKing)
+            if (!hasPlayerWon)
             {
-                timeSpentAsDemonKing += Time.deltaTime;
-                Hashtable hash = new Hashtable();
-                hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
-                PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-            }
-            if (!hasPlayerWon && timeSpentAsDemonKing >= TimeRequiredToWin.value)
-            {
-                hasPlayerWon = true;
-
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-                foreach (var player in players)
+                if (AmITheDemonKing)
                 {
-                    DisplayLeaderboardOnWin(player);
+                    timeSpentAsDemonKing += Time.deltaTime;
+                    Hashtable hash = new Hashtable();
+                    hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+                }
+                if (timeSpentAsDemonKing >= TimeRequiredToWin.value)
+                {
+                    hasPlayerWon = true;
+
+                    GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+                    foreach (var player in players)
+                    {
+                        DisplayLeaderboardOnWin(player);
+                    }
                 }
             }
         }
@@ -65,8 +68,12 @@ public class DemonKingEvolution : MonoBehaviourPun
     [PunRPC]
     void DisplayLeaderboardOnWin()
     {
-        leaderboardManager.DidAWinOccur = true;
-        leaderboardManager.DisplayLeaderboard();
+        if (photonView.IsMine)
+        {
+            leaderboardManager.leaderboardEnabed = true;
+            leaderboardManager.DidAWinOccur = true;
+            leaderboardManager.DisplayLeaderboard();
+        }
     }
 
 

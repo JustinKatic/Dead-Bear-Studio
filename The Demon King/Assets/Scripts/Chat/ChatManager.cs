@@ -35,8 +35,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     // Start is called before the first frame update
     void Start()
     {
-        DontDestroyOnLoad(this.gameObject);
-        
+        //DontDestroyOnLoad(this.gameObject);       
     }
     
     void Awake()
