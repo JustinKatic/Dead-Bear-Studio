@@ -101,6 +101,9 @@ public class MinionHealthManager : HealthManager
             myModel.SetActive(false);
             col.enabled = false;
             hudCanvas.enabled = false;
+            isStunned = false;
+            beingDevoured = false;
+            canBeDevoured = false;
             stunnedTimer = 0;
 
             if (PhotonNetwork.IsMasterClient)
@@ -116,12 +119,9 @@ public class MinionHealthManager : HealthManager
                 CurrentHealth = MaxHealth;
                 UpdateHealthBar(CurrentHealth);
             }
-            beingDevoured = false;
             myModel.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
-            canBeDevoured = false;
-            isStunned = false;
         }
     }
     #endregion
