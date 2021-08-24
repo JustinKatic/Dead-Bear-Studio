@@ -8,26 +8,31 @@ public class PlayerTimers : MonoBehaviour
     [Header("Stun")]
     [SerializeField] private Image StunParent;
     [SerializeField] private Image stunTimerImg;
+    private bool playStun = false;
 
     [Header("Devour")]
     [SerializeField] private Image DevourParent;
     [SerializeField] private Image devouringTimerImg;
+    private bool playDevouring = false;
 
     [Header("Being Devour")]
     [SerializeField] private Image BeingDevouredParent;
     [SerializeField] private Image beingDevouredTimerImg;
+    private bool playBeingDevoured = false;
 
     [Header("Evolve")]
     [SerializeField] private Image EvolveParent;
     [SerializeField] private Image evolveingTimerImg;
+    private bool playEvolve = false;
+
+    [Header("Respawn")]
+    [SerializeField] private Image RespawnParent;
+    [SerializeField] private Image respawnTimerImg;
+    private bool playRespawn = false;
 
 
     private float TimeToCompleteAnimation;
     private float ActiveTime = 0f;
-    private bool playStun = false;
-    private bool playDevouring = false;
-    private bool playBeingDevoured = false;
-    private bool playEvolve = false;
 
 
 
@@ -88,6 +93,20 @@ public class PlayerTimers : MonoBehaviour
     }
     #endregion
 
+    #region RespawnTimer
+    public void StartRespawnTimer(float Duration)
+    {
+        StartTimer(RespawnParent, Duration);
+        playRespawn = true;
+    }
+        
+    public void StopRespawnTimer()
+    {
+        StopTimer(RespawnParent);
+        playRespawn = false;
+    }
+    #endregion
+
     public void Update()
     {
         if (playStun)
@@ -105,6 +124,10 @@ public class PlayerTimers : MonoBehaviour
         else if (playEvolve)
         {
             LerpFillImg(evolveingTimerImg);
+        }
+        else if (playRespawn)
+        {
+            LerpFillImg(respawnTimerImg);
         }
     }
 

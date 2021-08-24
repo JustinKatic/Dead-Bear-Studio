@@ -153,6 +153,7 @@ public class PlayerHealthManager : HealthManager
             {
                 debuffTimer.StopStunTimer();
                 debuffTimer.StopBeingDevouredTimer();
+                debuffTimer.StartRespawnTimer(RespawnTime);
                 stunnedTimer = 0;
 
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
@@ -226,6 +227,7 @@ public class PlayerHealthManager : HealthManager
             PlayerWhoDevouredMeController.vCam.Priority = 10;
             KilledByUIPanel.SetActive(false);
         }
+        debuffTimer.StopRespawnTimer();
         experienceManager.CheckIfNeedToDevolve();
         player.EnableMovement();
         CurrentHealth = MaxHealth;
