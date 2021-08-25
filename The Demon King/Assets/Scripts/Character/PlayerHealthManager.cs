@@ -11,7 +11,7 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] protected Transform HealthBarContainer;
     [SerializeField] private GameObject ExperienceBarContainer;
 
-        
+
 
     [Header("Kill Cam UI")]
     [SerializeField] GameObject KilledByUIPanel;
@@ -48,9 +48,13 @@ public class PlayerHealthManager : HealthManager
             experienceManager = GetComponent<ExperienceManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             demonKingCrownHealthManager = FindObjectOfType<CrownHealthManager>();
-            PlayerId = player.id;
             SetHealth(MaxHealth);
         }
+    }
+
+    private void Start()
+    {
+        PlayerId = player.id;
     }
     #endregion
 
