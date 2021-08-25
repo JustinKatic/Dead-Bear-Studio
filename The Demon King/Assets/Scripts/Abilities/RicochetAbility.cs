@@ -1,7 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class FireballAbility : AbilityBase
+public class RicochetAbility : AbilityBase
 {
     [Header("LayersForRaycastToIgnore")]
     [SerializeField] private LayerMask PrimaryProjectileLayersToIgnore;
@@ -31,7 +31,7 @@ public class FireballAbility : AbilityBase
         GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("PrimaryProjectile", pos, Quaternion.identity);
         createdPrimaryProjectile.transform.forward = dir;
 
-        PrimaryProjectileController projectileScript = createdPrimaryProjectile.GetComponent<PrimaryProjectileController>();
+        AoeExplosionProjectileController projectileScript = createdPrimaryProjectile.GetComponent<AoeExplosionProjectileController>();
         projectileScript.Initialize(damage, player.id);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
     }
