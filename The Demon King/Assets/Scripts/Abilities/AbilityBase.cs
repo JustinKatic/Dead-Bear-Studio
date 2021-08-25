@@ -10,7 +10,7 @@ public class AbilityBase : MonoBehaviourPun
     [Header("Modifiable Stats")]
     [SerializeField] protected float ProjectileSpeed;
     [SerializeField] protected int damage;
-    [SerializeField] protected float shootTimer = 0.3f;
+    [SerializeField] protected float shootCooldown = 0.3f;
 
     private bool canShoot = true;
 
@@ -45,7 +45,7 @@ public class AbilityBase : MonoBehaviourPun
         player.currentAnim.SetTrigger("Attack");
         PlayerSoundManager.Instance.PlayCastAbilitySound();
         PerformAbility();
-        StartCoroutine(CanShoot(shootTimer));
+        StartCoroutine(CanShoot(shootCooldown));
     }
 
     protected virtual void PerformAbility()
