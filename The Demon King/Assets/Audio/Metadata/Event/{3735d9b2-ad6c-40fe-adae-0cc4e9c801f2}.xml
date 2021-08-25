@@ -80,6 +80,9 @@
 		</relationship>
 	</object>
 	<object class="EventMixerMaster" id="{f4d503f3-a9f8-4714-840b-e2ebd79ea4cf}">
+		<property name="volume">
+			<value>-8</value>
+		</property>
 		<relationship name="effectChain">
 			<destination>{5b2d60f2-a7ae-4ee9-8b4a-05758b1757c0}</destination>
 		</relationship>
@@ -119,6 +122,7 @@
 		<relationship name="effects">
 			<destination>{79e1ce12-3bff-4e06-a5a8-28366aab25d1}</destination>
 			<destination>{f0ff9a41-eec8-446d-9651-0d834bec41f7}</destination>
+			<destination>{444b6214-b025-4f59-b518-acc507e0a0c6}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{6e670bfd-e0af-4858-96b0-fda9053583f2}" />
@@ -136,5 +140,10 @@
 	<object class="MixerBusPanner" id="{fb96a13a-c737-4d59-96d2-0c225fe751b2}" />
 	<object class="MixerBusFader" id="{79e1ce12-3bff-4e06-a5a8-28366aab25d1}" />
 	<object class="SpatialiserEffect" id="{f0ff9a41-eec8-446d-9651-0d834bec41f7}" />
+	<object class="TremoloEffect" id="{444b6214-b025-4f59-b518-acc507e0a0c6}">
+		<property name="frequency">
+			<value>0.219999999</value>
+		</property>
+	</object>
 	<object class="MixerBusFader" id="{c690a70a-19ec-4dbf-b93c-9e368590dd9b}" />
 </objects>
