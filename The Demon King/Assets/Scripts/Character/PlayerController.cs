@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviourPun
 {
     [Header("Grounded Varaibles")]
-    [SerializeField] float MaxGroundMoveSpeed = 5f;
+    public float MaxGroundMoveSpeed = 5f;
     [SerializeField] float GroundAcceleration = 3f;
     [SerializeField] float SlopeLimit = 45f;
     [SerializeField] float StepOffset = 0.3f;
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviourPun
 
     [Header("In Air Varaibles")]
     [SerializeField] float gravity;
-    [SerializeField] float MaxAirMoveSpeed = 5f;
+    public float MaxAirMoveSpeed = 5f;
     [SerializeField] float InAirAcceleration = 7f;
     [SerializeField] float InAirDrag = 2f;
     [SerializeField] float VelocityToStartFalling = -7f;
@@ -165,6 +165,8 @@ public class PlayerController : MonoBehaviourPun
             //Move the character based of the players velocity values
             if (cc.enabled)
                 cc.Move(playerMoveVelocity * Time.deltaTime);
+
+            currentAnim.SetFloat("Speed", currentMoveSpeed);
 
             SetAnimInputs();
         }
