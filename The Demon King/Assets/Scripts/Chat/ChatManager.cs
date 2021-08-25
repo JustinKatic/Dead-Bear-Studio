@@ -15,6 +15,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     public static ChatManager instance;
     
     [HideInInspector]public string currentChatRoom;
+    private ChatChannel SubscribedChannel;
     
     
     public TMP_InputField InputFieldChat;   // set in inspector
@@ -114,6 +115,8 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         {
             chatClient.PublishMessage(channel,joinRoomMessage); // you don't HAVE to send a msg on join but you could.
         }
+        
+        chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
 
         Debug.Log("OnSubscribed: " + string.Join(", ", channels));    
     }
@@ -163,11 +166,9 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     private void SendChatMessage(string inputLine)
     {
         if (string.IsNullOrEmpty(inputLine))
-        {
             return;
-        }
-
-        CurrentChannelText.text = inputLine;
+        
+        
         this.chatClient.PublishMessage(currentChatRoom, inputLine);
 
     }
@@ -178,16 +179,18 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
             return;
         }
 
-        ChatChannel channel = null;
-        bool found = this.chatClient.TryGetChannel(channelName, out channel);
-        if (!found)
+        if (SubscribedChannel == null)
         {
-            Debug.Log("ShowChannel failed to find channel: " + channelName);
-            return;
+            bool found = this.chatClient.TryGetChannel(channelName, out SubscribedChannel);
+            if (!found)
+            {
+                Debug.Log("ShowChannel failed to find channel: " + channelName);
+                return;
+            }
         }
 
         this.currentChatRoom = channelName;
-        this.CurrentChannelText.text = channel.ToStringMessages();
+        this.CurrentChannelText.text = SubscribedChannel.ToStringMessages();
         Debug.Log("ShowChannel: " + this.currentChatRoom);
 
     }

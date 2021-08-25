@@ -19,6 +19,8 @@ public class BasicStateManager : StateManager
 
     protected override void RunStateMachine()
     {
+        //if the target has been found check if they have been stunned
+        //Assigned is stunned to a seperate bool to avoid null references
         if(target != null)
         {
             if (targetHealthManager == null)
@@ -32,7 +34,7 @@ public class BasicStateManager : StateManager
             targetIsStunned = false;
         }
         
-
+        // Logic for the switching of behaviours at runtime
         if (targetIsStunned)
         {
             SwitchToTheNextState(wanderState);
