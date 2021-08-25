@@ -306,7 +306,7 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637651398850700800
+  lastModified: 637655007977689751
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -507,11 +507,11 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637651398850730721
+  lastModified: 637655007977051464
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1330
+    Value: 1380
   Exists: 1
 --- !u!114 &-1105310222819990058
 MonoBehaviour:
@@ -566,12 +566,13 @@ MonoBehaviour:
   - {fileID: 654102981397107378}
   - {fileID: -8670216989537950416}
   - {fileID: -7939690832543632317}
+  - {fileID: 7017155916976692907}
   EditorParameters: []
   MasterBanks:
   - {fileID: -4784904020539950830}
   StringsBanks:
   - {fileID: -1364600153512486357}
-  stringsBankWriteTime: 637651398850730721
+  stringsBankWriteTime: 637655007977051464
   cacheVersion: 6
 --- !u!114 &11372385520472022
 MonoBehaviour:
@@ -663,7 +664,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 100
   Length: 0
 --- !u!114 &1431050333990813200
 MonoBehaviour:
@@ -1064,6 +1065,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/CastFireball
   guid: 9e4cf0496d577742a4b466b8ec39aab8
+  Banks:
+  - {fileID: -4784904020539950830}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7017155916976692907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/WalkAdultRay
+  m_EditorClassIdentifier: 
+  Path: event:/WalkAdultRay
+  guid: beeb18dde861cc4ab9a1e1ec8d8d8ea7
   Banks:
   - {fileID: -4784904020539950830}
   IsStream: 0
