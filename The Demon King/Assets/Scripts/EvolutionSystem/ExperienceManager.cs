@@ -11,6 +11,10 @@ public class ExperienceManager : MonoBehaviourPun
     [SerializeField] private float CamShoulderOffsetXIncreaseAmount = 0f;
     [SerializeField] private float CamShoulderOffsetYIncreaseAmount = 0f;
     [SerializeField] private float ScaleLerpSpeed = 1f;
+    [SerializeField] private float MaxGroundMoveSpeedScaleAmount = 1f;
+    [SerializeField] private float MaxInAirMoveSpeedScaleAmount = 1f;
+
+
 
 
     [SerializeField] private float percentOfExpToLoseOnDeath = .20f;
@@ -38,6 +42,10 @@ public class ExperienceManager : MonoBehaviourPun
     private float baseCamShoulderX;
     private float baseCamShoulderY;
 
+    private float baseMaxGroundSpeed;
+    private float baseMaxInAirSpeed;
+
+
 
     [HideInInspector] public ExperienceBranch CurrentActiveEvolutionBranch;
 
@@ -47,20 +55,13 @@ public class ExperienceManager : MonoBehaviourPun
 
     private PlayerHealthManager healthManager;
 
+    private PlayerController playerController;
 
     Vector3 valueToLerpTowards;
     bool shouldScale;
 
 
-    private void Update()
-    {
-        if (shouldScale)
-        {
-            transform.localScale = Vector3.Lerp(transform.localScale, valueToLerpTowards, ScaleLerpSpeed * Time.deltaTime);
-            if (transform.localScale == valueToLerpTowards)
-                shouldScale = false;
-        }
-    }
+
 
     #region Start Up
     private void Awake()
@@ -74,12 +75,15 @@ public class ExperienceManager : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
+            playerController = GetComponent<PlayerController>();
             SetMyMinionTypeOnStart();
             vCam = gameObject.GetComponentInChildren<Cinemachine3rdPersonFollow>();
             BaseScale = transform.localScale;
             baseCamDist = vCam.CameraDistance;
             baseCamShoulderX = vCam.ShoulderOffset.x;
             baseCamShoulderY = vCam.ShoulderOffset.y;
+            baseMaxGroundSpeed = playerController.MaxGroundMoveSpeed;
+            baseMaxInAirSpeed = playerController.MaxAirMoveSpeed;
 
 
             evolutionManager = GetComponent<EvolutionManager>();
@@ -96,6 +100,16 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, false);
     }
     #endregion
+
+    private void Update()
+    {
+        if (shouldScale)
+        {
+            transform.localScale = Vector3.Lerp(transform.localScale, valueToLerpTowards, ScaleLerpSpeed * Time.deltaTime);
+            if (transform.localScale == valueToLerpTowards)
+                shouldScale = false;
+        }
+    }
 
     #region ExperienceManagerSetup
 
@@ -303,13 +317,16 @@ public class ExperienceManager : MonoBehaviourPun
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
             vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;
             vCam.ShoulderOffset.y = baseCamShoulderY + CurrentExp * CamShoulderOffsetYIncreaseAmount;
-
+            playerController.MaxGroundMoveSpeed = baseMaxGroundSpeed + CurrentExp * MaxGroundMoveSpeedScaleAmount;
+            playerController.MaxAirMoveSpeed = baseMaxInAirSpeed + CurrentExp * MaxInAirMoveSpeedScaleAmount;
         }
         else
         {
             vCam.CameraDistance = baseCamDist;
             vCam.ShoulderOffset.x = baseCamShoulderX;
             vCam.ShoulderOffset.y = baseCamShoulderY;
+            playerController.MaxGroundMoveSpeed = baseMaxGroundSpeed;
+            playerController.MaxAirMoveSpeed = baseMaxInAirSpeed;
         }
     }
     public void CheckIfNeedToDevolve()
