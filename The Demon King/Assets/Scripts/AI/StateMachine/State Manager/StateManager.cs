@@ -6,6 +6,7 @@ using Photon.Pun;
 public class StateManager : MonoBehaviourPun
 {
     public State currentState;
+    
     protected WanderState wanderState;
     protected ChaseState chaseState;
     protected StunnedState stunnedState;
@@ -18,13 +19,19 @@ public class StateManager : MonoBehaviourPun
     [SerializeField] protected float RadiusDistanceToStartChasingPlayer;
     [SerializeField] protected float AttackRange;
     [SerializeField] protected GameObject target;
+    [SerializeField] protected PlayerHealthManager targetHealthManager;
     [SerializeField] protected LayerMask playerLayer;
     
-    [SerializeField] protected float timer;
+    protected float meleeTimer;
+    protected float chaseTimer;
     [SerializeField] protected float ChasePlayerForX;
     [SerializeField] protected bool chasing = false;
+    [SerializeField] protected float TimeTillNextAttack;
+    [SerializeField] protected bool canMelee = false;
+    [SerializeField] protected bool targetIsStunned = false;
 
-    
+
+
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -39,7 +46,14 @@ public class StateManager : MonoBehaviourPun
 
     protected void SwitchToTheNextState(State nextState)
     {
-        currentState = nextState;
+
+        if (nextState != currentState)
+        {
+            currentState = nextState;
+            chaseTimer = 0;
+            meleeTimer = 0;
+        }
+
     }
     protected bool CheckIfAPlayerIsInMyChaseRadius()
     {
@@ -78,14 +92,26 @@ public class StateManager : MonoBehaviourPun
     {
         if (chasing)
         {
-            timer += Time.deltaTime;
-            if (timer >= ChasePlayerForX)
+            chaseTimer += Time.deltaTime;
+            if (chaseTimer >= ChasePlayerForX)
             {
-                timer = 0;
+                chaseTimer = 0;
                 chasing = false;
                 //return true;
             }
         }
         //return false;
     }
+    
+    protected bool CanAttackAfterTime()
+    {
+        meleeTimer += Time.deltaTime;
+        if (meleeTimer >= TimeTillNextAttack)
+        {
+            meleeTimer = 0;
+            return true;
+        }
+        return false;
+    }
+    
 }

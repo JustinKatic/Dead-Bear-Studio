@@ -19,10 +19,29 @@ public class BasicStateManager : StateManager
 
     protected override void RunStateMachine()
     {
+        if(target != null)
+        {
+            if (targetHealthManager == null)
+            {
+                targetHealthManager = target.GetComponent<PlayerHealthManager>();
+            }
+            targetIsStunned = targetHealthManager.isStunned;
+        }
+        else
+        {
+            targetIsStunned = false;
+        }
+        
 
-        if (healthManager.isStunned)
+        if (targetIsStunned)
+        {
+            SwitchToTheNextState(wanderState);
+
+        }
+        else if (healthManager.isStunned)
         {
             SwitchToTheNextState(stunnedState);
+
             target = null;
         }
         else if (healthManager.PlayerWhoShotMe != null)
@@ -36,14 +55,16 @@ public class BasicStateManager : StateManager
         else if (CheckIfPlayerIsInMyAttackDistance())
         {
             attackState.target = target;
+            attackState.CanAttack = CanAttackAfterTime();
             SwitchToTheNextState(attackState);
         }
         else if (CheckIfAPlayerIsInMyChaseRadius())
         {
             target = chaseState.target;
+
             SwitchToTheNextState(chaseState);
         }
-        else if (chasing)
+        else if (chasing && !targetIsStunned)
         {
             HasBeenChasingPlayerForX();
         }

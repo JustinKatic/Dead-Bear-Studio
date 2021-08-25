@@ -105,7 +105,15 @@ public class PlayerHealthManager : HealthManager
         //Remove health
         CurrentHealth -= damage;
 
-        playerWhoLastShotMeHealthManager = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerHealthManager>();
+        if (attackerID != 0)
+        {
+            playerWhoLastShotMeHealthManager = GameManager.instance.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
+
+        }
+        else
+        {
+            playerWhoLastShotMeHealthManager = null;
+        }
 
         UpdateHealthBar(CurrentHealth);
 

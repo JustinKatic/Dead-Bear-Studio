@@ -545,7 +545,6 @@ GameObject:
   - component: {fileID: 1534572014928822931}
   - component: {fileID: 1534572014928822930}
   - component: {fileID: 1534572014928822928}
-  - component: {fileID: 2704888522342533222}
   - component: {fileID: 9181790574075983981}
   - component: {fileID: 4541361574783704190}
   - component: {fileID: 3567835692317388219}
@@ -700,28 +699,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2704888522342533222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1534572014928822935}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22cb63501d8c9424cbefe36cd194c57d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentState: {fileID: 690821556088324881}
-  RadiusDistanceToStartChasingPlayer: 0
-  AttackRange: 0
-  target: {fileID: 0}
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  timer: 0
-  ChasePlayerForX: 0
-  chasing: 0
 --- !u!95 &9181790574075983981
 Animator:
   serializedVersion: 3
@@ -801,14 +778,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentState: {fileID: 690821556088324881}
   RadiusDistanceToStartChasingPlayer: 5
-  AttackRange: 3
+  AttackRange: 2
   target: {fileID: 0}
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
-  timer: 0
   ChasePlayerForX: 3
   chasing: 0
+  TimeTillNextAttack: 1
+  canMelee: 0
 --- !u!1 &1534572014935968444
 GameObject:
   m_ObjectHideFlags: 0
@@ -1054,6 +1032,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  CanAttack: 0
 --- !u!1 &6962500237069049755
 GameObject:
   m_ObjectHideFlags: 0
