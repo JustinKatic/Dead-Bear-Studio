@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
-using Photon.Pun;
 using UnityEngine;
+using Photon.Pun;
 
-public class AoeExplosionProjectileController : MonoBehaviourPun
+public class RicochetProjectileController : MonoBehaviourPun
 {
     private int damage = 1;
     private int attackerId;
-    private float aoeRadius;
-    [SerializeField] LayerMask damageableObjects;
+    private int numberOfBouncesBeforeDestroys;
+    private int currentNumberOfBounces;
 
 
     [FMODUnity.EventRef]
@@ -40,15 +40,14 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
     {
         abilityTravellingEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
         abilityTravellingEvent.release();
-        FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int damage, int attackerId, float aoeRadius)
+    public void Initialize(int damage, int attackerId,int numberOfBouncesBeforeDestroys)
     {
         this.damage = damage;
         this.attackerId = attackerId;
-        this.aoeRadius = aoeRadius;
+        this.numberOfBouncesBeforeDestroys = numberOfBouncesBeforeDestroys;
 
         // set a lifetime of bullet
         if (photonView.IsMine)
@@ -66,13 +65,13 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
         {
             DealDamageToPlayersAndMinions(other);
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, aoeRadius, damageableObjects);
-            foreach (Collider col in colliders)
-            {
-                DealDamageToPlayersAndMinions(col);
-            }
             PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
-            PhotonNetwork.Destroy(gameObject);
+
+            currentNumberOfBounces++;
+            FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);
+
+            if (currentNumberOfBounces >= numberOfBouncesBeforeDestroys)
+                PhotonNetwork.Destroy(gameObject);
         }
     }
 
@@ -95,11 +94,5 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             MinionHealthManager minionHealth = other.gameObject.GetComponent<MinionHealthManager>();
             minionHealth.TakeDamage(damage, attackerId);
         }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, aoeRadius);
     }
 }

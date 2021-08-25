@@ -3129,25 +3129,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6114201547560735547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2302942371982314836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf8b13db550b60488ea2773838ed8bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootTimer: 0.3
-  shootPoint: {fileID: 8223992597592377373}
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 1408
 --- !u!114 &6214247227055208921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3177,6 +3158,26 @@ MonoBehaviour:
     EvolveSound: event:/NormalEvolve
     DemonKingEvolveSound: event:/NormalEvolve
     DemonKingAnnouncementSound: event:/DemonKingAnnouncement
+--- !u!114 &6358973574615903032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2302942371982314836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1a4868ecf549647838990c85af2559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootTimer: 0.3
+  shootPoint: {fileID: 8223992597592377373}
+  numberOfBouncesBeforeDestroys: 3
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &7371856712302244822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5756,9 +5757,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 6036831920420466574}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &4514622077866218862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7105,9 +7107,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 4337079125391408957}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &7688463990015220277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7186,7 +7189,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1131573516886252169
+--- !u!114 &172759322864208432
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7195,16 +7198,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 5797256009264110464}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf8b13db550b60488ea2773838ed8bc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d1a4868ecf549647838990c85af2559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 5144273091646117139}
+  numberOfBouncesBeforeDestroys: 3
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &1935696102392720556
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8982,6 +8986,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4568785523227248001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849928038898874486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1a4868ecf549647838990c85af2559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootTimer: 0.3
+  shootPoint: {fileID: 4886548998357426947}
+  numberOfBouncesBeforeDestroys: 3
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &4702031696571119893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9024,25 +9048,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!114 &5575549227430500713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6849928038898874486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf8b13db550b60488ea2773838ed8bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootTimer: 0.3
-  shootPoint: {fileID: 4886548998357426947}
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 1408
 --- !u!1 &6880113164058367478
 GameObject:
   m_ObjectHideFlags: 0
@@ -9197,9 +9202,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 115310825676017458}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &5276303982018474928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9361,9 +9367,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 3096543207606883158}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &4841224420272922232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9716,9 +9723,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 2776606519705937495}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &5920614707514846785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10135,9 +10143,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 2634334833534024359}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &8105302648544116099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10169,6 +10178,26 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2451532906266379242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7298597829384005987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d1a4868ecf549647838990c85af2559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootTimer: 0.3
+  shootPoint: {fileID: 4459725887312502264}
+  numberOfBouncesBeforeDestroys: 3
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &3006145580451153820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10213,25 +10242,6 @@ MonoBehaviour:
     LayerIndex: 0
   - SynchronizeType: 0
     LayerIndex: 1
---- !u!114 &4571720705340577969
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7298597829384005987}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf8b13db550b60488ea2773838ed8bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootTimer: 0.3
-  shootPoint: {fileID: 4459725887312502264}
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 1408
 --- !u!114 &6457162108921084252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10477,9 +10487,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 3562142279823848772}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &7349060251974227169
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12127,9 +12138,10 @@ MonoBehaviour:
   damage: 1
   shootTimer: 0.3
   shootPoint: {fileID: 192005156663591814}
+  aoeRadius: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
-    m_Bits: 1408
+    m_Bits: 384
 --- !u!114 &8478966842432542367
 MonoBehaviour:
   m_ObjectHideFlags: 0
