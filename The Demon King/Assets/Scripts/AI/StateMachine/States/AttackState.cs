@@ -6,6 +6,8 @@ using UnityEngine;
 public class AttackState : State
 {
     public bool CanAttack = false;
+    [SerializeField] private GameObject meleeVFX;
+    
     public override void RunCurrentState()
     {
         PlayAttackState();
@@ -25,6 +27,7 @@ public class AttackState : State
         
         if (CanAttack)
         {
+            //Playe Vfx here
             target.GetComponent<PlayerHealthManager>().TakeDamage(1,0 );
         }
     }

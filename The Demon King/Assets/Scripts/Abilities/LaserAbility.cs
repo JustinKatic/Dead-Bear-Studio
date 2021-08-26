@@ -7,11 +7,22 @@ using System;
 
 public class LaserAbility : MonoBehaviourPun
 {
-    [Header("Modifiable Stats")]
+    [Header("Damage")]
     [SerializeField] private int damage;
-    [SerializeField] private float shootCooldown = 0.3f;
-    [SerializeField] private float MaxChargeupTime = 2f;
+    [SerializeField] private int ChargedUpDamage;
+    [Header("Timers")]
+    [SerializeField] private float shootCooldown = 1f;
+    [SerializeField] private float ChargeupTime = 2f;
+    [SerializeField] private float ShootAutomaticallyAt = 3f;
+
+    [Header("Extended Laser Duration")]
+    [SerializeField] private bool shouldLaserDurationIncrease = false;
+    [SerializeField] private float laserExtendedDurationTime = 2f;
     [SerializeField] private float damageFrequency = .5f;
+
+    [Header("Laser")]
+    private float laserDuration = .4f;
+
 
     [Header("Layers For Raycast To Ignore")]
     [SerializeField] private LayerMask LayersForRaycastToIgnore;
@@ -27,7 +38,7 @@ public class LaserAbility : MonoBehaviourPun
     //Timers
     private float chargeUpTimer = 0;
     private float currentLaserTime;
-    private float laserDuration;
+    private bool chargedUp = false;
 
     private float damageFrequencyTimer;
 
@@ -51,12 +62,17 @@ public class LaserAbility : MonoBehaviourPun
         }
     }
 
+    private void OnEnable()
+    {
+        canShoot = true;
+        damageFrequencyTimer = damageFrequency;
+    }
+
     private void Update()
     {
         ChargeUpLaser();
 
         FireingLaser();
-
     }
 
     private void Ability1_performed(InputAction.CallbackContext obj)
@@ -72,23 +88,20 @@ public class LaserAbility : MonoBehaviourPun
     {
         if (!isFireing && canShoot && chargingUp)
         {
-            isFireing = true;
-            canShoot = false;
-            LaserLine.enabled = true;
-            chargingUp = false;
-            if (chargeUpTimer <= .5f)
-                laserDuration = .5f;
-            else
+            SetFireingTrue();
+
+            if (shouldLaserDurationIncrease && chargedUp)
+            {
                 laserDuration = chargeUpTimer;
-            chargeUpTimer = 0;
+            }
+            else
+                laserDuration = .4f;
         }
     }
 
-    private void OnEnable()
-    {
-        canShoot = true;
-        damageFrequencyTimer = damageFrequency;
-    }
+
+
+
 
 
     void ChargeUpLaser()
@@ -98,15 +111,20 @@ public class LaserAbility : MonoBehaviourPun
         {
             chargeUpTimer += Time.deltaTime;
 
-            //Shoot laser if max charge time was reached
-            if (chargeUpTimer >= MaxChargeupTime)
+            if (chargeUpTimer >= ShootAutomaticallyAt)
             {
-                laserDuration = MaxChargeupTime;
-                LaserLine.enabled = true;
-                chargingUp = false;
-                canShoot = false;
-                chargeUpTimer = 0;
-                isFireing = true;
+                SetFireingTrue();
+            }
+
+            //Shoot laser if max charge time was reached
+            if (chargeUpTimer >= ChargeupTime)
+            {
+                chargedUp = true;
+
+                if (shouldLaserDurationIncrease)
+                {
+                    laserDuration = laserExtendedDurationTime;
+                }
             }
         }
     }
@@ -125,8 +143,10 @@ public class LaserAbility : MonoBehaviourPun
             {
                 isFireing = false;
                 LaserLine.enabled = false;
+                chargedUp = false;
                 CancelLinerender();
                 currentLaserTime = 0;
+                chargeUpTimer = 0;
                 StartCoroutine(CanShoot(shootCooldown));
                 damageFrequencyTimer = damageFrequency;
             }
@@ -148,7 +168,11 @@ public class LaserAbility : MonoBehaviourPun
 
             if (damageFrequencyTimer >= damageFrequency)
             {
-                DealDamageToPlayersAndMinions(hit.collider);
+                if (chargedUp)
+                    DealDamageToPlayersAndMinions(hit.collider, ChargedUpDamage);
+                else
+                    DealDamageToPlayersAndMinions(hit.collider, damage);
+
                 damageFrequencyTimer = 0;
             }
         }
@@ -159,6 +183,15 @@ public class LaserAbility : MonoBehaviourPun
         }
     }
 
+    void SetFireingTrue()
+    {
+        LaserLine.enabled = true;
+        chargingUp = false;
+        canShoot = false;
+        chargeUpTimer = 0;
+        isFireing = true;
+    }
+
     public IEnumerator CanShoot(float timer)
     {
         canShoot = false;
@@ -166,7 +199,7 @@ public class LaserAbility : MonoBehaviourPun
         canShoot = true;
     }
 
-    void DealDamageToPlayersAndMinions(Collider other)
+    void DealDamageToPlayersAndMinions(Collider other, int DamageToDeal)
     {
         //stores refrence to tag collided with
         string objTag = other.transform.tag;
@@ -176,14 +209,14 @@ public class LaserAbility : MonoBehaviourPun
             //tell the player who was hit to take damage
             PlayerHealthManager playerHealth = other.GetComponent<PlayerHealthManager>();
             if (playerHealth.PlayerId != player.id)
-                playerHealth.TakeDamage(damage, player.id);
+                playerHealth.TakeDamage(DamageToDeal, player.id);
         }
         //If tag is Minion
         else if (objTag.Equals("Minion"))
         {
             //tell the minion who was hit to take damage
             MinionHealthManager minionHealth = other.gameObject.GetComponent<MinionHealthManager>();
-            minionHealth.TakeDamage(damage, player.id);
+            minionHealth.TakeDamage(DamageToDeal, player.id);
         }
     }
 
