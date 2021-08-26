@@ -71,7 +71,7 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             {
                 DealDamageToPlayersAndMinions(col);
             }
-            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
+            PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);
         }
     }

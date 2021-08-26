@@ -29,7 +29,7 @@ public class AoeExplosionAbility : AbilityBase
 
     void SpawnPrimaryProjectile(Vector3 pos, Vector3 dir, float power, Vector3 hitPoint)
     {
-        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("AoeExplosionProjectile", pos, Quaternion.identity);
+        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("LionProjectile", pos, Quaternion.identity);
         createdPrimaryProjectile.transform.forward = dir;
 
         AoeExplosionProjectileController projectileScript = createdPrimaryProjectile.GetComponent<AoeExplosionProjectileController>();

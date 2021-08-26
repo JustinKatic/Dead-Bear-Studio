@@ -63,7 +63,7 @@ public class DefaultProjectileController : MonoBehaviourPun
         {
             DealDamageToPlayersAndMinions(other);
 
-            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
+            PhotonNetwork.Instantiate("DefaultImpactFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);
         }
     }

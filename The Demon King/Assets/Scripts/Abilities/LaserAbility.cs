@@ -30,6 +30,7 @@ public class LaserAbility : MonoBehaviourPun
     [Header("Game Objects")]
     [SerializeField] protected Transform shootPoint;
 
+
     private bool canShoot = true;
     private bool isFireing = false;
     private bool chargingUp;
@@ -164,6 +165,7 @@ public class LaserAbility : MonoBehaviourPun
             LaserLine.SetPosition(0, shootPoint.position);
             LaserLine.SetPosition(1, hit.point);
             DisplayLinerender(hit.point.x, hit.point.y, hit.point.z);
+            PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
 
 
             if (damageFrequencyTimer >= damageFrequency)

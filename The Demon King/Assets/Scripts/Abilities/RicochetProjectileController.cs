@@ -43,7 +43,7 @@ public class RicochetProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int damage, int attackerId,int numberOfBouncesBeforeDestroys)
+    public void Initialize(int damage, int attackerId, int numberOfBouncesBeforeDestroys)
     {
         this.damage = damage;
         this.attackerId = attackerId;
@@ -65,7 +65,7 @@ public class RicochetProjectileController : MonoBehaviourPun
         {
             DealDamageToPlayersAndMinions(other);
 
-            PhotonNetwork.Instantiate("FireballExplosionFX", transform.position, Quaternion.identity);
+            PhotonNetwork.Instantiate("DragonImpactFX", transform.position, Quaternion.identity);
 
             currentNumberOfBounces++;
             FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);

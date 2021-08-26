@@ -29,7 +29,7 @@ public class DefaultProjectile : AbilityBase
 
     void SpawnPrimaryProjectile(Vector3 pos, Vector3 dir, float power, Vector3 hitPoint)
     {
-        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("AoeExplosionProjectile", pos, Quaternion.identity);
+        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("DefaultProjectile", pos, Quaternion.identity);
         createdPrimaryProjectile.transform.forward = dir;
 
         DefaultProjectileController projectileScript = createdPrimaryProjectile.GetComponent<DefaultProjectileController>();

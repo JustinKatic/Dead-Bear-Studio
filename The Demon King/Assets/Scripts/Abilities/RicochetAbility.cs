@@ -30,7 +30,7 @@ public class RicochetAbility : AbilityBase
 
     void SpawnPrimaryProjectile(Vector3 pos, Vector3 dir, float power, Vector3 hitPoint)
     {
-        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("RicochetProjectile", pos, Quaternion.identity);
+        GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("DragonProjectile", pos, Quaternion.identity);
         createdPrimaryProjectile.transform.forward = dir;
 
         RicochetProjectileController projectileScript = createdPrimaryProjectile.GetComponent<RicochetProjectileController>();

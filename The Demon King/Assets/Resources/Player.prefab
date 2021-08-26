@@ -3171,7 +3171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 3
   shootCooldown: 0.3
   shootPoint: {fileID: 8223992597592377373}
   numberOfBouncesBeforeDestroys: 3
@@ -5853,7 +5853,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 3
   ChargedUpDamage: 4
-  shootCooldown: 1
+  shootCooldown: 0.5
   ChargeupTime: 2
   ShootAutomaticallyAt: 3
   shouldLaserDurationIncrease: 0
@@ -7232,10 +7232,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 2
   shootCooldown: 0.3
   shootPoint: {fileID: 4337079125391408957}
-  aoeRadius: 2
+  aoeRadius: 2.5
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 384
@@ -7330,10 +7330,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 2
   shootCooldown: 0.3
   shootPoint: {fileID: 5144273091646117139}
-  numberOfBouncesBeforeDestroys: 3
+  numberOfBouncesBeforeDestroys: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 384
@@ -9111,26 +9111,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4568785523227248001
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6849928038898874486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d1a4868ecf549647838990c85af2559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootCooldown: 0.3
-  shootPoint: {fileID: 4886548998357426947}
-  numberOfBouncesBeforeDestroys: 3
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!114 &4702031696571119893
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9170,9 +9150,31 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: Attack
+  - Type: 1
+    SynchronizeType: 0
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &385530215563437722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849928038898874486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootCooldown: 0.3
+  shootPoint: {fileID: 4886548998357426947}
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &6880113164058367478
 GameObject:
   m_ObjectHideFlags: 0
@@ -9490,7 +9492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 2
   ChargedUpDamage: 3
-  shootCooldown: 1
+  shootCooldown: 0.5
   ChargeupTime: 2
   ShootAutomaticallyAt: 3
   shouldLaserDurationIncrease: 0
@@ -9617,10 +9619,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 2
   shootCooldown: 0.3
   shootPoint: {fileID: 3096543207606883158}
-  aoeRadius: 2
+  aoeRadius: 1.5
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 384
@@ -9976,7 +9978,7 @@ MonoBehaviour:
   damage: 1
   shootCooldown: 0.3
   shootPoint: {fileID: 2776606519705937495}
-  aoeRadius: 2
+  aoeRadius: 1
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 384
@@ -10380,26 +10382,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!114 &4615243119392807085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7239075182171720547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbf8b13db550b60488ea2773838ed8bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootCooldown: 0.3
-  shootPoint: {fileID: 2634334833534024359}
-  aoeRadius: 2
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!114 &8105302648544116099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10412,6 +10394,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &100803370957060754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239075182171720547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootCooldown: 0.3
+  shootPoint: {fileID: 2634334833534024359}
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!95 &8460073581791981061
 Animator:
   serializedVersion: 3
@@ -10447,7 +10448,7 @@ MonoBehaviour:
   damage: 1
   shootCooldown: 0.3
   shootPoint: {fileID: 4459725887312502264}
-  numberOfBouncesBeforeDestroys: 3
+  numberOfBouncesBeforeDestroys: 1
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 384
@@ -10801,9 +10802,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 4
+  damage: 3
   ChargedUpDamage: 5
-  shootCooldown: 1
+  shootCooldown: 0.5
   ChargeupTime: 2
   ShootAutomaticallyAt: 3
   shouldLaserDurationIncrease: 1
@@ -12572,30 +12573,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &636349403005500587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8943415224705580037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 1
-  ChargedUpDamage: 2
-  shootCooldown: 1
-  ChargeupTime: 2
-  ShootAutomaticallyAt: 3
-  shouldLaserDurationIncrease: 0
-  laserExtendedDurationTime: 2
-  damageFrequency: 0.5
-  LayersForRaycastToIgnore:
-    serializedVersion: 2
-    m_Bits: 128
-  shootPoint: {fileID: 192005156663591814}
 --- !u!114 &762649469940064968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12705,6 +12682,25 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &8571111841983966972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943415224705580037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootCooldown: 0.3
+  shootPoint: {fileID: 192005156663591814}
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &9012869524705325386
 GameObject:
   m_ObjectHideFlags: 0
