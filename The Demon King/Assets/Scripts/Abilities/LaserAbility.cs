@@ -53,51 +53,34 @@ public class LaserAbility : MonoBehaviourPun
 
     private void Update()
     {
-        if (chargingUp)
-        {
-            chargeUpTimer += Time.deltaTime;
-            if (chargeUpTimer >= MaxChargeupTime)
-            {
-                laserDuration = MaxChargeupTime;
-                isFireing = true;
-                LaserLine.enabled = true;
-                chargingUp = false;
-                chargeUpTimer = 0;
-            }
-        }
+        ChargeUpLaser();
 
-        if (isFireing)
-        {
-            ShootLaser();
-            currentLaserTime += Time.deltaTime;
-            if (currentLaserTime >= laserDuration || playerHealthManager.isStunned)
-            {
-                isFireing = false;
-                LaserLine.enabled = false;
-                CancelLinerender();
-                currentLaserTime = 0;
-                CanShoot(shootCooldown);
-                damageFrequencyTimer = damageFrequency;
-            }
-        }
+        FireingLaser();
+
     }
 
     private void Ability1_performed(InputAction.CallbackContext obj)
     {
         if (canShoot)
+        {
+            chargingUp = true;
             ChargeUpLaser();
+        }
     }
 
     private void Ability1_cancelled(InputAction.CallbackContext obj)
     {
-        if (!isFireing)
+        if (!isFireing && canShoot && chargingUp)
         {
             isFireing = true;
+            canShoot = false;
             LaserLine.enabled = true;
             chargingUp = false;
-            laserDuration = chargeUpTimer;
+            if (chargeUpTimer <= .5f)
+                laserDuration = .5f;
+            else
+                laserDuration = chargeUpTimer;
             chargeUpTimer = 0;
-            CanShoot(shootCooldown);
         }
     }
 
@@ -110,7 +93,44 @@ public class LaserAbility : MonoBehaviourPun
 
     void ChargeUpLaser()
     {
-        chargingUp = true;
+        //Charge up state
+        if (chargingUp)
+        {
+            chargeUpTimer += Time.deltaTime;
+
+            //Shoot laser if max charge time was reached
+            if (chargeUpTimer >= MaxChargeupTime)
+            {
+                laserDuration = MaxChargeupTime;
+                LaserLine.enabled = true;
+                chargingUp = false;
+                canShoot = false;
+                chargeUpTimer = 0;
+                isFireing = true;
+            }
+        }
+    }
+
+    void FireingLaser()
+    {
+        //Fireing laser state
+        if (isFireing)
+        {
+            //shoot laser
+            ShootLaser();
+            currentLaserTime += Time.deltaTime;
+
+            //end laser reset its values ready for next shot
+            if (currentLaserTime >= laserDuration || playerHealthManager.isStunned)
+            {
+                isFireing = false;
+                LaserLine.enabled = false;
+                CancelLinerender();
+                currentLaserTime = 0;
+                StartCoroutine(CanShoot(shootCooldown));
+                damageFrequencyTimer = damageFrequency;
+            }
+        }
     }
 
     public void ShootLaser()
