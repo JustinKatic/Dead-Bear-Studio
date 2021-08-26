@@ -6,6 +6,8 @@ using UnityEngine;
 public class AoeExplosionProjectileController : MonoBehaviourPun
 {
     private int damage = 1;
+    private int aoeDamage = 1;
+
     private int attackerId;
     private float aoeRadius;
     [SerializeField] LayerMask damageableObjects;
@@ -43,9 +45,10 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int damage, int attackerId, float aoeRadius)
+    public void Initialize(int damage, int aoeDamage, int attackerId, float aoeRadius)
     {
         this.damage = damage;
+        this.aoeDamage = aoeDamage;
         this.attackerId = attackerId;
         this.aoeRadius = aoeRadius;
 
@@ -63,19 +66,19 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            DealDamageToPlayersAndMinions(other);
+            DealDamageToPlayersAndMinions(other, damage);
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, aoeRadius, damageableObjects);
             foreach (Collider col in colliders)
             {
-                DealDamageToPlayersAndMinions(col);
+                DealDamageToPlayersAndMinions(col, aoeDamage);
             }
             PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);
         }
     }
 
-    void DealDamageToPlayersAndMinions(Collider other)
+    void DealDamageToPlayersAndMinions(Collider other, int damage)
     {
         //stores refrence to tag collided with
         string objTag = other.transform.tag;
