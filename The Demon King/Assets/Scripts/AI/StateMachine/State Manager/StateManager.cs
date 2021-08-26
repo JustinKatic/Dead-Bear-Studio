@@ -29,9 +29,11 @@ public class StateManager : MonoBehaviourPun
     [SerializeField] protected float TimeTillNextAttack;
     [SerializeField] protected bool canMelee = false;
     [SerializeField] protected bool targetIsStunned = false;
+    [SerializeField] protected bool targetBeingDevoured = false;
+    [SerializeField] protected bool fleeing = false;
 
 
-
+    
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
