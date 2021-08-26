@@ -3217,6 +3217,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -5967,7 +5970,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Attack
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
@@ -7202,6 +7205,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -7388,6 +7394,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -9070,6 +9079,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &385530215563437722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6849928038898874486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootCooldown: 0.3
+  shootPoint: {fileID: 4886548998357426947}
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &1241169556992600606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9151,30 +9179,11 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: Attack
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!114 &385530215563437722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6849928038898874486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootCooldown: 0.3
-  shootPoint: {fileID: 4886548998357426947}
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!1 &6880113164058367478
 GameObject:
   m_ObjectHideFlags: 0
@@ -9407,7 +9416,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Attack
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
@@ -9677,6 +9686,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -10033,6 +10045,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -10311,6 +10326,25 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &100803370957060754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7239075182171720547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootCooldown: 0.3
+  shootPoint: {fileID: 2634334833534024359}
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &1357705884397259264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10379,6 +10413,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 0
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -10394,25 +10431,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &100803370957060754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7239075182171720547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootCooldown: 0.3
-  shootPoint: {fileID: 2634334833534024359}
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!95 &8460073581791981061
 Animator:
   serializedVersion: 3
@@ -10491,6 +10509,9 @@ MonoBehaviour:
   - Type: 9
     SynchronizeType: 1
     Name: Attack
+  - Type: 1
+    SynchronizeType: 1
+    Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
@@ -10866,7 +10887,7 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: Attack
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
@@ -12637,6 +12658,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8571111841983966972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8943415224705580037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ProjectileSpeed: 50
+  damage: 1
+  shootCooldown: 0.3
+  shootPoint: {fileID: 192005156663591814}
+  PrimaryProjectileLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!114 &9125713179519391656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12677,30 +12717,11 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: Attack
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: Speed
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
---- !u!114 &8571111841983966972
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8943415224705580037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3122ed7c94bfa3439bfae2808186379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ProjectileSpeed: 50
-  damage: 1
-  shootCooldown: 0.3
-  shootPoint: {fileID: 192005156663591814}
-  PrimaryProjectileLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 384
 --- !u!1 &9012869524705325386
 GameObject:
   m_ObjectHideFlags: 0
