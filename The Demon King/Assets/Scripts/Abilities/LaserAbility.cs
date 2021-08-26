@@ -165,11 +165,12 @@ public class LaserAbility : MonoBehaviourPun
             LaserLine.SetPosition(0, shootPoint.position);
             LaserLine.SetPosition(1, hit.point);
             DisplayLinerender(hit.point.x, hit.point.y, hit.point.z);
-            PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
 
 
             if (damageFrequencyTimer >= damageFrequency)
             {
+                PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
+
                 if (chargedUp)
                     DealDamageToPlayersAndMinions(hit.collider, ChargedUpDamage);
                 else

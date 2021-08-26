@@ -367,9 +367,25 @@ public class ExperienceManager : MonoBehaviourPun
     //This function is called by DemonKingEvolution script
     public void ActivateDemonKingEvolution()
     {
+        CheckEvolutionTypeForDemonKing(evolutionManager.activeEvolution.MyMinionType);
         healthManager.invulnerable = true;
-        evolutionManager.nextEvolution = CurrentActiveEvolutionBranch.DemonKingEvolution;
         evolutionManager.ChangeEvolution(evolutionManager.nextEvolution, true);
+    }
+    
+    void CheckEvolutionTypeForDemonKing(MinionType type)
+    {
+        if (type == redMinion)
+        {
+            evolutionManager.nextEvolution = red.DemonKingEvolution;
+        }
+        else if (type == greenMinion)
+        {
+            evolutionManager.nextEvolution = green.DemonKingEvolution;
+        }
+        else if (type == blueMinion)
+        {
+            evolutionManager.nextEvolution = blue.DemonKingEvolution;
+        }
     }
     #endregion
 }
