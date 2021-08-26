@@ -4,6 +4,8 @@ using UnityEngine;
 public class AoeExplosionAbility : AbilityBase
 {
     [SerializeField] float aoeRadius;
+    [SerializeField] int aoeDamage;
+
 
     [Header("LayersForRaycastToIgnore")]
     [SerializeField] private LayerMask PrimaryProjectileLayersToIgnore;
@@ -33,7 +35,7 @@ public class AoeExplosionAbility : AbilityBase
         createdPrimaryProjectile.transform.forward = dir;
 
         AoeExplosionProjectileController projectileScript = createdPrimaryProjectile.GetComponent<AoeExplosionProjectileController>();
-        projectileScript.Initialize(damage, player.id,aoeRadius);
+        projectileScript.Initialize(damage, aoeDamage, player.id, aoeRadius);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
     }
 }

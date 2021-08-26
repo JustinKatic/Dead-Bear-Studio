@@ -90,6 +90,16 @@ public class LaserAbility : MonoBehaviourPun
         if (!isFireing && canShoot && chargingUp)
         {
             SetFireingTrue();
+            PlayerSoundManager.Instance.StopRayChargeUpSound();
+
+            if (chargedUp)
+            {
+                PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
+            }
+            else
+            {
+                PlayerSoundManager.Instance.PlayCastAbilitySound();
+            }
 
             if (shouldLaserDurationIncrease && chargedUp)
             {
@@ -101,19 +111,18 @@ public class LaserAbility : MonoBehaviourPun
     }
 
 
-
-
-
-
     void ChargeUpLaser()
     {
         //Charge up state
         if (chargingUp)
         {
             chargeUpTimer += Time.deltaTime;
+            PlayerSoundManager.Instance.PlayRayChargeUpSound();
 
             if (chargeUpTimer >= ShootAutomaticallyAt)
             {
+                PlayerSoundManager.Instance.StopRayChargeUpSound();
+                PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
                 SetFireingTrue();
             }
 
@@ -165,11 +174,12 @@ public class LaserAbility : MonoBehaviourPun
             LaserLine.SetPosition(0, shootPoint.position);
             LaserLine.SetPosition(1, hit.point);
             DisplayLinerender(hit.point.x, hit.point.y, hit.point.z);
-            PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
 
 
             if (damageFrequencyTimer >= damageFrequency)
             {
+                PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
+
                 if (chargedUp)
                     DealDamageToPlayersAndMinions(hit.collider, ChargedUpDamage);
                 else

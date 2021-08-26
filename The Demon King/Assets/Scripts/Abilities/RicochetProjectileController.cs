@@ -66,11 +66,12 @@ public class RicochetProjectileController : MonoBehaviourPun
 
             PhotonNetwork.Instantiate("DragonImpactFX", transform.position, Quaternion.identity);
 
-            currentNumberOfBounces++;
             FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);
 
             if (currentNumberOfBounces >= numberOfBouncesBeforeDestroys)
                 PhotonNetwork.Destroy(gameObject);
+
+            currentNumberOfBounces++;
         }
     }
 
