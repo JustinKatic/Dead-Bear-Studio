@@ -41,6 +41,9 @@ public struct AnimationSounds
 
     [FMODUnity.EventRef]
     public string DemonKingAnnouncementSound;
+
+    [FMODUnity.EventRef]
+    public string RayChargeUpSound;
 }
 
 [System.Serializable]

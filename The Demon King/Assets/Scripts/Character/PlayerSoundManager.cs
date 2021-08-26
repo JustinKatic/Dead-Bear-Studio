@@ -14,6 +14,8 @@ public class PlayerSoundManager : MonoBehaviourPun
     FMOD.Studio.EventInstance stunnedEvent;
     FMOD.Studio.EventInstance evolveEvent;
     FMOD.Studio.EventInstance DemonKingEvolveEvent;
+    FMOD.Studio.EventInstance RayChargeUpEvent;
+
 
     private bool createNewFallingInstance = true;
     private bool UpdateFallingSoundPos = false;
@@ -29,6 +31,9 @@ public class PlayerSoundManager : MonoBehaviourPun
 
     private bool createNewDemonKingEvolveInstance = true;
     private bool UpdateDemonKingEvolveSoundPos = false;
+
+    private bool createNewRayChargeUpEventInstance = true;
+    private bool UpdateRayChargeUpEventSoundPos = false;
 
 
     CharacterController cc;
@@ -66,6 +71,8 @@ public class PlayerSoundManager : MonoBehaviourPun
             evolveEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
         if (UpdateDemonKingEvolveSoundPos)
             DemonKingEvolveEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
+        if (UpdateRayChargeUpEventSoundPos)
+            RayChargeUpEvent.set3DAttributes(FMODUnity.RuntimeUtils.To3DAttributes(gameObject));
     }
 
     //Checks if instance is currently playing a sound already
@@ -373,5 +380,44 @@ public class PlayerSoundManager : MonoBehaviourPun
         FMODUnity.RuntimeManager.PlayOneShotAttached(jumpSound, gameObject);
     }
 
+    #endregion
+
+    #region RayChargeUpEvent
+    public void PlayRayChargeUpSound()
+    {
+        if (createNewRayChargeUpEventInstance)
+        {
+            createNewRayChargeUpEventInstance = false;
+            RayChargeUpEvent = FMODUnity.RuntimeManager.CreateInstance(animationSounds.RayChargeUpSound);
+            RayChargeUpEvent.start();
+            UpdateRayChargeUpEventSoundPos = true;
+            photonView.RPC("PlayRayChargeUpSound_RPC", RpcTarget.Others, animationSounds.RayChargeUpSound);
+        }
+    }
+
+    [PunRPC]
+    void PlayRayChargeUpSound_RPC(string RayChargeUpSound)
+    {
+        RayChargeUpEvent = FMODUnity.RuntimeManager.CreateInstance(RayChargeUpSound);
+        RayChargeUpEvent.start();
+        UpdateRayChargeUpEventSoundPos = true;
+    }
+
+    public void StopRayChargeUpSound()
+    {
+        createNewRayChargeUpEventInstance = true;
+        RayChargeUpEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        RayChargeUpEvent.release();
+        UpdateRayChargeUpEventSoundPos = false;
+        photonView.RPC("StopRayChargeUpSound_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StopRayChargeUpSound_RPC()
+    {
+        RayChargeUpEvent.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+        RayChargeUpEvent.release();
+        UpdateRayChargeUpEventSoundPos = false;
+    }
     #endregion
 }

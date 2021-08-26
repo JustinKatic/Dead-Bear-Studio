@@ -90,6 +90,8 @@ public class LaserAbility : MonoBehaviourPun
         if (!isFireing && canShoot && chargingUp)
         {
             SetFireingTrue();
+            PlayerSoundManager.Instance.StopRayChargeUpSound();
+
 
             if (shouldLaserDurationIncrease && chargedUp)
             {
@@ -101,19 +103,17 @@ public class LaserAbility : MonoBehaviourPun
     }
 
 
-
-
-
-
     void ChargeUpLaser()
     {
         //Charge up state
         if (chargingUp)
         {
             chargeUpTimer += Time.deltaTime;
+            PlayerSoundManager.Instance.PlayRayChargeUpSound();
 
             if (chargeUpTimer >= ShootAutomaticallyAt)
             {
+                PlayerSoundManager.Instance.StopRayChargeUpSound();
                 SetFireingTrue();
             }
 
