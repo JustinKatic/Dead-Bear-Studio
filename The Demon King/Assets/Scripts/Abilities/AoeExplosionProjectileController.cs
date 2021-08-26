@@ -20,7 +20,6 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
     FMOD.Studio.EventInstance abilityTravellingEvent;
 
     public Rigidbody rb;
-    public GameObject impactFX;
 
     private void OnEnable()
     {

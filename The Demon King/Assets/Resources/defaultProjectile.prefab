@@ -11,13 +11,13 @@ GameObject:
   - component: {fileID: 2519547752116321798}
   - component: {fileID: 8054074559731918003}
   - component: {fileID: 5847183214079295376}
-  - component: {fileID: 2629355964429886617}
   - component: {fileID: 6020437587699947870}
   - component: {fileID: 5702969984431027922}
   - component: {fileID: 7854647913868946783}
   - component: {fileID: 8559847245418659414}
+  - component: {fileID: 5863817134555464449}
   m_Layer: 8
-  m_Name: defaultProjectile
+  m_Name: DefaultProjectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,25 +67,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 2
---- !u!114 &2629355964429886617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2324771704206079354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ad8fa8dd5b0ccb4292d51d1dd0b3050, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damageableObjects:
-    serializedVersion: 2
-    m_Bits: 1664
-  OnTriggerSound: event:/Explosion
-  AbilityTravelSound: event:/Ability1TravlingSound
-  rb: {fileID: 5847183214079295376}
-  impactFX: {fileID: 1010704642740402828, guid: 0a0c86581077b084e8b3653c4e6b0cc8, type: 3}
 --- !u!33 &6020437587699947870
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -174,6 +155,22 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &5863817134555464449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324771704206079354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6ecfbe525ebd74680a9143828f9765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTriggerSound: event:/Explosion
+  AbilityTravelSound: event:/Ability1TravlingSound
+  rb: {fileID: 5847183214079295376}
+  impactFX: {fileID: 0}
 --- !u!1001 &4974099813897098938
 PrefabInstance:
   m_ObjectHideFlags: 0
