@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BasicStateManager : StateManager
@@ -28,14 +29,16 @@ public class BasicStateManager : StateManager
                 targetHealthManager = target.GetComponent<PlayerHealthManager>();
             }
             targetIsStunned = targetHealthManager.isStunned;
+            targetBeingDevoured = targetHealthManager.beingDevoured;
         }
         else
         {
+            targetBeingDevoured = false;
             targetIsStunned = false;
         }
         
         // Logic for the switching of behaviours at runtime
-        if (targetIsStunned)
+        if (targetIsStunned || targetBeingDevoured)
         {
             SwitchToTheNextState(wanderState);
 

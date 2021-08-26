@@ -13,6 +13,14 @@ public class AttackState : State
 
     private void PlayAttackState()
     {
+        var towardsPlayer = target.transform.position - minionTransform.position;
+
+        minionTransform.rotation = Quaternion.RotateTowards(
+            minionTransform.rotation, 
+            Quaternion.LookRotation(towardsPlayer), 
+            Time.deltaTime * 180
+        );        
+        
         agent.SetDestination(target.transform.position + Vector3.one);
         
         if (CanAttack)
