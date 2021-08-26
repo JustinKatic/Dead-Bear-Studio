@@ -42,7 +42,7 @@ public class HealthManager : MonoBehaviourPun
     protected float stunnedTimer;
     protected int curAttackerId;
 
-    protected int CurrentHealth = 0;
+    public int CurrentHealth = 0;
     [HideInInspector] public bool beingDevoured = false;
     [HideInInspector] public bool canBeDevoured = false;
     [HideInInspector] public bool isStunned = false;
