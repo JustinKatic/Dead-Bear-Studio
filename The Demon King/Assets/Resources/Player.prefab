@@ -5851,9 +5851,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  shootCooldown: 3
-  MaxChargeupTime: 2
+  damage: 3
+  ChargedUpDamage: 4
+  shootCooldown: 1
+  ChargeupTime: 2
+  ShootAutomaticallyAt: 3
+  shouldLaserDurationIncrease: 0
+  laserExtendedDurationTime: 2
   damageFrequency: 0.5
   LayersForRaycastToIgnore:
     serializedVersion: 2
@@ -9483,9 +9487,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 2
+  ChargedUpDamage: 3
   shootCooldown: 1
-  MaxChargeupTime: 2
+  ChargeupTime: 2
+  ShootAutomaticallyAt: 3
+  shouldLaserDurationIncrease: 0
+  laserExtendedDurationTime: 2
   damageFrequency: 0.5
   LayersForRaycastToIgnore:
     serializedVersion: 2
@@ -10792,9 +10800,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 4
+  ChargedUpDamage: 5
   shootCooldown: 1
-  MaxChargeupTime: 2
+  ChargeupTime: 2
+  ShootAutomaticallyAt: 3
+  shouldLaserDurationIncrease: 1
+  laserExtendedDurationTime: 1
   damageFrequency: 0.5
   LayersForRaycastToIgnore:
     serializedVersion: 2
@@ -12572,8 +12584,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  ChargedUpDamage: 2
   shootCooldown: 1
-  MaxChargeupTime: 2
+  ChargeupTime: 2
+  ShootAutomaticallyAt: 3
+  shouldLaserDurationIncrease: 0
+  laserExtendedDurationTime: 2
   damageFrequency: 0.5
   LayersForRaycastToIgnore:
     serializedVersion: 2
