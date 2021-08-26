@@ -166,7 +166,10 @@ public class PlayerController : MonoBehaviourPun
             if (cc.enabled)
                 cc.Move(playerMoveVelocity * Time.deltaTime);
 
-            currentAnim.SetFloat("Speed", currentMoveSpeed);
+            if (playerInputs.magnitude >= 0.1f)
+                currentAnim.SetFloat("Speed", currentMoveSpeed);
+            else
+                currentAnim.SetFloat("Speed", 1);
 
             SetAnimInputs();
         }
