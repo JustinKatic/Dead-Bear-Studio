@@ -101,6 +101,5 @@ public class BasicStateManager : StateManager
         }
         
         base.RunStateMachine();
-    }
-    
+    } 
 }
