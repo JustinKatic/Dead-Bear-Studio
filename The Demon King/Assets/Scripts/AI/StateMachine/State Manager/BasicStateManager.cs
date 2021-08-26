@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BasicStateManager : StateManager
@@ -13,6 +14,7 @@ public class BasicStateManager : StateManager
         attackState = GetComponentInChildren<AttackState>();
         provokedState = GetComponentInChildren<ProvokedState>();
         stunnedState = GetComponentInChildren<StunnedState>();
+        fleeState = GetComponentInChildren<FleeState>();
 
         currentState = wanderState;
     }
@@ -28,14 +30,30 @@ public class BasicStateManager : StateManager
                 targetHealthManager = target.GetComponent<PlayerHealthManager>();
             }
             targetIsStunned = targetHealthManager.isStunned;
+            targetBeingDevoured = targetHealthManager.beingDevoured;
         }
         else
         {
+            targetBeingDevoured = false;
             targetIsStunned = false;
         }
-        
+
+        if (healthManager.CurrentHealth == 1)
+        {
+            fleeing = true;
+        }
+        else if (healthManager.CurrentHealth >= FleeUntilThisHealth)
+        {
+            fleeing = false;
+        }
+
         // Logic for the switching of behaviours at runtime
-        if (targetIsStunned)
+        if (healthManager.CurrentHealth <= 0)
+        {
+            SwitchToTheNextState(stunnedState);
+
+        }
+        else if (targetIsStunned)
         {
             SwitchToTheNextState(wanderState);
 
@@ -45,6 +63,12 @@ public class BasicStateManager : StateManager
             SwitchToTheNextState(stunnedState);
 
             target = null;
+        }
+        else if (fleeing && CheckIfAPlayerIsInMyChaseRadius())
+        {
+            fleeState.target = target;
+            SwitchToTheNextState(fleeState);
+
         }
         else if (healthManager.PlayerWhoShotMe != null)
         {
@@ -62,7 +86,7 @@ public class BasicStateManager : StateManager
         }
         else if (CheckIfAPlayerIsInMyChaseRadius())
         {
-            target = chaseState.target;
+            chaseState.target = target;
 
             SwitchToTheNextState(chaseState);
         }

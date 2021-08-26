@@ -12,6 +12,7 @@ public class StateManager : MonoBehaviourPun
     protected StunnedState stunnedState;
     protected AttackState attackState;
     protected ProvokedState provokedState;
+    protected FleeState fleeState;
     
     protected MinionHealthManager healthManager;
     
@@ -24,14 +25,17 @@ public class StateManager : MonoBehaviourPun
     
     protected float meleeTimer;
     protected float chaseTimer;
+    [SerializeField] protected int FleeUntilThisHealth;
     [SerializeField] protected float ChasePlayerForX;
     [SerializeField] protected bool chasing = false;
     [SerializeField] protected float TimeTillNextAttack;
     [SerializeField] protected bool canMelee = false;
     [SerializeField] protected bool targetIsStunned = false;
+    [SerializeField] protected bool targetBeingDevoured = false;
+    [SerializeField] protected bool fleeing = false;
 
 
-
+    
     void Update()
     {
         if (PhotonNetwork.IsMasterClient)
@@ -65,8 +69,7 @@ public class StateManager : MonoBehaviourPun
         {
             if (col.CompareTag("Player"))
             {
-                chaseState.target = col.gameObject;
-                target = wanderState.target;
+                target = col.gameObject;
                 wanderState.wanderPosFound = false;
                 return true;
             }
@@ -97,10 +100,8 @@ public class StateManager : MonoBehaviourPun
             {
                 chaseTimer = 0;
                 chasing = false;
-                //return true;
             }
         }
-        //return false;
     }
     
     protected bool CanAttackAfterTime()
