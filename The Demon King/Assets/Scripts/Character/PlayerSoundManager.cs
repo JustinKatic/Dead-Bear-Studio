@@ -198,7 +198,7 @@ public class PlayerSoundManager : MonoBehaviourPun
     public void PlayCastAbilitySound()
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.ShootSound, gameObject);
-        //photonView.RPC("PlayAbility1Sound_RPC", RpcTarget.Others, animationSounds.ShootSound);
+        photonView.RPC("PlayAbility1Sound_RPC", RpcTarget.Others, animationSounds.ShootSound);
     }
 
     [PunRPC]
@@ -206,6 +206,21 @@ public class PlayerSoundManager : MonoBehaviourPun
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(ShootSound, gameObject);
     }
+    #endregion
+
+    #region RayFullyChargedUpShootSound
+    public void PlayRayFullyChargedUpShootSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.RayFullyChargedUpShootSound, gameObject);
+        photonView.RPC("PlayRayFullyChargedUpShootSound_RPC", RpcTarget.Others, animationSounds.RayFullyChargedUpShootSound);
+    }
+
+    [PunRPC]
+    void PlayRayFullyChargedUpShootSound_RPC(string ShootSound)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(ShootSound, gameObject);
+    }
+
     #endregion
 
     #region Devour Sound
