@@ -329,11 +329,13 @@ public class PlayerHealthManager : HealthManager
         {
             StunVFX.SetActive(true);
             canBeDevoured = true;
+            isStunned = true;
         }
         else
         {
             StunVFX.SetActive(false);
             canBeDevoured = false;
+            isStunned = false;
         }
     }
 
@@ -344,7 +346,6 @@ public class PlayerHealthManager : HealthManager
         {
             Stun(true);
             debuffTimer.StartStunTimer(StunnedDuration);
-            isStunned = true;
             player.currentAnim.SetBool("Devouring", false);
             player.currentAnim.SetBool("Stunned", true);
             player.DisableMovement();
@@ -356,7 +357,6 @@ public class PlayerHealthManager : HealthManager
     {
         Stun(false);
         debuffTimer.StopStunTimer();
-        isStunned = false;
         player.EnableMovement();
         Heal(AmountOfHealthAddedAfterStunned);
         player.currentAnim.SetBool("Stunned", false);
