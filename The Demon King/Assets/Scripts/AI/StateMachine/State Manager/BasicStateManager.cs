@@ -10,9 +10,6 @@ public class BasicStateManager : StateManager
     {
         healthManager = GetComponent<MinionHealthManager>();
         wanderState = GetComponentInChildren<WanderState>();
-        chaseState = GetComponentInChildren<ChaseState>();
-        attackState = GetComponentInChildren<AttackState>();
-        provokedState = GetComponentInChildren<ProvokedState>();
         stunnedState = GetComponentInChildren<StunnedState>();
         fleeState = GetComponentInChildren<FleeState>();
 
@@ -21,22 +18,6 @@ public class BasicStateManager : StateManager
 
     protected override void RunStateMachine()
     {
-        //if the target has been found check if they have been stunned
-        //Assigned is stunned to a seperate bool to avoid null references
-        if(target != null)
-        {
-            if (targetHealthManager == null)
-            {
-                targetHealthManager = target.GetComponent<PlayerHealthManager>();
-            }
-            targetIsStunned = targetHealthManager.isStunned;
-            targetBeingDevoured = targetHealthManager.beingDevoured;
-        }
-        else
-        {
-            targetBeingDevoured = false;
-            targetIsStunned = false;
-        }
 
         if (healthManager.CurrentHealth == 1)
         {
@@ -53,11 +34,6 @@ public class BasicStateManager : StateManager
             SwitchToTheNextState(stunnedState);
 
         }
-        else if (targetIsStunned)
-        {
-            SwitchToTheNextState(wanderState);
-
-        }
         else if (healthManager.isStunned)
         {
             SwitchToTheNextState(stunnedState);
@@ -69,30 +45,6 @@ public class BasicStateManager : StateManager
             fleeState.target = target;
             SwitchToTheNextState(fleeState);
 
-        }
-        else if (healthManager.PlayerWhoShotMe != null)
-        {
-            provokedState.target = healthManager.PlayerWhoShotMe;
-            target = provokedState.target;
-            healthManager.PlayerWhoShotMe = null;
-            chasing = true;
-            SwitchToTheNextState(provokedState);
-        }
-        else if (CheckIfPlayerIsInMyAttackDistance())
-        {
-            attackState.target = target;
-            attackState.CanAttack = CanAttackAfterTime();
-            SwitchToTheNextState(attackState);
-        }
-        else if (CheckIfAPlayerIsInMyChaseRadius())
-        {
-            chaseState.target = target;
-
-            SwitchToTheNextState(chaseState);
-        }
-        else if (chasing && !targetIsStunned)
-        {
-            HasBeenChasingPlayerForX();
         }
         else
         {
