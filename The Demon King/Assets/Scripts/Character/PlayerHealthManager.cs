@@ -355,12 +355,15 @@ public class PlayerHealthManager : HealthManager
 
     protected override void OnBeingStunnedEnd()
     {
-        Stun(false);
-        debuffTimer.StopStunTimer();
-        player.EnableMovement();
-        Heal(AmountOfHealthAddedAfterStunned);
-        player.currentAnim.SetBool("Stunned", false);
-        PlayerSoundManager.Instance.StopStunnedSound();
+        if (photonView.IsMine)
+        {
+            Stun(false);
+            debuffTimer.StopStunTimer();
+            player.EnableMovement();
+            Heal(AmountOfHealthAddedAfterStunned);
+            player.currentAnim.SetBool("Stunned", false);
+            PlayerSoundManager.Instance.StopStunnedSound();
+        }
     }
 }
 #endregion
