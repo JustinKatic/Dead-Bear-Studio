@@ -13,6 +13,7 @@ public class DeathGround : MonoBehaviour
             pc.drowningInLava = true;
             pc.playerYVelocity = 0;
             pc.DisableMovement();
+            pc.PlayMyDeathInLavaSound();
             StartCoroutine(RespawnPlayer(other, pc));
         }
     }
