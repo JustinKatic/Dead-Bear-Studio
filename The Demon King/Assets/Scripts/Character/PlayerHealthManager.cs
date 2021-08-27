@@ -11,6 +11,8 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] protected Transform HealthBarContainer;
     [SerializeField] private GameObject ExperienceBarContainer;
 
+    [SerializeField] private GameObject rayEndVFX;
+
 
 
     [Header("Kill Cam UI")]

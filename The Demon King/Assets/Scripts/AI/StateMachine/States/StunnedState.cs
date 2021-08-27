@@ -11,7 +11,7 @@ public class StunnedState : State
 
     private void PlayStunnedState()
     {
-        anim.SetBool("Walking", false);
+        anim.SetBool("Walking", false);        
         agent.isStopped = true;
         agent.ResetPath();
     }
