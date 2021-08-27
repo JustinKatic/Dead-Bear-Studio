@@ -81,7 +81,7 @@
 	</object>
 	<object class="EventMixerMaster" id="{420b3c72-00d3-4ebc-9703-d0febb21e767}">
 		<property name="volume">
-			<value>-20.5</value>
+			<value>-17</value>
 		</property>
 		<relationship name="effectChain">
 			<destination>{52f4319d-0aba-4ac8-9bc3-087aa65332f4}</destination>
@@ -123,10 +123,14 @@
 			<destination>{97b13667-c6a5-4dfd-815c-61f094eb68fc}</destination>
 			<destination>{2864642f-af7e-4c0b-9ef7-46eb9446f39c}</destination>
 			<destination>{43b5c5a4-8ea1-4bdc-8482-a50c12b8cfa4}</destination>
+			<destination>{6ed46ee6-0c99-433f-8807-3e3e8b844f9c}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{29622a58-c0c4-412c-a040-2f7343bd86d4}" />
 	<object class="SingleSound" id="{b175e82b-8f8d-4462-b74d-18e5946b8750}">
+		<property name="volume">
+			<value>-6</value>
+		</property>
 		<relationship name="audioFile">
 			<destination>{4c2710de-816d-4d6d-b5a7-8957f7ede0bd}</destination>
 		</relationship>
@@ -152,13 +156,27 @@
 	</object>
 	<object class="FlangerEffect" id="{43b5c5a4-8ea1-4bdc-8482-a50c12b8cfa4}">
 		<property name="rate">
-			<value>0.0749999955</value>
+			<value>1.89999998</value>
 		</property>
-		<property name="delay">
-			<value>0.799999952</value>
+	</object>
+	<object class="TremoloEffect" id="{6ed46ee6-0c99-433f-8807-3e3e8b844f9c}">
+		<property name="frequency">
+			<value>15.5</value>
 		</property>
-		<property name="mix">
-			<value>100</value>
+		<property name="shape">
+			<value>0.834999979</value>
+		</property>
+		<property name="duty">
+			<value>0.935000002</value>
+		</property>
+		<property name="square">
+			<value>0.555000007</value>
+		</property>
+		<property name="phase">
+			<value>0.784999967</value>
+		</property>
+		<property name="spread">
+			<value>0.919999957</value>
 		</property>
 	</object>
 	<object class="MixerBusFader" id="{da48b25b-64d8-4a1a-a226-778b6cf94869}" />
