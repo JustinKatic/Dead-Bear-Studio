@@ -21,13 +21,14 @@ public class PlayerController : MonoBehaviourPun
 
     [Header("In Air Varaibles")]
     [SerializeField] float gravity;
+    [SerializeField] float DrowningInLavaGravity;
     public float MaxAirMoveSpeed = 5f;
     [SerializeField] float InAirAcceleration = 7f;
     [SerializeField] float InAirDrag = 2f;
     [SerializeField] float VelocityToStartFalling = -7f;
     [SerializeField] float VelocityNeededToPlayGroundSlam = -20f;
 
-    private float playerYVelocity;
+    [HideInInspector] public float playerYVelocity;
     private bool isFalling = false;
 
     [Header("Physics")]
@@ -44,12 +45,14 @@ public class PlayerController : MonoBehaviourPun
     private float _cinemachineTargetPitch;
     private Camera mainCamera;
 
+    public bool drowningInLava = false;
+
     //Input System
     [HideInInspector] public CharacterInputs CharacterInputs;
     private Vector2 playerInputs;
     private Vector2 playerLookInput;
 
-    private Vector3 playerMoveVelocity;
+    [HideInInspector] public Vector3 playerMoveVelocity;
 
     //Photon Components
     [HideInInspector] public int id;
@@ -125,7 +128,10 @@ public class PlayerController : MonoBehaviourPun
             playerLookInput = CharacterInputs.PlayerLook.Look.ReadValue<Vector2>();
 
             //Add gravity to player
-            playerYVelocity += gravity * Time.deltaTime;
+            if (!drowningInLava)
+                playerYVelocity += gravity * Time.deltaTime;
+            else
+                playerYVelocity += DrowningInLavaGravity * Time.deltaTime;
 
             AccelerateMoveSpeed();
 
@@ -327,7 +333,7 @@ public class PlayerController : MonoBehaviourPun
     public void DisableMovement()
     {
         //Run following if local player
-        if (photonView)
+        if (photonView.IsMine)
         {
             //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
