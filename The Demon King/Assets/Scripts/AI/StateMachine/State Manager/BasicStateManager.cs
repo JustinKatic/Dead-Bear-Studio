@@ -40,11 +40,10 @@ public class BasicStateManager : StateManager
 
             target = null;
         }
-        else if (fleeing && CheckIfAPlayerIsInMyChaseRadius())
+        else if (fleeing && CheckIfAPlayerIsInMyRadius())
         {
             fleeState.target = target;
             SwitchToTheNextState(fleeState);
-
         }
         else
         {

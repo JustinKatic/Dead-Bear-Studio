@@ -26,12 +26,12 @@ public class AdvancedStateManager : StateManager
             targetHealthManager = target.GetComponent<PlayerHealthManager>();
             
             targetIsStunned = targetHealthManager.isStunned;
-            targetBeingDevoured = targetHealthManager.beingDevoured;
+            targetIsRespawning = targetHealthManager.isRespawning;
         }
         else
         {
             targetHealthManager = null;
-            targetBeingDevoured = false;
+            targetIsRespawning = false;
             targetIsStunned = false;
         }
 
@@ -45,29 +45,28 @@ public class AdvancedStateManager : StateManager
         }
 
         // Logic for the switching of behaviours at runtime
-        if (healthManager.CurrentHealth <= 0)
-        {
-            SwitchToTheNextState(stunnedState);
 
-        }
-        else if (targetIsStunned)
+        //My target is stunned or being devoured so I need to wander
+        if (targetIsStunned || targetIsRespawning)
         {
             SwitchToTheNextState(wanderState);
-
         }
-        else if (healthManager.isStunned)
+        //I am in a stunned state
+        else if (healthManager.CurrentHealth <= 0)
         {
             SwitchToTheNextState(stunnedState);
 
             target = null;
         }
-        else if (fleeing && CheckIfAPlayerIsInMyChaseRadius())
+        // Health is low and a player is in my near vicinity, Flee
+        else if (fleeing && CheckIfAPlayerIsInMyRadius())
         {
             fleeState.target = target;
             SwitchToTheNextState(fleeState);
 
         }
-        else if (healthManager.PlayerWhoShotMe != null)
+        //I have been shot and I am noy currently fleeing, Provoked state
+        else if (healthManager.PlayerWhoShotMe != null && !fleeing)
         {
             provokedState.target = healthManager.PlayerWhoShotMe;
             target = provokedState.target;
@@ -75,22 +74,26 @@ public class AdvancedStateManager : StateManager
             chasing = true;
             SwitchToTheNextState(provokedState);
         }
+        //Player is in my attack range, Attack State
         else if (CheckIfPlayerIsInMyAttackDistance())
         {
             attackState.target = target;
             attackState.CanAttack = CanAttackAfterTime();
             SwitchToTheNextState(attackState);
         }
-        else if (CheckIfAPlayerIsInMyChaseRadius())
+        // Player is in my chase radius, Chase State
+        else if (CheckIfAPlayerIsInMyRadius())
         {
             chaseState.target = target;
 
             SwitchToTheNextState(chaseState);
         }
+        //Player is out of my range but I am chasing for time frame, so Keep chasing for this time
         else if (chasing && !targetIsStunned)
         {
             HasBeenChasingPlayerForX();
         }
+        //Wander
         else
         {
             target = null;
