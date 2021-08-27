@@ -8,8 +8,8 @@ using System;
 public class LaserAbility : MonoBehaviourPun
 {
     [Header("Damage")]
-    [SerializeField] private int damage;
-    [SerializeField] private int ChargedUpDamage;
+    private int damage;
+    [SerializeField] private int damageToIncreaseByEachSecond;
     [Header("Timers")]
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private float ChargeupTime = 2f;
@@ -117,6 +117,7 @@ public class LaserAbility : MonoBehaviourPun
         if (chargingUp)
         {
             chargeUpTimer += Time.deltaTime;
+
             PlayerSoundManager.Instance.PlayRayChargeUpSound();
 
             if (chargeUpTimer >= ShootAutomaticallyAt)
@@ -156,7 +157,6 @@ public class LaserAbility : MonoBehaviourPun
                 chargedUp = false;
                 CancelLinerender();
                 currentLaserTime = 0;
-                chargeUpTimer = 0;
                 StartCoroutine(CanShoot(shootCooldown));
                 damageFrequencyTimer = damageFrequency;
             }
@@ -180,10 +180,15 @@ public class LaserAbility : MonoBehaviourPun
             {
                 PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
 
-                if (chargedUp)
-                    DealDamageToPlayersAndMinions(hit.collider, ChargedUpDamage);
+                if (chargeUpTimer >= 1)
+                    damage = Mathf.FloorToInt(chargeUpTimer) + 1 * damageToIncreaseByEachSecond;
                 else
-                    DealDamageToPlayersAndMinions(hit.collider, damage);
+                    damage = damageToIncreaseByEachSecond;
+
+                Debug.Log("Time" + Mathf.FloorToInt(chargeUpTimer));
+                Debug.Log("Damage");
+
+                DealDamageToPlayersAndMinions(hit.collider, damage);
 
                 damageFrequencyTimer = 0;
             }
@@ -200,7 +205,6 @@ public class LaserAbility : MonoBehaviourPun
         LaserLine.enabled = true;
         chargingUp = false;
         canShoot = false;
-        chargeUpTimer = 0;
         isFireing = true;
     }
 
@@ -209,6 +213,7 @@ public class LaserAbility : MonoBehaviourPun
         canShoot = false;
         yield return new WaitForSeconds(timer);
         canShoot = true;
+        chargeUpTimer = 0;
     }
 
     void DealDamageToPlayersAndMinions(Collider other, int DamageToDeal)
