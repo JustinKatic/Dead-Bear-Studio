@@ -23,6 +23,9 @@ public class LaserAbility : MonoBehaviourPun
     [Header("Laser")]
     private float laserDuration = .4f;
 
+    [FMODUnity.EventRef]
+    [SerializeField] string OnHitSound;
+
 
     [Header("Layers For Raycast To Ignore")]
     [SerializeField] private LayerMask LayersForRaycastToIgnore;
@@ -179,6 +182,8 @@ public class LaserAbility : MonoBehaviourPun
             if (damageFrequencyTimer >= damageFrequency)
             {
                 PhotonNetwork.Instantiate("RayImpactFX", hit.point, Quaternion.identity);
+                FMODUnity.RuntimeManager.PlayOneShot(OnHitSound, hit.point);
+                PlayHitSound(hit.point.x, hit.point.y, hit.point.z);
 
                 if (chargeUpTimer >= 1)
                     damage = Mathf.FloorToInt(chargeUpTimer) + 1 * damageToIncreaseByEachSecond;
@@ -198,6 +203,18 @@ public class LaserAbility : MonoBehaviourPun
             LaserLine.SetPosition(0, shootPoint.position);
             LaserLine.SetPosition(1, ray.GetPoint(MaxRayRange));
         }
+    }
+
+    void PlayHitSound(float hitX, float hitY, float hitZ)
+    {
+        photonView.RPC("PlayHitSound_RPC", RpcTarget.Others, hitX, hitY, hitZ);
+    }
+
+    [PunRPC]
+    void PlayHitSound_RPC(float hitX, float hitY, float hitZ)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot(OnHitSound, new Vector3(hitX, hitY, hitZ));
+
     }
 
     void SetFireingTrue()
