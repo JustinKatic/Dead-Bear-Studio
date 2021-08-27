@@ -8026,21 +8026,12 @@ MonoBehaviour:
   TimeToEvolve: 3
   EvolveVFX: {fileID: 6562903123907493806}
   DemonKingEvolveVFX: {fileID: 6562903123907493806}
+  redMinion: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
+  greenMinion: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
+  blueMinion: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   evolutions: []
   activeEvolution: {fileID: 0}
   nextEvolution: {fileID: 0}
-  nextBranchType:
-    Level0Evolution: {fileID: 0}
-    Level1Evolution: {fileID: 0}
-    Level2Evolution: {fileID: 0}
-    DemonKingEvolution: {fileID: 0}
-    CanEvolve: 0
-    ExpBar:
-      expSlider: {fileID: 0}
-      ActiveExpBarBackground: {fileID: 0}
-      CurrentExp: 0
-      level1ExpNeeded: {fileID: 0}
-      level2ExpNeeded: {fileID: 0}
 --- !u!114 &1525102547616031452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8062,7 +8053,7 @@ MonoBehaviour:
   MaxInAirMoveSpeedScaleAmount: 0.23
   percentOfExpToLoseOnDeath: 0.2
   demonKingExpLossDeath: 0.4
-  green:
+  greenBranch:
     Level0Evolution: {fileID: 1241169556992600606}
     Level1Evolution: {fileID: 6457162108921084252}
     Level2Evolution: {fileID: 6441070933477484003}
@@ -8074,7 +8065,7 @@ MonoBehaviour:
       CurrentExp: 0
       level1ExpNeeded: {fileID: 11400000, guid: 1ada7249f16d69f4bb8e6d92541a9d5c, type: 2}
       level2ExpNeeded: {fileID: 11400000, guid: 619030b9fb67fbc44964eb7e9d50ed8e, type: 2}
-  red:
+  redBranch:
     Level0Evolution: {fileID: 1357705884397259264}
     Level1Evolution: {fileID: 7119989310909881267}
     Level2Evolution: {fileID: 3854530221507388162}
@@ -8086,7 +8077,7 @@ MonoBehaviour:
       CurrentExp: 0
       level1ExpNeeded: {fileID: 11400000, guid: 1ada7249f16d69f4bb8e6d92541a9d5c, type: 2}
       level2ExpNeeded: {fileID: 11400000, guid: 619030b9fb67fbc44964eb7e9d50ed8e, type: 2}
-  blue:
+  blueBranch:
     Level0Evolution: {fileID: 3628856104043229078}
     Level1Evolution: {fileID: 5276303982018474928}
     Level2Evolution: {fileID: 4514622077866218862}
@@ -8101,7 +8092,7 @@ MonoBehaviour:
   redMinion: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   greenMinion: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   blueMinion: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
-  CurrentActiveEvolutionBranch:
+  CurrentActiveEvolutionTypeBranch:
     Level0Evolution: {fileID: 0}
     Level1Evolution: {fileID: 0}
     Level2Evolution: {fileID: 0}
@@ -14541,6 +14532,10 @@ PrefabInstance:
     - target: {fileID: 1010704642740402828, guid: f3ef4b2efc6503141995235cdcf59a8f, type: 3}
       propertyPath: m_Name
       value: RayEndFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 1010704642740402828, guid: f3ef4b2efc6503141995235cdcf59a8f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4472922527578608847, guid: f3ef4b2efc6503141995235cdcf59a8f, type: 3}
       propertyPath: m_RootOrder

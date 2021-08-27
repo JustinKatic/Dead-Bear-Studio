@@ -13,7 +13,7 @@ public class DemonKingEvolution : MonoBehaviourPun
     public IntSO TimeRequiredToWin;
     public float ScaleAmount = 10;
     public GameObject DemonkingBeaconVFX;
-    private ExperienceManager experienceManager;
+    private EvolutionManager evolutionManager;
     private LeaderboardManager leaderboardManager;
 
     private bool hasPlayerWon = false;
@@ -23,7 +23,7 @@ public class DemonKingEvolution : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            experienceManager = GetComponent<ExperienceManager>();
+            evolutionManager = GetComponent<EvolutionManager>();
             leaderboardManager = GetComponentInChildren<LeaderboardManager>();
 
             Hashtable hash = new Hashtable();
@@ -76,14 +76,13 @@ public class DemonKingEvolution : MonoBehaviourPun
         }
     }
 
-
     public void ChangeToTheDemonKing()
     {
         if (photonView.IsMine)
         {
             AmITheDemonKing = true;
             AnnounceDemonKing();
-            experienceManager.ActivateDemonKingEvolution();
+            evolutionManager.ActivateDemonKingEvolution();
         }
     }
 
