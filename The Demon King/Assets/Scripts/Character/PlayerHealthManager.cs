@@ -25,6 +25,7 @@ public class PlayerHealthManager : HealthManager
     private DemonKingEvolution demonKingEvolution;
     private CrownHealthManager demonKingCrownHealthManager;
     [HideInInspector] public bool invulnerable = false;
+    [HideInInspector] public bool isRespawning = false;
     private PlayerTimers debuffTimer;
 
     [HideInInspector] public int PlayerId;
@@ -161,6 +162,7 @@ public class PlayerHealthManager : HealthManager
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
+            isRespawning = true;
 
             if (photonView.IsMine)
             {
@@ -201,6 +203,8 @@ public class PlayerHealthManager : HealthManager
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
+            isRespawning = false;
+
         }
     }
 

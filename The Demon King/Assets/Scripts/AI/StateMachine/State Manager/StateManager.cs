@@ -15,26 +15,29 @@ public class StateManager : MonoBehaviourPun
     protected FleeState fleeState;
     
     protected MinionHealthManager healthManager;
-    
+    protected PlayerHealthManager targetHealthManager;
+    protected GameObject target;
+
     //Chase conditions variables
-    [SerializeField] protected float RadiusDistanceToStartChasingPlayer;
-    [SerializeField] protected float AttackRange;
-    [SerializeField] protected GameObject target;
-    [SerializeField] protected PlayerHealthManager targetHealthManager;
     [SerializeField] protected LayerMask playerLayer;
     
-    protected float meleeTimer;
-    protected float chaseTimer;
-    [SerializeField] protected int FleeUntilThisHealth;
+    [Header("Chasing")]
     [SerializeField] protected float ChasePlayerForX;
-    [SerializeField] protected bool chasing = false;
+    [SerializeField] protected float RadiusDistanceToStartChasingPlayer;
+    protected float chaseTimer;
+    protected bool chasing = false;
+
+    [Header("Attacking")]
     [SerializeField] protected float TimeTillNextAttack;
-    [SerializeField] protected bool canMelee = false;
-    [SerializeField] protected bool targetIsStunned = false;
-    [SerializeField] protected bool targetBeingDevoured = false;
-    [SerializeField] protected bool fleeing = false;
-
-
+    [SerializeField] protected float AttackRange;
+    protected float meleeTimer;
+    protected bool targetIsStunned = false;
+    protected bool targetIsRespawning = false;
+    protected bool canMelee = false;
+    
+    [Header("Fleeing")]
+    [SerializeField] protected int FleeUntilThisHealth;
+    protected bool fleeing = false;
     
     void Update()
     {
@@ -51,16 +54,14 @@ public class StateManager : MonoBehaviourPun
 
     protected void SwitchToTheNextState(State nextState)
     {
-
         if (nextState != currentState)
         {
             currentState = nextState;
             chaseTimer = 0;
             meleeTimer = 0;
         }
-
     }
-    protected bool CheckIfAPlayerIsInMyChaseRadius()
+    protected bool CheckIfAPlayerIsInMyRadius()
     {
         Collider[] colsHit;
         // check with a overlap sphere around the AI
