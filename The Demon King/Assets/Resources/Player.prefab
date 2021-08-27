@@ -3143,6 +3143,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathDraconic
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -5890,6 +5891,7 @@ MonoBehaviour:
   shouldLaserDurationIncrease: 0
   laserExtendedDurationTime: 2
   damageFrequency: 0.5
+  OnHitSound: event:/Explosion
   LayersForRaycastToIgnore:
     serializedVersion: 2
     m_Bits: 128
@@ -5914,6 +5916,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/WalkAdultRay
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathRay
     ShootSound: event:/CastLaser
     FallingSound: event:/Falling
     LandingNormalSound: event:/Jump
@@ -7296,6 +7299,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathLion
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -7455,6 +7459,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathDraconic
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -7830,11 +7835,13 @@ MonoBehaviour:
   StepOffset: 0.3
   jumpHeight: 2
   gravity: -9.82
+  DrowningInLavaGravity: -0.5
   MaxAirMoveSpeed: 5
   InAirAcceleration: 13
   InAirDrag: 3
   VelocityToStartFalling: -7
   VelocityNeededToPlayGroundSlam: -20
+  playerYVelocity: 0
   pushPower: 2
   CinemachineCameraTarget: {fileID: 6504144166585825417}
   RotationSpeed: 15
@@ -7842,6 +7849,8 @@ MonoBehaviour:
   BottomClamp: -85
   CameraAngleOverride: 0
   MouseSensitivity: 15
+  drowningInLava: 0
+  playerMoveVelocity: {x: 0, y: 0, z: 0}
   id: 0
   currentAnim: {fileID: 190322414822078646}
   vCam: {fileID: 0}
@@ -7964,6 +7973,7 @@ MonoBehaviour:
   KilledByUIPanel: {fileID: 5427081095411140894}
   KilledByText: {fileID: 1955643790634158098}
   invulnerable: 0
+  isRespawning: 0
   PlayerId: 0
 --- !u!114 &2184246549117103819
 MonoBehaviour:
@@ -8133,6 +8143,7 @@ MonoBehaviour:
   animationSounds:
     WalkSound: 
     JumpSound: 
+    DeathByLavaSound: 
     ShootSound: 
     FallingSound: 
     LandingNormalSound: 
@@ -9155,6 +9166,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/WalkSlime
     JumpSound: event:/JumpSlime
+    DeathByLavaSound: event:/DeathSlime
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/LandSlime
@@ -9482,6 +9494,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathRay
     ShootSound: event:/CastLaser
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -9547,6 +9560,7 @@ MonoBehaviour:
   shouldLaserDurationIncrease: 0
   laserExtendedDurationTime: 2
   damageFrequency: 0.5
+  OnHitSound: event:/Explosion
   LayersForRaycastToIgnore:
     serializedVersion: 2
     m_Bits: 128
@@ -9646,6 +9660,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathLion
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -10117,6 +10132,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathLion
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -10411,6 +10427,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/WalkSlime
     JumpSound: event:/JumpSlime
+    DeathByLavaSound: event:/DeathSlime
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/LandSlime
@@ -10585,6 +10602,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/Walk
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathDraconic
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -10880,6 +10898,7 @@ MonoBehaviour:
   shouldLaserDurationIncrease: 1
   laserExtendedDurationTime: 1
   damageFrequency: 0.5
+  OnHitSound: event:/Explosion
   LayersForRaycastToIgnore:
     serializedVersion: 2
     m_Bits: 128
@@ -10963,6 +10982,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/WalkAdultRay
     JumpSound: event:/Jump
+    DeathByLavaSound: event:/DeathRay
     ShootSound: event:/CastLaser
     FallingSound: event:/Falling
     LandingNormalSound: event:/JumpLandSound
@@ -12754,6 +12774,7 @@ MonoBehaviour:
   ModelAnimationSounds:
     WalkSound: event:/WalkSlime
     JumpSound: event:/JumpSlime
+    DeathByLavaSound: event:/DeathSlime
     ShootSound: event:/CastFireball
     FallingSound: event:/Falling
     LandingNormalSound: event:/LandSlime

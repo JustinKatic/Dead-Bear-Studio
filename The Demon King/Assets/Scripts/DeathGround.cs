@@ -9,9 +9,19 @@ public class DeathGround : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-            other.gameObject.GetComponent<PlayerHealthManager>().Respawn(false);
-            Debug.Log("DIED BY LAVA");
+            PlayerController pc = other.GetComponent<PlayerController>();
+            pc.drowningInLava = true;
+            pc.playerYVelocity = 0;
+            pc.DisableMovement();
+            pc.PlayMyDeathInLavaSound();
+            StartCoroutine(RespawnPlayer(other, pc));
         }
+    }
+    IEnumerator RespawnPlayer(Collider other, PlayerController pc)
+    {
+        yield return new WaitForSeconds(2f);
+        pc.drowningInLava = false;        
+        other.gameObject.GetComponent<PlayerHealthManager>().Respawn(false);
     }
 }
 

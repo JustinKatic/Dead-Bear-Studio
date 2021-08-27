@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -86,8 +87,9 @@ public class Devour : MonoBehaviourPun
         RaycastHit hit;
 
         //Shoots ray from center of screen
-        if (Physics.Raycast(ray, out hit, 20, ~LayersForDevourToIgnore))
+        if (Physics.SphereCast(ray, 2, out hit, 10, ~LayersForDevourToIgnore))
         {
+
             //If raycast hits player or minion
             if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
@@ -122,6 +124,20 @@ public class Devour : MonoBehaviourPun
                 }
             }
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
+
+        //Shoots ray from center of screen
+        if (Physics.SphereCast(ray, 2, out hit, 10, ~LayersForDevourToIgnore))
+        {
+            Gizmos.DrawRay(ray);
+            Gizmos.DrawWireSphere(hit.point, 2);  
+        }
+  
     }
 
     void CallDevourOnTarget()

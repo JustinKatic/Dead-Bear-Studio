@@ -16,6 +16,9 @@ public struct AnimationSounds
     public string JumpSound;
 
     [FMODUnity.EventRef]
+    public string DeathByLavaSound;
+
+    [FMODUnity.EventRef]
     public string ShootSound;
 
     [FMODUnity.EventRef]
