@@ -79,7 +79,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""e9da84b3-841e-4001-ba0f-1b252b17cf81"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -178,7 +178,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""07254b62-9c89-4b98-bbb4-10c2e4c8a076"",
-                    ""path"": ""<Keyboard>/upArrow"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
