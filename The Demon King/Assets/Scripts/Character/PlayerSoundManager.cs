@@ -125,6 +125,20 @@ public class PlayerSoundManager : MonoBehaviourPun
     }
     #endregion
 
+    #region Death By Lava Sound
+    public void PlayDeathByLavaSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(animationSounds.DeathByLavaSound, gameObject);
+        photonView.RPC("PlayDeathByLavaSoundOneShot", RpcTarget.Others, animationSounds.DeathByLavaSound);
+    }
+
+    [PunRPC]
+    void PlayDeathByLavaSoundOneShot(string DeathByLavaSound)
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(DeathByLavaSound, gameObject);
+    }
+    #endregion
+
     #region JumpLandNormal Sound
     public void PlayJumpLandNormalSound()
     {

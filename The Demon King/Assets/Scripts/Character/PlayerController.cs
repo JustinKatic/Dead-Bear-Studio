@@ -389,4 +389,10 @@ public class PlayerController : MonoBehaviourPun
         PlayerSoundManager.Instance.PlayFallingSound();
     }
     #endregion
+
+    public void PlayMyDeathInLavaSound()
+    {
+        if (photonView.IsMine)
+            PlayerSoundManager.Instance.PlayDeathByLavaSound();
+    }
 }
