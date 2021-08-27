@@ -22,6 +22,8 @@ public class LaserAbility : MonoBehaviourPun
 
     [Header("Laser")]
     private float laserDuration = .4f;
+    [SerializeField] private GameObject rayEndVFX;
+
 
     [FMODUnity.EventRef]
     [SerializeField] string OnHitSound;
@@ -157,6 +159,7 @@ public class LaserAbility : MonoBehaviourPun
             {
                 isFireing = false;
                 LaserLine.enabled = false;
+                rayEndVFX.SetActive(false);
                 chargedUp = false;
                 CancelLinerender();
                 currentLaserTime = 0;
@@ -176,6 +179,8 @@ public class LaserAbility : MonoBehaviourPun
         {
             LaserLine.SetPosition(0, shootPoint.position);
             LaserLine.SetPosition(1, hit.point);
+            if (rayEndVFX.activeInHierarchy)
+                rayEndVFX.transform.position = hit.point;
             DisplayLinerender(hit.point.x, hit.point.y, hit.point.z);
 
 
@@ -220,6 +225,7 @@ public class LaserAbility : MonoBehaviourPun
     void SetFireingTrue()
     {
         LaserLine.enabled = true;
+        rayEndVFX.SetActive(true);
         chargingUp = false;
         canShoot = false;
         isFireing = true;
@@ -262,13 +268,16 @@ public class LaserAbility : MonoBehaviourPun
     [PunRPC]
     void DisplayLinerender_RPC(float L1X, float L1Y, float L1Z)
     {
+        rayEndVFX.SetActive(true);
         LaserLine.SetPosition(0, shootPoint.position);
         LaserLine.SetPosition(1, new Vector3(L1X, L1Y, L1Z));
+        rayEndVFX.transform.position = new Vector3(L1X, L1Y, L1Z);
         LaserLine.enabled = true;
     }
 
     void CancelLinerender()
     {
+        rayEndVFX.SetActive(false);
         photonView.RPC("CancelLinerender_RPC", RpcTarget.Others);
     }
 
