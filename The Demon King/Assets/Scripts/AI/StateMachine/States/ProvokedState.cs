@@ -11,7 +11,7 @@ public class ProvokedState : State
     
     private void PlayProvokedState()
     {
-        anim.SetBool("Walking", true);
+        anim.SetBool("Walking", true);        
         agent.SetDestination(target.transform.position);
     }
 
