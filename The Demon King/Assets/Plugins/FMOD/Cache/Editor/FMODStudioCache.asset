@@ -23,6 +23,29 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-7820022734226263306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DeathDraconic
+  m_EditorClassIdentifier: 
+  Path: event:/DeathDraconic
+  guid: ffece8f97d6e9346aff78a0d57b14f90
+  Banks:
+  - {fileID: -1129297247666470603}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-6881087495304143622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +138,29 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4563250749365945857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DeathSlime
+  m_EditorClassIdentifier: 
+  Path: event:/DeathSlime
+  guid: ef5332253df35e4b90112bb82a4c02ef
+  Banks:
+  - {fileID: -1129297247666470603}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-4166549747366194974
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,6 +207,29 @@ MonoBehaviour:
   MinDistance: 0
   MaxDistance: 0
   Length: 150857
+--- !u!114 &-3754814650754095007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Lava
+  m_EditorClassIdentifier: 
+  Path: event:/Lava
+  guid: ab7b7445f28eb84398fa9151920d29b1
+  Banks:
+  - {fileID: -1129297247666470603}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-3733507025320943933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +298,29 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
+  Length: 0
+--- !u!114 &-2592395636759068422
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DeathLion
+  m_EditorClassIdentifier: 
+  Path: event:/DeathLion
+  guid: 3af442604ce597499703adba82510d74
+  Banks:
+  - {fileID: -1129297247666470603}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
   Length: 0
 --- !u!114 &-2383880850430509776
 MonoBehaviour:
@@ -314,7 +406,7 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637656577955034979
+  lastModified: 637656692477121945
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -379,12 +471,17 @@ MonoBehaviour:
   - {fileID: -2383880850430509776}
   - {fileID: -5720328123373299369}
   - {fileID: -1546591274685910488}
+  - {fileID: -2592395636759068422}
+  - {fileID: 8644477694537471602}
+  - {fileID: -4563250749365945857}
+  - {fileID: -7820022734226263306}
+  - {fileID: -3754814650754095007}
   EditorParameters: []
   MasterBanks:
   - {fileID: -1129297247666470603}
   StringsBanks:
   - {fileID: 6276719185988951763}
-  stringsBankWriteTime: 637655959013057080
+  stringsBankWriteTime: 637656692477211671
   cacheVersion: 6
 --- !u!114 &490097900105027021
 MonoBehaviour:
@@ -493,11 +590,11 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637655959013057080
+  lastModified: 637656692477211671
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 1670
+    Value: 1874
   Exists: 1
 --- !u!114 &7349805354704615314
 MonoBehaviour:
@@ -559,6 +656,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Jump
   guid: bd88568078584a44b38e0dfcfa8a3930
+  Banks:
+  - {fileID: -1129297247666470603}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8644477694537471602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DeathRay
+  m_EditorClassIdentifier: 
+  Path: event:/DeathRay
+  guid: a85affaa7bfb274da9082535479dc5d8
   Banks:
   - {fileID: -1129297247666470603}
   IsStream: 0
