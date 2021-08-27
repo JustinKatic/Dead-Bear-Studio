@@ -277,7 +277,6 @@ public class LaserAbility : MonoBehaviourPun
 
     void CancelLinerender()
     {
-        rayEndVFX.SetActive(false);
         photonView.RPC("CancelLinerender_RPC", RpcTarget.Others);
     }
 
@@ -285,5 +284,6 @@ public class LaserAbility : MonoBehaviourPun
     void CancelLinerender_RPC()
     {
         LaserLine.enabled = false;
+        rayEndVFX.SetActive(false);
     }
 }
