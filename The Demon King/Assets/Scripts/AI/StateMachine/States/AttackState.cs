@@ -27,10 +27,13 @@ public class AttackState : State
 
         if (CanAttack)
         {
+            anim.SetBool("Attacking", true);
             target.GetComponent<PlayerHealthManager>().TakeDamage(1, 0);
             int randVfx = Random.Range(0, attackVFX.Length);
             AttackVFX(randVfx);
         }
+        anim.SetBool("Attacking", false);
+
     }
 
     void AttackVFX(int VfxToPlay)
