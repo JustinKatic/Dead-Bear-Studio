@@ -206,6 +206,7 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.Player.Enable();
             CharacterInputs.PlayerLook.Enable();
             CharacterInputs.DisplayScoreBoard.Enable();
+            CharacterInputs.EmoteWheel.Enable();
         }
     }
 
@@ -219,6 +220,7 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.Player.Disable();
             CharacterInputs.PlayerLook.Disable();
             CharacterInputs.DisplayScoreBoard.Disable();
+            CharacterInputs.EmoteWheel.Disable();
         }
     }
     #endregion
