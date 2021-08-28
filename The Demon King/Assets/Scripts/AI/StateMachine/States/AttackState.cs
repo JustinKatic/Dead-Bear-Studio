@@ -31,6 +31,10 @@ public class AttackState : State
             target.GetComponent<PlayerHealthManager>().TakeDamage(1, 0);
             int randVfx = Random.Range(0, attackVFX.Length);
             AttackVFX(randVfx);
+            if (randVfx == 0)
+                enemySoundManager.PlaySlashAttackSound();
+            else
+                enemySoundManager.PlayChompAttackSound();
         }
         anim.SetBool("Attacking", false);
 

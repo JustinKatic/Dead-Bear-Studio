@@ -11,12 +11,14 @@ public abstract class State : MonoBehaviourPun
     protected NavMeshAgent agent;
     protected Transform minionTransform;
     protected Animator anim;
-    [HideInInspector]public GameObject target;
+    [HideInInspector] public GameObject target;
+    protected EnemySoundManager enemySoundManager;
 
     private void Awake()
     {
         agent = GetComponentInParent<NavMeshAgent>();
         minionTransform = agent.GetComponent<Transform>();
-        anim = GetComponentInParent<Animator>();       
+        anim = GetComponentInParent<Animator>();
+        enemySoundManager = GetComponentInParent<EnemySoundManager>();
     }
 }
