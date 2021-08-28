@@ -62,9 +62,6 @@ public class EvolutionManager : MonoBehaviourPun
             SetStartingActiveEvolution();
             //Set player active evolution active to everyone
             EvolveIntoStartType(activeEvolution.tag);
-
-
-
         }
     }
     private void Start()

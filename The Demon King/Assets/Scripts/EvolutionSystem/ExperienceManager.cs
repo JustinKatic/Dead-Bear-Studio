@@ -152,7 +152,7 @@ public class ExperienceManager : MonoBehaviourPun
         }
         else if (minionType == blueMinion)
         {
-            CurrentActiveEvolutionTypeBranch = redBranch;
+            CurrentActiveEvolutionTypeBranch = blueBranch;
         }
     }
 
