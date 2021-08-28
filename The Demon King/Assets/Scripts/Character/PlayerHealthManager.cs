@@ -110,7 +110,8 @@ public class PlayerHealthManager : HealthManager
             return;
 
         //Remove health
-        CurrentHealth -= damage;
+        CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
+
 
         if (attackerID != 0)
         {
