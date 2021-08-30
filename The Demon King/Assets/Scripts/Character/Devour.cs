@@ -175,17 +175,4 @@ public class Devour : MonoBehaviourPun
         PlayerSoundManager.Instance.StopDevourSound();
     }
     #endregion
-
-    private void OnDrawGizmos()
-    {
-        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-
-        //Shoots ray from center of screen
-        if (Physics.SphereCast(ray, 3, out hit, 10, LayersCanDevour))
-        {
-            if (Vector3.Distance(devourPoint.position, hit.point) < devourRange)
-                Gizmos.DrawWireSphere(hit.point, 3);
-        }
-    }
 }
