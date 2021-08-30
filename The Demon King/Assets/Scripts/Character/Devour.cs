@@ -9,7 +9,7 @@ public class Devour : MonoBehaviourPun
 {
     [SerializeField] private float devourRange;
     [SerializeField] private Transform devourPoint;
-    [SerializeField] private LayerMask LayersForDevourToIgnore;
+    [SerializeField] private LayerMask LayersCanDevour;
 
     private bool IsDevouring;
     private bool isTargetPlayer = false;
@@ -87,9 +87,8 @@ public class Devour : MonoBehaviourPun
         RaycastHit hit;
 
         //Shoots ray from center of screen
-        if (Physics.SphereCast(ray, 2, out hit, 10, ~LayersForDevourToIgnore))
+        if (Physics.SphereCast(ray, 3, out hit, 10, LayersCanDevour))
         {
-
             //If raycast hits player or minion
             if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
@@ -126,19 +125,6 @@ public class Devour : MonoBehaviourPun
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
-        RaycastHit hit;
-
-        //Shoots ray from center of screen
-        if (Physics.SphereCast(ray, 2, out hit, 10, ~LayersForDevourToIgnore))
-        {
-            Gizmos.DrawRay(ray);
-            Gizmos.DrawWireSphere(hit.point, 2);  
-        }
-  
-    }
 
     void CallDevourOnTarget()
     {

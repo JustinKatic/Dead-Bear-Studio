@@ -252,6 +252,33 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Emote Wheel"",
+            ""id"": ""ea4b4911-f0f8-4057-8444-d1af11dc1fef"",
+            ""actions"": [
+                {
+                    ""name"": ""Display"",
+                    ""type"": ""Button"",
+                    ""id"": ""7ea6ccc1-11a0-4640-9afa-5758482070e9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""19f9c868-cf5f-4c3d-a699-29d19c0bf52d"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Display"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -271,6 +298,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         // DisplayScoreBoard
         m_DisplayScoreBoard = asset.FindActionMap("DisplayScoreBoard", throwIfNotFound: true);
         m_DisplayScoreBoard_DisplayScoreBoard = m_DisplayScoreBoard.FindAction("DisplayScoreBoard", throwIfNotFound: true);
+        // Emote Wheel
+        m_EmoteWheel = asset.FindActionMap("Emote Wheel", throwIfNotFound: true);
+        m_EmoteWheel_Display = m_EmoteWheel.FindAction("Display", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -463,6 +493,39 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         }
     }
     public DisplayScoreBoardActions @DisplayScoreBoard => new DisplayScoreBoardActions(this);
+
+    // Emote Wheel
+    private readonly InputActionMap m_EmoteWheel;
+    private IEmoteWheelActions m_EmoteWheelActionsCallbackInterface;
+    private readonly InputAction m_EmoteWheel_Display;
+    public struct EmoteWheelActions
+    {
+        private @CharacterInputs m_Wrapper;
+        public EmoteWheelActions(@CharacterInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Display => m_Wrapper.m_EmoteWheel_Display;
+        public InputActionMap Get() { return m_Wrapper.m_EmoteWheel; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(EmoteWheelActions set) { return set.Get(); }
+        public void SetCallbacks(IEmoteWheelActions instance)
+        {
+            if (m_Wrapper.m_EmoteWheelActionsCallbackInterface != null)
+            {
+                @Display.started -= m_Wrapper.m_EmoteWheelActionsCallbackInterface.OnDisplay;
+                @Display.performed -= m_Wrapper.m_EmoteWheelActionsCallbackInterface.OnDisplay;
+                @Display.canceled -= m_Wrapper.m_EmoteWheelActionsCallbackInterface.OnDisplay;
+            }
+            m_Wrapper.m_EmoteWheelActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Display.started += instance.OnDisplay;
+                @Display.performed += instance.OnDisplay;
+                @Display.canceled += instance.OnDisplay;
+            }
+        }
+    }
+    public EmoteWheelActions @EmoteWheel => new EmoteWheelActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -480,5 +543,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     public interface IDisplayScoreBoardActions
     {
         void OnDisplayScoreBoard(InputAction.CallbackContext context);
+    }
+    public interface IEmoteWheelActions
+    {
+        void OnDisplay(InputAction.CallbackContext context);
     }
 }

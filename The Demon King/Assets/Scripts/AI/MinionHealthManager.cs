@@ -49,7 +49,7 @@ public class MinionHealthManager : HealthManager
                 return;
 
             //Remove health
-            CurrentHealth -= damage;
+            CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
             //Reset health regen timer
             healthRegenTimer = TimeBeforeHealthRegen;
 
