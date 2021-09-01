@@ -213,6 +213,7 @@ public class EvolutionManager : MonoBehaviourPun
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
         playerHealthManager.SetHealth(activeEvolution.MaxHealth);
+        playerHealthManager.healthRegenTimer = playerHealthManager.timeForHealthRegenToActivate;
     }
 
     void Evolve(string currentModelsTag, string nextModelsTag)
