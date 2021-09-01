@@ -36,8 +36,8 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected GameObject StunVFX;
 
 
-    protected float healthRegenTimer = 3f;
-    protected float timeForHealthRegenToActivate = 8f;
+    public float healthRegenTimer = 0f;
+    public float timeForHealthRegenToActivate = 8f;
 
 
     protected float healthRegenTickrate = .5f;
