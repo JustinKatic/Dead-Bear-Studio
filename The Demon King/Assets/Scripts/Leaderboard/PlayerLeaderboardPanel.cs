@@ -6,16 +6,16 @@ using UnityEngine.UI;
 
 public class PlayerLeaderboardPanel : MonoBehaviour
 {
-    public TextMeshProUGUI PlayerName;
-    public TextMeshProUGUI TimeSpentAsDemonKing;
+    public TextMeshProUGUI PlayerNameText;
+    public TextMeshProUGUI DemonKingScoreText;
     private Slider slider;
-    public IntSO TimeRequiredToWin;
+    public IntSO DemonKingScoreRequiredToWin;
     public Image CurrentEvolutionImg;
 
     private void Awake()
     {
         slider = GetComponent<Slider>();
-        slider.maxValue = TimeRequiredToWin.value;
+        slider.maxValue = DemonKingScoreRequiredToWin.value;
         slider.value = 0;
     }
 

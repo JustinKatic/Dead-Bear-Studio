@@ -22,6 +22,8 @@ public class HealthManager : MonoBehaviourPun
 
     [Header("Evolution Stats")]
     public int MyExperienceWorth = 2;
+    public int myScoreWorth = 5;
+
     [HideInInspector] public MinionType MyMinionType;
 
     [Header("healthBar Health UI IMG")]
@@ -36,7 +38,7 @@ public class HealthManager : MonoBehaviourPun
 
     protected float healthRegenTimer = 3f;
     protected float timeForHealthRegenToActivate = 8f;
-    
+
 
     protected float healthRegenTickrate = .5f;
     protected float healthRegenTickrateTimer = 0f;

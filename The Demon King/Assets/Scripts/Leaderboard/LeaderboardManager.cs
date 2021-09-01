@@ -10,7 +10,7 @@ using UnityEngine.UI;
 struct LeaderBoardList
 {
     public string PlayerNickName;
-    public float TimeSpentAsDemonKing;
+    public int DemonKingScore;
     public Image EvolutionImg;
 }
 
@@ -98,7 +98,7 @@ public class LeaderboardManager : MonoBehaviourPun
             //get players name
             dataToEnterIntoLeaderboardList.PlayerNickName = player.NickName;
             //get players time as demon king
-            dataToEnterIntoLeaderboardList.TimeSpentAsDemonKing = (float)player.CustomProperties["TimeAsDemonKing"];
+            dataToEnterIntoLeaderboardList.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
 
             dataToEnterIntoLeaderboardList.EvolutionImg = GetImage(GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
             //Add info into leaderboard list
@@ -106,16 +106,16 @@ public class LeaderboardManager : MonoBehaviourPun
         }
 
         //Sort leader board list by time spent as demon king and store in sorted leader board list
-        List<LeaderBoardList> sortedLeaderboardList = leaderBoardList.OrderByDescending(o => o.TimeSpentAsDemonKing).ToList();
+        List<LeaderBoardList> sortedLeaderboardList = leaderBoardList.OrderByDescending(o => o.DemonKingScore).ToList();
 
         //populate GUI slots with each players name and time as demon king using sorted list
         int i = 0;
         foreach (LeaderBoardList player in sortedLeaderboardList)
         {
             playerLeaderboardSlot[i].gameObject.SetActive(true);
-            playerLeaderboardSlot[i].PlayerName.text = player.PlayerNickName;
-            playerLeaderboardSlot[i].TimeSpentAsDemonKing.text = FormatTime(Mathf.Round(player.TimeSpentAsDemonKing));
-            playerLeaderboardSlot[i].UpdateSliderValue((int)Mathf.Round(player.TimeSpentAsDemonKing));
+            playerLeaderboardSlot[i].PlayerNameText.text = player.PlayerNickName;
+            playerLeaderboardSlot[i].DemonKingScoreText.text = player.DemonKingScore.ToString();
+            playerLeaderboardSlot[i].UpdateSliderValue(player.DemonKingScore);
             playerLeaderboardSlot[i].CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
             i++;
         }

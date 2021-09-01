@@ -10,7 +10,9 @@ public class DemonKingEvolution : MonoBehaviourPun
     [HideInInspector] public bool AmITheDemonKing = false;
 
     public float timeSpentAsDemonKing = 0;
-    public IntSO TimeRequiredToWin;
+    public int DemonKingScore;
+    public IntSO DemonKingScoreRequiredToWin;
+
     public float ScaleAmount = 10;
     public GameObject DemonkingBeaconVFX;
     private EvolutionManager evolutionManager;
@@ -26,11 +28,12 @@ public class DemonKingEvolution : MonoBehaviourPun
             evolutionManager = GetComponent<EvolutionManager>();
             leaderboardManager = GetComponentInChildren<LeaderboardManager>();
 
-            Hashtable hash = new Hashtable();
-            hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+            Hashtable DemonKingScoreHash = new Hashtable();
+            DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
         }
     }
+
 
     private void Update()
     {
@@ -39,13 +42,9 @@ public class DemonKingEvolution : MonoBehaviourPun
             if (!hasPlayerWon)
             {
                 if (AmITheDemonKing)
-                {
                     timeSpentAsDemonKing += Time.deltaTime;
-                    Hashtable hash = new Hashtable();
-                    hash.Add("TimeAsDemonKing", timeSpentAsDemonKing);
-                    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-                }
-                if (timeSpentAsDemonKing >= TimeRequiredToWin.value)
+
+                if (DemonKingScore >= DemonKingScoreRequiredToWin.value)
                 {
                     hasPlayerWon = true;
 
@@ -60,20 +59,32 @@ public class DemonKingEvolution : MonoBehaviourPun
         }
     }
 
+    public void UpdateDemonKingScore(int AmountToIncreaseScoreBy)
+    {
+        DemonKingScore += AmountToIncreaseScoreBy;
+        Hashtable DemonKingScoreHash = new Hashtable();
+        DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
+    }
+
     void DisplayLeaderboardOnWin(GameObject player)
     {
-        player.GetPhotonView().RPC("DisplayLeaderboardOnWin", RpcTarget.All);
+        player.GetPhotonView().RPC("DisplayLeaderboardOnWin_RPC", RpcTarget.All);
     }
 
     [PunRPC]
-    void DisplayLeaderboardOnWin()
+    void DisplayLeaderboardOnWin_RPC()
     {
         if (photonView.IsMine)
         {
-            leaderboardManager.leaderboardEnabed = true;
-            leaderboardManager.DidAWinOccur = true;
-            leaderboardManager.DisplayLeaderboard();
+            Invoke("DisplayEndGameLeaderboard", 1);
         }
+    }
+    void DisplayEndGameLeaderboard()
+    {
+        leaderboardManager.leaderboardEnabed = true;
+        leaderboardManager.DidAWinOccur = true;
+        leaderboardManager.DisplayLeaderboard();
     }
 
     public void ChangeToTheDemonKing()
@@ -85,6 +96,7 @@ public class DemonKingEvolution : MonoBehaviourPun
             evolutionManager.ActivateDemonKingEvolution();
         }
     }
+
 
 
     public void AnnounceDemonKing()

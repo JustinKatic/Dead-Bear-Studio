@@ -168,6 +168,11 @@ public class Devour : MonoBehaviourPun
         {
             experienceManager.AddExpereince(hitHealthManager.MyMinionType, hitHealthManager.MyExperienceWorth);
         }
+
+        if (demonKingEvolution.AmITheDemonKing)
+        {
+            demonKingEvolution.UpdateDemonKingScore(hitHealthManager.myScoreWorth);
+        }
         //reset the target to null
         targetBeingDevouredHealthManager = null;
         hitHealthManager = null;
