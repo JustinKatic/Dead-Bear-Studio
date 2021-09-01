@@ -247,7 +247,7 @@ public class LaserAbility : MonoBehaviourPun
         if (objTag.Equals("Player"))
         {
             //tell the player who was hit to take damage
-            PlayerHealthManager playerHealth = other.GetComponent<PlayerHealthManager>();
+            PlayerHealthManager playerHealth = other.GetComponentInParent<PlayerHealthManager>();
             if (playerHealth.PlayerId != player.id)
                 playerHealth.TakeDamage(DamageToDeal, player.id);
         }
@@ -255,7 +255,7 @@ public class LaserAbility : MonoBehaviourPun
         else if (objTag.Equals("Minion"))
         {
             //tell the minion who was hit to take damage
-            MinionHealthManager minionHealth = other.gameObject.GetComponent<MinionHealthManager>();
+            MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(DamageToDeal, player.id);
         }
     }

@@ -69,7 +69,7 @@ public class StateManager : MonoBehaviourPun
 
         foreach (Collider col in colsHit)
         {
-            if (col.CompareTag("Player"))
+            if (col.CompareTag("PlayerParent"))
             {
                 target = col.gameObject;
                 wanderState.wanderPosFound = false;

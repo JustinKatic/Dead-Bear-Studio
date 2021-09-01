@@ -66,9 +66,12 @@ public class EvolutionManager : MonoBehaviourPun
     }
     private void Start()
     {
-        PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
-        playerController.currentAnim = activeEvolution.animator;
-        playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
+        if (photonView.IsMine)
+        {
+            PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
+            playerController.currentAnim = activeEvolution.animator;
+            playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
+        }
     }
     #endregion
 

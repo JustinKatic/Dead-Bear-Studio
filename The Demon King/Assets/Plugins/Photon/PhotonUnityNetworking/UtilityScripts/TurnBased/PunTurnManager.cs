@@ -410,7 +410,8 @@ namespace Photon.Pun.UtilityScripts
         /// <summary>
         /// Sets the player's finished turn (in the ROOM properties)
         /// </summary>
-        /// <param name="player">Player Reference</param>
+        /// <param name=
+        /// >Player Reference</param>
         /// <param name="turn">Turn Index</param>
         public static void SetFinishedTurn(this Player player, int turn)
         {

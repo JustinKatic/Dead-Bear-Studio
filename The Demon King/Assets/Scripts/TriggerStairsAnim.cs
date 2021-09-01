@@ -9,7 +9,7 @@ public class TriggerStairsAnim : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && triggered == false)
+        if (other.tag == "PlayerParent" && triggered == false)
         {
             anim.Play("RisingStairs");
             triggered = true;

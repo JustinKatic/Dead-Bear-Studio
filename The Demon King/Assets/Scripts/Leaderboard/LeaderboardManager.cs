@@ -5,6 +5,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Linq;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 
 struct LeaderBoardList
@@ -19,6 +21,9 @@ public class LeaderboardManager : MonoBehaviourPun
 {
     PlayerController playerController;
     public GameObject LeaderBoardHUD;
+
+    public int DemonKingScore;
+    public IntSO DemonKingScoreRequiredToWin;
 
     List<LeaderBoardList> leaderBoardList = new List<LeaderBoardList>();
     public List<PlayerLeaderboardPanel> playerLeaderboardSlot = new List<PlayerLeaderboardPanel>();
@@ -37,6 +42,11 @@ public class LeaderboardManager : MonoBehaviourPun
 
     [HideInInspector] public bool leaderboardEnabed = false;
 
+    public GameObject[] players;
+    bool findingPlayers = true;
+
+    int numberOfPlayerToDisplay = 2;
+
 
     private Image GetImage(MinionType minionType)
     {
@@ -50,6 +60,7 @@ public class LeaderboardManager : MonoBehaviourPun
             return null;
     }
 
+
     private void Start()
     {
         if (photonView.IsMine)
@@ -57,40 +68,85 @@ public class LeaderboardManager : MonoBehaviourPun
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
             playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
+
+            Hashtable DemonKingScoreHash = new Hashtable();
+            DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
+
+            players = GameObject.FindGameObjectsWithTag("PlayerParent");
+        }
+    }
+
+    private void Update()
+    {
+        if (photonView.IsMine)
+        {
+            if (findingPlayers)
+            {
+                players = GameObject.FindGameObjectsWithTag("PlayerParent");
+                if (players.Length == PhotonNetwork.PlayerList.Length)
+                {
+                    findingPlayers = false;
+                    Invoke("UpdateLeaderboard", 1);
+                }
+            }
         }
     }
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        leaderboardEnabed = true;
-        DisplayLeaderboard();
+        for (int i = 0; i < PhotonNetwork.PlayerList.Count(); i++)
+        {
+            playerLeaderboardSlot[i].gameObject.SetActive(true);
+        }
     }
 
     private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        if (!DidAWinOccur)
+        for (int i = numberOfPlayerToDisplay + 1; i <= PhotonNetwork.PlayerList.Count(); i++)
         {
-            leaderboardEnabed = false;
-            LeaderBoardHUD.SetActive(false);
+            playerLeaderboardSlot[i].gameObject.SetActive(false);
         }
     }
 
-    public string FormatTime(float time)
+    public void UpdateDemonKingScore(int AmountToIncreaseScoreBy)
     {
-        int minutes = (int)time / 60;
-        int seconds = (int)time - 60 * minutes;
-        return string.Format("{0:00}:{1:00}", minutes, seconds);
+        DemonKingScore += AmountToIncreaseScoreBy;
+        Hashtable DemonKingScoreHash = new Hashtable();
+        DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
+
+        foreach (var player in players)
+        {
+            UpdateLeadboardNetworked(player);
+        }
     }
 
-    public void DisplayLeaderboard()
-    {
-        if (leaderboardEnabed == false)
-            return;
 
+    void UpdateLeadboardNetworked(GameObject player)
+    {
+        player.GetPhotonView().RPC("UpdateLeadboardNetworked_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void UpdateLeadboardNetworked_RPC()
+    {
+        if (photonView.IsMine)
+            Invoke("UpdateLeaderboardInvoke", .5f);
+    }
+
+    void UpdateLeaderboardInvoke()
+    {
+        UpdateLeaderboard();
+    }
+
+
+    public void UpdateLeaderboard()
+    {
         //Clear current leaderboard data
         leaderBoardList.Clear();
 
-        LeaderBoardHUD.SetActive(true);
+        Debug.Log("Updating leaderboard");
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
@@ -112,7 +168,9 @@ public class LeaderboardManager : MonoBehaviourPun
         int i = 0;
         foreach (LeaderBoardList player in sortedLeaderboardList)
         {
-            playerLeaderboardSlot[i].gameObject.SetActive(true);
+            if (i <= numberOfPlayerToDisplay)
+                playerLeaderboardSlot[i].gameObject.SetActive(true);
+
             playerLeaderboardSlot[i].PlayerNameText.text = player.PlayerNickName;
             playerLeaderboardSlot[i].DemonKingScoreText.text = player.DemonKingScore.ToString();
             playerLeaderboardSlot[i].UpdateSliderValue(player.DemonKingScore);
@@ -120,15 +178,12 @@ public class LeaderboardManager : MonoBehaviourPun
             i++;
         }
 
-
         //Display the leaderboard
 
         if (DidAWinOccur)
         {
             StartCoroutine(ReturnToLobby());
         }
-        else
-            Invoke("DisplayLeaderboard", 1);
     }
 
     IEnumerator ReturnToLobby()
@@ -142,5 +197,14 @@ public class LeaderboardManager : MonoBehaviourPun
             Destroy(NetworkManager.instance.gameObject);
             PhotonNetwork.LoadLevel("Menu");
         }
+    }
+
+
+
+    public string FormatTime(float time)
+    {
+        int minutes = (int)time / 60;
+        int seconds = (int)time - 60 * minutes;
+        return string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 }

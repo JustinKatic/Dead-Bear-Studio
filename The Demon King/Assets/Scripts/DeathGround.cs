@@ -7,7 +7,7 @@ public class DeathGround : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.tag == "PlayerParent")
         {
             PlayerController pc = other.GetComponent<PlayerController>();
             pc.drowningInLava = true;

@@ -24,6 +24,7 @@ public class Devour : MonoBehaviourPun
     private PlayerTimers debuffTimer;
 
     DemonKingEvolution demonKingEvolution;
+    private LeaderboardManager leaderboardManager;
 
     #region Start Up
     private void Awake()
@@ -39,7 +40,7 @@ public class Devour : MonoBehaviourPun
             debuffTimer = GetComponentInChildren<PlayerTimers>();
 
             demonKingEvolution = GetComponent<DemonKingEvolution>();
-
+            leaderboardManager = GetComponentInChildren<LeaderboardManager>();
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
         }
@@ -90,7 +91,7 @@ public class Devour : MonoBehaviourPun
         if (Physics.SphereCast(ray, 3, out hit, 10, LayersCanDevour))
         {
             //If raycast hits player or minion
-            if (hit.transform.CompareTag("Player") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
+            if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
                     return;
@@ -129,7 +130,7 @@ public class Devour : MonoBehaviourPun
     void CallDevourOnTarget()
     {
         //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-        if (targetBeingDevouredHealthManager.gameObject.tag == "Player")
+        if (targetBeingDevouredHealthManager.gameObject.tag == "PlayerParent")
         {
             isTargetPlayer = true;
             targetBeingDevouredHealthManager.OnDevour(playerController.id);
@@ -171,7 +172,7 @@ public class Devour : MonoBehaviourPun
 
         if (demonKingEvolution.AmITheDemonKing)
         {
-            demonKingEvolution.UpdateDemonKingScore(hitHealthManager.myScoreWorth);
+            leaderboardManager.UpdateDemonKingScore(hitHealthManager.myScoreWorth);
         }
         //reset the target to null
         targetBeingDevouredHealthManager = null;
