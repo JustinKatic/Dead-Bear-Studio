@@ -15,10 +15,9 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
 
 
-    [SerializeField] private float devourTime = 3;
     [SerializeField] private float stunnedDuration = 3;
 
-    public float DevourTime { get { return devourTime; } private set { devourTime = value; } }
+    public float TimeTakenToBeDevoured;
     public float StunnedDuration { get { return stunnedDuration; } private set { stunnedDuration = value; } }
 
     [Header("Evolution Stats")]
@@ -29,16 +28,20 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected Image healthBarPrefab;
 
     [Header("Overhead healthBar Hud")]
-    [SerializeField] protected Transform HealthBarContainerOverhead;
     [SerializeField] protected Canvas overheadHealthBar;
 
     [Header("VFX Effects")]
     [SerializeField] protected GameObject StunVFX;
 
 
-    protected List<Image> healthBars = new List<Image>();
-    protected List<Image> healthBarsOverhead = new List<Image>();
     protected float healthRegenTimer = 3f;
+    protected float timeForHealthRegenToActivate = 8f;
+    
+
+    protected float healthRegenTickrate = .5f;
+    protected float healthRegenTickrateTimer = 0f;
+
+
     protected float stunnedTimer;
     protected int curAttackerId;
 
@@ -47,10 +50,13 @@ public class HealthManager : MonoBehaviourPun
     [HideInInspector] public bool canBeDevoured = false;
     [HideInInspector] public bool isStunned = false;
 
+    protected float currentHealthOffset = 0;
+    [SerializeField] protected float healthOffsetTime = 5;
+
     protected IEnumerator myDevourCo;
 
     #region Update Loops
-    private void Update()
+    virtual protected void Update()
     {
         //Run following if local player
         if (photonView.IsMine)
@@ -71,13 +77,17 @@ public class HealthManager : MonoBehaviourPun
             if (beingDevoured || isStunned)
                 return;
             //Heal every X seconds if not at max health
-            if (CurrentHealth < MaxHealth)
+            if ((healthRegenTimer < timeForHealthRegenToActivate) && (!beingDevoured || !isStunned))
             {
-                healthRegenTimer -= Time.deltaTime;
-                if (healthRegenTimer <= 0)
+                healthRegenTimer += Time.deltaTime;
+            }
+            if (CurrentHealth < MaxHealth && healthRegenTimer >= timeForHealthRegenToActivate)
+            {
+                healthRegenTickrateTimer += Time.deltaTime;
+                if (healthRegenTickrateTimer >= healthRegenTickrate)
                 {
-                    if (!beingDevoured || !isStunned)
-                        Heal(1);
+                    Heal(1);
+                    healthRegenTickrateTimer = 0;
                 }
             }
         }
@@ -101,7 +111,7 @@ public class HealthManager : MonoBehaviourPun
         {
             OnBeingDevourStart();
 
-            yield return new WaitForSeconds(DevourTime);
+            yield return new WaitForSeconds(TimeTakenToBeDevoured);
 
             OnBeingDevourEnd(attackerID);
         }
@@ -157,33 +167,5 @@ public class HealthManager : MonoBehaviourPun
     {
 
     }
-    protected void FillBarsOfHealth(int currentHealth, List<Image> bar)
-    {
-        for (int i = 0; i < MaxHealth; i++)
-        {
-            //Change health bar red if the bar we are looking at is < currentHealth
-            if (i < currentHealth)
-                bar[i].color = Color.red;
-            //Change health bar transparent if the bar we are looking at is > currentHealth
-            else
-                bar[i].color = new Color(255, 0, 0, 0);
-        }
-    }
-    protected void AddImagesToHealthBar(List<Image> bar, Transform barType, int maxHealthValue)
-    {
-        foreach (Image healthBar in bar)
-        {
-            Destroy(healthBar.gameObject);
-        }
-        bar.Clear();
-
-        //Adds additional health bars to playerhealthBarContainer.
-        for (int i = 0; i < maxHealthValue; i++)
-        {
-            Image healthBar = Instantiate(healthBarPrefab, barType);
-            bar.Add(healthBar);
-        }
-    }
-
     #endregion
 }

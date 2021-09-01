@@ -18,15 +18,32 @@ public class MinionHealthManager : HealthManager
     private Canvas hudCanvas;
     private NavMeshAgent agent;
 
+    public Image overheadHudHealthbarImg;
+    private Material OverheadHealthBarMat;
+
     #region StartUp
     void Awake()
     {
+        OverheadHealthBarMat = Instantiate(overheadHudHealthbarImg.material);
+        overheadHudHealthbarImg.material = OverheadHealthBarMat;
+
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();
         RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         SetAIHealthValues(MaxHealth);
         agent = GetComponent<NavMeshAgent>();
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        if (currentHealthOffset > 0)
+        {
+            currentHealthOffset -= healthOffsetTime * Time.deltaTime;
+            OverheadHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
+        }
     }
     #endregion
 
@@ -42,19 +59,22 @@ public class MinionHealthManager : HealthManager
         if (photonView.IsMine)
         {
             //Return if already being devoured
-            if (beingDevoured)
+            if (beingDevoured || CurrentHealth <= 0)
                 return;
 
-            if (CurrentHealth <= 0)
-                return;
+            if (CurrentHealth - damage <= 0)
+                currentHealthOffset = damage - (CurrentHealth - damage) * -1;
+            else
+                currentHealthOffset = damage;
+
 
             //Remove health
             CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
             //Reset health regen timer
-            healthRegenTimer = TimeBeforeHealthRegen;
+            healthRegenTimer = 0;
 
             //Updates this charcters status bar on all players in network
-            UpdateHealthBar(CurrentHealth);
+            UpdateHealthBar(CurrentHealth, currentHealthOffset);
 
             PlayerWhoShotMe = GameManager.instance.GetPlayer(attackerID).gameObject;
 
@@ -68,8 +88,7 @@ public class MinionHealthManager : HealthManager
         //Only running on local player
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
         //Updates this charcters health bars on all players in network
-        UpdateHealthBar(CurrentHealth);
-        healthRegenTimer = TimeBeforeHealthRegen;
+        UpdateHealthBar(CurrentHealth, 0);
     }
 
     #endregion
@@ -117,7 +136,7 @@ public class MinionHealthManager : HealthManager
             if (PhotonNetwork.IsMasterClient)
             {
                 CurrentHealth = MaxHealth;
-                UpdateHealthBar(CurrentHealth);
+                UpdateHealthBar(CurrentHealth, 0);
             }
             myModel.SetActive(true);
             col.enabled = true;
@@ -177,30 +196,30 @@ public class MinionHealthManager : HealthManager
     #region HealthBar
     void SetAIHealthValues(int MaxHealthValue)
     {
-        photonView.RPC("SetAIHealth_RPC", RpcTarget.All, MaxHealthValue);
+        photonView.RPC("SetHealth_RPC", RpcTarget.All, MaxHealthValue);
     }
 
     [PunRPC]
-    protected void SetAIHealth_RPC(int MaxHealthValue)
+    protected void SetHealth_RPC(int MaxHealthValue)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
-        //Function in Health Manager
-        AddImagesToHealthBar(healthBarsOverhead, HealthBarContainerOverhead, MaxHealthValue);
-
-        UpdateHealthBar(CurrentHealth);
+        OverheadHealthBarMat.SetFloat("_MaxHealth", MaxHealth);
+        UpdateHealthBar(CurrentHealth, 0);
     }
 
-    void UpdateHealthBar(int CurrentHealth)
+    void UpdateHealthBar(int CurrentHealth, float healthOffset)
     {
-        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth);
+        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth, healthOffset);
     }
 
     [PunRPC]
-    public void UpdateHealthBar_RPC(int CurrentHealth)
+    public void UpdateHealthBar_RPC(int CurrentHealth, float healthOffset)
     {
-        //Function in Health Manager
-        FillBarsOfHealth(CurrentHealth, healthBarsOverhead);
+        OverheadHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
+        if (!photonView.IsMine)
+            currentHealthOffset += healthOffset;
+
     }
     #endregion
 }

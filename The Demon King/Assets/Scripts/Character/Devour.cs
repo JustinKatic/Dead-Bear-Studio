@@ -109,11 +109,11 @@ public class Devour : MonoBehaviourPun
                         targetBeingDevouredHealthManager = hit.collider.gameObject.GetComponent<HealthManager>();
 
                         PlayerSoundManager.Instance.PlayDevourSound();
-                        debuffTimer.StartDevourTimer(healthManager.DevourTime);
+                        debuffTimer.StartDevourTimer(targetBeingDevouredHealthManager.TimeTakenToBeDevoured);
 
                         CallDevourOnTarget();
 
-                        yield return new WaitForSeconds(healthManager.DevourTime);
+                        yield return new WaitForSeconds(targetBeingDevouredHealthManager.TimeTakenToBeDevoured);
 
                         if (!healthManager.isStunned)
                         {

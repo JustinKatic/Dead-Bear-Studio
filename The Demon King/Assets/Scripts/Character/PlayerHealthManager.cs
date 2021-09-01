@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using UnityEngine.UI;
 
 
 public class PlayerHealthManager : HealthManager
@@ -12,7 +13,6 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] private GameObject ExperienceBarContainer;
 
     [SerializeField] private GameObject rayEndVFX;
-
 
 
     [Header("Kill Cam UI")]
@@ -32,11 +32,25 @@ public class PlayerHealthManager : HealthManager
 
     [HideInInspector] public int PlayerId;
 
+    public Image overheadHudHealthbarImg;
+    private Material OverheadHealthBarMat;
+
+    public Image PlayerHudHealthBarImg;
+    private Material playerHudHealthBarMat;
+
+    [SerializeField] private Slider healthRegenTimerSlider;
+
 
     #region Startup
     void Awake()
     {
         player = GetComponent<PlayerController>();
+
+        OverheadHealthBarMat = Instantiate(overheadHudHealthbarImg.material);
+        overheadHudHealthbarImg.material = OverheadHealthBarMat;
+
+        playerHudHealthBarMat = Instantiate(PlayerHudHealthBarImg.material);
+        PlayerHudHealthBarImg.material = playerHudHealthBarMat;
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -52,6 +66,7 @@ public class PlayerHealthManager : HealthManager
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             demonKingCrownHealthManager = FindObjectOfType<CrownHealthManager>();
             SetHealth(MaxHealth);
+            healthRegenTimerSlider.maxValue = timeForHealthRegenToActivate;
         }
     }
 
@@ -61,6 +76,30 @@ public class PlayerHealthManager : HealthManager
     }
     #endregion
 
+    protected override void Update()
+    {
+        base.Update();
+        if (photonView.IsMine)
+        {
+            if (currentHealthOffset > 0)
+            {
+                currentHealthOffset -= healthOffsetTime * Time.deltaTime;
+                playerHudHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
+            }
+        }
+        else
+        {
+            if (currentHealthOffset > 0)
+            {
+                currentHealthOffset -= healthOffsetTime * Time.deltaTime;
+                OverheadHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
+            }
+        }
+
+        healthRegenTimerSlider.value = healthRegenTimer;
+    }
+
+
     #region Devour
     protected override void OnBeingDevourStart()
     {
@@ -69,7 +108,7 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             debuffTimer.StopStunTimer();
-            debuffTimer.StartBeingDevouredTimer(DevourTime);
+            debuffTimer.StartBeingDevouredTimer(TimeTakenToBeDevoured);
             beingDevoured = true;
         }
     }
@@ -109,24 +148,28 @@ public class PlayerHealthManager : HealthManager
         if (invulnerable || CurrentHealth <= 0 || beingDevoured)
             return;
 
+        if (CurrentHealth - damage <= 0)
+            currentHealthOffset = damage - (CurrentHealth - damage) * -1;
+        else
+            currentHealthOffset = damage;
+
+
         //Remove health
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
-
 
         if (attackerID != 0)
         {
             playerWhoLastShotMeHealthManager = GameManager.instance.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
-
         }
         else
         {
             playerWhoLastShotMeHealthManager = null;
         }
 
-        UpdateHealthBar(CurrentHealth);
+        UpdateHealthBar(CurrentHealth, currentHealthOffset);
 
         //Reset health regen timer
-        healthRegenTimer = TimeBeforeHealthRegen;
+        healthRegenTimer = 0;
 
         //call Stunned() on all player on network if no health left
         if (CurrentHealth <= 0)
@@ -138,8 +181,7 @@ public class PlayerHealthManager : HealthManager
         //Only running on local player
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
         //Updates this charcters health bars on all players in network
-        UpdateHealthBar(CurrentHealth);
-        healthRegenTimer = TimeBeforeHealthRegen;
+        UpdateHealthBar(CurrentHealth, 0);
     }
 
     #endregion
@@ -256,7 +298,7 @@ public class PlayerHealthManager : HealthManager
         HealthBarContainer.gameObject.SetActive(true);
         ExperienceBarContainer.SetActive(true);
         CurrentHealth = MaxHealth;
-        UpdateHealthBar(CurrentHealth);
+        UpdateHealthBar(CurrentHealth, 0);
     }
 
     void AwardLastPlayerWhoShotMe(int playerWhoKilledSelfID)
@@ -287,38 +329,37 @@ public class PlayerHealthManager : HealthManager
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            AddImagesToHealthBar(healthBarsOverhead, HealthBarContainerOverhead, MaxHealthValue);
+            //Update overhead healthbar values
+            OverheadHealthBarMat.SetFloat("_MaxHealth", MaxHealth);
         }
         //Run following if local player
         else
         {
-            AddImagesToHealthBar(healthBars, HealthBarContainer, MaxHealthValue);
-
-            if (CurrentHealth > MaxHealth)
-                CurrentHealth = MaxHealth;
-
-            UpdateHealthBar(CurrentHealth);
+            playerHudHealthBarMat.SetFloat("_MaxHealth", MaxHealth);
+            UpdateHealthBar(CurrentHealth, 0);
         }
     }
 
-    void UpdateHealthBar(int CurrentHealth)
+    void UpdateHealthBar(int CurrentHealth, float healthOffset)
     {
-        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth);
+        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth, healthOffset);
     }
 
     [PunRPC]
-    public void UpdateHealthBar_RPC(int CurrentHealth)
+    public void UpdateHealthBar_RPC(int CurrentHealth, float healthOffset)
     {
         //Run following if local player
         if (photonView.IsMine)
         {
-            //Function in Health Manager
-            FillBarsOfHealth(CurrentHealth, healthBars);
+            //Update our healthbar values
+            playerHudHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
+            currentHealthOffset += healthOffset;
         }
         else
         {
-            //Function in Health Manager
-            FillBarsOfHealth(CurrentHealth, healthBarsOverhead);
+            //Update overhead healthbar
+            OverheadHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
+            currentHealthOffset += healthOffset;
         }
     }
     #endregion
