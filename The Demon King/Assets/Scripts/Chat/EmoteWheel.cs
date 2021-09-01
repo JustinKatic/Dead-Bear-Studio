@@ -9,7 +9,8 @@ using UnityEngine.UI;
 public class EmoteWheel : MonoBehaviourPun
 {
     private PlayerController playerController;
-    public List<Button> emotes = new List<Button>();
+    public List<Button> emoteButtons = new List<Button>();
+    public List<EmoteButton> emotes = new List<EmoteButton>();
 
     public Image floatingImage;
     // Start is called before the first frame update
@@ -17,6 +18,11 @@ public class EmoteWheel : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            for (int i = 0; i < emoteButtons.Count; i++)
+            {
+                emotes.Add(emoteButtons[i].GetComponent<EmoteButton>());
+            }
+            
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.EmoteWheel.Display.started += DisplayEmoteWheel_started;
             playerController.CharacterInputs.EmoteWheel.Display.canceled += DisplayEmoteWheel_canceled;
@@ -31,7 +37,7 @@ public class EmoteWheel : MonoBehaviourPun
             Cursor.visible = false;
             playerController.CharacterInputs.PlayerLook.Enable();
             playerController.CharacterInputs.Player.Ability1.Enable();
-            foreach (var emote in emotes)
+            foreach (var emote in emoteButtons)
             {
                 emote.gameObject.SetActive(false);
             }   
@@ -47,7 +53,7 @@ public class EmoteWheel : MonoBehaviourPun
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            foreach (var emote in emotes)
+            foreach (var emote in emoteButtons)
             {
                 emote.gameObject.SetActive(true);
                 emote.interactable = true;
@@ -56,17 +62,20 @@ public class EmoteWheel : MonoBehaviourPun
 
     }
 
-    public void ActivateEmote(Image emote)
+    public void ActivateEmote(int buttonNumber)
     {
-        floatingImage.sprite = emote.sprite;
-
-        floatingImage.gameObject.SetActive(true);
-        
+        if (photonView.IsMine)
+        {
+            photonView.RPC("SendEmote_RPC", RpcTarget.All, buttonNumber);
+        }
+            
     }
 
     [PunRPC]
-    public void SendEmote_RPC()
+    public void SendEmote_RPC(int buttonNumber)
     {
+        floatingImage.sprite = emotes[buttonNumber].Emote.emoteImage;
+
         floatingImage.gameObject.SetActive(true);
     }
 

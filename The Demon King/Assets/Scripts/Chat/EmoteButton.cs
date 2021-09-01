@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class EmoteButton : MonoBehaviour
 {
-    public string emoteName;
-
-    public Image emoteImage;
+    public Emote Emote;
 
 }
