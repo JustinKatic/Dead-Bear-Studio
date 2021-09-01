@@ -10,6 +10,8 @@ public class EmoteWheel : MonoBehaviourPun
 {
     private PlayerController playerController;
     public List<Button> emotes = new List<Button>();
+
+    public Image floatingImage;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,34 +25,49 @@ public class EmoteWheel : MonoBehaviourPun
 
     private void DisplayEmoteWheel_canceled(InputAction.CallbackContext obj)
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        playerController.CharacterInputs.PlayerLook.Enable();
-        playerController.CharacterInputs.Player.Ability1.Enable();
-        foreach (var emote in emotes)
+        if (photonView.IsMine)
         {
-            emote.gameObject.SetActive(false);
-        }    
-        Debug.Log("1 Stopped");
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            playerController.CharacterInputs.PlayerLook.Enable();
+            playerController.CharacterInputs.Player.Ability1.Enable();
+            foreach (var emote in emotes)
+            {
+                emote.gameObject.SetActive(false);
+            }   
+        }
+ 
     }
     private void DisplayEmoteWheel_started(InputAction.CallbackContext obj)
     {
-        Debug.Log("1 Pressed");
-        playerController.CharacterInputs.PlayerLook.Disable();
-        playerController.CharacterInputs.Player.Ability1.Disable();
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        foreach (var emote in emotes)
+        if (photonView.IsMine)
         {
-            emote.gameObject.SetActive(true);
-            emote.interactable = true;
+            playerController.CharacterInputs.PlayerLook.Disable();
+            playerController.CharacterInputs.Player.Ability1.Disable();
+
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            foreach (var emote in emotes)
+            {
+                emote.gameObject.SetActive(true);
+                emote.interactable = true;
+            }
         }
+
     }
 
-    public void GetEmoteName()
+    public void ActivateEmote(Image emote)
     {
+        floatingImage.sprite = emote.sprite;
+
+        floatingImage.gameObject.SetActive(true);
         
+    }
+
+    [PunRPC]
+    public void SendEmote_RPC()
+    {
+        floatingImage.gameObject.SetActive(true);
     }
 
 }
