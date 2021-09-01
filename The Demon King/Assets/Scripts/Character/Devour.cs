@@ -177,6 +177,8 @@ public class Devour : MonoBehaviourPun
         targetBeingDevouredHealthManager = null;
         hitHealthManager = null;
 
+        healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;
+
         PlayerSoundManager.Instance.StopDevourSound();
     }
     #endregion
