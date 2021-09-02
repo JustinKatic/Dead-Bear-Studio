@@ -1943,8 +1943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db04fd8c2cd561947bbdc26935dab6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emoteName: Black
-  emoteImage: {fileID: 0}
+  emoteImage: 
 --- !u!1 &1048128347795404448
 GameObject:
   m_ObjectHideFlags: 0
@@ -3752,7 +3751,6 @@ RectTransform:
   - {fileID: 2906631978420422324}
   - {fileID: 3754594586660094560}
   - {fileID: 120595095321952026}
-  - {fileID: 955246534423720974}
   m_Father: {fileID: 6202528700522213592}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6309,6 +6307,106 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &3010850108414939239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 325010514656492227}
+  - component: {fileID: 4501569656853209472}
+  - component: {fileID: 4116430562897826252}
+  - component: {fileID: 8996219839141393917}
+  m_Layer: 5
+  m_Name: Emote Wheel Overlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &325010514656492227
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010850108414939239}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 955246534423720974}
+  m_Father: {fileID: 6202528700522213592}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!223 &4501569656853209472
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010850108414939239}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &4116430562897826252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010850108414939239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!114 &8996219839141393917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010850108414939239}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &3013332921919201697
 GameObject:
   m_ObjectHideFlags: 0
@@ -11353,8 +11451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db04fd8c2cd561947bbdc26935dab6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emoteName: Green
-  emoteImage: {fileID: 0}
+  emoteImage: 
 --- !u!1 &4875525199775656566
 GameObject:
   m_ObjectHideFlags: 0
@@ -12203,8 +12300,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db04fd8c2cd561947bbdc26935dab6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emoteName: Brown
-  emoteImage: {fileID: 0}
+  emoteImage: 
 --- !u!1 &5246891314376579745
 GameObject:
   m_ObjectHideFlags: 0
@@ -14811,6 +14907,8 @@ Transform:
   - {fileID: 1064206060852474328}
   - {fileID: 1551886024211513252}
   - {fileID: 88752770651526909}
+  - {fileID: 325010514656492227}
+  - {fileID: 5795824425736223360}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -17855,13 +17953,13 @@ MonoBehaviour:
       - m_Target: {fileID: 413948876126190557}
         m_TargetAssemblyTypeName: EmoteWheel, Assembly-CSharp
         m_MethodName: ActivateEmote
-        m_Mode: 2
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 4135206276870231576}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Emote
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &7522861126085729201
@@ -17876,8 +17974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db04fd8c2cd561947bbdc26935dab6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emoteName: Red
-  emoteImage: {fileID: 4135206276870231576}
+  emoteImage: 
 --- !u!95 &5125816748761906387
 Animator:
   serializedVersion: 3
@@ -18074,7 +18171,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52fea114510dc9c45aef655eef989356, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ff1538f7e7fc0144a85f416191980114, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20182,7 +20279,7 @@ GameObject:
   - component: {fileID: 2145044877096296157}
   - component: {fileID: 792011089564520957}
   m_Layer: 5
-  m_Name: Emote Canvas
+  m_Name: OverHead Emote Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20501,6 +20598,7 @@ GameObject:
   m_Component:
   - component: {fileID: 955246534423720974}
   - component: {fileID: 413948876126190557}
+  - component: {fileID: 6339349744988844613}
   m_Layer: 0
   m_Name: Emote Wheel
   m_TagString: Untagged
@@ -20515,9 +20613,9 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7845300809316172762}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.45125, y: 1.45125, z: 1.45125}
   m_Children:
   - {fileID: 3767507381789211884}
   - {fileID: 1307169924912039954}
@@ -20527,8 +20625,8 @@ RectTransform:
   - {fileID: 5216302669950878165}
   - {fileID: 2201357121154312153}
   - {fileID: 2536034896388544925}
-  m_Father: {fileID: 5303283298348307769}
-  m_RootOrder: 6
+  m_Father: {fileID: 325010514656492227}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -20547,7 +20645,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de22af651464c8a42bbb383098f7e0d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emotes:
+  emoteButtons:
   - {fileID: 5783363210026591011}
   - {fileID: 6915622390297469579}
   - {fileID: 5490304591741413016}
@@ -21425,8 +21523,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db04fd8c2cd561947bbdc26935dab6b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  emoteName: Yellow
-  emoteImage: {fileID: 0}
+  emoteImage: 
 --- !u!1 &8389577348841254165
 GameObject:
   m_ObjectHideFlags: 0
