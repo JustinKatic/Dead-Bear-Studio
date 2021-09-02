@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,12 @@ public class AbilityBase : MonoBehaviourPun
             player = GetComponentInParent<PlayerController>();
             player.CharacterInputs.Player.Ability1.performed += Ability1_performed;
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (photonView.IsMine)
+            player.CharacterInputs.Player.Ability1.performed -= Ability1_performed;
     }
 
     private void OnEnable()

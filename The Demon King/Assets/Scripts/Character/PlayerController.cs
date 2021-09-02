@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviourPun
             {
                 col.gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
             }
-            gameObject.layer = LayerMask.NameToLayer("PlayerParent");
+            gameObject.layer = LayerMask.NameToLayer("EnemyParent");
             Destroy(recticle.gameObject);
         }
         //Run following if local player
@@ -185,7 +185,7 @@ public class PlayerController : MonoBehaviourPun
                 currentAnim.SetFloat("Speed", currentMoveSpeed);
             else
             {
-                currentAnim.SetFloat("Speed", 1);
+                currentAnim.SetFloat("Speed", 5);
             }
 
             SetAnimInputs();
@@ -218,6 +218,8 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.PlayerLook.Enable();
             CharacterInputs.DisplayScoreBoard.Enable();
             CharacterInputs.EmoteWheel.Enable();
+            CharacterInputs.Settings.Enable();
+
         }
     }
 
@@ -232,8 +234,16 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.PlayerLook.Disable();
             CharacterInputs.DisplayScoreBoard.Disable();
             CharacterInputs.EmoteWheel.Disable();
+            CharacterInputs.Settings.Disable();
         }
     }
+
+    private void OnDestroy()
+    {
+        if (photonView.IsMine)
+            CharacterInputs.Player.Jump.performed -= OnJump;
+    }
+
     #endregion
 
     #region Collision Interactions
@@ -357,7 +367,7 @@ public class PlayerController : MonoBehaviourPun
     #region Jump/Falling
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (cc.isGrounded)
+        if (cc.isGrounded && currentAnim.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
         {
             //Sets Y velocity to jump value
             playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -365,14 +375,16 @@ public class PlayerController : MonoBehaviourPun
             //Sets CC not to try and stepUp while in air
             cc.stepOffset = 0;
             cc.slopeLimit = 0;
+
             currentAnim.SetBool("JumpStarted", true);
+            isFalling = true;
+            currentAnim.SetBool("Falling", true);
             PlayerSoundManager.Instance.PlayJumpSound();
         }
     }
 
     void IsJumpingAndGrounded()
     {
-        currentAnim.SetBool("HasLanded", true);
         isJumping = false;
         cc.stepOffset = StepOffset;
         cc.slopeLimit = SlopeLimit;
@@ -381,7 +393,6 @@ public class PlayerController : MonoBehaviourPun
 
     void IsFallingAndGrounded()
     {
-        currentAnim.SetBool("HasLanded", true);
         currentAnim.SetBool("Falling", false);
         isFalling = false;
 
@@ -397,7 +408,6 @@ public class PlayerController : MonoBehaviourPun
     void SetFallingTrue()
     {
         currentAnim.SetBool("Falling", true);
-        currentAnim.SetBool("HasLanded", false);
         isFalling = true;
         PlayerSoundManager.Instance.PlayFallingSound();
     }

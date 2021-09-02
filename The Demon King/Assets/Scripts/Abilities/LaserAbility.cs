@@ -286,4 +286,13 @@ public class LaserAbility : MonoBehaviourPun
         LaserLine.enabled = false;
         rayEndVFX.SetActive(false);
     }
+
+    private void OnDestroy()
+    {
+        if (photonView.IsMine)
+        {
+            player.CharacterInputs.Player.Ability1.performed -= Ability1_performed;
+            player.CharacterInputs.Player.Ability1.performed -= Ability1_cancelled;
+        }
+    }
 }

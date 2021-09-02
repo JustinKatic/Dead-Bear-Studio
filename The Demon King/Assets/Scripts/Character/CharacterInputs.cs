@@ -279,6 +279,33 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Settings"",
+            ""id"": ""b49eb0cc-0e35-4ec5-b423-8c2f424041ce"",
+            ""actions"": [
+                {
+                    ""name"": ""OpenSettings"",
+                    ""type"": ""Button"",
+                    ""id"": ""459b9ad9-9322-433c-8d72-ab25ec8800a2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2c42b4d9-9bc0-43e9-ac2f-3f9c89f8acbc"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenSettings"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -301,6 +328,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         // Emote Wheel
         m_EmoteWheel = asset.FindActionMap("Emote Wheel", throwIfNotFound: true);
         m_EmoteWheel_Display = m_EmoteWheel.FindAction("Display", throwIfNotFound: true);
+        // Settings
+        m_Settings = asset.FindActionMap("Settings", throwIfNotFound: true);
+        m_Settings_OpenSettings = m_Settings.FindAction("OpenSettings", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -526,6 +556,39 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         }
     }
     public EmoteWheelActions @EmoteWheel => new EmoteWheelActions(this);
+
+    // Settings
+    private readonly InputActionMap m_Settings;
+    private ISettingsActions m_SettingsActionsCallbackInterface;
+    private readonly InputAction m_Settings_OpenSettings;
+    public struct SettingsActions
+    {
+        private @CharacterInputs m_Wrapper;
+        public SettingsActions(@CharacterInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @OpenSettings => m_Wrapper.m_Settings_OpenSettings;
+        public InputActionMap Get() { return m_Wrapper.m_Settings; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SettingsActions set) { return set.Get(); }
+        public void SetCallbacks(ISettingsActions instance)
+        {
+            if (m_Wrapper.m_SettingsActionsCallbackInterface != null)
+            {
+                @OpenSettings.started -= m_Wrapper.m_SettingsActionsCallbackInterface.OnOpenSettings;
+                @OpenSettings.performed -= m_Wrapper.m_SettingsActionsCallbackInterface.OnOpenSettings;
+                @OpenSettings.canceled -= m_Wrapper.m_SettingsActionsCallbackInterface.OnOpenSettings;
+            }
+            m_Wrapper.m_SettingsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @OpenSettings.started += instance.OnOpenSettings;
+                @OpenSettings.performed += instance.OnOpenSettings;
+                @OpenSettings.canceled += instance.OnOpenSettings;
+            }
+        }
+    }
+    public SettingsActions @Settings => new SettingsActions(this);
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
@@ -547,5 +610,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     public interface IEmoteWheelActions
     {
         void OnDisplay(InputAction.CallbackContext context);
+    }
+    public interface ISettingsActions
+    {
+        void OnOpenSettings(InputAction.CallbackContext context);
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine;
 public class SetEmoteInactive : MonoBehaviourPun
 {
     private Animation floatingAnimation;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +16,7 @@ public class SetEmoteInactive : MonoBehaviourPun
 
     private void Update()
     {
+                
         if (!floatingAnimation.isPlaying)
         {
             if (photonView.IsMine)

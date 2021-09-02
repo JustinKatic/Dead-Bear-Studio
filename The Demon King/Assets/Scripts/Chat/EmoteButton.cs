@@ -5,8 +5,14 @@ using UnityEngine.UI;
 
 public class EmoteButton : MonoBehaviour
 {
-    public string emoteName;
-
-    public Image emoteImage;
-
+      public GameObject Emote;
+      private Sprite image;
+        private void Start()
+        {
+            if (image == null)
+            {
+                image = Emote.gameObject.GetComponentInChildren<Image>().sprite;
+                GetComponent<Image>().sprite = image;
+            }
+        }
 }
