@@ -10,8 +10,8 @@ public class EmoteWheel : MonoBehaviourPun
 {
     private PlayerController playerController;
     public List<Button> emotes = new List<Button>();
-
-    public Image floatingImage;
+    public Transform floatingImage;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -56,18 +56,10 @@ public class EmoteWheel : MonoBehaviourPun
 
     }
 
-    public void ActivateEmote(Image emote)
+    public void ActivateEmote(string emote)
     {
-        floatingImage.sprite = emote.sprite;
-
-        floatingImage.gameObject.SetActive(true);
+        PhotonNetwork.Instantiate(emote, floatingImage.position, floatingImage.rotation);
         
-    }
-
-    [PunRPC]
-    public void SendEmote_RPC()
-    {
-        floatingImage.gameObject.SetActive(true);
     }
 
 }
