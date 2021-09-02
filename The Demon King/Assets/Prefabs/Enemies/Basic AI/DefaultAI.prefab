@@ -514,10 +514,13 @@ MonoBehaviour:
   stunnedDuration: 3
   TimeTakenToBeDevoured: 1
   MyExperienceWorth: 1
+  myScoreWorth: 5
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   healthBarPrefab: {fileID: 4320337310133678998, guid: c80f99395e78a4b4fb29543589e7c83a, type: 3}
   overheadHealthBar: {fileID: 1534572014935968445}
   StunVFX: {fileID: 1454501024303921940}
+  healthRegenTimer: 0
+  timeForHealthRegenToActivate: 8
   CurrentHealth: 0
   beingDevoured: 0
   canBeDevoured: 0
@@ -684,7 +687,7 @@ MonoBehaviour:
   currentState: {fileID: 690821556088324881}
   playerLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   ChasePlayerForX: 3
   RadiusDistanceToStartChasingPlayer: 5
   TimeTillNextAttack: 1
