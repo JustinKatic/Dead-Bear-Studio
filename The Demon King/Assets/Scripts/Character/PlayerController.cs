@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviourPun
             {
                 col.gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
             }
-            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
+            gameObject.layer = LayerMask.NameToLayer("PlayerParent");
             Destroy(recticle.gameObject);
         }
         //Run following if local player
@@ -108,7 +108,7 @@ public class PlayerController : MonoBehaviourPun
             {
                 col.gameObject.layer = LayerMask.NameToLayer("Player");
             }
-            gameObject.layer = LayerMask.NameToLayer("Player");
+            gameObject.layer = LayerMask.NameToLayer("PlayerParent");
         }
     }
 
