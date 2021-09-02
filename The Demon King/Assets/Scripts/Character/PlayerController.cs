@@ -73,8 +73,12 @@ public class PlayerController : MonoBehaviourPun
         //Run following if not local player
         if (!photonView.IsMine)
         {
-            //Destroy(GetComponentInChildren<CinemachineVirtualCamera>().gameObject);
-            gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
+            Collider[] cols = GetComponentsInChildren<Collider>(true);
+            foreach (var col in cols)
+            {
+                col.gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
+            }
+            gameObject.layer = LayerMask.NameToLayer("PlayerParent");
             Destroy(recticle.gameObject);
         }
         //Run following if local player
@@ -99,7 +103,12 @@ public class PlayerController : MonoBehaviourPun
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
-            gameObject.layer = LayerMask.NameToLayer("Player");
+            Collider[] cols = GetComponentsInChildren<Collider>(true);
+            foreach (var col in cols)
+            {
+                col.gameObject.layer = LayerMask.NameToLayer("Player");
+            }
+            gameObject.layer = LayerMask.NameToLayer("PlayerParent");
         }
     }
 

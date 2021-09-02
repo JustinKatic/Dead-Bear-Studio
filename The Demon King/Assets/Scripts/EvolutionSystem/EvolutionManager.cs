@@ -28,6 +28,8 @@ public class EvolutionManager : MonoBehaviourPun
     private DemonKingEvolution demonKingEvolution;
     private PlayerTimers playerTimers;
 
+    private LeaderboardManager leaderboardManager;
+
     private bool evolving = false;
 
     private IEnumerator changeEvolutionCo;
@@ -55,6 +57,7 @@ public class EvolutionManager : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             playerTimers = GetComponentInChildren<PlayerTimers>();
+            leaderboardManager = GetComponent<LeaderboardManager>();
 
             //get and set a random minion type
             SetMyMinionTypeOnStart();
@@ -217,6 +220,7 @@ public class EvolutionManager : MonoBehaviourPun
         playerController.currentAnim = activeEvolution.animator;
         playerHealthManager.SetHealth(activeEvolution.MaxHealth);
         playerHealthManager.healthRegenTimer = playerHealthManager.timeForHealthRegenToActivate;
+        leaderboardManager.UpdateLeadboardNetworked(gameObject);
     }
 
     void Evolve(string currentModelsTag, string nextModelsTag)
