@@ -23,6 +23,11 @@ public class EmoteWheel : MonoBehaviourPun
         }
     }
 
+    private void OnDestroy()
+    {
+        playerController.CharacterInputs.EmoteWheel.Display.started -= DisplayEmoteWheel_started;
+        playerController.CharacterInputs.EmoteWheel.Display.canceled -= DisplayEmoteWheel_canceled;    }
+
     private void DisplayEmoteWheel_canceled(InputAction.CallbackContext obj)
     {
         if (photonView.IsMine)

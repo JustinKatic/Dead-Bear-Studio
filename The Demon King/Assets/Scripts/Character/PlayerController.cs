@@ -218,6 +218,8 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.PlayerLook.Enable();
             CharacterInputs.DisplayScoreBoard.Enable();
             CharacterInputs.EmoteWheel.Enable();
+            CharacterInputs.Settings.Enable();
+
         }
     }
 
@@ -232,8 +234,17 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.PlayerLook.Disable();
             CharacterInputs.DisplayScoreBoard.Disable();
             CharacterInputs.EmoteWheel.Disable();
+            CharacterInputs.Settings.Disable();
+
         }
     }
+
+    private void OnDestroy()
+    {
+        CharacterInputs.Player.Jump.performed -= OnJump;
+
+    }
+
     #endregion
 
     #region Collision Interactions
