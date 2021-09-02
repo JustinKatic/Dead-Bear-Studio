@@ -9,10 +9,9 @@ using UnityEngine.UI;
 public class EmoteWheel : MonoBehaviourPun
 {
     private PlayerController playerController;
-    public List<Button> emoteButtons = new List<Button>();
-    public Image floatingImage;
+    public List<Button> emotes = new List<Button>();
 
-    public Transform emoteCanvas;
+    public Image floatingImage;
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +31,12 @@ public class EmoteWheel : MonoBehaviourPun
             Cursor.visible = false;
             playerController.CharacterInputs.PlayerLook.Enable();
             playerController.CharacterInputs.Player.Ability1.Enable();
-            foreach (var emote in emoteButtons)
+            foreach (var emote in emotes)
             {
                 emote.gameObject.SetActive(false);
             }   
         }
+ 
     }
     private void DisplayEmoteWheel_started(InputAction.CallbackContext obj)
     {
@@ -47,7 +47,7 @@ public class EmoteWheel : MonoBehaviourPun
 
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            foreach (var emote in emoteButtons)
+            foreach (var emote in emotes)
             {
                 emote.gameObject.SetActive(true);
                 emote.interactable = true;
@@ -56,13 +56,18 @@ public class EmoteWheel : MonoBehaviourPun
 
     }
 
-    public void ActivateEmote(string selectedEmote)
+    public void ActivateEmote(Image emote)
     {
-        if (photonView.IsMine)
-        {
-            PhotonNetwork.Instantiate(selectedEmote, emoteCanvas.position,emoteCanvas.rotation);
-            //photonView.RPC("SendEmote_RPC", RpcTarget.All);
-        }
+        floatingImage.sprite = emote.sprite;
 
+        floatingImage.gameObject.SetActive(true);
+        
     }
+
+    [PunRPC]
+    public void SendEmote_RPC()
+    {
+        floatingImage.gameObject.SetActive(true);
+    }
+
 }
