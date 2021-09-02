@@ -6,14 +6,14 @@ using Photon.Realtime;
 using System.Linq;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
-
-
+using TMPro;
 
 struct LeaderBoardList
 {
     public string PlayerNickName;
     public int DemonKingScore;
     public Image EvolutionImg;
+    public bool AmITheDemonKing;
 }
 
 
@@ -25,6 +25,10 @@ public class LeaderboardManager : MonoBehaviourPun
     public int DemonKingScore;
     public IntSO DemonKingScoreRequiredToWin;
 
+    [Header("DemonKing Display")]
+    [SerializeField] private PlayerLeaderboardPanel DemonKingPanel;
+
+    [Header("Leaderboard Display")]
     List<LeaderBoardList> leaderBoardList = new List<LeaderBoardList>();
     public List<PlayerLeaderboardPanel> playerLeaderboardSlot = new List<PlayerLeaderboardPanel>();
 
@@ -46,6 +50,9 @@ public class LeaderboardManager : MonoBehaviourPun
     bool findingPlayers = true;
 
     int numberOfPlayerToDisplay = 2;
+
+
+
 
 
     private Image GetImage(MinionType minionType)
@@ -123,7 +130,7 @@ public class LeaderboardManager : MonoBehaviourPun
     }
 
 
-    void UpdateLeadboardNetworked(GameObject player)
+    public void UpdateLeadboardNetworked(GameObject player)
     {
         player.GetPhotonView().RPC("UpdateLeadboardNetworked_RPC", RpcTarget.All);
     }
@@ -157,6 +164,8 @@ public class LeaderboardManager : MonoBehaviourPun
             dataToEnterIntoLeaderboardList.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
 
             dataToEnterIntoLeaderboardList.EvolutionImg = GetImage(GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+
+            dataToEnterIntoLeaderboardList.AmITheDemonKing = GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
             //Add info into leaderboard list
             leaderBoardList.Add(dataToEnterIntoLeaderboardList);
         }
@@ -166,6 +175,7 @@ public class LeaderboardManager : MonoBehaviourPun
 
         //populate GUI slots with each players name and time as demon king using sorted list
         int i = 0;
+        bool wasThereAKing = false;
         foreach (LeaderBoardList player in sortedLeaderboardList)
         {
             if (i <= numberOfPlayerToDisplay)
@@ -175,10 +185,21 @@ public class LeaderboardManager : MonoBehaviourPun
             playerLeaderboardSlot[i].DemonKingScoreText.text = player.DemonKingScore.ToString();
             playerLeaderboardSlot[i].UpdateSliderValue(player.DemonKingScore);
             playerLeaderboardSlot[i].CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
+
+            if (player.AmITheDemonKing)
+            {
+                wasThereAKing = true;
+                DemonKingPanel.gameObject.SetActive(true);
+                DemonKingPanel.PlayerNameText.text = player.PlayerNickName;
+                DemonKingPanel.DemonKingScoreText.text = player.DemonKingScore.ToString();
+                DemonKingPanel.UpdateSliderValue(player.DemonKingScore);
+                DemonKingPanel.CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
+            }
             i++;
         }
 
-        //Display the leaderboard
+        if (!wasThereAKing)
+            DemonKingPanel.gameObject.SetActive(false);
 
         if (DidAWinOccur)
         {
@@ -198,8 +219,6 @@ public class LeaderboardManager : MonoBehaviourPun
             PhotonNetwork.LoadLevel("Menu");
         }
     }
-
-
 
     public string FormatTime(float time)
     {
