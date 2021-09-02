@@ -13,14 +13,14 @@ public class Devour : MonoBehaviourPun
 
     private bool IsDevouring;
     private bool isTargetPlayer = false;
-    [HideInInspector] public HealthManager targetBeingDevouredHealthManager = null;
+    // [HideInInspector] public HealthManager targetBeingDevouredHealthManager = null;
 
     //Components
     private Camera cam;
     private PlayerController playerController;
     private HealthManager healthManager;
     private ExperienceManager experienceManager;
-    private HealthManager hitHealthManager;
+    [HideInInspector] public HealthManager targetBeingDevouredHealthManager = null;
     private PlayerTimers debuffTimer;
 
     DemonKingEvolution demonKingEvolution;
@@ -90,25 +90,27 @@ public class Devour : MonoBehaviourPun
         //Shoots ray from center of screen
         if (Physics.SphereCast(ray, 3, out hit, 10, LayersCanDevour))
         {
+            Debug.Log("1.hit a target in layer");
             //If raycast hits player or minion
             if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
+                Debug.Log("2.devouring target hit a tag");
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
                     return;
 
+                Debug.Log("3.devouring in range");
+
                 //Get the healthManager of hit target
-                hitHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
+                targetBeingDevouredHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
 
                 //check if the target can be devoured
-                if (hitHealthManager.canBeDevoured)
+                if (targetBeingDevouredHealthManager.canBeDevoured)
                 {
+                    Debug.Log("4.target can be devoured");
                     //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
                     IEnumerator DevourCorutine()
                     {
-                        //Get the photon view of hit target
-                        targetBeingDevouredHealthManager = hit.collider.gameObject.GetComponent<HealthManager>();
-
                         PlayerSoundManager.Instance.PlayDevourSound();
                         debuffTimer.StartDevourTimer(targetBeingDevouredHealthManager.TimeTakenToBeDevoured);
 
@@ -144,7 +146,6 @@ public class Devour : MonoBehaviourPun
         IsDevouring = true;
         playerController.currentAnim.SetBool("Devouring", true);
         playerController.DisableMovement();
-
     }
 
     void DevouringHasCompleted()
@@ -161,22 +162,22 @@ public class Devour : MonoBehaviourPun
         {
             demonKingEvolution.ChangeToTheDemonKing();
         }
-        else if (hitHealthManager.gameObject.transform.CompareTag("DemonKingCrown"))
+        else if (targetBeingDevouredHealthManager.gameObject.transform.CompareTag("DemonKingCrown"))
         {
             demonKingEvolution.ChangeToTheDemonKing();
         }
         else
         {
-            experienceManager.AddExpereince(hitHealthManager.MyMinionType, hitHealthManager.MyExperienceWorth);
+            experienceManager.AddExpereince(targetBeingDevouredHealthManager.MyMinionType, targetBeingDevouredHealthManager.MyExperienceWorth);
         }
 
         if (demonKingEvolution.AmITheDemonKing)
         {
-            leaderboardManager.UpdateDemonKingScore(hitHealthManager.myScoreWorth);
+            leaderboardManager.UpdateDemonKingScore(targetBeingDevouredHealthManager.myScoreWorth);
         }
         //reset the target to null
         targetBeingDevouredHealthManager = null;
-        hitHealthManager = null;
+        targetBeingDevouredHealthManager = null;
 
         healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;
 

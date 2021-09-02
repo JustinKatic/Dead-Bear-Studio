@@ -49,7 +49,7 @@ public class HealthManager : MonoBehaviourPun
 
     public int CurrentHealth = 0;
     [HideInInspector] public bool beingDevoured = false;
-    [HideInInspector] public bool canBeDevoured = false;
+    public bool canBeDevoured = false;
     [HideInInspector] public bool isStunned = false;
 
     protected float currentHealthOffset = 0;
