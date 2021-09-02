@@ -35,7 +35,8 @@ public class AbilityBase : MonoBehaviourPun
 
     private void OnDestroy()
     {
-        player.CharacterInputs.Player.Ability1.performed -= Ability1_performed;
+        if (photonView.IsMine)
+            player.CharacterInputs.Player.Ability1.performed -= Ability1_performed;
     }
 
     private void OnEnable()

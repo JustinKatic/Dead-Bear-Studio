@@ -11,7 +11,7 @@ public class InGameSettings : MonoBehaviourPun
 {
     public Canvas Options;
     private PlayerController playerController;
-    public List<Button> buttons ;
+    public List<Button> buttons;
     private void Start()
     {
         if (photonView.IsMine)
@@ -19,13 +19,16 @@ public class InGameSettings : MonoBehaviourPun
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.Settings.OpenSettings.started += DisplaySettings_started;
             playerController.CharacterInputs.Settings.OpenSettings.canceled += DisplaySettings_canceled;
-        }    
+        }
     }
 
     private void OnDestroy()
     {
-        playerController.CharacterInputs.Settings.OpenSettings.started -= DisplaySettings_started;
-        playerController.CharacterInputs.Settings.OpenSettings.canceled -= DisplaySettings_canceled;
+        if (photonView.IsMine)
+        {
+            playerController.CharacterInputs.Settings.OpenSettings.started -= DisplaySettings_started;
+            playerController.CharacterInputs.Settings.OpenSettings.canceled -= DisplaySettings_canceled;
+        }
     }
 
     private void DisplaySettings_started(InputAction.CallbackContext obj)
@@ -35,10 +38,10 @@ public class InGameSettings : MonoBehaviourPun
             playerController.CharacterInputs.Player.Disable();
             playerController.CharacterInputs.PlayerLook.Disable();
             playerController.CharacterInputs.Player.Ability1.Disable();
-            
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            
+
             foreach (var button in buttons)
             {
                 button.gameObject.SetActive(true);
@@ -51,16 +54,16 @@ public class InGameSettings : MonoBehaviourPun
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            
+
             playerController.CharacterInputs.Player.Enable();
             playerController.CharacterInputs.PlayerLook.Enable();
             playerController.CharacterInputs.Player.Ability1.Enable();
-            
+
             foreach (var button in buttons)
             {
                 button.gameObject.SetActive(false);
             }
-            
+
         }
     }
 
@@ -72,7 +75,7 @@ public class InGameSettings : MonoBehaviourPun
         {
             button.gameObject.SetActive(false);
         }
-        
+
     }
 
     public void OnClickOpenSettings()
@@ -89,7 +92,7 @@ public class InGameSettings : MonoBehaviourPun
         {
             button.gameObject.SetActive(false);
         }
-        
+
         PhotonNetwork.LeaveRoom();
         Destroy(NetworkManager.instance.gameObject);
         PhotonNetwork.LoadLevel("Menu");

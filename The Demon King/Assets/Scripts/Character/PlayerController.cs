@@ -235,14 +235,13 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.DisplayScoreBoard.Disable();
             CharacterInputs.EmoteWheel.Disable();
             CharacterInputs.Settings.Disable();
-
         }
     }
 
     private void OnDestroy()
     {
-        CharacterInputs.Player.Jump.performed -= OnJump;
-
+        if (photonView.IsMine)
+            CharacterInputs.Player.Jump.performed -= OnJump;
     }
 
     #endregion
