@@ -196,6 +196,7 @@ public class ExperienceManager : MonoBehaviourPun
     //Decreases all exp values
     public void DecreaseExperince(float decreaseValue)
     {
+        SetCanEvolveFalse();
         UpdateExpBarOnDecrease(redBranch, decreaseValue);
         UpdateExpBarOnDecrease(greenBranch, decreaseValue);
         UpdateExpBarOnDecrease(blueBranch, decreaseValue);
@@ -204,6 +205,7 @@ public class ExperienceManager : MonoBehaviourPun
     //Decreases all exp my given % and updates exp sliders
     void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
     {
+
         branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
         branchToUpdate.ExpBar.UpdateExpSlider();
     }
