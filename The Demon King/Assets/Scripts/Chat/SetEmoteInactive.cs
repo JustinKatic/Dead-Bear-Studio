@@ -1,22 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class SetEmoteInactive : MonoBehaviour
+public class SetEmoteInactive : MonoBehaviourPun
 {
     private Animation floatingAnimation;
     // Start is called before the first frame update
     void Start()
     {
-        floatingAnimation = GetComponent<Animation>();
+        floatingAnimation = GetComponentInChildren<Animation>();
     }
 
     private void Update()
     {
         if (!floatingAnimation.isPlaying)
         {
-            gameObject.SetActive(false);
+            if (photonView.IsMine)
+            {
+                PhotonNetwork.Destroy(gameObject);
+
+            }
         }
     }
 }
+
