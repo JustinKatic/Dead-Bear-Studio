@@ -16,7 +16,7 @@ public class SetEmoteInactive : MonoBehaviourPun
 
     private void Update()
     {
-        
+                
         if (!floatingAnimation.isPlaying)
         {
             if (photonView.IsMine)

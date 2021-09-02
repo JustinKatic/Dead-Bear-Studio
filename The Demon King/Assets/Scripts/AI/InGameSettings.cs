@@ -17,7 +17,7 @@ public class InGameSettings : MonoBehaviourPun
         if (photonView.IsMine)
         {
             playerController = GetComponentInParent<PlayerController>();
-            playerController.CharacterInputs.Settings.OpenSettings.started += DisplaySettings_started;
+            playerController.CharacterInputs.Settings.OpenSettings.performed += DisplaySettings_started;
             playerController.CharacterInputs.Settings.OpenSettings.canceled += DisplaySettings_canceled;
         }
     }
@@ -26,7 +26,7 @@ public class InGameSettings : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            playerController.CharacterInputs.Settings.OpenSettings.started -= DisplaySettings_started;
+            playerController.CharacterInputs.Settings.OpenSettings.performed -= DisplaySettings_started;
             playerController.CharacterInputs.Settings.OpenSettings.canceled -= DisplaySettings_canceled;
         }
     }

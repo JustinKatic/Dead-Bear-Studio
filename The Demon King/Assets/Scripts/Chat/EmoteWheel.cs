@@ -13,6 +13,7 @@ public class EmoteWheel : MonoBehaviourPun
     private List<EmoteButton> emotes = new List<EmoteButton>();
     
     public Transform floatingImage;
+    private GameObject emoteObject; 
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,7 @@ public class EmoteWheel : MonoBehaviourPun
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.EmoteWheel.Display.started += DisplayEmoteWheel_started;
             playerController.CharacterInputs.EmoteWheel.Display.canceled += DisplayEmoteWheel_canceled;
+            floatingImage.tag = "EmotePosition";
         }
     }
 
@@ -72,7 +74,17 @@ public class EmoteWheel : MonoBehaviourPun
     }
     public void ActivateEmote(EmoteButton emote)
     {
-        PhotonNetwork.Instantiate(emote.Emote.name, floatingImage.position, floatingImage.rotation);
+        emoteObject = PhotonNetwork.Instantiate(emote.Emote.name, floatingImage.position, floatingImage.rotation);
+        if (photonView.IsMine)
+        {
+            photonView.RPC("SetEmoteParent_RPC", RpcTarget.All,emoteObject.GetPhotonView().ViewID);
+        }
     }
 
+    [PunRPC]
+    public void SetEmoteParent_RPC(int viewId)
+    {
+        PhotonNetwork.GetPhotonView(viewId).transform.SetParent(floatingImage);
+    }
+    
 }
