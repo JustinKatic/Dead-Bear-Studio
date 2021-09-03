@@ -38,6 +38,8 @@ public class PlayerHealthManager : HealthManager
     public Image PlayerHudHealthBarImg;
     private Material playerHudHealthBarMat;
 
+    [SerializeField] private TextMeshProUGUI healthBarTxt;
+
     [SerializeField] private Slider healthRegenTimerSlider;
 
 
@@ -354,6 +356,7 @@ public class PlayerHealthManager : HealthManager
             //Update our healthbar values
             playerHudHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
             currentHealthOffset += healthOffset;
+            healthBarTxt.text = CurrentHealth.ToString();
         }
         else
         {
