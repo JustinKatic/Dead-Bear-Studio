@@ -12,13 +12,13 @@ public class InGameSettings : MonoBehaviourPun
     public Canvas Options;
     private PlayerController playerController;
     public List<Button> buttons;
+    public bool optionsCanOpenOnPress = true;
     private void Start()
     {
         if (photonView.IsMine)
         {
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.Settings.OpenSettings.performed += DisplaySettings_started;
-            playerController.CharacterInputs.Settings.OpenSettings.canceled += DisplaySettings_canceled;
         }
     }
 
@@ -27,7 +27,6 @@ public class InGameSettings : MonoBehaviourPun
         if (photonView.IsMine)
         {
             playerController.CharacterInputs.Settings.OpenSettings.performed -= DisplaySettings_started;
-            playerController.CharacterInputs.Settings.OpenSettings.canceled -= DisplaySettings_canceled;
         }
     }
 
@@ -35,17 +34,38 @@ public class InGameSettings : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            playerController.CharacterInputs.Player.Disable();
-            playerController.CharacterInputs.PlayerLook.Disable();
-            playerController.CharacterInputs.Player.Ability1.Disable();
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-
-            foreach (var button in buttons)
+            if (optionsCanOpenOnPress)
             {
-                button.gameObject.SetActive(true);
+                optionsCanOpenOnPress = false;
+                playerController.CharacterInputs.Player.Disable();
+                playerController.CharacterInputs.PlayerLook.Disable();
+                playerController.CharacterInputs.Player.Ability1.Disable();
+
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+
+                foreach (var button in buttons)
+                {
+                    button.gameObject.SetActive(true);
+                }
             }
+            else
+            {
+                optionsCanOpenOnPress = true;
+
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+
+                playerController.CharacterInputs.Player.Enable();
+                playerController.CharacterInputs.PlayerLook.Enable();
+                playerController.CharacterInputs.Player.Ability1.Enable();
+
+                foreach (var button in buttons)
+                {
+                    button.gameObject.SetActive(false);
+                }
+            }
+
         }
     }
     private void DisplaySettings_canceled(InputAction.CallbackContext obj)
