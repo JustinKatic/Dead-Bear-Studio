@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviourPun
 {
     [Header("HealthStats")]
-    [SerializeField] protected int MaxHealth = 3;
+    public int MaxHealth = 3;
     [SerializeField] protected float TimeBeforeHealthRegen = 3f;
     [SerializeField] protected float RespawnTime = 6;
     [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
