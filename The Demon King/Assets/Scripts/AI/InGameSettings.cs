@@ -89,6 +89,19 @@ public class InGameSettings : MonoBehaviourPun
     {
         menuToActivate.SetActive(false);
     }
+    public void OnButtonClickResumeGame(GameObject menuToActivate)
+    {
+        menuToActivate.SetActive(false);
+        
+        optionsCanOpenOnPress = true;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        playerController.CharacterInputs.Player.Enable();
+        playerController.CharacterInputs.PlayerLook.Enable();
+        playerController.CharacterInputs.Player.Ability1.Enable();
+    }
     public void OnClickQuitGame()
     {
         PauseMenu.SetActive(false);

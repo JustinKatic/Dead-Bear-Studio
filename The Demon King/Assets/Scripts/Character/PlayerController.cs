@@ -222,7 +222,6 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.DisplayScoreBoard.Enable();
             CharacterInputs.EmoteWheel.Enable();
             CharacterInputs.Settings.Enable();
-
         }
     }
 
@@ -370,7 +369,7 @@ public class PlayerController : MonoBehaviourPun
     #region Jump/Falling
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (cc.isGrounded && currentAnim.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
+        if (cc.isGrounded)
         {
             //Sets Y velocity to jump value
             playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);

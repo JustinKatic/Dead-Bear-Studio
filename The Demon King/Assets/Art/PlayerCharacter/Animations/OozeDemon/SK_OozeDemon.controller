@@ -1,5 +1,30 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1101 &-7226721972232293459
+AnimatorStateTransition:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: JumpStarted
+    m_EventTreshold: 0
+  m_DstStateMachine: {fileID: 0}
+  m_DstState: {fileID: -4331914101007861443}
+  m_Solo: 0
+  m_Mute: 0
+  m_IsExit: 0
+  serializedVersion: 3
+  m_TransitionDuration: 0.037968457
+  m_TransitionOffset: 0.0047118114
+  m_ExitTime: 0.5084814
+  m_HasExitTime: 0
+  m_HasFixedDuration: 1
+  m_InterruptionSource: 0
+  m_OrderedInterruption: 1
+  m_CanTransitionToSelf: 1
 --- !u!1102 &-7025443328735853387
 AnimatorState:
   serializedVersion: 6
@@ -566,7 +591,7 @@ AnimatorStateMachine:
     m_Position: {x: 1250, y: 700, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1392885009300278751}
-    m_Position: {x: 1250.5365, y: 397.63947, z: 0}
+    m_Position: {x: 1620, y: 400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4540531148582438032}
     m_Position: {x: 1250.5365, y: 177.63947, z: 0}
@@ -720,6 +745,7 @@ AnimatorState:
   - {fileID: -5741696476874456934}
   - {fileID: -255920275798962485}
   - {fileID: -209632361425484484}
+  - {fileID: -7226721972232293459}
   m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
