@@ -9,10 +9,10 @@ using UnityEngine.UI;
 
 public class InGameSettings : MonoBehaviourPun
 {
-    public Canvas Options;
+    public GameObject PauseMenu;
     private PlayerController playerController;
-    public List<Button> buttons;
     public bool optionsCanOpenOnPress = true;
+    public List<GameObject> menus = new List<GameObject>();
     private void Start()
     {
         if (photonView.IsMine)
@@ -43,11 +43,9 @@ public class InGameSettings : MonoBehaviourPun
 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                
+                PauseMenu.SetActive(true);
 
-                foreach (var button in buttons)
-                {
-                    button.gameObject.SetActive(true);
-                }
             }
             else
             {
@@ -59,10 +57,12 @@ public class InGameSettings : MonoBehaviourPun
                 playerController.CharacterInputs.Player.Enable();
                 playerController.CharacterInputs.PlayerLook.Enable();
                 playerController.CharacterInputs.Player.Ability1.Enable();
-
-                foreach (var button in buttons)
+                
+                PauseMenu.SetActive(false);
+                
+                foreach (var menu in menus)
                 {
-                    button.gameObject.SetActive(false);
+                    menu.SetActive(false);
                 }
             }
 
@@ -78,41 +78,26 @@ public class InGameSettings : MonoBehaviourPun
             playerController.CharacterInputs.Player.Enable();
             playerController.CharacterInputs.PlayerLook.Enable();
             playerController.CharacterInputs.Player.Ability1.Enable();
-
-            foreach (var button in buttons)
-            {
-                button.gameObject.SetActive(false);
-            }
-
+            
         }
     }
-
-    // Start is called before the first frame update
-    public void ONClickResumeGame()
+    public void OnButtonClickActivateMenu(GameObject menuToActivate)
     {
-        Options.gameObject.SetActive(false);
-        foreach (var button in buttons)
-        {
-            button.gameObject.SetActive(false);
-        }
-
+        menuToActivate.SetActive(true);
     }
-
-    public void OnClickOpenSettings()
+    public void OnButtonClickDeactivateMenu(GameObject menuToActivate)
     {
-        foreach (var button in buttons)
-        {
-            button.gameObject.SetActive(false);
-        }
-        Options.gameObject.SetActive(true);
+        menuToActivate.SetActive(false);
     }
     public void OnClickQuitGame()
     {
-        foreach (var button in buttons)
+        PauseMenu.SetActive(false);
+        
+        foreach (var menu in menus)
         {
-            button.gameObject.SetActive(false);
+            menu.SetActive(false);
         }
-
+        
         PhotonNetwork.LeaveRoom();
         Destroy(NetworkManager.instance.gameObject);
         PhotonNetwork.LoadLevel("Menu");
