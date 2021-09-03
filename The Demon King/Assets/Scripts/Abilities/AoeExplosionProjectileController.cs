@@ -72,6 +72,7 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             foreach (Collider col in colliders)
             {
                 DealDamageToPlayersAndMinions(col, aoeDamage);
+                Debug.Log("Dealing aoe dmg");
             }
             PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
             PhotonNetwork.Destroy(gameObject);
@@ -83,7 +84,7 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
         //stores refrence to tag collided with
         string objTag = other.transform.tag;
 
-        if (objTag.Equals("Player"))
+        if (objTag.Equals("Player") || objTag.Equals("PlayerParent"))
         {
             //tell the player who was hit to take damage
             PlayerHealthManager playerHealth = other.GetComponentInParent<PlayerHealthManager>();
