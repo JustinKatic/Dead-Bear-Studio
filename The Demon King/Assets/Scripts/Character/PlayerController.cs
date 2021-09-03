@@ -121,6 +121,9 @@ public class PlayerController : MonoBehaviourPun
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
         GameManager.instance.players[id - 1] = this;
+
+        if (player.NickName == "Elric" || player.NickName == "elric" || player.NickName == "e" || player.NickName == "E")
+            player.NickName = "SMELLRIC";
     }
 
     #endregion
