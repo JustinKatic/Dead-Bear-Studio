@@ -1,24 +1,32 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioSettings : MonoBehaviour
 {
-    private FMOD.Studio.EventInstance VolumeSettings;
     // Start is called before the first frame update
     private FMOD.Studio.Bus Master;
     private FMOD.Studio.Bus Music;
     private FMOD.Studio.Bus SFX;
 
     private float MasterVolume = 1f;
-    private float SFXVolume = 0.5f;
-    private float MusicVolume = 0.5f;
+    private float SFXVolume = 1f;
+    private float MusicVolume = 1f;
+    
+    public Slider SFXSlider;
+    public Slider MusicSlider;
+    public Slider MasterSlider;
 
-    void Awake()
+    void Start()
     {
-        Master = FMODUnity.RuntimeManager.GetBus("bus:/Master");
         SFX = FMODUnity.RuntimeManager.GetBus("bus:/Master/SFX");
         Music = FMODUnity.RuntimeManager.GetBus("bus:/Master/Music");
+        Master = FMODUnity.RuntimeManager.GetBus("bus:/Master");
+
+        SFXSlider.value = SFXVolume;
+        MusicSlider.value = MusicVolume;
+        MasterSlider.value = MasterVolume;
     }
 
     // Update is called once per frame
@@ -29,16 +37,16 @@ public class AudioSettings : MonoBehaviour
         Master.setVolume(MasterVolume);
     }
 
-    public void SFXVolumeLevel(float newSFXVolume)
+    public void SFXVolumeLevel(Slider newSFXVolume)
     {
-        SFXVolume = newSFXVolume;
+        SFXVolume = newSFXVolume.value;
     }
-    public void MasterVolumeLevel(float newMasterVolume)
+    public void MasterVolumeLevel(Slider newMasterVolume)
     {
-        MasterVolume = newMasterVolume;
+        MasterVolume = newMasterVolume.value;
     }    
-    public void MusicVolumeLevel(float newMusicVolume)
+    public void MusicVolumeLevel(Slider newMusicVolume)
     {
-        MusicVolume = newMusicVolume;
+        MusicVolume = newMusicVolume.value;
     }
 }
