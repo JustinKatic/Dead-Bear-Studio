@@ -218,8 +218,10 @@ public class EvolutionManager : MonoBehaviourPun
         //Set players sounds animations and health to new evolutions
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
+        int currentHealthPercent = (100 / playerHealthManager.MaxHealth) * playerHealthManager.CurrentHealth;
         playerHealthManager.SetHealth(activeEvolution.MaxHealth);
-        playerHealthManager.healthRegenTimer = playerHealthManager.timeForHealthRegenToActivate;
+        playerHealthManager.CurrentHealth = Mathf.RoundToInt(playerHealthManager.MaxHealth * currentHealthPercent * 0.01f);
+        playerHealthManager.UpdateHealthBar(playerHealthManager.CurrentHealth, 0);
         leaderboardManager.UpdateLeadboardNetworked(gameObject);
     }
 

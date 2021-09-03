@@ -342,7 +342,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    void UpdateHealthBar(int CurrentHealth, float healthOffset)
+    public void UpdateHealthBar(int CurrentHealth, float healthOffset)
     {
         photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth, healthOffset);
     }
