@@ -123,6 +123,7 @@
 			<destination>{9dcf1a6a-30b2-4a18-9172-9364b7aa704d}</destination>
 			<destination>{f35c2941-34de-48de-a708-de3dc9aa15b3}</destination>
 			<destination>{ef70bb40-2b3b-4fd4-9153-6e9031ab1583}</destination>
+			<destination>{66414c4f-6002-4555-89f0-5fb3ab294046}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{d9d9a109-f4d8-401a-8038-9bef19c840f9}" />
@@ -141,12 +142,19 @@
 	<object class="MixerBusFader" id="{9dcf1a6a-30b2-4a18-9172-9364b7aa704d}" />
 	<object class="SpatialiserEffect" id="{f35c2941-34de-48de-a708-de3dc9aa15b3}" />
 	<object class="PitchShifterEffect" id="{ef70bb40-2b3b-4fd4-9153-6e9031ab1583}">
+		<property name="pitch">
+			<value>0.889999986</value>
+		</property>
+		<property name="fftSize">
+			<value>2440</value>
+		</property>
 		<property name="overlap">
-			<value>11.1999998</value>
+			<value>7.5999999</value>
 		</property>
 		<property name="maxChannels">
-			<value>2.5</value>
+			<value>0.200000003</value>
 		</property>
 	</object>
+	<object class="FlangerEffect" id="{66414c4f-6002-4555-89f0-5fb3ab294046}" />
 	<object class="MixerBusFader" id="{7f571fde-9947-4707-9b13-56019d78075c}" />
 </objects>
