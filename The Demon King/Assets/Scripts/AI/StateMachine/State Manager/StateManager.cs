@@ -41,7 +41,6 @@ public class StateManager : MonoBehaviourPun
 
     void Update()
     {
-
         if (PhotonNetwork.IsMasterClient)
             RunStateMachine();
     }

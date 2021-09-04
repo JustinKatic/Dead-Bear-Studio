@@ -21,6 +21,8 @@ public class MinionHealthManager : HealthManager
     public Image overheadHudHealthbarImg;
     private Material OverheadHealthBarMat;
 
+    public bool Respawned = false;
+
     #region StartUp
     void Awake()
     {
@@ -129,6 +131,7 @@ public class MinionHealthManager : HealthManager
             {
                 Stun(false);
                 agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
+                Respawned = true;
             }
 
             yield return new WaitForSeconds(RespawnTime);

@@ -13,6 +13,7 @@ public abstract class State : MonoBehaviourPun
     protected Animator anim;
     [HideInInspector] public GameObject target;
     protected EnemySoundManager enemySoundManager;
+    protected MinionHealthManager minionHealthManager;
 
     private void Awake()
     {
@@ -20,5 +21,6 @@ public abstract class State : MonoBehaviourPun
         minionTransform = agent.GetComponent<Transform>();
         anim = GetComponentInParent<Animator>();
         enemySoundManager = GetComponentInParent<EnemySoundManager>();
+        minionHealthManager = GetComponentInParent<MinionHealthManager>();
     }
 }

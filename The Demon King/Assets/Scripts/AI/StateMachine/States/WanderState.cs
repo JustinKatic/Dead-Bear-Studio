@@ -9,6 +9,7 @@ public class WanderState : State
     Vector3 dest;
     public bool wanderPosFound;
 
+
     public override void RunCurrentState()
     {
         PlayeWanderState();
@@ -16,13 +17,15 @@ public class WanderState : State
 
     public void PlayeWanderState()
     {
-        if (wanderPosFound == false)
+        if (wanderPosFound == false || minionHealthManager.Respawned)
         {
             dest = RandomPoint(20f);
             agent.isStopped = false;
             wanderPosFound = true;
-            anim.SetBool("Walking", true);        }
-        
+            anim.SetBool("Walking", true);
+            minionHealthManager.Respawned = false;
+        }
+
         float distanceToDestination = Vector3.Distance(gameObject.transform.position, dest);
         agent.SetDestination(dest);
 
@@ -51,5 +54,5 @@ public class WanderState : State
         }
         return result;
     }
-    
+
 }
