@@ -140,12 +140,16 @@ public class Devour : MonoBehaviourPun
         else
         {
             isTargetPlayer = false;
-            targetBeingDevouredHealthManager.OnDevour(0);
+            targetBeingDevouredHealthManager.OnDevour(playerController.id);
+        }
+        //Remove if statement if breaks devour!!!
+        if (targetBeingDevouredHealthManager.CurAttackerId == playerController.id)
+        {
+            IsDevouring = true;
+            playerController.currentAnim.SetBool("Devouring", true);
+            playerController.DisableMovement();
         }
 
-        IsDevouring = true;
-        playerController.currentAnim.SetBool("Devouring", true);
-        playerController.DisableMovement();
     }
 
     void DevouringHasCompleted()
