@@ -10,7 +10,7 @@ public class EmoteWheel : MonoBehaviourPun
 {
     private PlayerController playerController;
     public List<Button> emotesButtons = new List<Button>();
-    private List<Emote> emotes = new List<Emote>();
+    [HideInInspector] public Emote emote;
     
     public Transform floatingImage;
     private GameObject emoteObject; 
@@ -20,10 +20,7 @@ public class EmoteWheel : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            foreach (var button in emotesButtons)
-            {
-                emotes.Add(button.GetComponent<Emote>());
-            }
+
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.EmoteWheel.Display.started += DisplayEmoteWheel_started;
             playerController.CharacterInputs.EmoteWheel.Display.canceled += DisplayEmoteWheel_canceled;
@@ -44,6 +41,12 @@ public class EmoteWheel : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            if (emote != null)
+            {
+                ActivateEmote(emote);
+                emote = null;
+            }
+            
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             playerController.CharacterInputs.PlayerLook.Enable();
@@ -57,6 +60,7 @@ public class EmoteWheel : MonoBehaviourPun
     }
     private void DisplayEmoteWheel_started(InputAction.CallbackContext obj)
     {
+        emoteObject = null;
         if (photonView.IsMine)
         {
             playerController.CharacterInputs.PlayerLook.Disable();
@@ -75,10 +79,12 @@ public class EmoteWheel : MonoBehaviourPun
     public void ActivateEmote(Emote emote)
     {
         emoteObject = PhotonNetwork.Instantiate(emote.EmoteObject.name, floatingImage.position, floatingImage.rotation);
+        
         if (photonView.IsMine)
         {
             photonView.RPC("SetEmoteParent_RPC", RpcTarget.All,emoteObject.GetPhotonView().ViewID);
         }
+
     }
 
     [PunRPC]
