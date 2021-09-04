@@ -150,14 +150,15 @@ public class PlayerHealthManager : HealthManager
         if (invulnerable || CurrentHealth <= 0 || beingDevoured)
             return;
 
+        //Remove health
+        CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
+
+
         if (CurrentHealth - damage <= 0)
             currentHealthOffset = damage - (CurrentHealth - damage) * -1;
         else
             currentHealthOffset = damage;
 
-
-        //Remove health
-        CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
 
         if (attackerID != 0)
         {
@@ -355,14 +356,14 @@ public class PlayerHealthManager : HealthManager
         {
             //Update our healthbar values
             playerHudHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
-            currentHealthOffset += healthOffset;
+            currentHealthOffset = healthOffset;
             healthBarTxt.text = CurrentHealth.ToString();
         }
         else
         {
             //Update overhead healthbar
             OverheadHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
-            currentHealthOffset += healthOffset;
+            currentHealthOffset = healthOffset;
         }
     }
     #endregion
@@ -408,12 +409,16 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
-            Stun(false);
-            debuffTimer.StopStunTimer();
-            player.EnableMovement();
-            Heal(AmountOfHealthAddedAfterStunned);
-            player.currentAnim.SetBool("Stunned", false);
-            PlayerSoundManager.Instance.StopStunnedSound();
+            if (!beingDevoured)
+            {
+                Stun(false);
+                debuffTimer.StopStunTimer();
+                player.EnableMovement();
+                Heal(AmountOfHealthAddedAfterStunned);
+                player.currentAnim.SetBool("Stunned", false);
+                PlayerSoundManager.Instance.StopStunnedSound();
+            }
+
         }
     }
 }

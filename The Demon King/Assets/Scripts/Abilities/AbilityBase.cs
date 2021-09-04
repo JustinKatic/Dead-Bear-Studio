@@ -15,7 +15,6 @@ public class AbilityBase : MonoBehaviourPun
 
     private bool canShoot = true;
 
-    [Header("GameObjects")]
     [SerializeField] protected Transform shootPoint;
 
     protected Camera cam;

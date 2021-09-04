@@ -220,7 +220,7 @@ public class MinionHealthManager : HealthManager
     {
         OverheadHealthBarMat.SetFloat("_CurrentHealth", CurrentHealth);
         if (!photonView.IsMine)
-            currentHealthOffset += healthOffset;
+            currentHealthOffset = healthOffset;
 
     }
     #endregion

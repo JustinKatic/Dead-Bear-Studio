@@ -2,27 +2,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GasEffect : MonoBehaviour
+public class DragonGasEffect : MonoBehaviour
 {
     private int attackerId;
     private int damageOverTimeDamage;
-    private LayerMask layersGasCanDamage;
-    float radius;
+    private float damageFrequency = 1f;
+    private float gasDuration;
+    private float gasSize;
 
-    public void Initialize(int attackerId, int damageOverTimeDamage, LayerMask layersGasCanDamage)
+    [SerializeField] private LayerMask layersGasCanDamage;
+    private float radius;
+
+    public void Initialize(int attackerId, int damageOverTimeDamage, float damageFrequency, float gasDuration, float gasSize)
     {
         this.attackerId = attackerId;
         this.damageOverTimeDamage = damageOverTimeDamage;
-        this.layersGasCanDamage = layersGasCanDamage;
+        this.damageFrequency = damageFrequency;
+        this.gasDuration = gasDuration;
+        this.gasSize = gasSize;
+        transform.localScale = new Vector3(gasSize, gasSize, gasSize);
+        radius = transform.localScale.x / 2;
+        Invoke("DestroySelf", gasDuration);
     }
 
-    private void OnEnable()
+    void DestroySelf()
     {
-        radius = transform.localScale.x / 2;
+        Destroy(gameObject);
     }
+
     private void Start()
     {
-        InvokeRepeating("DealDamageToPlayersAndMinions", 0, 1);
+        InvokeRepeating("DealDamageToPlayersAndMinions", 0, damageFrequency);
     }
 
     void DealDamageToPlayersAndMinions()
