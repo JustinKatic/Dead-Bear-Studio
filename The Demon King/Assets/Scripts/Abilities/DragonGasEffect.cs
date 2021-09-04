@@ -5,8 +5,9 @@ using UnityEngine;
 public class DragonGasEffect : MonoBehaviour
 {
     private int attackerId;
-    public int damageOverTimeDamage;
-    public LayerMask layersGasCanDamage;
+    [SerializeField] private int damageOverTimeDamage;
+    [SerializeField] private float damageFrequency = 1f;
+    [SerializeField] private LayerMask layersGasCanDamage;
     private float radius;
 
     public void Initialize(int attackerId)
@@ -20,7 +21,7 @@ public class DragonGasEffect : MonoBehaviour
     }
     private void Start()
     {
-        InvokeRepeating("DealDamageToPlayersAndMinions", 0, 1);
+        InvokeRepeating("DealDamageToPlayersAndMinions", 0, damageFrequency);
     }
 
     void DealDamageToPlayersAndMinions()
