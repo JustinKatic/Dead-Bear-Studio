@@ -15,13 +15,10 @@ public class LaserAbility : MonoBehaviourPun
     [SerializeField] private float ChargeupTime = 2f;
     [SerializeField] private float ShootAutomaticallyAt = 3f;
 
-    [Header("Extended Laser Duration")]
-    [SerializeField] private bool shouldLaserDurationIncrease = false;
-    [SerializeField] private float laserExtendedDurationTime = 2f;
-    [SerializeField] private float damageFrequency = .5f;
 
     [Header("Laser")]
-    private float laserDuration = .4f;
+    [SerializeField] private float laserDuration = 3f;
+    [SerializeField] private float damageFrequency = .2f;
     [SerializeField] private GameObject rayEndVFX;
 
 
@@ -38,8 +35,8 @@ public class LaserAbility : MonoBehaviourPun
 
     private bool canShoot = true;
     private bool isFireing = false;
-    private bool chargingUp;
-    private float MaxRayRange = 200f;
+    private bool chargingUp = false;
+    private float MaxRayRange = 500f;
 
     //Timers
     private float chargeUpTimer = 0;
@@ -84,41 +81,26 @@ public class LaserAbility : MonoBehaviourPun
     private void Ability1_performed(InputAction.CallbackContext obj)
     {
         if (canShoot)
-        {
             chargingUp = true;
-            ChargeUpLaser();
-        }
     }
 
     private void Ability1_cancelled(InputAction.CallbackContext obj)
     {
-        if (!isFireing && canShoot && chargingUp)
+        if (!isFireing && chargingUp)
         {
             SetFireingTrue();
             PlayerSoundManager.Instance.StopRayChargeUpSound();
 
             if (chargedUp)
-            {
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
-            }
             else
-            {
                 PlayerSoundManager.Instance.PlayCastAbilitySound();
-            }
-
-            if (shouldLaserDurationIncrease && chargedUp)
-            {
-                laserDuration = chargeUpTimer;
-            }
-            else
-                laserDuration = .4f;
         }
     }
 
 
     void ChargeUpLaser()
     {
-        //Charge up state
         if (chargingUp)
         {
             chargeUpTimer += Time.deltaTime;
@@ -136,11 +118,6 @@ public class LaserAbility : MonoBehaviourPun
             if (chargeUpTimer >= ChargeupTime)
             {
                 chargedUp = true;
-
-                if (shouldLaserDurationIncrease)
-                {
-                    laserDuration = laserExtendedDurationTime;
-                }
             }
         }
     }
@@ -150,6 +127,7 @@ public class LaserAbility : MonoBehaviourPun
         //Fireing laser state
         if (isFireing)
         {
+            Debug.Log("Fireing");
             //shoot laser
             ShootLaser();
             currentLaserTime += Time.deltaTime;
@@ -195,9 +173,6 @@ public class LaserAbility : MonoBehaviourPun
                 else
                     damage = damageToIncreaseByEachSecond;
 
-                Debug.Log("Time" + Mathf.FloorToInt(chargeUpTimer));
-                Debug.Log("Damage");
-
                 DealDamageToPlayersAndMinions(hit.collider, damage);
 
                 damageFrequencyTimer = 0;
@@ -210,17 +185,6 @@ public class LaserAbility : MonoBehaviourPun
         }
     }
 
-    void PlayHitSound(float hitX, float hitY, float hitZ)
-    {
-        photonView.RPC("PlayHitSound_RPC", RpcTarget.Others, hitX, hitY, hitZ);
-    }
-
-    [PunRPC]
-    void PlayHitSound_RPC(float hitX, float hitY, float hitZ)
-    {
-        FMODUnity.RuntimeManager.PlayOneShot(OnHitSound, new Vector3(hitX, hitY, hitZ));
-
-    }
 
     void SetFireingTrue()
     {
@@ -231,6 +195,8 @@ public class LaserAbility : MonoBehaviourPun
         isFireing = true;
     }
 
+
+    //Shoot cooldown
     public IEnumerator CanShoot(float timer)
     {
         canShoot = false;
@@ -239,6 +205,7 @@ public class LaserAbility : MonoBehaviourPun
         chargeUpTimer = 0;
     }
 
+    //Deal dmg if ray hits player or minion
     void DealDamageToPlayersAndMinions(Collider other, int DamageToDeal)
     {
         //stores refrence to tag collided with
@@ -260,6 +227,8 @@ public class LaserAbility : MonoBehaviourPun
         }
     }
 
+
+    #region Display LineRedner
     void DisplayLinerender(float L1X, float L1Y, float L1Z)
     {
         photonView.RPC("DisplayLinerender_RPC", RpcTarget.Others, L1X, L1Y, L1Z);
@@ -275,6 +244,7 @@ public class LaserAbility : MonoBehaviourPun
         LaserLine.enabled = true;
     }
 
+
     void CancelLinerender()
     {
         photonView.RPC("CancelLinerender_RPC", RpcTarget.Others);
@@ -286,6 +256,21 @@ public class LaserAbility : MonoBehaviourPun
         LaserLine.enabled = false;
         rayEndVFX.SetActive(false);
     }
+    #endregion
+
+
+    #region Laser Hit Sounds
+    void PlayHitSound(float hitX, float hitY, float hitZ)
+    {
+        photonView.RPC("PlayHitSound_RPC", RpcTarget.Others, hitX, hitY, hitZ);
+    }
+
+    [PunRPC]
+    void PlayHitSound_RPC(float hitX, float hitY, float hitZ)
+    {
+        FMODUnity.RuntimeManager.PlayOneShot(OnHitSound, new Vector3(hitX, hitY, hitZ));
+    }
+    #endregion
 
     private void OnDestroy()
     {

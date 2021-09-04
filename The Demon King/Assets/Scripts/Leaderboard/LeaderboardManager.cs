@@ -46,7 +46,7 @@ public class LeaderboardManager : MonoBehaviourPun
 
     [HideInInspector] public bool leaderboardEnabed = false;
 
-    public GameObject[] players;
+    private GameObject[] players;
     bool findingPlayers = true;
 
     int numberOfPlayerToDisplay = 2;
