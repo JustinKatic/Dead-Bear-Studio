@@ -13,7 +13,9 @@ public class EmoteWheel : MonoBehaviourPun
     [HideInInspector] public Emote emote;
     
     public Transform floatingImage;
-    private GameObject emoteObject; 
+    private GameObject emoteObject;
+    public float EmoteDelay = 0.5f;
+    private bool EmoteHasBeenActivated = false;
 
     // Start is called before the first frame update
     void Start()
@@ -78,12 +80,25 @@ public class EmoteWheel : MonoBehaviourPun
     }
     public void ActivateEmote(Emote emote)
     {
-        emoteObject = PhotonNetwork.Instantiate(emote.EmoteObject.name, floatingImage.position, floatingImage.rotation);
-        
-        if (photonView.IsMine)
+        if (!EmoteHasBeenActivated)
         {
-            photonView.RPC("SetEmoteParent_RPC", RpcTarget.All,emoteObject.GetPhotonView().ViewID);
+            emoteObject = PhotonNetwork.Instantiate(emote.EmoteObject.name, floatingImage.position, floatingImage.rotation);
+
+            StartCoroutine(EmoteTimer());
+            
+            if (photonView.IsMine)
+            {
+                photonView.RPC("SetEmoteParent_RPC", RpcTarget.All,emoteObject.GetPhotonView().ViewID);
+            }
         }
+
+    }
+
+    IEnumerator EmoteTimer()
+    {
+        EmoteHasBeenActivated = true;
+        yield return new WaitForSeconds(EmoteDelay);
+        EmoteHasBeenActivated = false;
 
     }
 

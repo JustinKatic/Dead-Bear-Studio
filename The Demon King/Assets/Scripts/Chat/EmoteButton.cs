@@ -37,5 +37,9 @@ public class EmoteButton : Button
         buttonHoverAnimation.Play("ButtonHoverExitAnimation");
     }
 
-
+    public override void OnPointerClick(PointerEventData eventData)
+    {
+        emoteWheel.ActivateEmote(emote);
+        emoteWheel.emote = emote;
+    }
 }
