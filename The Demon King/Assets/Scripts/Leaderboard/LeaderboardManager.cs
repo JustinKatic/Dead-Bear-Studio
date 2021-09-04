@@ -79,8 +79,6 @@ public class LeaderboardManager : MonoBehaviourPun
             Hashtable DemonKingScoreHash = new Hashtable();
             DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
             PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
-
-            players = GameObject.FindGameObjectsWithTag("PlayerParent");
         }
     }
 
@@ -125,7 +123,8 @@ public class LeaderboardManager : MonoBehaviourPun
 
         foreach (var player in players)
         {
-            UpdateLeadboardNetworked(player);
+            if (player != null)
+                UpdateLeadboardNetworked(player);
         }
     }
 
@@ -194,6 +193,8 @@ public class LeaderboardManager : MonoBehaviourPun
                 DemonKingPanel.DemonKingScoreText.text = player.DemonKingScore.ToString();
                 DemonKingPanel.UpdateSliderValue(player.DemonKingScore);
                 DemonKingPanel.CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
+                if (player.DemonKingScore >= DemonKingScoreRequiredToWin.value)
+                    DidAWinOccur = true;
             }
             i++;
         }
@@ -203,11 +204,28 @@ public class LeaderboardManager : MonoBehaviourPun
 
         if (DidAWinOccur)
         {
-            StartCoroutine(ReturnToLobby());
+            foreach (var player in players)
+            {
+                if (player != null)
+                    ReturnToLobby();
+            }
         }
+
     }
 
-    IEnumerator ReturnToLobby()
+    void ReturnToLobby()
+    {
+        photonView.RPC("ReturnToLobby_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void ReturnToLobby_RPC()
+    {
+        if (photonView.IsMine)
+            StartCoroutine(ReturnToLobbyCo());
+    }
+
+    IEnumerator ReturnToLobbyCo()
     {
         yield return new WaitForSeconds(4f);
 
