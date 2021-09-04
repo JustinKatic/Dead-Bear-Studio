@@ -16,6 +16,7 @@ public class EmoteWheel : MonoBehaviourPun
     private GameObject emoteObject;
     public float EmoteDelay = 0.5f;
     private bool EmoteHasBeenActivated = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -38,8 +39,52 @@ public class EmoteWheel : MonoBehaviourPun
             playerController.CharacterInputs.EmoteWheel.Display.canceled -= DisplayEmoteWheel_canceled;
         }
     }
+    private void DisplayEmoteWheel_started(InputAction.CallbackContext obj)
+    {
+        emoteObject = null;
+        EmoteHasBeenActivated = false;
+        if (photonView.IsMine)
+        {
+            playerController.CharacterInputs.PlayerLook.Disable();
+            playerController.CharacterInputs.Player.Ability1.Disable();
 
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            foreach (var emote in emotesButtons)
+            {
+                emote.gameObject.SetActive(true);
+                emote.interactable = true;
+            }
+        }
+
+    }
     private void DisplayEmoteWheel_canceled(InputAction.CallbackContext obj)
+    {
+        if (photonView.IsMine)
+        {
+            if (!EmoteHasBeenActivated)
+            {
+                if (emote != null)
+                {
+                    ActivateEmote(emote);
+                    emote = null;
+                }
+            
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                playerController.CharacterInputs.PlayerLook.Enable();
+                playerController.CharacterInputs.Player.Ability1.Enable();
+                foreach (var emote in emotesButtons)
+                {
+                    emote.gameObject.SetActive(false);
+                }
+            }
+
+        }
+
+    }
+
+    public void EmoteSelected()
     {
         if (photonView.IsMine)
         {
@@ -58,34 +103,14 @@ public class EmoteWheel : MonoBehaviourPun
                 emote.gameObject.SetActive(false);
             }
         }
-
     }
-    private void DisplayEmoteWheel_started(InputAction.CallbackContext obj)
-    {
-        emoteObject = null;
-        if (photonView.IsMine)
-        {
-            playerController.CharacterInputs.PlayerLook.Disable();
-            playerController.CharacterInputs.Player.Ability1.Disable();
 
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            foreach (var emote in emotesButtons)
-            {
-                emote.gameObject.SetActive(true);
-                emote.interactable = true;
-            }
-        }
-
-    }
     public void ActivateEmote(Emote emote)
     {
         if (!EmoteHasBeenActivated)
         {
             emoteObject = PhotonNetwork.Instantiate(emote.EmoteObject.name, floatingImage.position, floatingImage.rotation);
-
-            StartCoroutine(EmoteTimer());
-            
+            EmoteHasBeenActivated = true;
             if (photonView.IsMine)
             {
                 photonView.RPC("SetEmoteParent_RPC", RpcTarget.All,emoteObject.GetPhotonView().ViewID);
@@ -94,13 +119,6 @@ public class EmoteWheel : MonoBehaviourPun
 
     }
 
-    IEnumerator EmoteTimer()
-    {
-        EmoteHasBeenActivated = true;
-        yield return new WaitForSeconds(EmoteDelay);
-        EmoteHasBeenActivated = false;
-
-    }
 
     [PunRPC]
     public void SetEmoteParent_RPC(int viewId)

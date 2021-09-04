@@ -40,6 +40,7 @@ public class EmoteButton : Button
     public override void OnPointerClick(PointerEventData eventData)
     {
         emoteWheel.ActivateEmote(emote);
+        emoteWheel.EmoteSelected();
         emoteWheel.emote = emote;
     }
 }
