@@ -2,18 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GasEffect : MonoBehaviour
+public class DragonGasEffect : MonoBehaviour
 {
     private int attackerId;
-    private int damageOverTimeDamage;
-    private LayerMask layersGasCanDamage;
-    float radius;
+    public int damageOverTimeDamage;
+    public LayerMask layersGasCanDamage;
+    private float radius;
 
-    public void Initialize(int attackerId, int damageOverTimeDamage, LayerMask layersGasCanDamage)
+    public void Initialize(int attackerId)
     {
         this.attackerId = attackerId;
-        this.damageOverTimeDamage = damageOverTimeDamage;
-        this.layersGasCanDamage = layersGasCanDamage;
     }
 
     private void OnEnable()

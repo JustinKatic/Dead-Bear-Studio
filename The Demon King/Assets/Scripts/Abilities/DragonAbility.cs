@@ -1,15 +1,8 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class RicochetAbility : AbilityBase
+public class DragonAbility : AbilityBase
 {
-    [SerializeField] private int numberOfBouncesBeforeDestroys;
-
-    [SerializeField] private int damageOverTimeDamage;
-
-    [SerializeField] LayerMask layersGasCanDamage;
-
-
     [Header("LayersForRaycastToIgnore")]
     [SerializeField] private LayerMask PrimaryProjectileLayersToIgnore;
 
@@ -38,8 +31,8 @@ public class RicochetAbility : AbilityBase
         GameObject createdPrimaryProjectile = PhotonNetwork.Instantiate("DragonProjectile", pos, Quaternion.identity);
         createdPrimaryProjectile.transform.forward = dir;
 
-        RicochetProjectileController projectileScript = createdPrimaryProjectile.GetComponent<RicochetProjectileController>();
-        projectileScript.Initialize(damage, player.id, numberOfBouncesBeforeDestroys, damageOverTimeDamage, layersGasCanDamage);
+        DragonProjectileController projectileScript = createdPrimaryProjectile.GetComponent<DragonProjectileController>();
+        projectileScript.Initialize(player.id);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
     }
 }
