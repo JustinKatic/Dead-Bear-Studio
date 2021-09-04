@@ -45,7 +45,7 @@ public class HealthManager : MonoBehaviourPun
 
 
     protected float stunnedTimer;
-    protected int curAttackerId;
+    public int CurAttackerId;
 
     public int CurrentHealth = 0;
     [HideInInspector] public bool beingDevoured = false;
@@ -106,15 +106,20 @@ public class HealthManager : MonoBehaviourPun
     [PunRPC]
     public virtual void OnDevour_RPC(int attackerID)
     {
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+        //if Devour breaks remove the if statement!!!
+        if (CurAttackerId == 0)
+        {
+            CurAttackerId = attackerID;
+            myDevourCo = DevourCorutine();
+            StartCoroutine(myDevourCo);
+        }
 
         IEnumerator DevourCorutine()
         {
             OnBeingDevourStart();
 
             yield return new WaitForSeconds(TimeTakenToBeDevoured);
-
+            CurAttackerId = 0;
             OnBeingDevourEnd(attackerID);
         }
     }
@@ -144,6 +149,7 @@ public class HealthManager : MonoBehaviourPun
         {
             OnBeingStunnedEnd();
             stunnedTimer = 0;
+            CurAttackerId = 0;
         }
     }
 

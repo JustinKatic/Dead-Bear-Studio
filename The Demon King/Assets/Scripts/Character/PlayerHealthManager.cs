@@ -408,12 +408,16 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
-            Stun(false);
-            debuffTimer.StopStunTimer();
-            player.EnableMovement();
-            Heal(AmountOfHealthAddedAfterStunned);
-            player.currentAnim.SetBool("Stunned", false);
-            PlayerSoundManager.Instance.StopStunnedSound();
+            if (!beingDevoured)
+            {
+                Stun(false);
+                debuffTimer.StopStunTimer();
+                player.EnableMovement();
+                Heal(AmountOfHealthAddedAfterStunned);
+                player.currentAnim.SetBool("Stunned", false);
+                PlayerSoundManager.Instance.StopStunnedSound();
+            }
+
         }
     }
 }
