@@ -10,7 +10,7 @@ public class EmoteWheel : MonoBehaviourPun
 {
     private PlayerController playerController;
     public List<Button> emotesButtons = new List<Button>();
-    private List<EmoteButton> emotes = new List<EmoteButton>();
+    private List<Emote> emotes = new List<Emote>();
     
     public Transform floatingImage;
     private GameObject emoteObject; 
@@ -22,7 +22,7 @@ public class EmoteWheel : MonoBehaviourPun
         {
             foreach (var button in emotesButtons)
             {
-                emotes.Add(button.GetComponent<EmoteButton>());
+                emotes.Add(button.GetComponent<Emote>());
             }
             playerController = GetComponentInParent<PlayerController>();
             playerController.CharacterInputs.EmoteWheel.Display.started += DisplayEmoteWheel_started;
@@ -72,9 +72,9 @@ public class EmoteWheel : MonoBehaviourPun
         }
 
     }
-    public void ActivateEmote(EmoteButton emote)
+    public void ActivateEmote(Emote emote)
     {
-        emoteObject = PhotonNetwork.Instantiate(emote.Emote.name, floatingImage.position, floatingImage.rotation);
+        emoteObject = PhotonNetwork.Instantiate(emote.EmoteObject.name, floatingImage.position, floatingImage.rotation);
         if (photonView.IsMine)
         {
             photonView.RPC("SetEmoteParent_RPC", RpcTarget.All,emoteObject.GetPhotonView().ViewID);

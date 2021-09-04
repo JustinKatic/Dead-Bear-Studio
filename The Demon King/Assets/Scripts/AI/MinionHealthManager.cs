@@ -13,7 +13,7 @@ public class MinionHealthManager : HealthManager
     [HideInInspector] public GameObject PlayerWhoShotMe;
     [HideInInspector] public State state;
 
-    private GameObject[] RespawnPositions;
+    [SerializeField] Transform[] RespawnPositions;
     private Collider col;
     private Canvas hudCanvas;
     private NavMeshAgent agent;
@@ -31,7 +31,6 @@ public class MinionHealthManager : HealthManager
 
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();
-        RespawnPositions = GameObject.FindGameObjectsWithTag("AIRespawn");
         CurrentHealth = MaxHealth;
         SetAIHealthValues(MaxHealth);
         agent = GetComponent<NavMeshAgent>();
@@ -130,7 +129,7 @@ public class MinionHealthManager : HealthManager
             if (PhotonNetwork.IsMasterClient)
             {
                 Stun(false);
-                agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].transform.position);
+                agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].position);
                 Respawned = true;
             }
 

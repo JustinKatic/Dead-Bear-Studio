@@ -112,7 +112,6 @@ public class InGameSettings : MonoBehaviourPun
         }
         
         PhotonNetwork.LeaveRoom();
-        Destroy(NetworkManager.instance.gameObject);
         PhotonNetwork.LoadLevel("Menu");
     }
 }
