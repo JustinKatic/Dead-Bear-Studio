@@ -233,7 +233,6 @@ public class LeaderboardManager : MonoBehaviourPun
         while (PhotonNetwork.InRoom)
             yield return null;
         {
-            Destroy(NetworkManager.instance.gameObject);
             PhotonNetwork.LoadLevel("Menu");
         }
     }

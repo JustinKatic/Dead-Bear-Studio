@@ -14,43 +14,57 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     // instance
     public static NetworkManager instance;
-    void Awake ()
+
+    private PhotonView PV;
+    void Awake()
     {
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            if (PV == null)
+            {
+                PV = gameObject.AddComponent<PhotonView>();
+                photonView.ViewID = 999;
+            }
+        }
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start ()
+    void Start()
     {
         // connect to the master server
         PhotonNetwork.ConnectUsingSettings();
     }
 
-    public override void OnConnectedToMaster ()
+    public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
     }
 
     // creates a new room of the requested room name
-    public void CreateRoom (string roomName, int roomMaxPlayers)
+    public void CreateRoom(string roomName, int roomMaxPlayers)
     {
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = (byte)roomMaxPlayers;
-        
+
         RoomName = roomName.ToUpper();
 
         PhotonNetwork.CreateRoom(RoomName, options);
     }
-    
+
     // joins a room of the requested room name
-    public void JoinRoom (string roomName)
+    public void JoinRoom(string roomName)
     {
         PhotonNetwork.JoinRoom(roomName);
     }
 
     // changes the scene through Photon's system
     [PunRPC]
-    public void ChangeScene (string sceneName)
+    public void ChangeScene(string sceneName)
     {
         levelNotLoading = false;
         //Checks if the scene is found within the build settings, otherwise load game as default
@@ -68,13 +82,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
 
     // called when we disconnect from the Photon server
-    public override void OnDisconnected (DisconnectCause cause)
+    public override void OnDisconnected(DisconnectCause cause)
     {
         PhotonNetwork.LoadLevel("Menu");
     }
 
-    public override void OnPlayerLeftRoom (Player otherPlayer)
+    public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-   
+
     }
 }
