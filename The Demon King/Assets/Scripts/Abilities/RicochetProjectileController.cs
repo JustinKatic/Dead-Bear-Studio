@@ -9,6 +9,9 @@ public class RicochetProjectileController : MonoBehaviourPun
     private int attackerId;
     private int numberOfBouncesBeforeDestroys;
     private int currentNumberOfBounces;
+    private int damageOverTimeDamage;
+    private LayerMask layersGasCanDamage;
+
 
 
     [FMODUnity.EventRef]
@@ -42,11 +45,13 @@ public class RicochetProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int damage, int attackerId, int numberOfBouncesBeforeDestroys)
+    public void Initialize(int damage, int attackerId, int numberOfBouncesBeforeDestroys, int damageOverTimeDamage, LayerMask layersGasCanDamage)
     {
         this.damage = damage;
         this.attackerId = attackerId;
         this.numberOfBouncesBeforeDestroys = numberOfBouncesBeforeDestroys;
+        this.damageOverTimeDamage = damageOverTimeDamage;
+        this.layersGasCanDamage = layersGasCanDamage;
 
         // set a lifetime of bullet
         if (photonView.IsMine)
@@ -65,6 +70,9 @@ public class RicochetProjectileController : MonoBehaviourPun
             DealDamageToPlayersAndMinions(other);
 
             PhotonNetwork.Instantiate("DragonImpactFX", transform.position, Quaternion.identity);
+
+            GameObject CreatedGasEffect = PhotonNetwork.Instantiate("DragonGas", transform.position, Quaternion.identity);
+            CreatedGasEffect.GetComponent<GasEffect>().Initialize(attackerId, damageOverTimeDamage, layersGasCanDamage);
 
             FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);
 

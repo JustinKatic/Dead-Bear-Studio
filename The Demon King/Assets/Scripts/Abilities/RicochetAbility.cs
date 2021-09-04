@@ -5,6 +5,11 @@ public class RicochetAbility : AbilityBase
 {
     [SerializeField] private int numberOfBouncesBeforeDestroys;
 
+    [SerializeField] private int damageOverTimeDamage;
+
+    [SerializeField] LayerMask layersGasCanDamage;
+
+
     [Header("LayersForRaycastToIgnore")]
     [SerializeField] private LayerMask PrimaryProjectileLayersToIgnore;
 
@@ -34,7 +39,7 @@ public class RicochetAbility : AbilityBase
         createdPrimaryProjectile.transform.forward = dir;
 
         RicochetProjectileController projectileScript = createdPrimaryProjectile.GetComponent<RicochetProjectileController>();
-        projectileScript.Initialize(damage, player.id, numberOfBouncesBeforeDestroys);
+        projectileScript.Initialize(damage, player.id, numberOfBouncesBeforeDestroys, damageOverTimeDamage, layersGasCanDamage);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * power;
     }
 }
