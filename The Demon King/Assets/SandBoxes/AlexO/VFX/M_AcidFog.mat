@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_GasOrb
+  m_Name: M_AcidFog
   m_Shader: {fileID: -6465566751694194690, guid: 8e268e401dc25644fa42efde47bf4cf6, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -40,11 +40,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _AcidFade: 0
     - _AlphaAmount: 0.34
     - _DepthOffset: 0.3
     - _DepthStrength: 1
     - _Fill: 0.1
     - _FresnelPower: 3.8
+    - _NoiseSmoothness: 0.133
     - _Offset: 0.3
     - _Speed: 0.7
     - _Strength: 1
