@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8559847245418659414}
   - component: {fileID: 2975112433763130288}
   - component: {fileID: 4190222573642493119}
+  - component: {fileID: -8480356813389522612}
   m_Layer: 8
   m_Name: DragonProjectile
   m_TagString: Projectile
@@ -186,6 +187,21 @@ MonoBehaviour:
   OnTriggerSound: event:/Explosion
   AbilityTravelSound: event:/Ability1TravlingSound
   rb: {fileID: 5847183214079295376}
+--- !u!114 &-8480356813389522612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2324771704206079354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d8c3956884337242964028eae0bdbfa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layersGasCanDamage:
+    serializedVersion: 2
+    m_Bits: 2560
 --- !u!1001 &9094121752000169712
 PrefabInstance:
   m_ObjectHideFlags: 0
