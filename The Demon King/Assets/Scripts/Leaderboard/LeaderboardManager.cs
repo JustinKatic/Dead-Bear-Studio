@@ -237,6 +237,7 @@ public class LeaderboardManager : MonoBehaviourPun
 
     IEnumerator ReturnToLobbyCo()
     {
+        winPanel.SetActive(true);
         yield return new WaitForSeconds(4f);
 
         PhotonNetwork.LeaveRoom();
@@ -288,18 +289,7 @@ public class LeaderboardManager : MonoBehaviourPun
             }
 
             if (matchTime <= 0)
-                DisplayWinScreen();
-        }
-    }
-
-    void DisplayWinScreen()
-    {
-        winPanel.SetActive(true);
-
-        foreach (var player in players)
-        {
-            if (player != null)
-                ReturnToLobby();
+                winPanel.SetActive(true);
         }
     }
 }
