@@ -51,8 +51,12 @@ public class LeaderboardManager : MonoBehaviourPun
 
     int numberOfPlayerToDisplay = 2;
 
-
-
+    [SerializeField] private float matchTime = 900;
+    [SerializeField] private float timeToAwardDoubleScore = 300;
+    [SerializeField] private TextMeshProUGUI matchTimeText;
+    [SerializeField] private GameObject doubleScorePanel;
+    [SerializeField] private GameObject winPanel;
+    private bool doubleScoreProced;
 
 
     private Image GetImage(MinionType minionType)
@@ -93,10 +97,13 @@ public class LeaderboardManager : MonoBehaviourPun
                 {
                     findingPlayers = false;
                     Invoke("UpdateLeaderboard", 1);
+                    if (PhotonNetwork.IsMasterClient)
+                        StartMatchTime(PhotonNetwork.Time);
                 }
             }
         }
     }
+
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
@@ -116,7 +123,11 @@ public class LeaderboardManager : MonoBehaviourPun
 
     public void UpdateDemonKingScore(int AmountToIncreaseScoreBy)
     {
-        DemonKingScore += AmountToIncreaseScoreBy;
+        if (!doubleScoreProced)
+            DemonKingScore += AmountToIncreaseScoreBy;
+        else
+            DemonKingScore += AmountToIncreaseScoreBy * 2;
+
         Hashtable DemonKingScoreHash = new Hashtable();
         DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
         PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
@@ -210,7 +221,6 @@ public class LeaderboardManager : MonoBehaviourPun
                     ReturnToLobby();
             }
         }
-
     }
 
     void ReturnToLobby()
@@ -232,9 +242,9 @@ public class LeaderboardManager : MonoBehaviourPun
         PhotonNetwork.LeaveRoom();
         while (PhotonNetwork.InRoom)
             yield return null;
-        {
-            PhotonNetwork.LoadLevel("Menu");
-        }
+
+        PhotonNetwork.LoadLevel("Menu");
+
     }
 
     public string FormatTime(float time)
@@ -242,5 +252,54 @@ public class LeaderboardManager : MonoBehaviourPun
         int minutes = (int)time / 60;
         int seconds = (int)time - 60 * minutes;
         return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void StartMatchTime(double matchTimeStart)
+    {
+        foreach (var player in players)
+        {
+            if (player != null)
+                player.GetPhotonView().RPC("StartMatchTime_RPC", RpcTarget.All, matchTimeStart);
+        }
+    }
+
+    [PunRPC]
+    void StartMatchTime_RPC(double matchTimeStart)
+    {
+        if (photonView.IsMine)
+        {
+            matchTime -= (float)(PhotonNetwork.Time - matchTimeStart);
+            StartCoroutine("MatchTimeCountDown");
+        }
+    }
+
+    IEnumerator MatchTimeCountDown()
+    {
+        while (matchTime >= 0f)
+        {
+            yield return new WaitForEndOfFrame();
+            matchTime -= Time.deltaTime;
+            matchTimeText.text = FormatTime(matchTime);
+
+            if (matchTime <= timeToAwardDoubleScore && !doubleScoreProced)
+            {
+                doubleScoreProced = true;
+                doubleScorePanel.SetActive(true);
+            }
+
+            if (matchTime <= 0)
+                DisplayWinScreen();
+        }
+    }
+
+    void DisplayWinScreen()
+    {
+        winPanel.SetActive(true);
+
+        foreach (var player in players)
+        {
+            if (player != null)
+                ReturnToLobby();
+        }
     }
 }
