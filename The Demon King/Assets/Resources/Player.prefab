@@ -5878,7 +5878,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
-  MaxHealth: 20
+  MaxHealth: 40
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -5910,12 +5910,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 2
   shootCooldown: 0.3
   shootPoint: {fileID: 8223992597592377373}
+  projectileHitDmg: 7
   damageFrequency: 1
   gasDuration: 4
-  gasSize: 6
+  gasSize: 4
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 2432
@@ -12309,7 +12310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 3
   shootCooldown: 0.5
   ChargeupTime: 2
   ShootAutomaticallyAt: 3
@@ -12334,7 +12335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
-  MaxHealth: 13
+  MaxHealth: 30
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -17321,11 +17322,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 2
+  damage: 10
   shootCooldown: 0.3
   shootPoint: {fileID: 4337079125391408957}
-  aoeRadius: 2.5
-  aoeDamage: 1
+  aoeRadius: 2.3
+  aoeDamage: 7
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 2432
@@ -17342,7 +17343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
-  MaxHealth: 20
+  MaxHealth: 40
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -17471,9 +17472,10 @@ MonoBehaviour:
   damage: 1
   shootCooldown: 0.3
   shootPoint: {fileID: 5144273091646117139}
+  projectileHitDmg: 6
   damageFrequency: 1
-  gasDuration: 4
-  gasSize: 6
+  gasDuration: 3
+  gasSize: 3
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 2432
@@ -17546,7 +17548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
-  MaxHealth: 13
+  MaxHealth: 30
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -19009,8 +19011,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3caba815a51ca84f9c487ec69334527, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 5
+  MaxHealth: 20
   TimeBeforeHealthRegen: 3
+  healthRegenAmount: 1
+  healthRegenTickrate: 0.5
   RespawnTime: 6
   AmountOfHealthAddedAfterStunned: 3
   stunnedDuration: 5
@@ -21115,7 +21119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 5
   shootCooldown: 0.3
   shootPoint: {fileID: 4886548998357426947}
   PrimaryProjectileLayersToIgnore:
@@ -21134,7 +21138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
-  MaxHealth: 5
+  MaxHealth: 20
   JumpSound: event:/Jump
   animator: {fileID: 190322414822078646}
   ShootPoint: {fileID: 4886548998357426947}
@@ -21562,7 +21566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
-  MaxHealth: 8
+  MaxHealth: 25
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -21628,7 +21632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 2
   shootCooldown: 0.5
   ChargeupTime: 2
   ShootAutomaticallyAt: 3
@@ -21698,7 +21702,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
-  MaxHealth: 13
+  MaxHealth: 30
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -21730,11 +21734,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 2
+  damage: 7
   shootCooldown: 0.3
   shootPoint: {fileID: 3096543207606883158}
-  aoeRadius: 1.5
-  aoeDamage: 1
+  aoeRadius: 1.75
+  aoeDamage: 5
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 2432
@@ -22307,11 +22311,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 5
   shootCooldown: 0.3
   shootPoint: {fileID: 2776606519705937495}
-  aoeRadius: 1
-  aoeDamage: 1
+  aoeRadius: 1.5
+  aoeDamage: 5
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 2432
@@ -22384,7 +22388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
-  MaxHealth: 8
+  MaxHealth: 25
   JumpSound: event:/Jump
   animator: {fileID: 5125816748761906387}
   ShootPoint: {fileID: 2776606519705937495}
@@ -22870,7 +22874,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 5
   shootCooldown: 0.3
   shootPoint: {fileID: 2634334833534024359}
   PrimaryProjectileLayersToIgnore:
@@ -22889,7 +22893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
-  MaxHealth: 5
+  MaxHealth: 20
   JumpSound: event:/Jump
   animator: {fileID: 4169665842805246883}
   ShootPoint: {fileID: 2634334833534024359}
@@ -23042,11 +23046,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
   damage: 1
-  shootCooldown: 2
+  shootCooldown: 0.3
   shootPoint: {fileID: 4459725887312502264}
+  projectileHitDmg: 4
   damageFrequency: 1
-  gasDuration: 4
-  gasSize: 6
+  gasDuration: 2.5
+  gasSize: 2
   PrimaryProjectileLayersToIgnore:
     serializedVersion: 2
     m_Bits: 2432
@@ -23107,7 +23112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
-  MaxHealth: 8
+  MaxHealth: 25
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -23548,7 +23553,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afba6b1ae6a521499e73cc4e56b2fa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 4
   shootCooldown: 0.5
   ChargeupTime: 2
   ShootAutomaticallyAt: 3
@@ -23629,7 +23634,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
-  MaxHealth: 20
+  MaxHealth: 40
   JumpSound: event:/Jump
   animator: {fileID: 0}
   ShootPoint: {fileID: 0}
@@ -28549,7 +28554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
-  MaxHealth: 5
+  MaxHealth: 20
   JumpSound: event:/Jump
   animator: {fileID: 2429296978554322117}
   ShootPoint: {fileID: 192005156663591814}
@@ -28593,7 +28598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ProjectileSpeed: 50
-  damage: 1
+  damage: 5
   shootCooldown: 0.3
   shootPoint: {fileID: 192005156663591814}
   PrimaryProjectileLayersToIgnore:

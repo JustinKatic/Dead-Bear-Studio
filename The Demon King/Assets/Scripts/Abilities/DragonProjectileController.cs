@@ -10,6 +10,7 @@ public class DragonProjectileController : MonoBehaviourPun
     public GameObject EnemyGasEffect;
     public GameObject FriendlyGasEffect;
 
+    private int projectileHitDmg;
     private int damage;
     private float damageFrequency;
     private float gasDuration;
@@ -47,8 +48,9 @@ public class DragonProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int attackerId, int damage, float damageFrequency, float gasDuration, float gasSize)
+    public void Initialize(int attackerId, int damage, float damageFrequency, float gasDuration, float gasSize, int projectileHitDmg)
     {
+        this.projectileHitDmg = projectileHitDmg;
         this.attackerId = attackerId;
         this.damage = damage;
         this.damageFrequency = damageFrequency;
@@ -71,6 +73,8 @@ public class DragonProjectileController : MonoBehaviourPun
         if (photonView.IsMine)
         {
             PhotonNetwork.Instantiate("DragonImpactFX", transform.position, Quaternion.identity);
+
+            DealDamageToPlayersAndMinions(other);
 
             SpawnGasEffect();
 
@@ -97,6 +101,27 @@ public class DragonProjectileController : MonoBehaviourPun
         {
             GameObject CreatedGasEffect = Instantiate(EnemyGasEffect, new Vector3(x, y, z), Quaternion.identity);
             CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, gasDuration, gasSize);
+        }
+    }
+
+    void DealDamageToPlayersAndMinions(Collider other)
+    {
+        //stores refrence to tag collided with
+        string objTag = other.transform.tag;
+
+        if (objTag.Equals("Player"))
+        {
+            //tell the player who was hit to take damage
+            PlayerHealthManager playerHealth = other.GetComponentInParent<PlayerHealthManager>();
+            if (playerHealth.PlayerId != attackerId)
+                playerHealth.TakeDamage(projectileHitDmg, attackerId);
+        }
+        //If tag is Minion
+        else if (objTag.Equals("Minion"))
+        {
+            //tell the minion who was hit to take damage
+            MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
+            minionHealth.TakeDamage(projectileHitDmg, attackerId);
         }
     }
 }

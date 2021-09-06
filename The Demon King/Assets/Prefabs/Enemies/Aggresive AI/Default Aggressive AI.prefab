@@ -58756,8 +58756,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5bd1845b943e64da48f3aefc8c2875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 4
+  MaxHealth: 20
   TimeBeforeHealthRegen: 3
+  healthRegenAmount: 1
+  healthRegenTickrate: 0.5
   RespawnTime: 6
   AmountOfHealthAddedAfterStunned: 3
   stunnedDuration: 3
@@ -58770,6 +58772,7 @@ MonoBehaviour:
   StunVFX: {fileID: 5432799953824469897}
   healthRegenTimer: 0
   timeForHealthRegenToActivate: 8
+  CurAttackerId: 0
   CurrentHealth: 0
   beingDevoured: 0
   canBeDevoured: 0
@@ -58778,7 +58781,9 @@ MonoBehaviour:
   myModel: {fileID: 0}
   PlayerWhoShotMe: {fileID: 0}
   state: {fileID: 0}
+  RespawnPositions: []
   overheadHudHealthbarImg: {fileID: 6772451899845969674}
+  Respawned: 0
 --- !u!114 &5332727199335344654
 MonoBehaviour:
   m_ObjectHideFlags: 0

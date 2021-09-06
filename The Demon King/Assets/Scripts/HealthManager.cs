@@ -9,8 +9,10 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviourPun
 {
     [Header("HealthStats")]
-    public int MaxHealth = 3;
+    [HideInInspector] public int MaxHealth;
     [SerializeField] protected float TimeBeforeHealthRegen = 3f;
+    [SerializeField] protected int healthRegenAmount = 1;
+    [SerializeField] protected float healthRegenTickrate = .5f;
     [SerializeField] protected float RespawnTime = 6;
     [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
 
@@ -40,7 +42,6 @@ public class HealthManager : MonoBehaviourPun
     public float timeForHealthRegenToActivate = 8f;
 
 
-    protected float healthRegenTickrate = .5f;
     protected float healthRegenTickrateTimer = 0f;
 
 
@@ -88,7 +89,7 @@ public class HealthManager : MonoBehaviourPun
                 healthRegenTickrateTimer += Time.deltaTime;
                 if (healthRegenTickrateTimer >= healthRegenTickrate)
                 {
-                    Heal(1);
+                    Heal(healthRegenAmount);
                     healthRegenTickrateTimer = 0;
                 }
             }
