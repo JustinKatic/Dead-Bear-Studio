@@ -8,8 +8,7 @@ using System;
 public class LaserAbility : MonoBehaviourPun
 {
     [Header("Damage")]
-    private int damage;
-    [SerializeField] private int damageToIncreaseByEachSecond;
+    [SerializeField] private int damage = 1;
     [Header("Timers")]
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private float ChargeupTime = 2f;
@@ -17,7 +16,9 @@ public class LaserAbility : MonoBehaviourPun
 
 
     [Header("Laser")]
-    [SerializeField] private float laserDuration = 3f;
+    [SerializeField] private float baseLaserDuration = 1f;
+    private float laserDuration;
+
     [SerializeField] private float damageFrequency = .2f;
     [SerializeField] private GameObject rayEndVFX;
 
@@ -69,6 +70,15 @@ public class LaserAbility : MonoBehaviourPun
     {
         canShoot = true;
         damageFrequencyTimer = damageFrequency;
+        if (isFireing)
+        {
+            chargedUp = false;
+            isFireing = false;
+            LaserLine.enabled = false;
+            rayEndVFX.SetActive(false);
+            CancelLinerender();
+            currentLaserTime = 0;
+        }
     }
 
     private void Update()
@@ -127,7 +137,6 @@ public class LaserAbility : MonoBehaviourPun
         //Fireing laser state
         if (isFireing)
         {
-            Debug.Log("Fireing");
             //shoot laser
             ShootLaser();
             currentLaserTime += Time.deltaTime;
@@ -169,9 +178,9 @@ public class LaserAbility : MonoBehaviourPun
                 PlayHitSound(hit.point.x, hit.point.y, hit.point.z);
 
                 if (chargeUpTimer >= 1)
-                    damage = Mathf.FloorToInt(chargeUpTimer) + 1 * damageToIncreaseByEachSecond;
+                    laserDuration = chargeUpTimer;
                 else
-                    damage = damageToIncreaseByEachSecond;
+                    laserDuration = baseLaserDuration;
 
                 DealDamageToPlayersAndMinions(hit.collider, damage);
 
