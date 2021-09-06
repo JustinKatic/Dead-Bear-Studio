@@ -188,7 +188,7 @@ public class MinionHealthManager : HealthManager
                 Stun(false);
 
                 isStunned = false;
-                Heal(1);
+                Heal(AmountOfHealthAddedAfterStunned);
             }
         }
     }
