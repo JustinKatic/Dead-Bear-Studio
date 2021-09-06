@@ -73,6 +73,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
             playerController.currentAnim = activeEvolution.animator;
+            playerHealthManager.SetHealth(activeEvolution.MaxHealth);
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
     }
