@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class DragonAbility : AbilityBase
 {
+    [SerializeField] private int projectileHitDmg;
     [SerializeField] private float damageFrequency;
     [SerializeField] private float gasDuration;
     [SerializeField] private float gasSize;
@@ -37,7 +38,7 @@ public class DragonAbility : AbilityBase
         createdPrimaryProjectile.transform.forward = dir;
 
         DragonProjectileController projectileScript = createdPrimaryProjectile.GetComponent<DragonProjectileController>();
-        projectileScript.Initialize(player.id,damage,damageFrequency,gasDuration,gasSize);
+        projectileScript.Initialize(player.id, damage, damageFrequency, gasDuration, gasSize, projectileHitDmg);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * ProjectileSpeed;
     }
 }
