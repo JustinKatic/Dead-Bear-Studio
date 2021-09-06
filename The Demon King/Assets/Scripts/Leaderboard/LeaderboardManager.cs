@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using TMPro;
+using ExitGames.Client.Photon;
 
 struct LeaderBoardList
 {
@@ -17,7 +18,7 @@ struct LeaderBoardList
 }
 
 
-public class LeaderboardManager : MonoBehaviourPun
+public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 {
     PlayerController playerController;
     public GameObject LeaderBoardHUD;
@@ -58,6 +59,10 @@ public class LeaderboardManager : MonoBehaviourPun
     [SerializeField] private GameObject winPanel;
     private bool doubleScoreProced;
 
+    private const byte UpdateLeaderboardEvent = 1;
+    private const byte StartMatchTimeEvent = 2;
+
+
 
     private Image GetImage(MinionType minionType)
     {
@@ -84,11 +89,13 @@ public class LeaderboardManager : MonoBehaviourPun
             DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
             PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
         }
+        else
+            Destroy(this);
     }
 
     private void Update()
     {
-        if (photonView.IsMine)
+        if (PhotonNetwork.IsMasterClient)
         {
             if (findingPlayers)
             {
@@ -96,9 +103,8 @@ public class LeaderboardManager : MonoBehaviourPun
                 if (players.Length == PhotonNetwork.PlayerList.Length)
                 {
                     findingPlayers = false;
-                    Invoke("UpdateLeaderboard", 1);
-                    if (PhotonNetwork.IsMasterClient)
-                        StartMatchTime(PhotonNetwork.Time);
+                    RaiseUpdateLeaderboardEvent();
+                    RaiseStartMatchTimerEvent();
                 }
             }
         }
@@ -132,29 +138,7 @@ public class LeaderboardManager : MonoBehaviourPun
         DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
         PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
 
-        foreach (var player in players)
-        {
-            if (player != null)
-                UpdateLeadboardNetworked(player);
-        }
-    }
-
-
-    public void UpdateLeadboardNetworked(GameObject player)
-    {
-        player.GetPhotonView().RPC("UpdateLeadboardNetworked_RPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void UpdateLeadboardNetworked_RPC()
-    {
-        if (photonView.IsMine)
-            Invoke("UpdateLeaderboardInvoke", .5f);
-    }
-
-    void UpdateLeaderboardInvoke()
-    {
-        UpdateLeaderboard();
+        RaiseUpdateLeaderboardEvent();
     }
 
 
@@ -245,7 +229,6 @@ public class LeaderboardManager : MonoBehaviourPun
             yield return null;
 
         PhotonNetwork.LoadLevel("Menu");
-
     }
 
     public string FormatTime(float time)
@@ -257,21 +240,8 @@ public class LeaderboardManager : MonoBehaviourPun
 
     public void StartMatchTime(double matchTimeStart)
     {
-        foreach (var player in players)
-        {
-            if (player != null)
-                player.GetPhotonView().RPC("StartMatchTime_RPC", RpcTarget.All, matchTimeStart);
-        }
-    }
-
-    [PunRPC]
-    void StartMatchTime_RPC(double matchTimeStart)
-    {
-        if (photonView.IsMine)
-        {
-            matchTime -= (float)(PhotonNetwork.Time - matchTimeStart);
-            StartCoroutine("MatchTimeCountDown");
-        }
+        matchTime -= (float)(PhotonNetwork.Time - matchTimeStart);
+        StartCoroutine("MatchTimeCountDown");
     }
 
     IEnumerator MatchTimeCountDown()
@@ -291,5 +261,42 @@ public class LeaderboardManager : MonoBehaviourPun
             if (matchTime <= 0)
                 winPanel.SetActive(true);
         }
+    }
+
+    public void RaiseStartMatchTimerEvent()
+    {
+        object[] data = new object[] { PhotonNetwork.Time };
+        RaiseEventOptions raiseEventOption = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(StartMatchTimeEvent, data, raiseEventOption, sendOptions);
+    }
+
+    public void RaiseUpdateLeaderboardEvent()
+    {
+        RaiseEventOptions raiseEventOption = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(UpdateLeaderboardEvent, null, raiseEventOption, sendOptions);
+    }
+
+
+    public void OnEvent(EventData photonEvent)
+    {
+        if (photonEvent.Code == UpdateLeaderboardEvent)
+            Invoke("UpdateLeaderboard", .5f);
+
+        else if (photonEvent.Code == StartMatchTimeEvent)
+        {
+            object[] data = (object[])photonEvent.CustomData;
+            StartMatchTime((double)data[0]);
+        }
+    }
+
+    private void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+    private void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 }

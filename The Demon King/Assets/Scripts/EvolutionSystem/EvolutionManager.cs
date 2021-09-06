@@ -222,7 +222,7 @@ public class EvolutionManager : MonoBehaviourPun
         playerHealthManager.SetHealth(activeEvolution.MaxHealth);
         playerHealthManager.CurrentHealth = Mathf.RoundToInt(playerHealthManager.MaxHealth * currentHealthPercent * 0.01f);
         playerHealthManager.UpdateHealthBar(playerHealthManager.CurrentHealth, 0);
-        leaderboardManager.UpdateLeadboardNetworked(gameObject);
+        leaderboardManager.RaiseUpdateLeaderboardEvent();
     }
 
     void Evolve(string currentModelsTag, string nextModelsTag)
