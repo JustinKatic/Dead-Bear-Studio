@@ -61,6 +61,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private const byte UpdateLeaderboardEvent = 1;
     private const byte StartMatchTimeEvent = 2;
+    private const byte PlayerWonEvent = 3;
+
 
 
 
@@ -147,8 +149,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         //Clear current leaderboard data
         leaderBoardList.Clear();
 
-        Debug.Log("Updating leaderboard");
-
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             LeaderBoardList dataToEnterIntoLeaderboardList = new LeaderBoardList();
@@ -197,27 +197,15 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         if (!wasThereAKing)
             DemonKingPanel.gameObject.SetActive(false);
 
-        if (DidAWinOccur)
+        if (PhotonNetwork.IsMasterClient)
         {
-            foreach (var player in players)
+            if (DidAWinOccur)
             {
-                if (player != null)
-                    ReturnToLobby();
+                RaisePlayerWonEvent();
             }
         }
     }
 
-    void ReturnToLobby()
-    {
-        photonView.RPC("ReturnToLobby_RPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void ReturnToLobby_RPC()
-    {
-        if (photonView.IsMine)
-            StartCoroutine(ReturnToLobbyCo());
-    }
 
     IEnumerator ReturnToLobbyCo()
     {
@@ -257,10 +245,21 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 doubleScoreProced = true;
                 doubleScorePanel.SetActive(true);
             }
-
-            if (matchTime <= 0)
-                winPanel.SetActive(true);
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (matchTime <= 0)
+                    RaisePlayerWonEvent();
+            }
         }
+    }
+
+
+
+    public void RaisePlayerWonEvent()
+    {
+        RaiseEventOptions raiseEventOption = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(PlayerWonEvent, null, raiseEventOption, sendOptions);
     }
 
     public void RaiseStartMatchTimerEvent()
@@ -289,6 +288,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             object[] data = (object[])photonEvent.CustomData;
             StartMatchTime((double)data[0]);
         }
+        else if (photonEvent.Code == PlayerWonEvent)
+            StartCoroutine(ReturnToLobbyCo());
     }
 
     private void OnEnable()
