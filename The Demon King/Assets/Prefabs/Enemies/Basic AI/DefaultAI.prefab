@@ -509,6 +509,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 15
   TimeBeforeHealthRegen: 3
+  healthRegenAmount: 1
+  healthRegenTickrate: 0.5
   RespawnTime: 6
   AmountOfHealthAddedAfterStunned: 5
   stunnedDuration: 3
@@ -895,8 +897,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00012207031, y: -2.2832031}
-  m_SizeDelta: {x: -18.2654, y: -41.0974}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -26, y: -26}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6301346591973575474
 CanvasRenderer:
@@ -963,16 +965,16 @@ RectTransform:
   m_GameObject: {fileID: 6056331108530072647}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6663564912021649424}
   m_Father: {fileID: 1534572014935968441}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.025024414, y: -166.5}
-  m_SizeDelta: {x: -0.050001144, y: -332.9}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -176.13998}
+  m_SizeDelta: {x: 522.4, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8967700371032233764
 CanvasRenderer:
@@ -1002,8 +1004,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1120,8 +1122,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 2.52}
-  m_SizeDelta: {x: 350, y: 425}
+  m_AnchoredPosition: {x: 0, y: 1.89}
+  m_SizeDelta: {x: 520.9592, y: 425}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &1534572014935968445
 Canvas:
