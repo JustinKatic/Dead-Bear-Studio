@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AdvancedStateManager : StateManager
 {
@@ -14,6 +15,7 @@ public class AdvancedStateManager : StateManager
         provokedState = GetComponentInChildren<ProvokedState>();
         stunnedState = GetComponentInChildren<StunnedState>();
         fleeState = GetComponentInChildren<FleeState>();
+        agent = GetComponent<NavMeshAgent>();
 
         currentState = wanderState;
     }
@@ -35,7 +37,7 @@ public class AdvancedStateManager : StateManager
             targetIsStunned = false;
         }
 
-        if (healthManager.CurrentHealth == 1)
+        if (healthManager.CurrentHealth <= FleeAtThisHealth)
         {
             fleeing = true;
         }
@@ -43,9 +45,8 @@ public class AdvancedStateManager : StateManager
         {
             fleeing = false;
         }
-
+        
         // Logic for the switching of behaviours at runtime
-
         //My target is stunned or being devoured so I need to wander
         if (targetIsStunned || targetIsRespawning)
         {
@@ -59,10 +60,13 @@ public class AdvancedStateManager : StateManager
             target = null;
         }
         // Health is low and a player is in my near vicinity, Flee
-        else if (fleeing && CheckIfAPlayerIsInMyRadius())
+        else if (fleeing)
         {
-            fleeState.target = target;
-            SwitchToTheNextState(fleeState);
+            if (CheckIfAPlayerIsInMyRadius())
+            {
+                fleeState.target = target;
+                SwitchToTheNextState(fleeState);
+            }
 
         }
         //I have been shot and I am noy currently fleeing, Provoked state
@@ -74,19 +78,23 @@ public class AdvancedStateManager : StateManager
             chasing = true;
             SwitchToTheNextState(provokedState);
         }
-        //Player is in my attack range, Attack State
-        else if (CheckIfPlayerIsInMyAttackDistance())
-        {
-            attackState.target = target;
-            attackState.CanAttack = CanAttackAfterTime();
-            SwitchToTheNextState(attackState);
-        }
         // Player is in my chase radius, Chase State
         else if (CheckIfAPlayerIsInMyRadius())
         {
-            chaseState.target = target;
+            //Player is in my attack range, Attack State
+            if (CheckIfPlayerIsInMyAttackDistance())
+            {
+                attackState.target = target;
+                attackState.CanAttack = CanAttackAfterTime();
+                SwitchToTheNextState(attackState);
+            }
+            else
+            {
+                chaseState.target = target;
 
-            SwitchToTheNextState(chaseState);
+                SwitchToTheNextState(chaseState);
+            }
+
         }
         //Player is out of my range but I am chasing for time frame, so Keep chasing for this time
         else if (chasing && !targetIsStunned)

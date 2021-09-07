@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.AI;
 
 public class StateManager : MonoBehaviourPun
 {
@@ -20,7 +22,8 @@ public class StateManager : MonoBehaviourPun
 
     //Chase conditions variables
     [SerializeField] protected LayerMask playerLayer;
-
+    [SerializeField] protected float WanderingMovementSpeed;
+    [SerializeField] protected float ChasingOrFleeingMovementSpeed;
     [Header("Chasing")]
     [SerializeField] protected float ChasePlayerForX;
     [SerializeField] protected float RadiusDistanceToStartChasingPlayer;
@@ -33,11 +36,12 @@ public class StateManager : MonoBehaviourPun
     protected float meleeTimer;
     protected bool targetIsStunned = false;
     protected bool targetIsRespawning = false;
-    protected bool canMelee = false;
 
     [Header("Fleeing")]
     [SerializeField] protected int FleeUntilThisHealth;
+    [SerializeField] protected int FleeAtThisHealth;
     protected bool fleeing = false;
+    protected NavMeshAgent agent;
 
     void Update()
     {
@@ -55,6 +59,15 @@ public class StateManager : MonoBehaviourPun
     {
         if (nextState != currentState)
         {
+            //Set the speed of the agent
+            if (nextState == wanderState)
+            {
+                agent.speed = WanderingMovementSpeed;
+            }
+            else
+            {
+                agent.speed = ChasingOrFleeingMovementSpeed;
+            }
             currentState = nextState;
             chaseTimer = 0;
             meleeTimer = 0;

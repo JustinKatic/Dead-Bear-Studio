@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BasicStateManager : StateManager
 {
@@ -12,6 +13,7 @@ public class BasicStateManager : StateManager
         wanderState = GetComponentInChildren<WanderState>();
         stunnedState = GetComponentInChildren<StunnedState>();
         fleeState = GetComponentInChildren<FleeState>();
+        agent = GetComponent<NavMeshAgent>();
 
         currentState = wanderState;
     }

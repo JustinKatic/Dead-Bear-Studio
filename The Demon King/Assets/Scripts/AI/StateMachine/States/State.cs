@@ -14,7 +14,6 @@ public abstract class State : MonoBehaviourPun
     [HideInInspector] public GameObject target;
     protected EnemySoundManager enemySoundManager;
     protected MinionHealthManager minionHealthManager;
-
     private void Awake()
     {
         agent = GetComponentInParent<NavMeshAgent>();
