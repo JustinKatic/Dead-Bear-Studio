@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float TopClamp = 70.0f;
     [SerializeField] float BottomClamp = -30.0f;
     [SerializeField] float CameraAngleOverride = 0.0f;
-    [SerializeField] float MouseSensitivity;
+    public float MouseSensitivity;
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
     private Camera mainCamera;

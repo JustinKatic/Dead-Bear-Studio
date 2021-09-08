@@ -2,7 +2,7 @@
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviourPun
+public class  GameManager : MonoBehaviourPun
 {
     [Header("Players")]
     public string playerPrefabLocation;
