@@ -51,6 +51,7 @@ public class AdvancedStateManager : StateManager
         if (targetIsStunned || targetIsRespawning)
         {
             SwitchToTheNextState(wanderState);
+            target = null;
         }
         //I am in a stunned state
         else if (healthManager.CurrentHealth <= 0)
