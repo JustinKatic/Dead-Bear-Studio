@@ -122,8 +122,8 @@ public class PlayerController : MonoBehaviourPun
         //Sets player id inside of gameManager = to this
         GameManager.instance.players[id - 1] = this;
 
-        if (player.NickName == "Elric" || player.NickName == "elric" || player.NickName == "e" || player.NickName == "E")
-            player.NickName = "SMELLRIC";
+        if (player.NickName == "Justin" || player.NickName == "justin" || player.NickName == "j" || player.NickName == "J")
+            player.NickName = "JUICY TEEN";
     }
 
     #endregion
