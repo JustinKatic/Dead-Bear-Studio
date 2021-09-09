@@ -46,6 +46,11 @@ public class HealthManager : MonoBehaviourPun
 
 
     protected float stunnedTimer;
+
+
+    /// <summary>
+    /// MAY BE ABLE TO REMOVE
+    /// </summary>
     public int CurAttackerId;
 
     public int CurrentHealth = 0;
@@ -168,10 +173,10 @@ public class HealthManager : MonoBehaviourPun
     {
         beingDevoured = false;
         CurAttackerId = 0;
-        StopCoroutine(myDevourCo);
 
         if (photonView.IsMine)
         {
+            StopCoroutine(myDevourCo);
             OnBeingStunnedEnd();
             stunnedTimer = 0;
         }

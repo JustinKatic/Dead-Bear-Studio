@@ -25,6 +25,9 @@ public class Devour : MonoBehaviourPun
     DemonKingEvolution demonKingEvolution;
     private LeaderboardManager leaderboardManager;
 
+    protected IEnumerator myDevourCo;
+
+
 
     #region Start Up
     private void Awake()
@@ -103,7 +106,8 @@ public class Devour : MonoBehaviourPun
                 if (targetBeingDevouredHealthManager.canBeDevoured)
                 {
                     //Disable and Enable the player devourings movement for duration
-                    StartCoroutine(DevourCorutine());
+                    myDevourCo = DevourCorutine();
+                    StartCoroutine(myDevourCo);
                     IEnumerator DevourCorutine()
                     {
                         PlayerSoundManager.Instance.PlayDevourSound();
@@ -115,6 +119,7 @@ public class Devour : MonoBehaviourPun
 
                         if (!healthManager.isStunned || IsDevouring)
                         {
+                            Debug.Log("devouring completed via devour script");
                             DevouringHasCompleted(false);
                         }
                     }
@@ -145,6 +150,8 @@ public class Devour : MonoBehaviourPun
 
     public void DevouringHasCompleted(bool interupted)
     {
+        if (!photonView.IsMine)
+            return;
         //Reset my controller and animator
         playerController.currentAnim.SetBool("Devouring", false);
         IsDevouring = false;
@@ -176,6 +183,9 @@ public class Devour : MonoBehaviourPun
 
             healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;
         }
+        else
+            StopCoroutine(myDevourCo);
+
         //reset the target to null
         targetBeingDevouredHealthManager = null;
 

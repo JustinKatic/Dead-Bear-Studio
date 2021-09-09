@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30194134, g: 0.16741185, b: 0.16043274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3019417, g: 0.16741222, b: 0.16043313, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -145,6 +145,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &217028975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5536748582468776474, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
+  m_PrefabInstance: {fileID: 5620374619541536041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &242456882 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5620374619301569563, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
@@ -373,9 +378,11 @@ MonoBehaviour:
   lobbyBrowserScreen: {fileID: 83861333993848679}
   createRoomButton: {fileID: 83861332540076013}
   findRoomButton: {fileID: 83861333557704512}
+  mainSelectableItem: {fileID: 1341454585}
   createNewRoomButton: {fileID: 83861334490825272}
   privateRoomToggle: {fileID: 242456882}
   maxPlayerInput: {fileID: 1643780612}
+  createRoomSelectableItem: {fileID: 217028975}
   playerListText: {fileID: 83861332661362276}
   roomInfoText: {fileID: 83861332693270212}
   startGameButton: {fileID: 83861333734850830}
@@ -395,10 +402,12 @@ MonoBehaviour:
     SceneMaxPlayers: 5
   - SceneName: ValleyOfFire
     SceneMaxPlayers: 7
+  lobbySelectableItem: {fileID: 2045340026}
   roomListContainer: {fileID: 83861333909493305}
   roomButtonPrefab: {fileID: 7612701457216302844, guid: 58c21847e08a74248a9a53380eae1d96, type: 3}
   roomSearchBar: {fileID: 126826774}
   searchRoomButton: {fileID: 479766156}
+  lobbyBrowserSelectableItem: {fileID: 828561202}
   roomIsPublic: 1
   sceneName: 
 --- !u!4 &476375924
@@ -448,6 +457,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &828561202 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5536748582768605494, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
+  m_PrefabInstance: {fileID: 5620374619541536041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1100874429 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5620374620641886100, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
@@ -459,6 +473,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b743370ac3e4ec2a1668f5455a8ef8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1341454585 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5536748583295682120, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
+  m_PrefabInstance: {fileID: 5620374619541536041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1344705788
 GameObject:
   m_ObjectHideFlags: 0
@@ -694,6 +713,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2045340026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5536748583493893157, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
+  m_PrefabInstance: {fileID: 5620374619541536041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &83861332540076013 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5536748582492033732, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
@@ -753,7 +777,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5536748583493893159, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
   m_PrefabInstance: {fileID: 5620374619541536041}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2045340026}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}

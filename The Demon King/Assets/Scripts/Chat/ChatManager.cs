@@ -162,6 +162,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         this.SendChatMessage(this.InputFieldChat.text);
         this.InputFieldChat.text = "";
+        InputFieldChat.ActivateInputField();
     }
     private void SendChatMessage(string inputLine)
     {
