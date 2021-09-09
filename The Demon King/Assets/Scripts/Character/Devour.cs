@@ -113,7 +113,7 @@ public class Devour : MonoBehaviourPun
 
                         yield return new WaitForSeconds(targetBeingDevouredHealthManager.TimeTakenToBeDevoured);
 
-                        if (!healthManager.isStunned)
+                        if (!healthManager.isStunned || IsDevouring)
                         {
                             DevouringHasCompleted(false);
                         }
@@ -151,7 +151,7 @@ public class Devour : MonoBehaviourPun
         playerController.EnableMovement();
         debuffTimer.StopDevourTimer();
 
-        Debug.Log("Entered interupt");
+        Debug.Log("DEVOURING HAS COMPLETED");
 
         if (!interupted)
         {
