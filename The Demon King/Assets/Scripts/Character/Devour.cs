@@ -56,7 +56,6 @@ public class Devour : MonoBehaviourPun
             {
                 //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
                 targetBeingDevouredHealthManager.InterruptDevourOnSelf();
-                PhotonNetwork.SendAllOutgoingCommands();
                 IsDevouring = false;
                 targetBeingDevouredHealthManager = null;
                 PlayerSoundManager.Instance.StopDevourSound();
@@ -152,6 +151,8 @@ public class Devour : MonoBehaviourPun
         playerController.EnableMovement();
         debuffTimer.StopDevourTimer();
 
+        Debug.Log("Entered interupt");
+
         if (!interupted)
         {
             // If the target is a player
@@ -177,7 +178,7 @@ public class Devour : MonoBehaviourPun
         }
         //reset the target to null
         targetBeingDevouredHealthManager = null;
-        targetBeingDevouredHealthManager = null;
+
 
         PlayerSoundManager.Instance.StopDevourSound();
     }

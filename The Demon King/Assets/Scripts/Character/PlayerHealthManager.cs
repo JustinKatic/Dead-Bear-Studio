@@ -147,7 +147,6 @@ public class PlayerHealthManager : HealthManager
         }
 
 
-
         IEnumerator DevourCorutine()
         {
             OnBeingDevourStart();
@@ -158,7 +157,6 @@ public class PlayerHealthManager : HealthManager
             CurAttackerId = 0;
             OnBeingDevourEnd(attackerID);
         }
-
     }
 
     [PunRPC]
@@ -174,7 +172,10 @@ public class PlayerHealthManager : HealthManager
     {
         base.InterruptDevourOnSelf_RPC();
         if (photonView.IsMine)
+        {
             debuffTimer.StopBeingDevouredTimer();
+            coRunning = false;
+        }
     }
     #endregion
 
