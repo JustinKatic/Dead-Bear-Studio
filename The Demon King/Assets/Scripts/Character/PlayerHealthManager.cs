@@ -155,6 +155,7 @@ public class PlayerHealthManager : HealthManager
 
             coRunning = false;
             CurAttackerId = 0;
+            Debug.Log("attacker id on devour end = " + attackerID);
             OnBeingDevourEnd(attackerID);
         }
     }
