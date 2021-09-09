@@ -105,22 +105,28 @@ public class HealthManager : MonoBehaviourPun
     }
 
     [PunRPC]
-    public virtual void OnDevour_RPC(int attackerID)
+    virtual public void OnDevour_RPC(int attackerID)
     {
+        Debug.Log("1. Check attacker id " + CurAttackerId);
+
         if (CurAttackerId == 0)
         {
             CurAttackerId = attackerID;
+            Debug.Log("2. set attacker id:" + CurAttackerId);
             myDevourCo = DevourCorutine();
             StartCoroutine(myDevourCo);
         }
         else
-        {
-            InteruptDevourOnPersonDevouring();
-        }
+                {
+                    Debug.Log("3.my devour will be interuptted");
+                    InteruptDevourOnPersonDevouring();
+                }
 
         IEnumerator DevourCorutine()
         {
             OnBeingDevourStart();
+
+            Debug.Log("4.Corutine started my attacker id is: " + CurAttackerId);
 
             yield return new WaitForSeconds(TimeTakenToBeDevoured);
             CurAttackerId = 0;

@@ -90,15 +90,12 @@ public class Devour : MonoBehaviourPun
         //Shoots ray from center of screen
         if (Physics.SphereCast(ray, 3, out hit, 10, LayersCanDevour))
         {
-            Debug.Log("1.hit a target in layer");
             //If raycast hits player or minion
             if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
-                Debug.Log("2.devouring target hit a tag");
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
                     return;
 
-                Debug.Log("3.devouring in range");
 
                 //Get the healthManager of hit target
                 targetBeingDevouredHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
@@ -106,7 +103,6 @@ public class Devour : MonoBehaviourPun
                 //check if the target can be devoured
                 if (targetBeingDevouredHealthManager.canBeDevoured)
                 {
-                    Debug.Log("4.target can be devoured");
                     //Disable and Enable the player devourings movement for duration
                     StartCoroutine(DevourCorutine());
                     IEnumerator DevourCorutine()
