@@ -62,10 +62,6 @@ public class Devour : MonoBehaviourPun
                 PlayerSoundManager.Instance.StopDevourSound();
                 debuffTimer.StopDevourTimer();
             }
-            if (IsDevouring && targetBeingDevouredHealthManager.CurAttackerId != playerController.id)
-            {
-                DevouringHasCompleted(true);
-            }
         }
     }
     #endregion
@@ -150,10 +146,9 @@ public class Devour : MonoBehaviourPun
         IsDevouring = true;
         playerController.currentAnim.SetBool("Devouring", true);
         playerController.DisableMovement();
-
     }
 
-    void DevouringHasCompleted(bool interupted)
+    public void DevouringHasCompleted(bool interupted)
     {
         //Reset my controller and animator
         playerController.currentAnim.SetBool("Devouring", false);

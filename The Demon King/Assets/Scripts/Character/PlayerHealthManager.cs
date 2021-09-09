@@ -26,6 +26,8 @@ public class PlayerHealthManager : HealthManager
     private PlayerHealthManager playerWhoLastShotMeHealthManager;
     private DemonKingEvolution demonKingEvolution;
     private CrownHealthManager demonKingCrownHealthManager;
+    private Devour devour;
+
     [HideInInspector] public bool invulnerable = false;
     [HideInInspector] public bool isRespawning = false;
     private PlayerTimers debuffTimer;
@@ -67,6 +69,7 @@ public class PlayerHealthManager : HealthManager
             experienceManager = GetComponent<ExperienceManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             demonKingCrownHealthManager = FindObjectOfType<CrownHealthManager>();
+            devour = GetComponent<Devour>();
             SetHealth(MaxHealth);
             healthRegenTimerSlider.maxValue = timeForHealthRegenToActivate;
         }
@@ -105,7 +108,6 @@ public class PlayerHealthManager : HealthManager
     #region Devour
     protected override void OnBeingDevourStart()
     {
-
         canBeDevoured = false;
 
         if (photonView.IsMine)
@@ -127,6 +129,12 @@ public class PlayerHealthManager : HealthManager
             KilledByUIPanel.SetActive(true);
             Respawn(true);
         }
+    }
+
+    protected override void InteruptDevourOnPersonDevouring_RPC()
+    {
+        if (photonView.IsMine)
+            devour.DevouringHasCompleted(true);
     }
 
 
