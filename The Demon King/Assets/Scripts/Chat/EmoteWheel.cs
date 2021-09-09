@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -41,6 +42,7 @@ public class EmoteWheel : MonoBehaviourPun
     }
     private void DisplayEmoteWheel_started(InputAction.CallbackContext obj)
     {
+
         emoteObject = null;
         EmoteHasBeenActivated = false;
         if (photonView.IsMine)
@@ -56,7 +58,8 @@ public class EmoteWheel : MonoBehaviourPun
                 emote.interactable = true;
             }
         }
-
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(GetComponentInChildren<Selectable>().gameObject);
     }
     private void DisplayEmoteWheel_canceled(InputAction.CallbackContext obj)
     {

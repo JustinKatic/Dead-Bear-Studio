@@ -58,9 +58,13 @@ public class InGameSettings : MonoBehaviourPun
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
 
-                playerController.CharacterInputs.Player.Enable();
+                if (!playerController.GetComponent<PlayerHealthManager>().isStunned)
+                {
+                    playerController.CharacterInputs.Player.Enable();
+                    playerController.CharacterInputs.Player.Ability1.Enable();
+
+                }
                 playerController.CharacterInputs.PlayerLook.Enable();
-                playerController.CharacterInputs.Player.Ability1.Enable();
                 
                 PauseMenu.SetActive(false);
                 
