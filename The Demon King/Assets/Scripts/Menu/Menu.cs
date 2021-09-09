@@ -20,12 +20,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [Header("Main Screen")]
     [SerializeField] private Button createRoomButton;
-    [SerializeField] private Button findRoomButton;
+    [SerializeField] private Button findRoomButton;    
+    [SerializeField] private GameObject mainSelectableItem;
+
 
     [Header("Create Room Screen")]
     [SerializeField] private Button createNewRoomButton;
     [SerializeField] private Toggle privateRoomToggle;
     [SerializeField] private TMP_Text maxPlayerInput;
+    [SerializeField] private GameObject createRoomSelectableItem;
 
 
     [Header("Lobby")]
@@ -36,13 +39,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private Button RoomPrivacyButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
     public List<SceneInformation> scenes;
-    
+    [SerializeField] private GameObject lobbySelectableItem;
+
 
     [Header("Lobby Browser")]
     [SerializeField] private RectTransform roomListContainer;
     [SerializeField] private GameObject roomButtonPrefab;
     [SerializeField] private TMP_InputField roomSearchBar;
     [SerializeField] private Button searchRoomButton;
+    [SerializeField] private GameObject lobbyBrowserSelectableItem;
 
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
@@ -82,6 +87,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             PhotonNetwork.CurrentRoom.IsVisible = true;
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
     }
     // changes the currently visible screen
     void SetScreen(GameObject screen)
@@ -94,14 +101,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         // activate the requested screen
         screen.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(screen.GetComponentInChildren<Selectable>().gameObject);
     }
 
     // called when the "Back" button gets pressed
     public void OnBackButton()
     {
         SetScreen(mainScreen);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
     }
 
     // MAIN SCREEN
@@ -129,6 +136,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateRoomButton()
     {
         SetScreen(createRoomScreen);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(createRoomSelectableItem);
         
     }
 
@@ -136,6 +145,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnFindRoomButton()
     {
         SetScreen(lobbyBrowserScreen);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(lobbyBrowserScreen);
     }
 
     // CREATE ROOM SCREEN
@@ -171,6 +182,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             privacyRoomText.text = "Private";
 
         }
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(lobbySelectableItem);
     }
 
     // called when a player leaves the room - update the lobby UI
@@ -229,6 +242,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
         currentRoomName = null;
         SetScreen(mainScreen);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
     }
 
     // LOBBY BROWSER SCREEN
