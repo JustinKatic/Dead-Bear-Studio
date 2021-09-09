@@ -131,6 +131,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+    [PunRPC]
     protected override void InteruptDevourOnPersonDevouring_RPC()
     {
         if (photonView.IsMine)
