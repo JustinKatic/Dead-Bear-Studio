@@ -101,6 +101,7 @@ public class HealthManager : MonoBehaviourPun
 
     public void OnDevour(int attackerID)
     {
+        CurAttackerId = attackerID;
         photonView.RPC("OnDevour_RPC", RpcTarget.All, attackerID);
     }
 
@@ -108,8 +109,12 @@ public class HealthManager : MonoBehaviourPun
     public virtual void OnDevour_RPC(int attackerID)
     {
         CurAttackerId = attackerID;
-        myDevourCo = DevourCorutine();
-        StartCoroutine(myDevourCo);
+
+        if (CurAttackerId != 0)
+        {
+            myDevourCo = DevourCorutine();
+            StartCoroutine(myDevourCo);
+        }
 
         IEnumerator DevourCorutine()
         {

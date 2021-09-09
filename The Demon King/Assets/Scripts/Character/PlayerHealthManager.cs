@@ -105,6 +105,7 @@ public class PlayerHealthManager : HealthManager
     #region Devour
     protected override void OnBeingDevourStart()
     {
+
         canBeDevoured = false;
 
         if (photonView.IsMine)
