@@ -44,6 +44,8 @@ public class PlayerHealthManager : HealthManager
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
+    private bool coRunning = false;
+
 
     #region Startup
     void Awake()
@@ -130,18 +132,20 @@ public class PlayerHealthManager : HealthManager
 
         if (photonView.IsMine)
         {
-            if (myDevourCo == null)
+            if (!coRunning)
             {
+                Debug.Log("Entered co");
+                coRunning = true;
                 myDevourCo = DevourCorutine();
                 StartCoroutine(myDevourCo);
             }
             else
             {
                 Debug.Log("I should interupt " + attackerID);
+                GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
             }
         }
 
-        InteruptDevourOnPersonDevouring();
 
 
         IEnumerator DevourCorutine()
@@ -150,7 +154,7 @@ public class PlayerHealthManager : HealthManager
 
             yield return new WaitForSeconds(TimeTakenToBeDevoured);
 
-            myDevourCo = null;
+            coRunning = false;
             CurAttackerId = 0;
             OnBeingDevourEnd(attackerID);
         }
