@@ -101,19 +101,21 @@ public class HealthManager : MonoBehaviourPun
 
     public void OnDevour(int attackerID)
     {
-        CurAttackerId = attackerID;
         photonView.RPC("OnDevour_RPC", RpcTarget.All, attackerID);
     }
 
     [PunRPC]
     public virtual void OnDevour_RPC(int attackerID)
     {
-        CurAttackerId = attackerID;
-
-        if (CurAttackerId != 0)
+        if (CurAttackerId == 0)
         {
+            CurAttackerId = attackerID;
             myDevourCo = DevourCorutine();
             StartCoroutine(myDevourCo);
+        }
+        else
+        {
+            InteruptDevourOnPersonDevouring();
         }
 
         IEnumerator DevourCorutine()
@@ -125,6 +127,7 @@ public class HealthManager : MonoBehaviourPun
             OnBeingDevourEnd(attackerID);
         }
     }
+
     //Overrides for inherited classes
     protected virtual void OnBeingDevourStart()
     {
@@ -135,6 +138,19 @@ public class HealthManager : MonoBehaviourPun
     {
 
     }
+
+    public void InteruptDevourOnPersonDevouring()
+    {
+        photonView.RPC("InterruptDevourOnSelf_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    protected virtual void InteruptDevourOnPersonDevouring_RPC()
+    {
+
+    }
+
+
 
     public void InterruptDevourOnSelf()
     {
