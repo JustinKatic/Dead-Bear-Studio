@@ -13,7 +13,6 @@ public class Devour : MonoBehaviourPun
 
     private bool IsDevouring;
     private bool isTargetPlayer = false;
-    // [HideInInspector] public HealthManager targetBeingDevouredHealthManager = null;
 
     //Components
     private Camera cam;
@@ -25,6 +24,7 @@ public class Devour : MonoBehaviourPun
 
     DemonKingEvolution demonKingEvolution;
     private LeaderboardManager leaderboardManager;
+
 
     #region Start Up
     private void Awake()
@@ -61,6 +61,10 @@ public class Devour : MonoBehaviourPun
                 targetBeingDevouredHealthManager = null;
                 PlayerSoundManager.Instance.StopDevourSound();
                 debuffTimer.StopDevourTimer();
+            }
+            if (IsDevouring && targetBeingDevouredHealthManager.CurAttackerId != playerController.id)
+            {
+                DevouringHasCompleted(true);
             }
         }
     }
@@ -120,7 +124,7 @@ public class Devour : MonoBehaviourPun
 
                         if (!healthManager.isStunned)
                         {
-                            DevouringHasCompleted();
+                            DevouringHasCompleted(false);
                         }
                     }
                 }
@@ -142,17 +146,14 @@ public class Devour : MonoBehaviourPun
             isTargetPlayer = false;
             targetBeingDevouredHealthManager.OnDevour(playerController.id);
         }
-        //Remove if statement if breaks devour!!!
-        if (targetBeingDevouredHealthManager.CurAttackerId == playerController.id)
-        {
-            IsDevouring = true;
-            playerController.currentAnim.SetBool("Devouring", true);
-            playerController.DisableMovement();
-        }
+
+        IsDevouring = true;
+        playerController.currentAnim.SetBool("Devouring", true);
+        playerController.DisableMovement();
 
     }
 
-    void DevouringHasCompleted()
+    void DevouringHasCompleted(bool interupted)
     {
         //Reset my controller and animator
         playerController.currentAnim.SetBool("Devouring", false);
@@ -160,30 +161,32 @@ public class Devour : MonoBehaviourPun
         playerController.EnableMovement();
         debuffTimer.StopDevourTimer();
 
+        if (!interupted)
+        {
+            // If the target is a player
+            if (isTargetPlayer && targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().AmITheDemonKing)
+            {
+                demonKingEvolution.ChangeToTheDemonKing();
+            }
+            else if (targetBeingDevouredHealthManager.gameObject.transform.CompareTag("DemonKingCrown"))
+            {
+                demonKingEvolution.ChangeToTheDemonKing();
+            }
+            else
+            {
+                experienceManager.AddExpereince(targetBeingDevouredHealthManager.MyMinionType, targetBeingDevouredHealthManager.MyExperienceWorth);
+            }
 
-        // If the target is a player
-        if (isTargetPlayer && targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().AmITheDemonKing)
-        {
-            demonKingEvolution.ChangeToTheDemonKing();
-        }
-        else if (targetBeingDevouredHealthManager.gameObject.transform.CompareTag("DemonKingCrown"))
-        {
-            demonKingEvolution.ChangeToTheDemonKing();
-        }
-        else
-        {
-            experienceManager.AddExpereince(targetBeingDevouredHealthManager.MyMinionType, targetBeingDevouredHealthManager.MyExperienceWorth);
-        }
+            if (demonKingEvolution.AmITheDemonKing)
+            {
+                leaderboardManager.UpdateDemonKingScore(targetBeingDevouredHealthManager.myScoreWorth);
+            }
 
-        if (demonKingEvolution.AmITheDemonKing)
-        {
-            leaderboardManager.UpdateDemonKingScore(targetBeingDevouredHealthManager.myScoreWorth);
+            healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;
         }
         //reset the target to null
         targetBeingDevouredHealthManager = null;
         targetBeingDevouredHealthManager = null;
-
-        healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;
 
         PlayerSoundManager.Instance.StopDevourSound();
     }

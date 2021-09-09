@@ -107,13 +107,9 @@ public class HealthManager : MonoBehaviourPun
     [PunRPC]
     public virtual void OnDevour_RPC(int attackerID)
     {
-        //if Devour breaks remove the if statement!!!
-        if (CurAttackerId == 0)
-        {
-            CurAttackerId = attackerID;
-            myDevourCo = DevourCorutine();
-            StartCoroutine(myDevourCo);
-        }
+        CurAttackerId = attackerID;
+        myDevourCo = DevourCorutine();
+        StartCoroutine(myDevourCo);
 
         IEnumerator DevourCorutine()
         {
@@ -144,13 +140,13 @@ public class HealthManager : MonoBehaviourPun
     protected virtual void InterruptDevourOnSelf_RPC()
     {
         beingDevoured = false;
+        CurAttackerId = 0;
         StopCoroutine(myDevourCo);
 
         if (photonView.IsMine)
         {
             OnBeingStunnedEnd();
             stunnedTimer = 0;
-            CurAttackerId = 0;
         }
     }
 
