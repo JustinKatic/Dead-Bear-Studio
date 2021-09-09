@@ -117,10 +117,10 @@ public class HealthManager : MonoBehaviourPun
             StartCoroutine(myDevourCo);
         }
         else
-                {
-                    Debug.Log("3.my devour will be interuptted");
-                    InteruptDevourOnPersonDevouring();
-                }
+        {
+            Debug.Log("3.my devour will be interuptted");
+            InteruptDevourOnPersonDevouring();
+        }
 
         IEnumerator DevourCorutine()
         {

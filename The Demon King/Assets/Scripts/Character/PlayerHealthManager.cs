@@ -131,6 +131,7 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
+    [PunRPC]
     public override void OnDevour_RPC(int attackerID)
     {
         Debug.Log("1. Check attacker id " + CurAttackerId);
@@ -142,7 +143,7 @@ public class PlayerHealthManager : HealthManager
             myDevourCo = DevourCorutine();
             StartCoroutine(myDevourCo);
         }
-        else if (PlayerId == attackerID)
+        else if (PlayerId == CurAttackerId)
         {
             Debug.Log("Returned");
             return;
