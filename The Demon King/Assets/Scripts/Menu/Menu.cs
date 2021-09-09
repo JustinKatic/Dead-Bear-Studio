@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
@@ -93,6 +94,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         // activate the requested screen
         screen.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(screen.GetComponentInChildren<Selectable>().gameObject);
     }
 
     // called when the "Back" button gets pressed
@@ -126,6 +129,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateRoomButton()
     {
         SetScreen(createRoomScreen);
+        
     }
 
     // called when the "Find Room" button has been pressed
