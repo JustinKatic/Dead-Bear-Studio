@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Photon.Pun;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
@@ -34,6 +35,9 @@ public class InGameSettings : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(PauseMenu.GetComponentInChildren<Selectable>().gameObject);
+            
             if (optionsCanOpenOnPress)
             {
                 optionsCanOpenOnPress = false;
@@ -83,6 +87,9 @@ public class InGameSettings : MonoBehaviourPun
     }
     public void OnButtonClickActivateMenu(GameObject menuToActivate)
     {
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(menuToActivate.GetComponentInChildren<Selectable>().gameObject);
+        
         menuToActivate.SetActive(true);
     }
     public void OnButtonClickDeactivateMenu(GameObject menuToActivate)
