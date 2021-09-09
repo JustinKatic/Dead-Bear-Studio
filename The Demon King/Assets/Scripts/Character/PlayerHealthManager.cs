@@ -44,6 +44,8 @@ public class PlayerHealthManager : HealthManager
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
+    private bool coRunning = false;
+
 
     #region Startup
     void Awake()
@@ -108,62 +110,55 @@ public class PlayerHealthManager : HealthManager
     #region Devour
     protected override void OnBeingDevourStart()
     {
-        canBeDevoured = false;
-
-        if (photonView.IsMine)
-        {
-            debuffTimer.StopStunTimer();
-            debuffTimer.StartBeingDevouredTimer(TimeTakenToBeDevoured);
-            beingDevoured = true;
-        }
+        debuffTimer.StopStunTimer();
+        debuffTimer.StartBeingDevouredTimer(TimeTakenToBeDevoured);
+        beingDevoured = true;
     }
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
-        if (photonView.IsMine)
-        {
-            debuffTimer.StopBeingDevouredTimer();
-            PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
-            PlayerWhoDevouredMeController.vCam.m_Priority = 12;
-            KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
-            KilledByUIPanel.SetActive(true);
-            Respawn(true);
-        }
+        debuffTimer.StopBeingDevouredTimer();
+        PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+        PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+        KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+        KilledByUIPanel.SetActive(true);
+        Respawn(true);
     }
 
     [PunRPC]
     public override void OnDevour_RPC(int attackerID)
     {
-        Debug.Log("1. Check attacker id " + CurAttackerId);
+        canBeDevoured = false;
 
-        if (CurAttackerId == 0)
+        if (photonView.IsMine)
         {
-            CurAttackerId = attackerID;
-            Debug.Log("2. set attacker id:" + CurAttackerId);
-            myDevourCo = DevourCorutine();
-            StartCoroutine(myDevourCo);
+            if (!coRunning)
+            {
+                Debug.Log("Entered co");
+                coRunning = true;
+                myDevourCo = DevourCorutine();
+                StartCoroutine(myDevourCo);
+            }
+            else
+            {
+                Debug.Log("I should interupt " + attackerID);
+                GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
+            }
         }
-        else if (PlayerId == CurAttackerId)
-        {
-            Debug.Log("Returned");
-            return;
-        }
-        else
-        {
-            Debug.Log("3.my devour will be interuptted");
-            InteruptDevourOnPersonDevouring();
-        }
+
+
 
         IEnumerator DevourCorutine()
         {
             OnBeingDevourStart();
 
-            Debug.Log("4.Corutine started my attacker id is: " + CurAttackerId);
-
             yield return new WaitForSeconds(TimeTakenToBeDevoured);
+
+            coRunning = false;
             CurAttackerId = 0;
             OnBeingDevourEnd(attackerID);
         }
+
     }
 
     [PunRPC]

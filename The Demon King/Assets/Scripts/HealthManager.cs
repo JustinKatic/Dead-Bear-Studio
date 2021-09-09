@@ -147,7 +147,7 @@ public class HealthManager : MonoBehaviourPun
 
     public void InteruptDevourOnPersonDevouring()
     {
-        photonView.RPC("InterruptDevourOnSelf_RPC", RpcTarget.All);
+        photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
     }
 
     [PunRPC]
