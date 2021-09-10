@@ -44,7 +44,6 @@ public class PlayerHealthManager : HealthManager
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
-    private bool coRunning = false;
 
 
     #region Startup
@@ -93,6 +92,23 @@ public class PlayerHealthManager : HealthManager
                 currentHealthOffset -= healthOffsetTime * Time.deltaTime;
                 playerHudHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
             }
+
+            if (gasEffect)
+            {
+                gasTimer += Time.deltaTime;
+                gasFrequencyTimer += Time.deltaTime;
+
+                if (gasTimer >= gasDurationOnPlayer)
+                    gasEffect = false;
+
+                if (gasFrequencyTimer >= gasTickRate)
+                {
+                    gasFrequencyTimer = 0;
+                    TakeDamage(gasDamage, CurAttackerId);
+                }
+                if (isStunned)
+                    gasEffect = false;
+            }
         }
         else
         {
@@ -102,8 +118,23 @@ public class PlayerHealthManager : HealthManager
                 OverheadHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
             }
         }
-
         healthRegenTimerSlider.value = healthRegenTimer;
+    }
+
+    public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
+    {
+        if (isStunned)
+            return;
+
+        if (!gasEffect)
+            TakeDamage(damageOverTimeDamage, CurAttackerId);
+
+        gasTimer = 0;
+        gasEffect = true;
+        gasDamage = damageOverTimeDamage;
+        CurAttackerId = attackerId;
+        gasTickRate = gasFrequency;
+        this.gasDurationOnPlayer = gasDurationOnPlayer;
     }
 
 
@@ -125,40 +156,7 @@ public class PlayerHealthManager : HealthManager
         Respawn(true);
     }
 
-    [PunRPC]
-    public override void OnDevour_RPC(int attackerID)
-    {
-        canBeDevoured = false;
-
-        if (photonView.IsMine)
-        {
-            if (!coRunning)
-            {
-                Debug.Log("Entered co");
-                coRunning = true;
-                myDevourCo = DevourCorutine();
-                StartCoroutine(myDevourCo);
-            }
-            else
-            {
-                Debug.Log("I should interupt " + attackerID);
-                GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
-            }
-        }
-
-
-        IEnumerator DevourCorutine()
-        {
-            OnBeingDevourStart();
-
-            yield return new WaitForSeconds(TimeTakenToBeDevoured);
-
-            coRunning = false;
-            CurAttackerId = 0;
-            Debug.Log("attacker id on devour end = " + attackerID);
-            OnBeingDevourEnd(attackerID);
-        }
-    }
+   
 
     [PunRPC]
     protected override void InteruptDevourOnPersonDevouring_RPC()
@@ -175,9 +173,9 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             debuffTimer.StopBeingDevouredTimer();
-            coRunning = false;
         }
     }
+
     #endregion
 
     #region Take Damage/ Heal Damage

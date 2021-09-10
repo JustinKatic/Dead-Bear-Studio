@@ -13,7 +13,9 @@ public class DragonProjectileController : MonoBehaviourPun
     private int projectileHitDmg;
     private int damage;
     private float damageFrequency;
+    private float frequencyToReapplyGas;
     private float gasDuration;
+    private float gasDurationOnPlayer;
     private float gasSize;
 
 
@@ -48,13 +50,15 @@ public class DragonProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int attackerId, int damage, float damageFrequency, float gasDuration, float gasSize, int projectileHitDmg)
+    public void Initialize(int attackerId, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize, int projectileHitDmg)
     {
         this.projectileHitDmg = projectileHitDmg;
         this.attackerId = attackerId;
         this.damage = damage;
         this.damageFrequency = damageFrequency;
+        this.frequencyToReapplyGas = frequencyToReapplyGas;
         this.gasDuration = gasDuration;
+        this.gasDurationOnPlayer = gasDurationOnPlayer;
         this.gasSize = gasSize;
 
 
@@ -86,21 +90,21 @@ public class DragonProjectileController : MonoBehaviourPun
 
     void SpawnGasEffect()
     {
-        photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency, gasDuration, gasSize);
+        photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency,frequencyToReapplyGas, gasDuration,gasDurationOnPlayer, gasSize);
     }
 
     [PunRPC]
-    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float gasDuration, float gasSize)
+    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize)
     {
         if (attackerId == PhotonNetwork.LocalPlayer.ActorNumber)
         {
             GameObject CreatedGasEffect = Instantiate(FriendlyGasEffect, new Vector3(x, y, z), Quaternion.identity);
-            CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, gasDuration, gasSize);
+            CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
         }
         else
         {
             GameObject CreatedGasEffect = Instantiate(EnemyGasEffect, new Vector3(x, y, z), Quaternion.identity);
-            CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, gasDuration, gasSize);
+            CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
         }
     }
 
