@@ -23,6 +23,8 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
 
     public Rigidbody rb;
 
+    private new ParticleSystem particleSystem;
+
     private void OnEnable()
     {
         rb = GetComponent<Rigidbody>();
@@ -74,7 +76,9 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
                 DealDamageToPlayersAndMinions(col, aoeDamage, true);
                 Debug.Log("Dealing aoe dmg");
             }
-            PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
+            GameObject impactFX = PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
+            impactFX.GetComponent<LionExplosionVFX>().Init(aoeRadius);
+
             PhotonNetwork.Destroy(gameObject);
         }
     }
