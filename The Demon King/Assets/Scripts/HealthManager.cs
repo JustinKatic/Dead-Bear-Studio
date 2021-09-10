@@ -15,9 +15,9 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected float healthRegenTickrate = .5f;
     [SerializeField] protected float RespawnTime = 6;
     [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
-
-
     [SerializeField] private float stunnedDuration = 3;
+
+
 
     public float TimeTakenToBeDevoured;
     public float StunnedDuration { get { return stunnedDuration; } private set { stunnedDuration = value; } }
@@ -89,23 +89,6 @@ public class HealthManager : MonoBehaviourPun
                         OnBeingStunnedEnd();
                         stunnedTimer = 0;
                     }
-                }
-            }
-
-            if (beingDevoured || isStunned)
-                return;
-            //Heal every X seconds if not at max health
-            if ((healthRegenTimer < timeForHealthRegenToActivate) && (!beingDevoured || !isStunned))
-            {
-                healthRegenTimer += Time.deltaTime;
-            }
-            if (CurrentHealth < MaxHealth && healthRegenTimer >= timeForHealthRegenToActivate)
-            {
-                healthRegenTickrateTimer += Time.deltaTime;
-                if (healthRegenTickrateTimer >= healthRegenTickrate)
-                {
-                    Heal(healthRegenAmount);
-                    healthRegenTickrateTimer = 0;
                 }
             }
         }

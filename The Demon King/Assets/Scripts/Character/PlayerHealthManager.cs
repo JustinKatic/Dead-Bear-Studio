@@ -11,6 +11,10 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] protected Canvas MyHUDCanvas;
     [SerializeField] protected Transform HealthBarContainer;
     [SerializeField] private GameObject ExperienceBarContainer;
+    [SerializeField] GameObject playerHealVfx;
+    [SerializeField] float invulenerableTimeAfterStun = 2f;
+
+
 
     [SerializeField] private GameObject rayEndVFX;
 
@@ -109,6 +113,29 @@ public class PlayerHealthManager : HealthManager
                 if (isStunned)
                     gasEffect = false;
             }
+
+            if (beingDevoured || isStunned)
+            {
+                playerHealVfx.SetActive(false);
+                return;
+            }
+            //Heal every X seconds if not at max health
+            if (healthRegenTimer < timeForHealthRegenToActivate)
+                healthRegenTimer += Time.deltaTime;
+
+
+            if (CurrentHealth < MaxHealth && healthRegenTimer >= timeForHealthRegenToActivate)
+            {
+                healthRegenTickrateTimer += Time.deltaTime;
+                if (healthRegenTickrateTimer >= healthRegenTickrate)
+                {
+                    playerHealVfx.SetActive(true);
+                    Heal(healthRegenAmount);
+                    healthRegenTickrateTimer = 0;
+                }
+            }
+            else
+                playerHealVfx.SetActive(false);
         }
         else
         {
@@ -156,7 +183,6 @@ public class PlayerHealthManager : HealthManager
         Respawn(true);
     }
 
-   
 
     [PunRPC]
     protected override void InteruptDevourOnPersonDevouring_RPC()
@@ -292,7 +318,6 @@ public class PlayerHealthManager : HealthManager
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
             isRespawning = false;
-
         }
     }
 
@@ -428,6 +453,7 @@ public class PlayerHealthManager : HealthManager
             StunVFX.SetActive(false);
             canBeDevoured = false;
             isStunned = false;
+            StartCoroutine(BecomeInvulenerable());
         }
     }
 
@@ -458,9 +484,16 @@ public class PlayerHealthManager : HealthManager
                 player.currentAnim.SetBool("Stunned", false);
                 PlayerSoundManager.Instance.StopStunnedSound();
             }
-
         }
     }
+    #endregion
+    IEnumerator BecomeInvulenerable()
+    {
+        invulnerable = true;
+        yield return new WaitForSeconds(invulenerableTimeAfterStun);
+        invulnerable = false;
+    }
 }
-#endregion
+
+
 

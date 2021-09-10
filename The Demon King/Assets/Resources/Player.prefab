@@ -1636,7 +1636,7 @@ ParticleSystem:
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -24651,7 +24651,8 @@ MonoBehaviour:
   currentAnim: {fileID: 190322414822078646}
   vCam: {fileID: 0}
   cc: {fileID: 0}
-  recticle: {fileID: 0}
+  recticle: {fileID: 8599896439959258330}
+  recticleAnimator: {fileID: 3759952805845827693}
 --- !u!114 &6202528700522376435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24772,6 +24773,8 @@ MonoBehaviour:
   MyHUDCanvas: {fileID: 3312725423054840195}
   HealthBarContainer: {fileID: 4936490446833085617}
   ExperienceBarContainer: {fileID: 5084300261439937609}
+  playerHealVfx: {fileID: 6812574632742884822}
+  invulenerableTimeAfterStun: 2
   rayEndVFX: {fileID: 0}
   KilledByUIPanel: {fileID: 5427081095411140894}
   KilledByText: {fileID: 1955643790634158098}
@@ -26946,7 +26949,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3310488254869630612
 Transform:
   m_ObjectHideFlags: 0
