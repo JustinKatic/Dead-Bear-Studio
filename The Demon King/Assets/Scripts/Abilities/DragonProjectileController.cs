@@ -88,9 +88,10 @@ public class DragonProjectileController : MonoBehaviourPun
         }
     }
 
+
     void SpawnGasEffect()
     {
-        photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency,frequencyToReapplyGas, gasDuration,gasDurationOnPlayer, gasSize);
+        photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
     }
 
     [PunRPC]
@@ -118,7 +119,10 @@ public class DragonProjectileController : MonoBehaviourPun
             //tell the player who was hit to take damage
             PlayerHealthManager playerHealth = other.GetComponentInParent<PlayerHealthManager>();
             if (playerHealth.PlayerId != attackerId)
+            {
                 playerHealth.TakeDamage(projectileHitDmg, attackerId);
+                GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+            }
         }
         //If tag is Minion
         else if (objTag.Equals("Minion"))
@@ -126,6 +130,7 @@ public class DragonProjectileController : MonoBehaviourPun
             //tell the minion who was hit to take damage
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(projectileHitDmg, attackerId);
+            GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
         }
     }
 }
