@@ -62,6 +62,23 @@ public class MinionHealthManager : HealthManager
             if (isStunned)
                 gasEffect = false;
         }
+
+        if (beingDevoured || isStunned)
+            return;
+        //Heal every X seconds if not at max health
+        if (healthRegenTimer < timeForHealthRegenToActivate)
+        {
+            healthRegenTimer += Time.deltaTime;
+        }
+        if (CurrentHealth < MaxHealth && healthRegenTimer >= timeForHealthRegenToActivate)
+        {
+            healthRegenTickrateTimer += Time.deltaTime;
+            if (healthRegenTickrateTimer >= healthRegenTickrate)
+            {
+                Heal(healthRegenAmount);
+                healthRegenTickrateTimer = 0;
+            }
+        }
     }
 
     public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
