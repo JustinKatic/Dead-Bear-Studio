@@ -35,6 +35,7 @@ public class MinionHealthManager : HealthManager
         SetAIHealthValues(MaxHealth);
         agent = GetComponent<NavMeshAgent>();
     }
+    #endregion
 
     protected override void Update()
     {
@@ -45,8 +46,40 @@ public class MinionHealthManager : HealthManager
             currentHealthOffset -= healthOffsetTime * Time.deltaTime;
             OverheadHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
         }
+        if (gasEffect)
+        {
+            gasTimer += Time.deltaTime;
+            gasFrequencyTimer += Time.deltaTime;
+
+            if (gasTimer >= gasDurationOnPlayer)
+                gasEffect = false;
+
+            if (gasFrequencyTimer >= gasTickRate)
+            {
+                gasFrequencyTimer = 0;
+                TakeDamage(gasDamage, CurAttackerId);
+            }
+            if (isStunned)
+                gasEffect = false;
+        }
     }
-    #endregion
+
+    public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
+    {
+        if (isStunned)
+            return;
+
+        CurAttackerId = attackerId;
+        gasTimer = 0;
+        gasDamage = damageOverTimeDamage;
+        gasTickRate = gasFrequency;
+        this.gasDurationOnPlayer = gasDurationOnPlayer;
+
+        if (!gasEffect)
+            TakeDamage(gasDamage, CurAttackerId);
+
+        gasEffect = true;
+    }
 
     #region Take Damage/ Heal Damage
     public void TakeDamage(int damage, int attackerID)

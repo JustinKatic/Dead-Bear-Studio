@@ -93,6 +93,23 @@ public class PlayerHealthManager : HealthManager
                 currentHealthOffset -= healthOffsetTime * Time.deltaTime;
                 playerHudHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
             }
+
+            if (gasEffect)
+            {
+                gasTimer += Time.deltaTime;
+                gasFrequencyTimer += Time.deltaTime;
+
+                if (gasTimer >= gasDurationOnPlayer)
+                    gasEffect = false;
+
+                if (gasFrequencyTimer >= gasTickRate)
+                {
+                    gasFrequencyTimer = 0;
+                    TakeDamage(gasDamage, CurAttackerId);
+                }
+                if (isStunned)
+                    gasEffect = false;
+            }
         }
         else
         {
@@ -102,8 +119,23 @@ public class PlayerHealthManager : HealthManager
                 OverheadHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
             }
         }
-
         healthRegenTimerSlider.value = healthRegenTimer;
+    }
+
+    public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
+    {
+        if (isStunned)
+            return;
+
+        if (!gasEffect)
+            TakeDamage(damageOverTimeDamage, CurAttackerId);
+
+        gasTimer = 0;
+        gasEffect = true;
+        gasDamage = damageOverTimeDamage;
+        CurAttackerId = attackerId;
+        gasTickRate = gasFrequency;
+        this.gasDurationOnPlayer = gasDurationOnPlayer;
     }
 
 
