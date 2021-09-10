@@ -63,6 +63,14 @@ public class HealthManager : MonoBehaviourPun
 
     protected IEnumerator myDevourCo;
 
+    protected bool gasEffect;
+    protected int gasDamage;
+    protected float gasTickRate;
+    protected float gasTimer;
+    protected float gasFrequencyTimer;
+    protected float gasDurationOnPlayer;
+
+
     #region Update Loops
     virtual protected void Update()
     {
