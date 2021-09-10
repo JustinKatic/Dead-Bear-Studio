@@ -1,14 +1,11 @@
 fileFormatVersion: 2
-guid: 07f0bdc0ac6a4034c8c3199e634bac62
+guid: 0afbdc4c43988304db38c8fba4ef814a
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable:
   - first:
       74: 1827226128182048838
-    second: Lion_Anim_AttackLeft
-  - first:
-      74: -1631797715386884671
-    second: Lion_Anim_AttackRight
+    second: Lion_Anim_Land
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -43,40 +40,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Lion_Anim_AttackLeft
+      name: Lion_Anim_Land
       takeName: Take 001
       internalID: 0
       firstFrame: 1
-      lastFrame: 17
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: bca5555b7096412499a4b4ad6ae33a77, type: 2}
-      additiveReferencePoseFrame: 1
-    - serializedVersion: 16
-      name: Lion_Anim_AttackRight
-      takeName: Take 001
-      internalID: 0
-      firstFrame: 18
-      lastFrame: 34
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -96,120 +64,10 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events: []
-      transformMask:
-      - path: 
-        weight: 1
-      - path: Bind_bones
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT/LionBind_tail4_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT/LionBind_tail4_JNT/LionBind_tail5_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT/LionBind_tail4_JNT/LionBind_tail5_JNT/LionBind_tail6_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT/LionBind_tail4_JNT/LionBind_tail5_JNT/LionBind_tail6_JNT/LionBind_tail7_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT/LionBind_tail4_JNT/LionBind_tail5_JNT/LionBind_tail6_JNT/LionBind_tail7_JNT/LionBind_tail8_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_tail1_JNT/LionBind_tail2_JNT/LionBind_tail3_JNT/LionBind_tail4_JNT/LionBind_tail5_JNT/LionBind_tail6_JNT/LionBind_tail7_JNT/LionBind_tail8_JNT/LionBind_tail9_NUB
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_L_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_L_JNT/LionBind_knee_L_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_L_JNT/LionBind_knee_L_JNT/LionBind_ankle_L_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_L_JNT/LionBind_knee_L_JNT/LionBind_ankle_L_JNT/LionBind_ball_L_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_L_JNT/LionBind_knee_L_JNT/LionBind_ankle_L_JNT/LionBind_ball_L_JNT/LionBind_footEnd_L_NUB
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_R_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_R_JNT/LionBind_knee_R_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_R_JNT/LionBind_knee_R_JNT/LionBind_ankle_R_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_R_JNT/LionBind_knee_R_JNT/LionBind_ankle_R_JNT/LionBind_ball_R_JNT
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_hips_JNT/LionBind_thigh_R_JNT/LionBind_knee_R_JNT/LionBind_ankle_R_JNT/LionBind_ball_R_JNT/LionBind_footEnd_R_NUB
-        weight: 0
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT/LionBind_elbow_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT/LionBind_elbow_L_JNT/LionBind_forearmTwist1_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT/LionBind_elbow_L_JNT/LionBind_forearmTwist2_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT/LionBind_elbow_L_JNT/LionBind_wrist_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT/LionBind_upperarmTwist1_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_L_JNT/LionBind_shoulder_L_JNT/LionBind_upperarmTwist2_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT/LionBind_elbow_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT/LionBind_elbow_R_JNT/LionBind_forearmTwist1_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT/LionBind_elbow_R_JNT/LionBind_forearmTwist2_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT/LionBind_elbow_R_JNT/LionBind_wrist_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT/LionBind_upperarmTwist1_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_clavicle_R_JNT/LionBind_shoulder_R_JNT/LionBind_upperarmTwist2_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT/LionBind_ear_L_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT/LionBind_ear_L_JNT/LionBind_earEnd_L_NUB
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT/LionBind_ear_R_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT/LionBind_ear_R_JNT/LionBind_earEnd_R_NUB
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT/LionBind_head_JNT
-        weight: 1
-      - path: Bind_bones/LionBind_Root_NUB/LionBind_COG_NUB/LionBind_spine1_JNT/LionBind_spine2_JNT/LionBind_spine3_JNT/LionBind_spine4_JNT/LionBind_neck1_JNT/LionBind_neck2_JNT/LionBind_head_JNT/LionBind_headEnd_NUB
-        weight: 1
-      - path: Geometry
-        weight: 1
-      - path: Geometry/Body_Proxy
-        weight: 1
-      - path: Geometry/Hair_Proxy
-        weight: 1
-      maskType: 1
-      maskSource: {fileID: 31900000, guid: bca5555b7096412499a4b4ad6ae33a77, type: 2}
-      additiveReferencePoseFrame: 1
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 0
   meshes:
     lODScreenPercentages: []
