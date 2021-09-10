@@ -66,12 +66,12 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            DealDamageToPlayersAndMinions(other, damage);
+            DealDamageToPlayersAndMinions(other, damage, false);
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, aoeRadius, damageableObjects);
             foreach (Collider col in colliders)
             {
-                DealDamageToPlayersAndMinions(col, aoeDamage);
+                DealDamageToPlayersAndMinions(col, aoeDamage, true);
                 Debug.Log("Dealing aoe dmg");
             }
             PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
@@ -79,7 +79,7 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
         }
     }
 
-    void DealDamageToPlayersAndMinions(Collider other, int damage)
+    void DealDamageToPlayersAndMinions(Collider other, int damage, bool aoeDmg)
     {
         //stores refrence to tag collided with
         string objTag = other.transform.tag;
@@ -89,7 +89,11 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             //tell the player who was hit to take damage
             PlayerHealthManager playerHealth = other.GetComponentInParent<PlayerHealthManager>();
             if (playerHealth.PlayerId != attackerId)
+            {
                 playerHealth.TakeDamage(damage, attackerId);
+                if (!aoeDmg)
+                    GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+            }
         }
         //If tag is Minion
         else if (objTag.Equals("Minion"))
@@ -97,6 +101,8 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             //tell the minion who was hit to take damage
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(damage, attackerId);
+            if (!aoeDmg)
+                GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
         }
     }
 

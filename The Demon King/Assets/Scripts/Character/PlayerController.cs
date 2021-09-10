@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public CharacterController cc;
 
     [SerializeField] private GameObject recticle;
+    [SerializeField] private Animator recticleAnimator;
 
 
     #region Start Up
@@ -121,6 +122,18 @@ public class PlayerController : MonoBehaviourPun
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
         GameManager.instance.players[id - 1] = this;
+    }
+
+    public void PlayRectAnim()
+    {
+        photonView.RPC("PlayRectAnim_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void PlayRectAnim_RPC()
+    {
+        if (photonView.IsMine)
+            recticleAnimator.Play("ReticleAnimation");
     }
 
     #endregion
