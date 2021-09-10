@@ -44,7 +44,6 @@ public class PlayerHealthManager : HealthManager
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
-    private bool coRunning = false;
 
 
     #region Startup
@@ -157,40 +156,7 @@ public class PlayerHealthManager : HealthManager
         Respawn(true);
     }
 
-    [PunRPC]
-    public override void OnDevour_RPC(int attackerID)
-    {
-        canBeDevoured = false;
-
-        if (photonView.IsMine)
-        {
-            if (!coRunning)
-            {
-                Debug.Log("Entered co");
-                coRunning = true;
-                myDevourCo = DevourCorutine();
-                StartCoroutine(myDevourCo);
-            }
-            else
-            {
-                Debug.Log("I should interupt " + attackerID);
-                GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
-            }
-        }
-
-
-        IEnumerator DevourCorutine()
-        {
-            OnBeingDevourStart();
-
-            yield return new WaitForSeconds(TimeTakenToBeDevoured);
-
-            coRunning = false;
-            CurAttackerId = 0;
-            Debug.Log("attacker id on devour end = " + attackerID);
-            OnBeingDevourEnd(attackerID);
-        }
-    }
+   
 
     [PunRPC]
     protected override void InteruptDevourOnPersonDevouring_RPC()
@@ -207,9 +173,9 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             debuffTimer.StopBeingDevouredTimer();
-            coRunning = false;
         }
     }
+
     #endregion
 
     #region Take Damage/ Heal Damage
