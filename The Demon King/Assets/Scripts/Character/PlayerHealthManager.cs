@@ -107,6 +107,8 @@ public class PlayerHealthManager : HealthManager
                     gasFrequencyTimer = 0;
                     TakeDamage(gasDamage, CurAttackerId);
                 }
+                if (isStunned)
+                    gasEffect = false;
             }
         }
         else
@@ -117,12 +119,14 @@ public class PlayerHealthManager : HealthManager
                 OverheadHealthBarMat.SetFloat("_OffsetHealth", currentHealthOffset);
             }
         }
-
         healthRegenTimerSlider.value = healthRegenTimer;
     }
 
     public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
     {
+        if (isStunned)
+            return;
+
         if (!gasEffect)
             TakeDamage(damageOverTimeDamage, CurAttackerId);
 

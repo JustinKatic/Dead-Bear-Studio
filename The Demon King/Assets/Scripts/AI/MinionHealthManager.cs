@@ -59,11 +59,16 @@ public class MinionHealthManager : HealthManager
                 gasFrequencyTimer = 0;
                 TakeDamage(gasDamage, CurAttackerId);
             }
+            if (isStunned)
+                gasEffect = false;
         }
     }
 
     public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
     {
+        if (isStunned)
+            return;
+
         CurAttackerId = attackerId;
         gasTimer = 0;
         gasDamage = damageOverTimeDamage;
