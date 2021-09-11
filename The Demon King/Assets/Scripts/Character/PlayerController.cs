@@ -157,7 +157,10 @@ public class PlayerController : MonoBehaviourPun
                 playerJumpVelocity.y += gravity * Time.deltaTime;
             }
             else
+            {
                 playerJumpVelocity.y += DrowningInLavaGravity * Time.deltaTime;
+                onLaunchPad = false;
+            }
 
             AccelerateMoveSpeed();
 
@@ -434,6 +437,9 @@ public class PlayerController : MonoBehaviourPun
 
     public void LaunchPad(Vector3 launchDirection, bool negX, bool negY, bool negZ)
     {
+        if (!photonView.IsMine)
+            return;
+
         //Sets Y velocity to jump value
         if (negX)
             playerJumpVelocity.x = -Mathf.Sqrt(launchDirection.x * -2f * gravity);

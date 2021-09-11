@@ -12,7 +12,7 @@ public class LaunchPad : MonoBehaviour
 
 
     private void OnTriggerEnter(Collider other)
-    {
+    {        
         if (other.gameObject.CompareTag("PlayerParent"))
         {
             other.gameObject.GetComponent<PlayerController>().LaunchPad(launchDirection, negX, negY, negZ);
