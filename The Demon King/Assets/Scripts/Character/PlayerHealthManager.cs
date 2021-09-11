@@ -216,14 +216,15 @@ public class PlayerHealthManager : HealthManager
         if (invulnerable || CurrentHealth <= 0 || beingDevoured)
             return;
 
-        //Remove health
-        CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
-
-
         if (CurrentHealth - damage <= 0)
             currentHealthOffset = damage - (CurrentHealth - damage) * -1;
         else
             currentHealthOffset = damage;
+
+        //Remove health
+        CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
+
+
 
 
         if (attackerID != 0)
