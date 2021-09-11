@@ -73,7 +73,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
             playerController.currentAnim = activeEvolution.animator;
-            playerHealthManager.SetHealth(activeEvolution.MaxHealth);
+            playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth);
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
     }
@@ -220,7 +220,7 @@ public class EvolutionManager : MonoBehaviourPun
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
         int currentHealthPercent = (100 / playerHealthManager.MaxHealth) * playerHealthManager.CurrentHealth;
-        playerHealthManager.SetHealth(activeEvolution.MaxHealth);
+        playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth);
         playerHealthManager.CurrentHealth = Mathf.RoundToInt(playerHealthManager.MaxHealth * currentHealthPercent * 0.01f);
         playerHealthManager.UpdateHealthBar(playerHealthManager.CurrentHealth, 0);
         leaderboardManager.RaiseUpdateLeaderboardEvent();

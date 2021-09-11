@@ -75,7 +75,7 @@ public class PlayerHealthManager : HealthManager
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             demonKingCrownHealthManager = FindObjectOfType<CrownHealthManager>();
             devour = GetComponent<Devour>();
-            SetHealth(MaxHealth);
+            //SetHealth(MaxHealth);
             healthRegenTimerSlider.maxValue = timeForHealthRegenToActivate;
         }
     }
@@ -163,6 +163,7 @@ public class PlayerHealthManager : HealthManager
         gasTickRate = gasFrequency;
         this.gasDurationOnPlayer = gasDurationOnPlayer;
     }
+
 
 
     #region Devour
@@ -385,16 +386,19 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region HealthBar
-    public void SetHealth(int MaxHealthValue)
+    public void SetPlayerValuesOnEvolve(int MaxHealthValue, int expWorth, int scoreWorth)
     {
-        photonView.RPC("SetHealth_RPC", RpcTarget.All, MaxHealthValue);
+        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth);
     }
 
     [PunRPC]
-    protected void SetHealth_RPC(int MaxHealthValue)
+    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, int expWorth, int scoreWorth)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
+
+        MyExperienceWorth = expWorth;
+        myScoreWorth = scoreWorth;
 
         //Run following if not local player
         if (!photonView.IsMine)

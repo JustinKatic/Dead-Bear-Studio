@@ -23,11 +23,19 @@ public class MinionHealthManager : HealthManager
 
     public bool Respawned = false;
 
+    [SerializeField] int minionExpWorth;
+    [SerializeField] int minionScoreWorth;
+
+
+
     #region StartUp
     void Awake()
     {
         OverheadHealthBarMat = Instantiate(overheadHudHealthbarImg.material);
         overheadHudHealthbarImg.material = OverheadHealthBarMat;
+
+        MyExperienceWorth = minionExpWorth;
+        myScoreWorth = minionScoreWorth;
 
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();

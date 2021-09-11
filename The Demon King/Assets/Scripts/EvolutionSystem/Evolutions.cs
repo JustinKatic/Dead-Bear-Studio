@@ -57,6 +57,8 @@ public class Evolutions : MonoBehaviourPun
 {
     public MinionType MyMinionType;
     public int MaxHealth;
+    public int ExpWorth;
+    public int ScoreWorth;
 
 
     [FMODUnity.EventRef]

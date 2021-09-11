@@ -23,8 +23,8 @@ public class HealthManager : MonoBehaviourPun
     public float StunnedDuration { get { return stunnedDuration; } private set { stunnedDuration = value; } }
 
     [Header("Evolution Stats")]
-    public int MyExperienceWorth = 2;
-    public int myScoreWorth = 5;
+    [HideInInspector] public int MyExperienceWorth;
+    [HideInInspector] public int myScoreWorth;
 
     [HideInInspector] public MinionType MyMinionType;
 
