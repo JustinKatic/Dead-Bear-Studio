@@ -9,6 +9,6 @@ public class LionExplosionVFX : MonoBehaviour
     public void Init(float radius)
     {
         var main = PsToChangeSizeOf.main;
-        main.startSize = radius;
+        main.startSize = radius * 2;
     }
 }

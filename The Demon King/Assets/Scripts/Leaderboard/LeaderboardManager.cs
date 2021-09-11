@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using TMPro;
 using ExitGames.Client.Photon;
+using Cinemachine;
 
 struct LeaderBoardList
 {
@@ -15,6 +16,7 @@ struct LeaderBoardList
     public int DemonKingScore;
     public Image EvolutionImg;
     public bool AmITheDemonKing;
+    public bool IslocalPlayer;
 }
 
 
@@ -47,7 +49,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     [HideInInspector] public bool leaderboardEnabed = false;
 
-    private GameObject[] players;
+    [SerializeField] private GameObjectRuntimeSet players;
     bool findingPlayers = true;
 
     int numberOfPlayerToDisplay = 2;
@@ -56,15 +58,53 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private float timeToAwardDoubleScore = 300;
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
-    [SerializeField] private GameObject winPanel;
+
+
+    private CinemachineVirtualCamera podiumVCam;
+
+    private Transform podium1;
+    private Transform podium2;
+    private Transform podium3;
+
+    [SerializeField] GameObject playerHUD;
+    [SerializeField] GameObject playerNameOverhead;
+    [SerializeField] GameObject demonKingVFX;
+    [SerializeField] GameObject overheadNameTag;
+
+    private PhotonTransformViewClassic transformViewClassic;
+
+
     private bool doubleScoreProced;
+
+    private int playerPositionOnScoreboard;
 
     private const byte UpdateLeaderboardEvent = 1;
     private const byte StartMatchTimeEvent = 2;
     private const byte PlayerWonEvent = 3;
 
 
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            playerController = GetComponentInParent<PlayerController>();
+            transformViewClassic = GetComponent<PhotonTransformViewClassic>();
+            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
+            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
 
+            podium1 = GameObject.Find("Podium1").transform;
+            podium2 = GameObject.Find("Podium2").transform;
+            podium3 = GameObject.Find("Podium3").transform;
+
+            podiumVCam = GameObject.Find("PodiumVCam").GetComponent<CinemachineVirtualCamera>();
+
+            Hashtable DemonKingScoreHash = new Hashtable();
+            DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
+        }
+        else
+            Destroy(this);
+    }
 
     private Image GetImage(MinionType minionType)
     {
@@ -79,21 +119,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     }
 
 
-    private void Start()
-    {
-        if (photonView.IsMine)
-        {
-            playerController = GetComponentInParent<PlayerController>();
-            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
-            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
 
-            Hashtable DemonKingScoreHash = new Hashtable();
-            DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
-        }
-        else
-            Destroy(this);
-    }
 
     private void Update()
     {
@@ -101,8 +127,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         {
             if (findingPlayers)
             {
-                players = GameObject.FindGameObjectsWithTag("PlayerParent");
-                if (players.Length == PhotonNetwork.PlayerList.Length)
+                if (players.Length() == PhotonNetwork.PlayerList.Length)
                 {
                     findingPlayers = false;
                     RaiseUpdateLeaderboardEvent();
@@ -160,6 +185,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             dataToEnterIntoLeaderboardList.EvolutionImg = GetImage(GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
 
             dataToEnterIntoLeaderboardList.AmITheDemonKing = GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
+
+            dataToEnterIntoLeaderboardList.IslocalPlayer = player.IsLocal;
+
             //Add info into leaderboard list
             leaderBoardList.Add(dataToEnterIntoLeaderboardList);
         }
@@ -180,6 +208,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             playerLeaderboardSlot[i].UpdateSliderValue(player.DemonKingScore);
             playerLeaderboardSlot[i].CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
 
+
             if (player.AmITheDemonKing)
             {
                 wasThereAKing = true;
@@ -191,6 +220,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 if (player.DemonKingScore >= DemonKingScoreRequiredToWin.value)
                     DidAWinOccur = true;
             }
+
+            if (player.IslocalPlayer)
+            {
+                playerPositionOnScoreboard = i;
+            }
+
             i++;
         }
 
@@ -209,8 +244,42 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     IEnumerator ReturnToLobbyCo()
     {
-        winPanel.SetActive(true);
-        yield return new WaitForSeconds(4f);
+        transformViewClassic.m_PositionModel.TeleportIfDistanceGreaterThan = 0;
+        podiumVCam.m_Priority = 15;
+        playerController.DisableAllInputs();
+        playerHUD.SetActive(false);
+        playerNameOverhead.SetActive(true);
+        demonKingVFX.SetActive(false);
+        overheadNameTag.SetActive(true);
+
+
+        foreach (var player in players.items)
+        {
+            player.GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
+        }
+
+        if (playerPositionOnScoreboard == 0)
+        {
+            playerController.transform.position = podium1.position;
+            playerController.transform.rotation = podium1.transform.rotation;
+        }
+        else if (playerPositionOnScoreboard == 1)
+        {
+            playerController.transform.position = podium2.position;
+            playerController.transform.rotation = podium2.transform.rotation;
+        }
+        else if (playerPositionOnScoreboard == 2)
+        {
+            playerController.transform.position = podium3.position;
+            playerController.transform.rotation = podium3.transform.rotation;
+        }
+        else
+        {
+            playerController.transform.position = new Vector3(0, -200, 0);
+        }
+
+
+        yield return new WaitForSeconds(10f);
 
         PhotonNetwork.LeaveRoom();
         while (PhotonNetwork.InRoom)

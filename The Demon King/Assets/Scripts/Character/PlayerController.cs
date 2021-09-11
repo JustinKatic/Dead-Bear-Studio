@@ -68,6 +68,8 @@ public class PlayerController : MonoBehaviourPun
 
     [HideInInspector] public bool onLaunchPad = false;
 
+    private bool cameraRotation = true;
+
 
     #region Start Up
     private void Awake()
@@ -297,6 +299,8 @@ public class PlayerController : MonoBehaviourPun
     #region Camera Controlls
     void RotatePlayerToFaceCamDirection()
     {
+                if (!cameraRotation)
+            return;
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawCamera, 0), RotationSpeed * Time.deltaTime);
@@ -385,6 +389,17 @@ public class PlayerController : MonoBehaviourPun
             CharacterInputs.Player.Disable();
         }
     }
+
+    public void DisableAllInputs()
+    {
+        //Run following if local player
+        if (photonView.IsMine)
+        {
+            cameraRotation = false;
+            CharacterInputs.Disable();
+        }
+    }
+
     #endregion
 
     #region Jump/Falling

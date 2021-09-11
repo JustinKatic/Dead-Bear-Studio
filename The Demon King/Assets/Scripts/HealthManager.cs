@@ -32,7 +32,7 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected Image healthBarPrefab;
 
     [Header("Overhead healthBar Hud")]
-    [SerializeField] protected Canvas overheadHealthBar;
+    public GameObject overheadHealthBar;
 
     [Header("VFX Effects")]
     [SerializeField] protected GameObject StunVFX;

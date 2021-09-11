@@ -69,7 +69,7 @@ public class PlayerHealthManager : HealthManager
         else
         {
             debuffTimer = GetComponentInChildren<PlayerTimers>();
-            Destroy(overheadHealthBar.gameObject);
+            overheadHealthBar.gameObject.SetActive(false);
             CurrentHealth = MaxHealth;
             experienceManager = GetComponent<ExperienceManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
@@ -304,7 +304,7 @@ public class PlayerHealthManager : HealthManager
             }
             else
             {
-                overheadHealthBar.enabled = false;
+                overheadHealthBar.SetActive(false);
             }
 
             yield return new WaitForSeconds(RespawnTime);
@@ -315,7 +315,7 @@ public class PlayerHealthManager : HealthManager
             }
             else
             {
-                overheadHealthBar.enabled = true;
+                overheadHealthBar.SetActive(true);
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);

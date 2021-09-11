@@ -11,14 +11,12 @@ public class PlayerNameTag : MonoBehaviourPun
 
     private void Start()
     {
-        if (!photonView.IsMine)
-        {
-            SetName();
-        }
-        else
-        {
-            Destroy(nameText.gameObject);
-        }
+
+        SetName();
+
+        if (photonView.IsMine)
+            nameText.gameObject.SetActive(false);
+
     }
 
     private void SetName()
