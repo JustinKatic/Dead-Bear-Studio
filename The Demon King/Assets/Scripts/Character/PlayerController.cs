@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] private GameObject recticle;
     [SerializeField] private Animator recticleAnimator;
 
-    private bool onLaunchPad = false;
+    [HideInInspector] public bool onLaunchPad = false;
 
 
     #region Start Up
@@ -153,7 +153,9 @@ public class PlayerController : MonoBehaviourPun
 
             //Add gravity to player
             if (!drowningInLava)
+            {
                 playerJumpVelocity.y += gravity * Time.deltaTime;
+            }
             else
                 playerJumpVelocity.y += DrowningInLavaGravity * Time.deltaTime;
 

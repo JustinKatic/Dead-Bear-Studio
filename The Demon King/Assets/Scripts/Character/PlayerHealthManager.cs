@@ -281,6 +281,7 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                player.onLaunchPad = false;
                 debuffTimer.StopStunTimer();
                 debuffTimer.StopBeingDevouredTimer();
                 debuffTimer.StartRespawnTimer(RespawnTime);
