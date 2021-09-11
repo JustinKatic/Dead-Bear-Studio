@@ -197,6 +197,7 @@ public class ExperienceManager : MonoBehaviourPun
     public void DecreaseExperince(float decreaseValue)
     {
         SetCanEvolveFalse();
+        UpdateActiveBranchUI(CurrentActiveEvolutionTypeBranch);
         UpdateExpBarOnDecrease(redBranch, decreaseValue);
         UpdateExpBarOnDecrease(greenBranch, decreaseValue);
         UpdateExpBarOnDecrease(blueBranch, decreaseValue);
