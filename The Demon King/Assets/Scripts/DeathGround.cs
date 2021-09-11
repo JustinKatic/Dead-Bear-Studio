@@ -11,7 +11,7 @@ public class DeathGround : MonoBehaviour
         {
             PlayerController pc = other.GetComponent<PlayerController>();
             pc.drowningInLava = true;
-            pc.playerYVelocity = 0;
+            pc.playerJumpVelocity.y = 0;
             pc.DisableMovement();
             pc.PlayMyDeathInLavaSound();
             StartCoroutine(RespawnPlayer(other, pc));

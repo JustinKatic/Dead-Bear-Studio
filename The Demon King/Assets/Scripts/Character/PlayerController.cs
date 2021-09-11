@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float VelocityToStartFalling = -7f;
     [SerializeField] float VelocityNeededToPlayGroundSlam = -20f;
 
-    [HideInInspector] public float playerYVelocity;
+    [HideInInspector] public Vector3 playerJumpVelocity;
     private bool isFalling = false;
 
     [Header("Physics")]
@@ -65,6 +65,8 @@ public class PlayerController : MonoBehaviourPun
 
     [SerializeField] private GameObject recticle;
     [SerializeField] private Animator recticleAnimator;
+
+    private bool onLaunchPad = false;
 
 
     #region Start Up
@@ -151,16 +153,16 @@ public class PlayerController : MonoBehaviourPun
 
             //Add gravity to player
             if (!drowningInLava)
-                playerYVelocity += gravity * Time.deltaTime;
+                playerJumpVelocity.y += gravity * Time.deltaTime;
             else
-                playerYVelocity += DrowningInLavaGravity * Time.deltaTime;
+                playerJumpVelocity.y += DrowningInLavaGravity * Time.deltaTime;
 
             AccelerateMoveSpeed();
 
             //pushes player onto ground
-            if (cc.isGrounded && playerYVelocity < 0)
+            if (cc.isGrounded && playerJumpVelocity.y < 0)
             {
-                playerYVelocity = -2f;
+                playerJumpVelocity.y = -2f;
                 //Set jumping false and allow CC to stepUp
                 if (isJumping)
                 {
@@ -170,6 +172,8 @@ public class PlayerController : MonoBehaviourPun
                 {
                     IsFallingAndGrounded();
                 }
+                if (onLaunchPad)
+                    onLaunchPad = false;
             }
             else if (playerMoveVelocity.y <= VelocityToStartFalling)
             {
@@ -188,7 +192,9 @@ public class PlayerController : MonoBehaviourPun
             }
 
             //Add jump and gravity values to current movements Y
-            playerMoveVelocity.y = playerYVelocity;
+            playerMoveVelocity.y = playerJumpVelocity.y;
+            if (onLaunchPad)
+                playerMoveVelocity = playerJumpVelocity;
 
             //Move the character based of the players velocity values
             if (cc.enabled)
@@ -382,7 +388,7 @@ public class PlayerController : MonoBehaviourPun
         if (cc.isGrounded)
         {
             //Sets Y velocity to jump value
-            playerYVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            playerJumpVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             isJumping = true;
             //Sets CC not to try and stepUp while in air
             cc.stepOffset = 0;
@@ -423,6 +429,40 @@ public class PlayerController : MonoBehaviourPun
         isFalling = true;
         PlayerSoundManager.Instance.PlayFallingSound();
     }
+
+    public void LaunchPad(Vector3 launchDirection, bool negX, bool negY, bool negZ)
+    {
+        //Sets Y velocity to jump value
+        if (negX)
+            playerJumpVelocity.x = -Mathf.Sqrt(launchDirection.x * -2f * gravity);
+        else
+            playerJumpVelocity.x = Mathf.Sqrt(launchDirection.x * -2f * gravity);
+
+
+        if (negY)
+            playerJumpVelocity.y = -Mathf.Sqrt(launchDirection.y * -2f * gravity);
+        else
+            playerJumpVelocity.y = Mathf.Sqrt(launchDirection.y * -2f * gravity);
+
+
+        if (negZ)
+            playerJumpVelocity.z = -Mathf.Sqrt(launchDirection.z * -2f * gravity);
+        else
+            playerJumpVelocity.z = Mathf.Sqrt(launchDirection.z * -2f * gravity);
+
+
+        isJumping = true;
+        //Sets CC not to try and stepUp while in air
+        cc.stepOffset = 0;
+        cc.slopeLimit = 0;
+
+        currentAnim.SetBool("JumpStarted", true);
+        isFalling = true;
+        currentAnim.SetBool("Falling", true);
+        PlayerSoundManager.Instance.PlayJumpSound();
+        onLaunchPad = true;
+    }
+
     #endregion
 
     public void PlayMyDeathInLavaSound()
