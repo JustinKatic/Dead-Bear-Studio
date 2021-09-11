@@ -155,8 +155,6 @@ public class MinionHealthManager : HealthManager
     #region Devour
     protected override void OnBeingDevourStart()
     {
-        canBeDevoured = false;
-
         if (photonView.IsMine)
         {
             beingDevoured = true;
@@ -170,7 +168,14 @@ public class MinionHealthManager : HealthManager
     #endregion
 
     #region Respawn
-    public void Respawn()
+
+    void Respawn()
+    {
+        photonView.RPC("Respawn_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    public void Respawn_RPC()
     {
         StartCoroutine(ResetPlayer());
 

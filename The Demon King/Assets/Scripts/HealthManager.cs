@@ -118,7 +118,6 @@ public class HealthManager : MonoBehaviourPun
             }
             else
             {
-                Debug.Log("I should interupt " + attackerID);
                 GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
             }
         }
