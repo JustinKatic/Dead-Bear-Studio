@@ -115,15 +115,15 @@ public class PlayerController : MonoBehaviourPun
                 col.gameObject.layer = LayerMask.NameToLayer("Player");
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
-            
+
             InputSystem.onActionChange += (obj, change) =>
             {
                 if (change == InputActionChange.ActionPerformed)
                 {
-                    var inputAction = (InputAction) obj;
+                    var inputAction = (InputAction)obj;
                     var lastControl = inputAction.activeControl;
                     currentInputDevice = lastControl.device;
-                   
+
                     Debug.Log($"device: {currentInputDevice.displayName}");
                 }
             };
@@ -312,7 +312,7 @@ public class PlayerController : MonoBehaviourPun
     #region Camera Controlls
     void RotatePlayerToFaceCamDirection()
     {
-                if (!cameraRotation)
+        if (!cameraRotation)
             return;
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
@@ -472,29 +472,12 @@ public class PlayerController : MonoBehaviourPun
         PlayerSoundManager.Instance.PlayFallingSound();
     }
 
-    public void LaunchPad(Vector3 launchDirection, bool negX, bool negY, bool negZ)
+    public void LaunchPad(Vector3 launchVelocity)
     {
         if (!photonView.IsMine)
             return;
 
-        //Sets Y velocity to jump value
-        if (negX)
-            playerJumpVelocity.x = -Mathf.Sqrt(launchDirection.x * -2f * gravity);
-        else
-            playerJumpVelocity.x = Mathf.Sqrt(launchDirection.x * -2f * gravity);
-
-
-        if (negY)
-            playerJumpVelocity.y = -Mathf.Sqrt(launchDirection.y * -2f * gravity);
-        else
-            playerJumpVelocity.y = Mathf.Sqrt(launchDirection.y * -2f * gravity);
-
-
-        if (negZ)
-            playerJumpVelocity.z = -Mathf.Sqrt(launchDirection.z * -2f * gravity);
-        else
-            playerJumpVelocity.z = Mathf.Sqrt(launchDirection.z * -2f * gravity);
-
+        playerJumpVelocity = launchVelocity;
 
         isJumping = true;
         //Sets CC not to try and stepUp while in air
