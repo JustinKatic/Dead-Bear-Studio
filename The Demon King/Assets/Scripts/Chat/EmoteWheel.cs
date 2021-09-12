@@ -58,6 +58,7 @@ public class EmoteWheel : MonoBehaviourPun
                 emote.interactable = true;
             }
         }
+        //Gets the top most active selectable for controller inputs
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(GetComponentInChildren<Selectable>().gameObject);
     }
