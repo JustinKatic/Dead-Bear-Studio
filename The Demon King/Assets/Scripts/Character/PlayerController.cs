@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviourPun
 
     //Input System
     [HideInInspector] public CharacterInputs CharacterInputs;
+    private InputDevice currentInputDevice;
     private Vector2 playerInputs;
     private Vector2 playerLookInput;
 
@@ -114,6 +115,18 @@ public class PlayerController : MonoBehaviourPun
                 col.gameObject.layer = LayerMask.NameToLayer("Player");
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
+            
+            InputSystem.onActionChange += (obj, change) =>
+            {
+                if (change == InputActionChange.ActionPerformed)
+                {
+                    var inputAction = (InputAction) obj;
+                    var lastControl = inputAction.activeControl;
+                    currentInputDevice = lastControl.device;
+                   
+                    Debug.Log($"device: {currentInputDevice.displayName}");
+                }
+            };
         }
     }
 
@@ -318,8 +331,17 @@ public class PlayerController : MonoBehaviourPun
         // if there is an input and camera position is not fixed
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
-            _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
-            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
+            if (currentInputDevice.name == "Mouse")
+            {
+                _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
+                _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
+            }
+            else
+            {
+                _cinemachineTargetYaw += playerLookInput.x * (MouseSensitivity * 10) * Time.deltaTime;
+                _cinemachineTargetPitch += playerLookInput.y * (MouseSensitivity * 10) * Time.deltaTime;
+            }
+
         }
 
         // clamp our rotations so our values are limited 360 degrees
