@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
-      [Header("Screens")]
+    [Header("Screens")]
     [SerializeField] private GameObject mainScreen;
     [SerializeField] private GameObject createRoomScreen;
     [SerializeField] private GameObject lobbyScreen;
@@ -20,8 +20,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [Header("Main Screen")]
     [SerializeField] private Button createRoomButton;
-    [SerializeField] private Button findRoomButton;    
+    [SerializeField] private Button findRoomButton;
     [SerializeField] private GameObject mainSelectableItem;
+    [SerializeField] private TMP_InputField playerNameInput;
 
 
     [Header("Create Room Screen")]
@@ -60,14 +61,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-   
+
         List<string> sceneNames = new List<string>();
 
         foreach (var scene in scenes)
         {
             sceneNames.Add(scene.SceneName);
         }
-        
+
         sceneDropdown.AddOptions(sceneNames);
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
@@ -89,6 +90,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(mainSelectableItem);
+
+        playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
     // changes the currently visible screen
     void SetScreen(GameObject screen)
@@ -120,8 +123,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
         findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+        PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
-    
+
+
     public void OnMaxPlayerSliderValueChanged(Slider maxPlayerValueChange)
     {
         roomMaxPlayers = maxPlayerValueChange.value;
@@ -129,7 +134,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
     public void OnPrivateRoomValueChanged(Toggle roomPrivacyChange)
     {
-       roomIsPublic = roomPrivacyChange.isOn;
+        roomIsPublic = roomPrivacyChange.isOn;
     }
 
     // called when the "Create Room" button has been pressed
@@ -138,7 +143,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SetScreen(createRoomScreen);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(createRoomSelectableItem);
-        
+
     }
 
     // called when the "Find Room" button has been pressed
@@ -168,11 +173,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public override void OnJoinedRoom()
     {
         SetScreen(lobbyScreen);
-        
+
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
-         PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
-        
+        PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
+
         if (roomIsPublic)
         {
             privacyRoomText.text = "Public";
@@ -196,7 +201,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [PunRPC]
     void UpdateLobbyUI()
     {
-     
+
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
         sceneDropdown.gameObject.SetActive(PhotonNetwork.IsMasterClient);
@@ -231,7 +236,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         // tell everyone to load into the Game scene
         NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, sceneName);
-        
+
         startGameButton.interactable = NetworkManager.instance.levelNotLoading;
     }
 
@@ -274,9 +279,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             //Adds rooms to a list that is used for searching private rooms
             if (roomInfo.IsOpen && !allOpenRooms.Contains(roomInfo))
                 allOpenRooms.Add(roomInfo);
-            else if(roomInfo.RemovedFromList && roomInfo.PlayerCount > 0 && roomInfo.PlayerCount < roomInfo.MaxPlayers)
+            else if (roomInfo.RemovedFromList && roomInfo.PlayerCount > 0 && roomInfo.PlayerCount < roomInfo.MaxPlayers)
                 allOpenRooms.Remove(roomInfo);
-            
+
             //Updates a list of rooms with open and visible rooms
             if (roomInfo.RemovedFromList)
                 roomList.Remove(FindRoom(roomInfo.Name));
@@ -310,8 +315,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
             string roomName = roomList[x].Name;
 
-            buttonComp.onClick.RemoveAllListeners();          
-            buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });           
+            buttonComp.onClick.RemoveAllListeners();
+            buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
         }
     }
 
@@ -321,7 +326,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             if (roomList[i].Name == name)
                 return roomList[i];
-            
+
         }
 
         return null;
@@ -364,7 +369,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         if (roomSearchBar.text == "")
             return;
-        
+
         SearchForRoom(roomSearchBar.text);
     }
 
@@ -383,11 +388,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         //Until it Doesnt match another room
         for (int i = 0; i < allOpenRooms.Count; i++)
         {
-            if (allOpenRooms[i].Name.Contains(generatedString.ToString()) )
+            if (allOpenRooms[i].Name.Contains(generatedString.ToString()))
                 GenerateRandomRoomCode();
         }
 
         return generatedString.ToString();
     }
-    
+
 }
