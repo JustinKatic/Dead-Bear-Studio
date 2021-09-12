@@ -48,8 +48,8 @@ public class PlayerController : MonoBehaviourPun
     public bool drowningInLava = false;
 
     //Input System
-    [HideInInspector] public CharacterInputs CharacterInputs;
-    private InputDevice currentInputDevice;
+    public CharacterInputs CharacterInputs;
+    public InputDevice CurrentInputDevice;
     private Vector2 playerInputs;
     private Vector2 playerLookInput;
 
@@ -115,16 +115,17 @@ public class PlayerController : MonoBehaviourPun
                 col.gameObject.layer = LayerMask.NameToLayer("Player");
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
-
+            
+            //Subsribes to the on action change event and detects what the current activecontroller is
             InputSystem.onActionChange += (obj, change) =>
             {
                 if (change == InputActionChange.ActionPerformed)
                 {
                     var inputAction = (InputAction)obj;
                     var lastControl = inputAction.activeControl;
-                    currentInputDevice = lastControl.device;
-
-                    Debug.Log($"device: {currentInputDevice.displayName}");
+                    CurrentInputDevice = lastControl.device;
+                   
+                    Debug.Log($"device: {CurrentInputDevice.displayName}");
                 }
             };
         }
@@ -331,7 +332,7 @@ public class PlayerController : MonoBehaviourPun
         // if there is an input and camera position is not fixed
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
-            if (currentInputDevice.name == "Mouse")
+            if (CurrentInputDevice.name == "Mouse")
             {
                 _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
                 _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
