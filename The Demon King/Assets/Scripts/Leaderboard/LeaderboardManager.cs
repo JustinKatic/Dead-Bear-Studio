@@ -281,11 +281,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
         yield return new WaitForSeconds(10f);
 
-        PhotonNetwork.LeaveRoom();
-        while (PhotonNetwork.InRoom)
-            yield return null;
-
-        PhotonNetwork.LoadLevel("Menu");
+        NetworkManager.instance.ChangeScene("Menu");
     }
 
     public string FormatTime(float time)

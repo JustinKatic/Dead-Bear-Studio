@@ -4,18 +4,13 @@ using UnityEngine;
 
 public class LaunchPad : MonoBehaviour
 {
-    [SerializeField] private Vector3 launchDirection;
-
-    [SerializeField] private bool negX;
-    [SerializeField] private bool negY;
-    [SerializeField] private bool negZ;
-
+    [SerializeField] private Vector3 launchVelocity;
 
     private void OnTriggerEnter(Collider other)
     {        
         if (other.gameObject.CompareTag("PlayerParent"))
         {
-            other.gameObject.GetComponent<PlayerController>().LaunchPad(launchDirection, negX, negY, negZ);
+            other.gameObject.GetComponent<PlayerController>().LaunchPad(launchVelocity);
         }
     }
 }

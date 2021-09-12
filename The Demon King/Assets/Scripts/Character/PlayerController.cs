@@ -48,7 +48,8 @@ public class PlayerController : MonoBehaviourPun
     public bool drowningInLava = false;
 
     //Input System
-    [HideInInspector] public CharacterInputs CharacterInputs;
+    public CharacterInputs CharacterInputs;
+    public InputDevice CurrentInputDevice;
     private Vector2 playerInputs;
     private Vector2 playerLookInput;
 
@@ -114,6 +115,19 @@ public class PlayerController : MonoBehaviourPun
                 col.gameObject.layer = LayerMask.NameToLayer("Player");
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
+            
+            //Subsribes to the on action change event and detects what the current activecontroller is
+            InputSystem.onActionChange += (obj, change) =>
+            {
+                if (change == InputActionChange.ActionPerformed)
+                {
+                    var inputAction = (InputAction)obj;
+                    var lastControl = inputAction.activeControl;
+                    CurrentInputDevice = lastControl.device;
+                   
+                    Debug.Log($"device: {CurrentInputDevice.displayName}");
+                }
+            };
         }
     }
 
@@ -299,7 +313,7 @@ public class PlayerController : MonoBehaviourPun
     #region Camera Controlls
     void RotatePlayerToFaceCamDirection()
     {
-                if (!cameraRotation)
+        if (!cameraRotation)
             return;
         //set the players rotation to the direction of the camera with a slerp smoothness
         float yawCamera = mainCamera.transform.rotation.eulerAngles.y;
@@ -318,8 +332,17 @@ public class PlayerController : MonoBehaviourPun
         // if there is an input and camera position is not fixed
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
-            _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
-            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
+            if (CurrentInputDevice.name == "Mouse")
+            {
+                _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
+                _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
+            }
+            else
+            {
+                _cinemachineTargetYaw += playerLookInput.x * (MouseSensitivity * 10) * Time.deltaTime;
+                _cinemachineTargetPitch += playerLookInput.y * (MouseSensitivity * 10) * Time.deltaTime;
+            }
+
         }
 
         // clamp our rotations so our values are limited 360 degrees
@@ -450,29 +473,12 @@ public class PlayerController : MonoBehaviourPun
         PlayerSoundManager.Instance.PlayFallingSound();
     }
 
-    public void LaunchPad(Vector3 launchDirection, bool negX, bool negY, bool negZ)
+    public void LaunchPad(Vector3 launchVelocity)
     {
         if (!photonView.IsMine)
             return;
 
-        //Sets Y velocity to jump value
-        if (negX)
-            playerJumpVelocity.x = -Mathf.Sqrt(launchDirection.x * -2f * gravity);
-        else
-            playerJumpVelocity.x = Mathf.Sqrt(launchDirection.x * -2f * gravity);
-
-
-        if (negY)
-            playerJumpVelocity.y = -Mathf.Sqrt(launchDirection.y * -2f * gravity);
-        else
-            playerJumpVelocity.y = Mathf.Sqrt(launchDirection.y * -2f * gravity);
-
-
-        if (negZ)
-            playerJumpVelocity.z = -Mathf.Sqrt(launchDirection.z * -2f * gravity);
-        else
-            playerJumpVelocity.z = Mathf.Sqrt(launchDirection.z * -2f * gravity);
-
+        playerJumpVelocity = launchVelocity;
 
         isJumping = true;
         //Sets CC not to try and stepUp while in air
