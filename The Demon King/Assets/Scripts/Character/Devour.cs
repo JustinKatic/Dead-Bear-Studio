@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
+using System.Collections;
+using UnityEngine;
 
 public class Devour : MonoBehaviourPun
 {
@@ -19,7 +16,9 @@ public class Devour : MonoBehaviourPun
     private PlayerController playerController;
     private HealthManager healthManager;
     private ExperienceManager experienceManager;
-    [HideInInspector] public HealthManager targetBeingDevouredHealthManager = null;
+    public HealthManager targetCanDevour = null;
+    public HealthManager targetBeingDevourd = null;
+
     private PlayerTimers debuffTimer;
 
     DemonKingEvolution demonKingEvolution;
@@ -58,12 +57,14 @@ public class Devour : MonoBehaviourPun
             if (IsDevouring && healthManager.isStunned)
             {
                 //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
-                targetBeingDevouredHealthManager.InterruptDevourOnSelf();
+                targetCanDevour.InterruptDevourOnSelf();
                 IsDevouring = false;
-                targetBeingDevouredHealthManager = null;
+                targetCanDevour = null;
                 PlayerSoundManager.Instance.StopDevourSound();
                 debuffTimer.StopDevourTimer();
             }
+
+            CheckForDevour();
         }
     }
     #endregion
@@ -80,67 +81,112 @@ public class Devour : MonoBehaviourPun
                 return;
 
             //check to see if can devour target
-            CheckForDevourTarget();
+            DevourTarget();
         }
     }
 
-    private void CheckForDevourTarget()
+    void CheckForDevour()
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         //Shoots ray from center of screen
-        if (Physics.SphereCast(ray, 3, out hit, 10, LayersCanDevour))
+        if (Physics.SphereCast(ray, 3, out hit, 15, LayersCanDevour))
         {
-            //If raycast hits player or minion
+            //If raycast hits player/minion/crown
             if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
                 if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
-                    return;
-
-
-                //Get the healthManager of hit target
-                targetBeingDevouredHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
-
-                //check if the target can be devoured
-                if (targetBeingDevouredHealthManager.canBeDevoured)
                 {
-                    //Disable and Enable the player devourings movement for duration
-                    myDevourCo = DevourCorutine();
-                    StartCoroutine(myDevourCo);
-                    IEnumerator DevourCorutine()
+                    if (targetCanDevour != null)
                     {
-                        PlayerSoundManager.Instance.PlayDevourSound();
-                        debuffTimer.StartDevourTimer(targetBeingDevouredHealthManager.TimeTakenToBeDevoured);
-
-                        CallDevourOnTarget();
-
-                        yield return new WaitForSeconds(targetBeingDevouredHealthManager.TimeTakenToBeDevoured);
-
-                        if (!healthManager.isStunned || IsDevouring)
-                        {
-                            Debug.Log("devouring completed via devour script");
-                            DevouringHasCompleted(false);
-                        }
+                        targetCanDevour.DevourTargetIcon.SetActive(false);
+                        targetCanDevour = null;
                     }
+                    return;
+                }
+            }
+
+            HealthManager hitHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
+
+            //check if a target was hit and target can be devoured
+            if (hitHealthManager != null && hitHealthManager.canBeDevoured)
+            {
+                //If dont currently have a devour target
+                if (targetCanDevour == null)
+                {
+                    targetCanDevour = hitHealthManager;
+                    targetCanDevour.DevourTargetIcon.SetActive(true);
+                }
+                //If target is already our target
+                else if (targetCanDevour == hitHealthManager)
+                {
+                }
+                //If hit target but not equal to current target we have
+                else if (targetCanDevour != hitHealthManager)
+                {
+                    targetCanDevour.DevourTargetIcon.SetActive(false);
+                    targetCanDevour = hitHealthManager;
+                    targetCanDevour.DevourTargetIcon.SetActive(true);
+                }
+            }
+            else if (hitHealthManager != null && !hitHealthManager.canBeDevoured && targetCanDevour != null)
+            {
+                targetCanDevour.DevourTargetIcon.SetActive(false);
+                targetCanDevour = null;
+            }
+        }
+        else
+        {
+            if (targetCanDevour != null)
+            {
+                targetCanDevour.DevourTargetIcon.SetActive(false);
+                targetCanDevour = null;
+            }
+        }
+    }
+
+    private void DevourTarget()
+    {
+        if (targetCanDevour != null)
+        {
+            targetBeingDevourd = targetCanDevour;
+            //Disable and Enable the player devourings movement for duration
+            myDevourCo = DevourCorutine();
+            StartCoroutine(myDevourCo);
+            IEnumerator DevourCorutine()
+            {
+                PlayerSoundManager.Instance.PlayDevourSound();
+                debuffTimer.StartDevourTimer(targetBeingDevourd.TimeTakenToBeDevoured);
+
+                CallDevourOnTarget();
+
+                yield return new WaitForSeconds(targetBeingDevourd.TimeTakenToBeDevoured);
+
+                if (!healthManager.isStunned || IsDevouring)
+                {
+                    Debug.Log("devouring completed via devour script");
+                    DevouringHasCompleted(false);
                 }
             }
         }
     }
 
 
+
+
     void CallDevourOnTarget()
     {
         //Tell the hitTarget to call OnDevour RPC (inside of targets health manager)
-        if (targetBeingDevouredHealthManager.gameObject.tag == "PlayerParent")
+        if (targetBeingDevourd.gameObject.tag == "PlayerParent")
         {
             isTargetPlayer = true;
-            targetBeingDevouredHealthManager.OnDevour(playerController.id);
+            targetBeingDevourd.OnDevour(playerController.id);
         }
         else
         {
             isTargetPlayer = false;
-            targetBeingDevouredHealthManager.OnDevour(playerController.id);
+            targetBeingDevourd.OnDevour(playerController.id);
         }
 
         IsDevouring = true;
@@ -158,27 +204,26 @@ public class Devour : MonoBehaviourPun
         playerController.EnableMovement();
         debuffTimer.StopDevourTimer();
 
-        Debug.Log("DEVOURING HAS COMPLETED");
 
         if (!interupted)
         {
             // If the target is a player
-            if (isTargetPlayer && targetBeingDevouredHealthManager.GetComponent<DemonKingEvolution>().AmITheDemonKing)
+            if (isTargetPlayer && targetBeingDevourd.GetComponent<DemonKingEvolution>().AmITheDemonKing)
             {
                 demonKingEvolution.ChangeToTheDemonKing();
             }
-            else if (targetBeingDevouredHealthManager.gameObject.transform.CompareTag("DemonKingCrown"))
+            else if (targetBeingDevourd.gameObject.transform.CompareTag("DemonKingCrown"))
             {
                 demonKingEvolution.ChangeToTheDemonKing();
             }
             else
             {
-                experienceManager.AddExpereince(targetBeingDevouredHealthManager.MyMinionType, targetBeingDevouredHealthManager.MyExperienceWorth);
+                experienceManager.AddExpereince(targetBeingDevourd.MyMinionType, targetBeingDevourd.MyExperienceWorth);
             }
 
             if (demonKingEvolution.AmITheDemonKing)
             {
-                leaderboardManager.UpdateDemonKingScore(targetBeingDevouredHealthManager.myScoreWorth);
+                leaderboardManager.UpdateDemonKingScore(targetBeingDevourd.myScoreWorth);
             }
 
             healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;
@@ -187,7 +232,9 @@ public class Devour : MonoBehaviourPun
             StopCoroutine(myDevourCo);
 
         //reset the target to null
-        targetBeingDevouredHealthManager = null;
+        targetBeingDevourd.DevourTargetIcon.SetActive(false);
+        targetCanDevour = null;
+        targetBeingDevourd = null;
 
 
         PlayerSoundManager.Instance.StopDevourSound();

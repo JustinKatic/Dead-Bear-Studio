@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviourPun
                     var lastControl = inputAction.activeControl;
                     CurrentInputDevice = lastControl.device;
                    
-                    Debug.Log($"device: {CurrentInputDevice.displayName}");
+                   // Debug.Log($"device: {CurrentInputDevice.displayName}");
                 }
             };
         }
