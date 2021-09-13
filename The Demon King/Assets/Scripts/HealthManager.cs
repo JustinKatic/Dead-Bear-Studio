@@ -33,9 +33,11 @@ public class HealthManager : MonoBehaviourPun
 
     [Header("Overhead healthBar Hud")]
     public GameObject overheadHealthBar;
+    public GameObject DevourTargetIcon;
 
     [Header("VFX Effects")]
     [SerializeField] protected GameObject StunVFX;
+
 
 
     public float healthRegenTimer = 0f;
