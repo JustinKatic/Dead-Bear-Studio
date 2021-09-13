@@ -130,11 +130,16 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 if (players.Length() == PhotonNetwork.PlayerList.Length)
                 {
                     findingPlayers = false;
-                    RaiseUpdateLeaderboardEvent();
-                    RaiseStartMatchTimerEvent();
+                    Invoke("InvokeUpdateLeaderboard", 1f);
                 }
             }
         }
+    }
+
+    void InvokeUpdateLeaderboard()
+    {
+        RaiseUpdateLeaderboardEvent();
+        RaiseStartMatchTimerEvent();
     }
 
 

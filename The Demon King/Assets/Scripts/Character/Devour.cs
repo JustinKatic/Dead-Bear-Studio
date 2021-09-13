@@ -57,9 +57,11 @@ public class Devour : MonoBehaviourPun
             if (IsDevouring && healthManager.isStunned)
             {
                 //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
-                targetCanDevour.InterruptDevourOnSelf();
+                targetBeingDevourd.InterruptDevourOnSelf();
                 IsDevouring = false;
                 targetCanDevour = null;
+                targetBeingDevourd = null;
+
                 PlayerSoundManager.Instance.StopDevourSound();
                 debuffTimer.StopDevourTimer();
             }
