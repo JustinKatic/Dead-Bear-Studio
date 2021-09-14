@@ -179,6 +179,7 @@ public class ExperienceManager : MonoBehaviourPun
         }
     }
 
+
     //Add the experience based of minion type eaten (called when killed minion or player)
     public void AddExpereince(MinionType minionType, int expValue)
     {
@@ -221,18 +222,37 @@ public class ExperienceManager : MonoBehaviourPun
             redBranch.CanEvolve = true;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = false;
+            if (!demonKingEvolution.AmITheDemonKing)
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            }
         }
         else if (branch == greenBranch)
         {
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = true;
             blueBranch.CanEvolve = false;
+
+            if (!demonKingEvolution.AmITheDemonKing)
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            }
         }
         else if (branch == blueBranch)
         {
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = true;
+            if (!demonKingEvolution.AmITheDemonKing)
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+            }
         }
     }
     //This runs inside the evolution Manager when the evolution button has been pressed
@@ -300,6 +320,10 @@ public class ExperienceManager : MonoBehaviourPun
         redBranch.CanEvolve = false;
         blueBranch.CanEvolve = false;
         greenBranch.CanEvolve = false;
+
+        redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
     }
     #endregion
 }

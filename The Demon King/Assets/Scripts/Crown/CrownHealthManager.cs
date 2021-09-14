@@ -13,9 +13,10 @@ public class CrownHealthManager : HealthManager
     {
         isStunned = true;
         MaxHealth = 0;
-        canBeDevoured = true;
         col = GetComponent<Collider>();
+        canBeDevoured = true;
     }
+
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
@@ -35,5 +36,6 @@ public class CrownHealthManager : HealthManager
         model.SetActive(ShouldRespawn);
         VFX.SetActive(ShouldRespawn);
         col.enabled = ShouldRespawn;
+        canBeDevoured = true;
     }
 }

@@ -347,7 +347,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""19f9c868-cf5f-4c3d-a699-29d19c0bf52d"",
-                    ""path"": ""<Keyboard>/1"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard/Mouse"",
