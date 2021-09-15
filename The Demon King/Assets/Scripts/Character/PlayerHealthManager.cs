@@ -45,6 +45,8 @@ public class PlayerHealthManager : HealthManager
     private Material playerHudHealthBarMat;
 
     [SerializeField] private TextMeshProUGUI healthBarTxt;
+    [SerializeField] private GameObject namebarTxt;
+
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
@@ -274,7 +276,7 @@ public class PlayerHealthManager : HealthManager
         {
             Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
             currentActiveEvolution?.gameObject.SetActive(false);
-
+            namebarTxt.SetActive(false);
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
@@ -320,6 +322,7 @@ public class PlayerHealthManager : HealthManager
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
+            namebarTxt.SetActive(true);
             isRespawning = false;
         }
     }
