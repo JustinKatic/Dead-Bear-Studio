@@ -2,6 +2,9 @@
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
+using System.Collections;
 
 public class GameManager : MonoBehaviourPun
 {
@@ -12,6 +15,9 @@ public class GameManager : MonoBehaviourPun
 
     private int playersInGame;
 
+    private int mySpawnIndex;
+    private bool indexAssigned = false;
+
     public int spawnIndex = 0;
 
     public GameObject LoadingScreen;
@@ -19,6 +25,7 @@ public class GameManager : MonoBehaviourPun
 
     // instance
     public static GameManager instance;
+
 
     void Awake()
     {
@@ -28,16 +35,38 @@ public class GameManager : MonoBehaviourPun
         loadingBar.maxValue = PhotonNetwork.PlayerList.Length;
         loadingBar.value = playersInGame;
 
-
         instance = this;
     }
+
 
     void Start()
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
 
-        ImInGame();
+        PhotonNetwork.LocalPlayer.GetPlayerNumber();
+
+        StartCoroutine(Test());
     }
+
+    IEnumerator Test()
+    {
+        indexAssigned = false;
+        while (!indexAssigned)
+        {
+            if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
+            {
+                mySpawnIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+                indexAssigned = true;
+                Debug.Log(mySpawnIndex);
+                Debug.Log("Im in game");
+                ImInGame();
+            }
+            yield return null;
+
+        }
+    }
+
+
 
     void ImInGame()
     {
@@ -56,6 +85,7 @@ public class GameManager : MonoBehaviourPun
         }
     }
 
+
     public void SpawnPlayer()
     {
         photonView.RPC("SpawnPlayer_RPC", RpcTarget.All);
@@ -65,7 +95,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer_RPC()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[mySpawnIndex].position, Quaternion.identity);
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
