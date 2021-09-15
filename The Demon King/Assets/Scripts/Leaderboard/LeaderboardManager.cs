@@ -249,6 +249,14 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     IEnumerator ReturnToLobbyCo()
     {
+        PlayerHealthManager health = GetComponent<PlayerHealthManager>();
+        Devour devour = GetComponent<Devour>();
+
+        if (health.beingDevoured)
+            health.InterruptDevourOnSelf();
+        if (devour.IsDevouring)
+            devour.InteruptDevouring();
+
         transformViewClassic.m_PositionModel.TeleportIfDistanceGreaterThan = 0;
         podiumVCam.m_Priority = 15;
         playerController.DisableAllInputs();

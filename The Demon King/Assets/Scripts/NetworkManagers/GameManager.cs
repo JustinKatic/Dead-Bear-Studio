@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using Photon.Realtime;
+using Photon.Pun.UtilityScripts;
 
-public class  GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
     public string playerPrefabLocation;
@@ -11,15 +14,24 @@ public class  GameManager : MonoBehaviourPun
 
     private int playersInGame;
 
+    private int mySpawnIndex;
+
     public int spawnIndex = 0;
+
+    public GameObject LoadingScreen;
+    public Slider loadingBar;
 
     // instance
     public static GameManager instance;
+
 
     void Awake()
     {
         if (!PhotonNetwork.IsConnected)
             SceneManager.LoadScene("Menu");
+
+        loadingBar.maxValue = PhotonNetwork.PlayerList.Length;
+        loadingBar.value = playersInGame;
 
         instance = this;
     }
@@ -31,6 +43,11 @@ public class  GameManager : MonoBehaviourPun
         ImInGame();
     }
 
+
+
+
+
+
     void ImInGame()
     {
         photonView.RPC("ImInGame_RPC", RpcTarget.AllBuffered);
@@ -40,6 +57,7 @@ public class  GameManager : MonoBehaviourPun
     void ImInGame_RPC()
     {
         playersInGame++;
+        loadingBar.value = playersInGame;
 
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
@@ -47,18 +65,22 @@ public class  GameManager : MonoBehaviourPun
         }
     }
 
+
     public void SpawnPlayer()
     {
         photonView.RPC("SpawnPlayer_RPC", RpcTarget.All);
     }
 
+
     [PunRPC]
     void SpawnPlayer_RPC()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PhotonNetwork.LocalPlayer.ActorNumber - 1].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PlayerNumberingExtensions.GetPlayerNumber(PhotonNetwork.LocalPlayer)].position, Quaternion.identity);
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
+
+        LoadingScreen.SetActive(false);
     }
 
 
