@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviourPun
                 col.gameObject.layer = LayerMask.NameToLayer("Player");
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
-            
+            MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", MouseSensitivity);
             //Subsribes to the on action change event and detects what the current activecontroller is
             InputSystem.onActionChange += (obj, change) =>
             {
