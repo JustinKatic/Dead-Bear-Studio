@@ -187,9 +187,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             //get players time as demon king
             dataToEnterIntoLeaderboardList.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
 
-            dataToEnterIntoLeaderboardList.EvolutionImg = GetImage(GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+            dataToEnterIntoLeaderboardList.EvolutionImg = GetImage(GameManager.instance.GetPlayer(playerController.id).GetComponent<PlayerHealthManager>().MyMinionType);
 
-            dataToEnterIntoLeaderboardList.AmITheDemonKing = GameManager.instance.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
+            dataToEnterIntoLeaderboardList.AmITheDemonKing = GameManager.instance.GetPlayer(playerController.id).GetComponent<DemonKingEvolution>().AmITheDemonKing;
 
             dataToEnterIntoLeaderboardList.IslocalPlayer = player.IsLocal;
 

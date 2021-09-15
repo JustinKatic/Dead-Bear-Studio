@@ -5,17 +5,18 @@ using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
     public string playerPrefabLocation;
-    public PlayerController[] players;
+    public List<PlayerController> players;
     public Transform[] spawnPoints;
 
     private int playersInGame;
 
-    private int mySpawnIndex;
+    public int myIdIndex;
     private bool indexAssigned = false;
 
     public int spawnIndex = 0;
@@ -41,9 +42,11 @@ public class GameManager : MonoBehaviourPun
 
     void Start()
     {
-        players = new PlayerController[PhotonNetwork.PlayerList.Length];
-
-        PhotonNetwork.LocalPlayer.GetPlayerNumber();
+        players = new List<PlayerController>();
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+        {
+            players.Add(null);
+        }
 
         StartCoroutine(Test());
     }
@@ -55,14 +58,13 @@ public class GameManager : MonoBehaviourPun
         {
             if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
             {
-                mySpawnIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+                myIdIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
                 indexAssigned = true;
-                Debug.Log(mySpawnIndex);
+                Debug.Log(myIdIndex);
                 Debug.Log("Im in game");
                 ImInGame();
             }
             yield return null;
-
         }
     }
 
@@ -95,7 +97,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer_RPC()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[mySpawnIndex].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[myIdIndex].position, Quaternion.identity);
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);

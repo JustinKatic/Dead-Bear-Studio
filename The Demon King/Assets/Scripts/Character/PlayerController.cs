@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public Vector3 playerMoveVelocity;
 
     //Photon Components
-    [HideInInspector] public int id;
+    public int id;
     [HideInInspector] public Player photonPlayer;
 
     //Player Components
@@ -95,7 +95,6 @@ public class PlayerController : MonoBehaviourPun
             //Get Components
             CharacterInputs = new CharacterInputs();
             cc = GetComponent<CharacterController>();
-            //playerSoundManager = GetComponent<PlayerSoundManager>();
             mainCamera = Camera.main;
 
             vCam.m_Priority = 11;
@@ -126,8 +125,8 @@ public class PlayerController : MonoBehaviourPun
                     var inputAction = (InputAction)obj;
                     var lastControl = inputAction.activeControl;
                     CurrentInputDevice = lastControl.device;
-                   
-                   // Debug.Log($"device: {CurrentInputDevice.displayName}");
+
+                    // Debug.Log($"device: {CurrentInputDevice.displayName}");
                 }
             };
         }
@@ -137,11 +136,19 @@ public class PlayerController : MonoBehaviourPun
     public void Initialize(Player player)
     {
         //gives player an ID
-        id = player.ActorNumber;
+        if (photonView.IsMine)
+            photonView.RPC("SetId", RpcTarget.All, GameManager.instance.myIdIndex);
+        // id = myIdIndex;
         //Set photon player
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
-        GameManager.instance.players[id - 1] = this;
+        GameManager.instance.players[id] = this;
+    }
+
+    [PunRPC]
+    void SetId(int ID)
+    {
+        id = ID;
     }
 
     public void PlayRectAnim()
