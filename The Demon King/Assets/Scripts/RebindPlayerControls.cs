@@ -36,19 +36,23 @@ public class RebindPlayerControls : MonoBehaviour
 
        PlayerPrefs.SetString(RebindsKey, rebinds);
     }
-    public void StartRebinding(InputActionReference inputAction)
+    public void StartRebinding(BindingButton inputButton)
     {
-        rebindingOperation = inputAction.action.PerformInteractiveRebinding()
+        rebindingOperation = inputButton.inputAction.action.PerformInteractiveRebinding()
             .WithControlsExcluding("Mouse")
             .OnMatchWaitForAnother(0.1f)
-            .OnComplete(operation => RebindComplete(inputAction))
+            .OnComplete(operation => RebindComplete(inputButton))
             .Start();
+
     }
 
-    private void RebindComplete(InputActionReference inputAction)
+    private void RebindComplete(BindingButton inputButton)
     {
-        int bindingIndex = inputAction.action.GetBindingIndexForControl(inputAction.action.controls[0]);
-
         rebindingOperation.Dispose();
+
+        inputButton.bindingIndex = inputButton.inputAction.action.GetBindingIndexForControl(inputButton.inputAction.action.controls[0]);
+        
+        inputButton.UpdateButtonTxt();
+
     }
 }
