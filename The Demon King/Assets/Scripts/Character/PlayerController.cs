@@ -70,6 +70,8 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public bool onLaunchPad = false;
 
     private bool cameraRotation = true;
+    private const string RebindsKey = "rebinds";
+
 
 
     #region Start Up
