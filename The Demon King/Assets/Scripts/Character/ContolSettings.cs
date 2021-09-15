@@ -19,7 +19,7 @@ public class ContolSettings : MonoBehaviourPun
         {
             controller = GetComponentInParent<PlayerController>();
             MouseSlider.maxValue = 100;
-            MouseSlider.value = controller.MouseSensitivity;
+            MouseSlider.value = PlayerPrefs.GetFloat("MouseSensitivity", controller.MouseSensitivity);
             SensitivityValue.text = MouseSlider.value.ToString("F1");
         }
     }
@@ -28,7 +28,7 @@ public class ContolSettings : MonoBehaviourPun
     {
         if (controller != null)
         {
-            controller.MouseSensitivity = mouseSensitivity.value;
+            PlayerPrefs.SetFloat("MouseSensitivity", mouseSensitivity.value);
             SensitivityValue.text = controller.MouseSensitivity.ToString("F1");
         }
     }
