@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class  GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
     public string playerPrefabLocation;
@@ -13,6 +14,9 @@ public class  GameManager : MonoBehaviourPun
 
     public int spawnIndex = 0;
 
+    public GameObject LoadingScreen;
+    public Slider loadingBar;
+
     // instance
     public static GameManager instance;
 
@@ -20,6 +24,10 @@ public class  GameManager : MonoBehaviourPun
     {
         if (!PhotonNetwork.IsConnected)
             SceneManager.LoadScene("Menu");
+
+        loadingBar.maxValue = PhotonNetwork.PlayerList.Length;
+        loadingBar.value = playersInGame;
+
 
         instance = this;
     }
@@ -40,6 +48,7 @@ public class  GameManager : MonoBehaviourPun
     void ImInGame_RPC()
     {
         playersInGame++;
+        loadingBar.value = playersInGame;
 
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
@@ -52,6 +61,7 @@ public class  GameManager : MonoBehaviourPun
         photonView.RPC("SpawnPlayer_RPC", RpcTarget.All);
     }
 
+
     [PunRPC]
     void SpawnPlayer_RPC()
     {
@@ -59,6 +69,8 @@ public class  GameManager : MonoBehaviourPun
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
+
+        LoadingScreen.SetActive(false);
     }
 
 

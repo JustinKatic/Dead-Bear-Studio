@@ -17,6 +17,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private GameObject createRoomScreen;
     [SerializeField] private GameObject lobbyScreen;
     [SerializeField] private GameObject lobbyBrowserScreen;
+    [SerializeField] private GameObject SettingsScreen;
 
     [Header("Main Screen")]
     [SerializeField] private Button createRoomButton;
@@ -110,6 +111,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnBackButton()
     {
         SetScreen(mainScreen);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
+    }
+    public void OnSettingsButton()
+    {
+        SetScreen(SettingsScreen);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(mainSelectableItem);
     }
