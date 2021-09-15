@@ -8,7 +8,7 @@ public class Devour : MonoBehaviourPun
     [SerializeField] private Transform devourPoint;
     [SerializeField] private LayerMask LayersCanDevour;
 
-    private bool IsDevouring;
+    public bool IsDevouring;
     private bool isTargetPlayer = false;
 
     //Components
@@ -56,20 +56,24 @@ public class Devour : MonoBehaviourPun
         {
             if (IsDevouring && healthManager.isStunned)
             {
-                //Tell the hitTarget to call CancelDevour RPC (inside of targets health manager)
-                targetBeingDevourd.InterruptDevourOnSelf();
-                IsDevouring = false;
-                targetCanDevour = null;
-                targetBeingDevourd = null;
-
-                PlayerSoundManager.Instance.StopDevourSound();
-                debuffTimer.StopDevourTimer();
+                InteruptDevouring();
             }
 
             CheckForDevour();
         }
     }
     #endregion
+
+    public void InteruptDevouring()
+    {
+        targetBeingDevourd.InterruptDevourOnSelf();
+        IsDevouring = false;
+        targetCanDevour = null;
+        targetBeingDevourd = null;
+
+        PlayerSoundManager.Instance.StopDevourSound();
+        debuffTimer.StopDevourTimer();
+    }
 
     #region Devour
     //Called when the interact key is pressed
