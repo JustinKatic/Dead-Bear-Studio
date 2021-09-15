@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
-            Invoke("SpawnPlayer", 1);
+            SpawnPlayer();
         }
     }
 
