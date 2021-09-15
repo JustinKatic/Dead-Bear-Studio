@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
+using System.Collections;
 
 public class GameManager : MonoBehaviourPun
 {
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviourPun
     private int playersInGame;
 
     private int mySpawnIndex;
+    private bool indexAssigned = false;
 
     public int spawnIndex = 0;
 
@@ -36,15 +38,33 @@ public class GameManager : MonoBehaviourPun
         instance = this;
     }
 
+
     void Start()
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
 
-        ImInGame();
+        PhotonNetwork.LocalPlayer.GetPlayerNumber();
+
+        StartCoroutine(Test());
     }
 
+    IEnumerator Test()
+    {
+        indexAssigned = false;
+        while (!indexAssigned)
+        {
+            if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
+            {
+                mySpawnIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+                indexAssigned = true;
+                Debug.Log(mySpawnIndex);
+                Debug.Log("Im in game");
+                ImInGame();
+            }
+            yield return null;
 
-
+        }
+    }
 
 
 
@@ -75,7 +95,7 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer_RPC()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[PlayerNumberingExtensions.GetPlayerNumber(PhotonNetwork.LocalPlayer)].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[mySpawnIndex].position, Quaternion.identity);
 
         // initialize the player for all other players
         playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
