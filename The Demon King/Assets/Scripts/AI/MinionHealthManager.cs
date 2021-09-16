@@ -71,7 +71,10 @@ public class MinionHealthManager : HealthManager
                 TakeDamage(gasDamage, CurAttackerId);
             }
             if (isStunned)
+            {
                 gasEffect = false;
+                PlayPoisionVFX(false);
+            }
         }
 
         if (beingDevoured || isStunned)
