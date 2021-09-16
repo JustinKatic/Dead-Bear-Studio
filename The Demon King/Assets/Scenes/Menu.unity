@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30194134, g: 0.16741185, b: 0.16043274, a: 1}
+  m_IndirectSpecularColor: {r: 0.3019417, g: 0.16741222, b: 0.16043313, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -161,6 +161,26 @@ PrefabInstance:
     - target: {fileID: 748845377659159630, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -204.97546
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: da02979f-1459-4154-9735-8d233f1181f5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Keyboard>/tab
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: 3392705394030304974, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: DisplayScoreBoard
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
       objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
@@ -649,26 +669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &199668924 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1973015982429371096, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
-  m_PrefabInstance: {fileID: 638462540}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &199668926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 199668924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 055f26ac1a3b735458e6fbfa8682a1d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bindingButton: {fileID: 0}
-  bindingIndex: 0
-  inputAction: {fileID: -5641296642633221400, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
 --- !u!1 &212057555
 GameObject:
   m_ObjectHideFlags: 0
@@ -1664,26 +1664,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &433184654 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1973015982429371096, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
-  m_PrefabInstance: {fileID: 7754426519548180491}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &433184656
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 433184654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 055f26ac1a3b735458e6fbfa8682a1d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bindingButton: {fileID: 0}
-  bindingIndex: 0
-  inputAction: {fileID: -2482562998671087362, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
 --- !u!1 &461727177
 GameObject:
   m_ObjectHideFlags: 0
@@ -1865,6 +1845,7 @@ GameObject:
   - component: {fileID: 476375924}
   - component: {fileID: 476375923}
   - component: {fileID: 476375925}
+  - component: {fileID: 476375926}
   m_Layer: 0
   m_Name: Menu
   m_TagString: Untagged
@@ -1960,6 +1941,18 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &476375926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 476375922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d79627977885f940b659d4566ae6e98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &479766156 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5620374619081694117, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
@@ -2431,6 +2424,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: e9da84b3-841e-4001-ba0f-1b252b17cf81
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Keyboard>/f
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: -2482562998671087362, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: Interact
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
+      objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2453,7 +2466,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -2478,7 +2491,7 @@ PrefabInstance:
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 199668926}
+      objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: BindingButton, Assembly-CSharp
@@ -2660,6 +2673,26 @@ PrefabInstance:
     - target: {fileID: 748845377659159630, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -81.13935
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: e5edd999-9aac-48df-bfa1-db28a9423971
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Keyboard>/space
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: 872606323403644212, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: Jump
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
       objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3348,6 +3381,26 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -122.41805
       objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: 2c42b4d9-9bc0-43e9-ac2f-3f9c89f8acbc
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Keyboard>/escape
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: 388549597643410001, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: OpenSettings
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
+      objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3605,7 +3658,7 @@ GameObject:
   - component: {fileID: 1214212432}
   - component: {fileID: 1214212431}
   m_Layer: 5
-  m_Name: Save Button
+  m_Name: ResetRebindsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3932,6 +3985,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: 2c231873-4597-452d-bb90-39d2e4e81156
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Mouse>/leftButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: 6866321718750764334, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: Ability1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
+      objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -3954,7 +4027,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -3979,7 +4052,7 @@ PrefabInstance:
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1796286649}
+      objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: BindingButton, Assembly-CSharp
@@ -5978,6 +6051,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: 07254b62-9c89-4b98-bbb4-10c2e4c8a076
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Keyboard>/e
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: -5641296642633221400, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: Evolve
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
+      objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -6000,7 +6093,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -6025,7 +6118,7 @@ PrefabInstance:
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 2061057205}
+      objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: BindingButton, Assembly-CSharp
@@ -6057,26 +6150,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 748845377659159630, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
   m_PrefabInstance: {fileID: 1783483185}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1796286647 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1973015982429371096, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
-  m_PrefabInstance: {fileID: 1247167594}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1796286649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1796286647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 055f26ac1a3b735458e6fbfa8682a1d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bindingButton: {fileID: 0}
-  bindingIndex: 0
-  inputAction: {fileID: 6866321718750764334, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
 --- !u!1 &1801108595
 GameObject:
   m_ObjectHideFlags: 0
@@ -7217,26 +7290,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058384537}
   m_CullTransparentMesh: 1
---- !u!1 &2061057203 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1973015982429371096, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
-  m_PrefabInstance: {fileID: 1783483185}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2061057205
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2061057203}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 055f26ac1a3b735458e6fbfa8682a1d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bindingButton: {fileID: 0}
-  bindingIndex: 0
-  inputAction: {fileID: 872606323403644212, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
 --- !u!1 &2075805274
 GameObject:
   m_ObjectHideFlags: 0
@@ -7409,6 +7462,26 @@ PrefabInstance:
     - target: {fileID: 748845377659159630, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -163.69675
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: 19f9c868-cf5f-4c3d-a699-29d19c0bf52d
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: <Keyboard>/q
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: -2550343300692312102, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: Display
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Groups
+      value: Keyboard/Mouse
       objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
@@ -8551,6 +8624,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Id
+      value: 6c746106-addd-44c2-8e7a-6c442b414e7c
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Name
+      value: Walk
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Path
+      value: 2DVector
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputActionReference
+      value: 
+      objectReference: {fileID: -2108109157102818632, guid: ba4656487eb78ac429fc3f70f4846690, type: 3}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Flags
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3915614292864718783, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
+      propertyPath: inputBinding.m_Action
+      value: Move
+      objectReference: {fileID: 0}
     - target: {fileID: 4246056453507097982, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -8573,7 +8670,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
@@ -8598,7 +8695,7 @@ PrefabInstance:
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 433184656}
+      objectReference: {fileID: 0}
     - target: {fileID: 6618533394903186925, guid: 555194bf619e1ca4ca09c947c844a8ec, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: BindingButton, Assembly-CSharp
