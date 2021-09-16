@@ -3,6 +3,8 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 
 public class PlayerHealthManager : HealthManager
@@ -13,7 +15,6 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] private GameObject ExperienceBarContainer;
     [SerializeField] GameObject playerHealVfx;
     [SerializeField] float invulenerableTimeAfterStun = 2f;
-
 
 
     [SerializeField] private GameObject rayEndVFX;
@@ -43,6 +44,7 @@ public class PlayerHealthManager : HealthManager
 
     public Image PlayerHudHealthBarImg;
     private Material playerHudHealthBarMat;
+    private int playerDeaths = 0;
 
     [SerializeField] private TextMeshProUGUI healthBarTxt;
     [SerializeField] private GameObject namebarTxt;
@@ -79,6 +81,10 @@ public class PlayerHealthManager : HealthManager
             devour = GetComponent<Devour>();
             //SetHealth(MaxHealth);
             healthRegenTimerSlider.maxValue = timeForHealthRegenToActivate;
+
+            Hashtable PlayerDeaths = new Hashtable();
+            PlayerDeaths.Add("PlayerDeaths", playerDeaths);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerDeaths);
         }
     }
 
@@ -276,7 +282,6 @@ public class PlayerHealthManager : HealthManager
         {
             Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
             currentActiveEvolution?.gameObject.SetActive(false);
-            namebarTxt.SetActive(false);
             canBeDevoured = false;
             beingDevoured = false;
             isStunned = false;
@@ -290,6 +295,12 @@ public class PlayerHealthManager : HealthManager
                 debuffTimer.StartRespawnTimer(RespawnTime);
                 HealthBarContainer.gameObject.SetActive(false);
                 ExperienceBarContainer.SetActive(false);
+
+                playerDeaths++;
+
+                Hashtable PlayerDeaths = new Hashtable();
+                PlayerDeaths.Add("PlayerDeaths", playerDeaths);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerDeaths);
 
                 stunnedTimer = 0;
 
@@ -308,6 +319,8 @@ public class PlayerHealthManager : HealthManager
             else
             {
                 overheadHealthBar.SetActive(false);
+                namebarTxt.SetActive(false);
+
             }
 
             yield return new WaitForSeconds(RespawnTime);
@@ -319,10 +332,10 @@ public class PlayerHealthManager : HealthManager
             else
             {
                 overheadHealthBar.SetActive(true);
+                namebarTxt.SetActive(true);
             }
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
-            namebarTxt.SetActive(true);
             isRespawning = false;
         }
     }
