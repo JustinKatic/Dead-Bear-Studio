@@ -138,17 +138,16 @@ public class PlayerController : MonoBehaviourPun
         //gives player an ID
         if (photonView.IsMine)
             photonView.RPC("SetId", RpcTarget.All, GameManager.instance.myIdIndex);
-        // id = myIdIndex;
         //Set photon player
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
-        GameManager.instance.players[id] = this;
     }
 
     [PunRPC]
     void SetId(int ID)
     {
         id = ID;
+        GameManager.instance.players[id] = this;
     }
 
     public void PlayRectAnim()
