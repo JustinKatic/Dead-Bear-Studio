@@ -47,7 +47,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private MinionType greenMinion;
     [SerializeField] private MinionType blueMinion;
 
-    [HideInInspector] public bool leaderboardEnabed = false;
 
     [SerializeField] private GameObjectRuntimeSet players;
     bool findingPlayers = true;
@@ -58,6 +57,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private float timeToAwardDoubleScore = 300;
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
+
+
 
 
     private CinemachineVirtualCamera podiumVCam;
@@ -98,6 +99,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
             podiumVCam = GameObject.Find("PodiumVCam").GetComponent<CinemachineVirtualCamera>();
 
+
             Hashtable DemonKingScoreHash = new Hashtable();
             DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
             PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
@@ -117,8 +119,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         else
             return null;
     }
-
-
 
 
     private void Update()
@@ -264,6 +264,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         playerNameOverhead.SetActive(true);
         demonKingVFX.SetActive(false);
         overheadNameTag.SetActive(true);
+
+        GameManager.instance.GetComponent<EndGameLeaderboardManager>().DisplayEndgameLeaderboard();
 
 
         foreach (var player in players.items)

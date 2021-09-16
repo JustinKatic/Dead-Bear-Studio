@@ -1,6 +1,8 @@
 using Photon.Pun;
 using System.Collections;
 using UnityEngine;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 public class Devour : MonoBehaviourPun
 {
@@ -26,6 +28,10 @@ public class Devour : MonoBehaviourPun
 
     protected IEnumerator myDevourCo;
 
+    private int playerKills = 0;
+    private int minionKills = 0;
+
+
 
 
     #region Start Up
@@ -45,6 +51,14 @@ public class Devour : MonoBehaviourPun
             leaderboardManager = GetComponentInChildren<LeaderboardManager>();
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
+
+            Hashtable PlayerKills = new Hashtable();
+            PlayerKills.Add("PlayerKills", playerKills);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerKills);
+
+            Hashtable MinionsKills = new Hashtable();
+            MinionsKills.Add("MinionKills", minionKills);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(MinionsKills);
         }
     }
     #endregion
@@ -225,6 +239,21 @@ public class Devour : MonoBehaviourPun
             else
             {
                 experienceManager.AddExpereince(targetBeingDevourd.MyMinionType, targetBeingDevourd.MyExperienceWorth);
+                if (targetBeingDevourd.gameObject.CompareTag("PlayerParent"))
+                {
+                    playerKills++;
+                    Hashtable PlayerKills = new Hashtable();
+                    PlayerKills.Add("PlayerKills", playerKills);
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerKills);
+                }
+                else if (targetBeingDevourd.gameObject.CompareTag("Minion"))
+                {
+                    minionKills++;
+                    Debug.Log("Devoured minion");
+                    Hashtable MinionsKills = new Hashtable();
+                    MinionsKills.Add("MinionKills", minionKills);
+                    PhotonNetwork.LocalPlayer.SetCustomProperties(MinionsKills);
+                }
             }
 
             if (demonKingEvolution.AmITheDemonKing)
