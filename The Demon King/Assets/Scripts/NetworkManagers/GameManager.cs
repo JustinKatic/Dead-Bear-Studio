@@ -6,6 +6,8 @@ using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 public class GameManager : MonoBehaviourPun
 {
@@ -59,11 +61,16 @@ public class GameManager : MonoBehaviourPun
             if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
             {
                 myIdIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-                indexAssigned = true;
                 Debug.Log(myIdIndex);
-                Debug.Log("Im in game");
+
+                Hashtable PlayerId = new Hashtable();
+                PlayerId.Add("PlayerId", myIdIndex);
+                PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerId);
+
+                indexAssigned = true;
                 ImInGame();
             }
+
             yield return null;
         }
     }
