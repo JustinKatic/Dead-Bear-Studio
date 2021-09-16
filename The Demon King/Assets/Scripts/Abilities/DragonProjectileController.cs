@@ -97,7 +97,7 @@ public class DragonProjectileController : MonoBehaviourPun
     [PunRPC]
     void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize)
     {
-        if (attackerId == PhotonNetwork.LocalPlayer.ActorNumber)
+        if (attackerId == GameManager.instance.myIdIndex)
         {
             GameObject CreatedGasEffect = Instantiate(FriendlyGasEffect, new Vector3(x, y, z), Quaternion.identity);
             CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
