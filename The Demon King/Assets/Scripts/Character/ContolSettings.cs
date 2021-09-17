@@ -29,6 +29,7 @@ public class ContolSettings : MonoBehaviourPun
         if (controller != null)
         {
             PlayerPrefs.SetFloat("MouseSensitivity", mouseSensitivity.value);
+            controller.MouseSensitivity = mouseSensitivity.value;
             SensitivityValue.text = controller.MouseSensitivity.ToString("F1");
         }
     }
