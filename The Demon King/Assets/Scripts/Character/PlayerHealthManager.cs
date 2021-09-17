@@ -424,13 +424,13 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region HealthBar
-    public void SetPlayerValuesOnEvolve(int MaxHealthValue, int expWorth, int scoreWorth)
+    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth)
     {
         photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth);
     }
 
     [PunRPC]
-    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, int expWorth, int scoreWorth)
+    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;

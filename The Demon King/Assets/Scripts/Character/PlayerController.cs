@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviourPun
 
     [HideInInspector] public bool onLaunchPad = false;
 
-    private bool cameraRotation = true;
+    [HideInInspector] public bool cameraRotation = true;
 
 
 
@@ -468,14 +468,15 @@ public class PlayerController : MonoBehaviourPun
 
         PlayerSoundManager.Instance.StopFallingSound();
 
-        if (playerMoveVelocity.y <= VelocityNeededToPlayGroundSlam)
+        if (playerMoveVelocity.y <= VelocityNeededToPlayGroundSlam || onLaunchPad)
         {
             PlayerSoundManager.Instance.PlayJumpLandBigSound();
             PlayLandingEffect();
         }
-
         else
             PlayerSoundManager.Instance.PlayJumpLandNormalSound();
+
+        onLaunchPad = false;
     }
 
     void PlayLandingEffect()
@@ -488,7 +489,6 @@ public class PlayerController : MonoBehaviourPun
     {
         LandingEffect.SetActive(true);
         Invoke("StopLandingEffect", 1);
-
     }
     void StopLandingEffect()
     {
@@ -517,10 +517,8 @@ public class PlayerController : MonoBehaviourPun
         cc.stepOffset = 0;
         cc.slopeLimit = 0;
 
-        currentAnim.SetBool("JumpStarted", true);
-        isFalling = true;
-        currentAnim.SetBool("Falling", true);
-        PlayerSoundManager.Instance.PlayJumpSound();
+        SetFallingTrue();
+
         onLaunchPad = true;
     }
 

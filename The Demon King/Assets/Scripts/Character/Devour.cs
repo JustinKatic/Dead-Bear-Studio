@@ -178,6 +178,7 @@ public class Devour : MonoBehaviourPun
             {
                 PlayerSoundManager.Instance.PlayDevourSound();
                 debuffTimer.StartDevourTimer(targetBeingDevourd.TimeTakenToBeDevoured);
+                playerController.cameraRotation = false;
 
                 CallDevourOnTarget();
 
@@ -222,6 +223,7 @@ public class Devour : MonoBehaviourPun
         playerController.currentAnim.SetBool("Devouring", false);
         IsDevouring = false;
         playerController.EnableMovement();
+        playerController.cameraRotation = true;
         debuffTimer.StopDevourTimer();
 
 
