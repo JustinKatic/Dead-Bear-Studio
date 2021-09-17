@@ -84,6 +84,7 @@ public class Devour : MonoBehaviourPun
         IsDevouring = false;
         targetCanDevour = null;
         targetBeingDevourd = null;
+        playerController.cameraRotation = true;
 
         PlayerSoundManager.Instance.StopDevourSound();
         debuffTimer.StopDevourTimer();
