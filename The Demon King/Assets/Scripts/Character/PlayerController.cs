@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviourPun
         else
         {
             //Get Components
-            CharacterInputs = new CharacterInputs();
+            CharacterInputs = InputManager.inputActions;
             cc = GetComponent<CharacterController>();
             mainCamera = Camera.main;
 

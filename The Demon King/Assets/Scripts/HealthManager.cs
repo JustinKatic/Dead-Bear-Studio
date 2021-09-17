@@ -37,6 +37,8 @@ public class HealthManager : MonoBehaviourPun
 
     [Header("VFX Effects")]
     [SerializeField] protected GameObject StunVFX;
+    [SerializeField] protected GameObject poisonedStatusVfx;
+
 
 
 
@@ -137,7 +139,6 @@ public class HealthManager : MonoBehaviourPun
             OnBeingDevourEnd(attackerID);
         }
     }
-
 
 
     //Overrides for inherited classes

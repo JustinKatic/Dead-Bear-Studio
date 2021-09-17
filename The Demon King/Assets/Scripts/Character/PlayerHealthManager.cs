@@ -111,7 +111,10 @@ public class PlayerHealthManager : HealthManager
                 gasFrequencyTimer += Time.deltaTime;
 
                 if (gasTimer >= gasDurationOnPlayer)
+                {
+                    PlayPoisionVFX(false);
                     gasEffect = false;
+                }
 
                 if (gasFrequencyTimer >= gasTickRate)
                 {
@@ -119,7 +122,10 @@ public class PlayerHealthManager : HealthManager
                     TakeDamage(gasDamage, CurAttackerId);
                 }
                 if (isStunned)
+                {
                     gasEffect = false;
+                    PlayPoisionVFX(false);
+                }
             }
 
             if (beingDevoured || isStunned)
@@ -162,8 +168,10 @@ public class PlayerHealthManager : HealthManager
             return;
 
         if (!gasEffect)
+        {
             TakeDamage(damageOverTimeDamage, CurAttackerId);
-
+            PlayPoisionVFX(true);
+        }
         gasTimer = 0;
         gasEffect = true;
         gasDamage = damageOverTimeDamage;
@@ -172,6 +180,20 @@ public class PlayerHealthManager : HealthManager
         this.gasDurationOnPlayer = gasDurationOnPlayer;
     }
 
+    protected void PlayPoisionVFX(bool playing)
+    {
+        photonView.RPC("PlayPoisionVFX_RPC", RpcTarget.All, playing);
+    }
+
+
+    [PunRPC]
+    void PlayPoisionVFX_RPC(bool playing)
+    {
+        if (playing)
+            poisonedStatusVfx.SetActive(true);
+        else
+            poisonedStatusVfx.SetActive(false);
+    }
 
 
     #region Devour
