@@ -13,7 +13,7 @@ public class AudioSettings : MonoBehaviour
     private float MasterVolume = 1f;
     private float SFXVolume = 1f;
     private float MusicVolume = 1f;
-    
+
     public Slider SFXSlider;
     public Slider MusicSlider;
     public Slider MasterSlider;
