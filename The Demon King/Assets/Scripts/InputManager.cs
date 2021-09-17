@@ -13,11 +13,15 @@ public class InputManager : MonoBehaviour
     public static event Action<InputAction, int> rebindStarted;
 
 
-    private void Awake()
+    private void OnEnable()
     {
         if (inputActions == null)
         {
             inputActions = new CharacterInputs();
+        }
+        foreach (var action in inputActions)
+        {
+            LoadBindingOverride(action.name);
         }
     }
     public static void StartRebind(string actionName, int bindingIndex, TMP_Text statusText, bool excludeMouse)
@@ -132,11 +136,12 @@ public class InputManager : MonoBehaviour
                 action.RemoveBindingOverride(i);
             }
         }
-
         else
         {
             action.RemoveBindingOverride(bindingIndex);
         }
+
         SaveBindingOverride(action);
     }
+
 }
