@@ -58771,6 +58771,7 @@ MonoBehaviour:
   overheadHealthBar: {fileID: 811105165668488904}
   DevourTargetIcon: {fileID: 5355259407505492359}
   StunVFX: {fileID: 5432799953824469897}
+  poisonedStatusVfx: {fileID: 0}
   healthRegenTimer: 0
   timeForHealthRegenToActivate: 8
   CurAttackerId: 0
@@ -58926,9 +58927,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40149df4934e39b489d3fead9d54c740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  WalkSound: event:/WalkSlime
-  SlashAttackSound: event:/CastFireball
-  ChompAttackSound: event:/CastLaser
+  WalkSound: event:/SlimeSFX/WalkSlime
+  SlashAttackSound: event:/LionSFX/CastFireball
+  ChompAttackSound: event:/DragSFX/Devouring Dragon
 --- !u!114 &7600854324255355689
 MonoBehaviour:
   m_ObjectHideFlags: 0
