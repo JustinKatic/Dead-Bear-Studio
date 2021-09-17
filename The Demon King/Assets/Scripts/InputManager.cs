@@ -144,4 +144,33 @@ public class InputManager : MonoBehaviour
         SaveBindingOverride(action);
     }
 
+    public static void ResetBindings()
+    {
+
+        foreach (var actionName in inputActions)
+        {
+            InputAction action = inputActions.asset.FindAction(actionName.name);
+
+            for (int i = 0; i != action.bindings.Count; i++)
+            {
+                if (action.bindings[i].isComposite)
+                {
+                    for (int j = 0; j < action.bindings.Count && action.bindings[j].isComposite; j++)
+                    {
+                        action.RemoveBindingOverride(j);
+                    }
+                }
+                else
+                {
+                    action.RemoveBindingOverride(i);
+                }
+
+                SaveBindingOverride(action);
+            }
+        }
+           
+
+       
+    }
+
 }

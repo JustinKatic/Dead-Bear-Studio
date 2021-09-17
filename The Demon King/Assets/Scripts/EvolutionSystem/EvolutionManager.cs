@@ -28,6 +28,7 @@ public class EvolutionManager : MonoBehaviourPun
     private DemonKingEvolution demonKingEvolution;
     private PlayerTimers playerTimers;
 
+
     private LeaderboardManager leaderboardManager;
 
     private bool evolving = false;
@@ -164,6 +165,8 @@ public class EvolutionManager : MonoBehaviourPun
                 PlayerSoundManager.Instance.PlayEvolveSound();
             }
 
+            playerController.currentAnim.SetBool("Evolve", true);
+
             //Start UI Timer for evolving
             playerTimers.StartEvolveTimer(TimeToEvolve);
             //disable the players movement
@@ -176,6 +179,8 @@ public class EvolutionManager : MonoBehaviourPun
 
             //Stop checking for interuption in update
             evolving = false;
+            playerController.currentAnim.SetBool("Evolve", false);
+
             //Stop UI timer for evolving
             playerTimers.StopEvolveTimer();
 
@@ -253,6 +258,7 @@ public class EvolutionManager : MonoBehaviourPun
         playerTimers.StopEvolveTimer();
         PlayEvolveVFX(false);
         PlayerSoundManager.Instance.StopEvolveSound();
+        playerController.currentAnim.SetBool("Evolve", false);
         evolving = false;
     }
     #endregion
