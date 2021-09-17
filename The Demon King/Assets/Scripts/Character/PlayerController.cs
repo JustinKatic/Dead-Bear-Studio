@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviourPun
 
     [HideInInspector] public bool onLaunchPad = false;
 
-    private bool cameraRotation = true;
+    [HideInInspector] public bool cameraRotation = true;
 
 
 
