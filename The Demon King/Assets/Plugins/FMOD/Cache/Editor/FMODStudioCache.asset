@@ -1,5 +1,50 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9110901056823081514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BackgroundMenu
+  m_EditorClassIdentifier: 
+  Path: event:/BackgroundMenu
+  guid: d5cecc3c1a980542bc5f8e5ac959999f
+  Banks: []
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 154488
+--- !u!114 &-8631799374698300638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Walk
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Walk
+  guid: 396e21617c88d444a09c8e51d312b5eb
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-8580872373707632746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15,12 +60,35 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637673972754791789
+  lastModified: 637674774115709077
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 2100
+    Value: 2280
   Exists: 1
+--- !u!114 &-7445281122716638500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Ability1TravlingSound
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Ability1TravlingSound
+  guid: 84c768f868e24c49b2e19a23e04ae966
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &-7368043817502725952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35,8 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/WalkSlime
   guid: a9fea82f868adf4e90ea77621266a7cf
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -58,6 +125,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/DeathDraconic
   guid: ffece8f97d6e9346aff78a0d57b14f90
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6900086037300743546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/CastChargedLaser
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/CastChargedLaser
+  guid: 7bbbbee0783dd44c9fb4310db3cfb342
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -81,14 +170,82 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/DemonKingAnnouncement
   guid: 9b5cbc3e9b0da743b8400c66b8ab38f7
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
   Parameters: []
   MinDistance: 0
   MaxDistance: 0
+  Length: 0
+--- !u!114 &-6714435033923916619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/LionSFX/CastFireball
+  m_EditorClassIdentifier: 
+  Path: event:/LionSFX/CastFireball
+  guid: 9e4cf0496d577742a4b466b8ec39aab8
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6669667388342272148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Lava
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Lava
+  guid: ab7b7445f28eb84398fa9151920d29b1
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-6327520958392524979
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Jump
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Jump
+  guid: bd88568078584a44b38e0dfcfa8a3930
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
   Length: 0
 --- !u!114 &-6248300258923112550
 MonoBehaviour:
@@ -104,8 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Devouring
   guid: b2d935376cadfe40adae0cc4e9c801f2
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -127,8 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/DeathSlime
   guid: ef5332253df35e4b90112bb82a4c02ef
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -151,7 +306,7 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637673972755092083
+  lastModified: 637674774115619296
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -169,8 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/JumpLandSound
   guid: f18132a02d934445986cd9d21b34f8d0
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -192,8 +346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/BackgroundSound
   guid: b32e45e98d84244d849aa089086781c7
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
@@ -215,8 +368,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/ChargeLaser
   guid: e176a26c941b254e8c879d3b4b8c2007
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -238,8 +390,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Ability1TravlingSound
   guid: 84c768f868e24c49b2e19a23e04ae966
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -247,6 +398,29 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-4714171094434082193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/BackgroundAv1
+  m_EditorClassIdentifier: 
+  Path: event:/Music/BackgroundAv1
+  guid: b32e45e98d84244d849aa089086781c7
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 85524
 --- !u!114 &-4500041766848330874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -261,8 +435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/DeathRay
   guid: a85affaa7bfb274da9082535479dc5d8
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -284,8 +457,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Lava
   guid: ab7b7445f28eb84398fa9151920d29b1
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 0
@@ -307,6 +479,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/JumpSlime
   guid: 122ae9f5a93c9b4da195c94c2bcb1ebf
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-3417500244571932758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Stunned
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Stunned
+  guid: 0b8bbb2c5c8ac64ab1a1ad1a23b2719e
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2871598962141049542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/WalkRay
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/WalkRay
+  guid: eeffddc3e35f4d49988a555d1f89d63c
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -330,6 +547,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Jump
   guid: bd88568078584a44b38e0dfcfa8a3930
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2484194232876068800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/CastLaser
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/CastLaser
+  guid: 7bb4ee15005e2743a46aed90fe78d8b2
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -353,8 +592,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/JumpLandSoundBig
   guid: 07064af90301a749b8a1419e6c25ab2e
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -376,6 +614,143 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/WalkAdultRay
   guid: beeb18dde861cc4ab9a1e1ec8d8d8ea7
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-2020335954518749340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/BackgroundBv2
+  m_EditorClassIdentifier: 
+  Path: event:/Music/BackgroundBv2
+  guid: d5cecc3c1a980542bc5f8e5ac959999f
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 154488
+--- !u!114 &-1805797262953734087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/JumpLandSoundBig
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/JumpLandSoundBig
+  guid: 07064af90301a749b8a1419e6c25ab2e
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1655324876756817161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/WalkAdultRay
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/WalkAdultRay
+  guid: beeb18dde861cc4ab9a1e1ec8d8d8ea7
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-1556579437576963479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SlimeSFX/WalkSlime
+  m_EditorClassIdentifier: 
+  Path: event:/SlimeSFX/WalkSlime
+  guid: a9fea82f868adf4e90ea77621266a7cf
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-924604035373540288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SlimeSFX/DeathSlime
+  m_EditorClassIdentifier: 
+  Path: event:/SlimeSFX/DeathSlime
+  guid: ef5332253df35e4b90112bb82a4c02ef
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-821781688603792069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DragSFX/DeathDraconic
+  m_EditorClassIdentifier: 
+  Path: event:/DragSFX/DeathDraconic
+  guid: ffece8f97d6e9346aff78a0d57b14f90
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -399,6 +774,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/NormalEvolve
   guid: 05d68a09a447984196f17e9f099de0e0
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &-282265689770731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/ChargeLaser
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/ChargeLaser
+  guid: e176a26c941b254e8c879d3b4b8c2007
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -424,42 +821,112 @@ MonoBehaviour:
   - {fileID: -8580872373707632746}
   - {fileID: -5429546343494386849}
   EditorEvents:
-  - {fileID: -388473240834397613}
-  - {fileID: -2391552807061803232}
-  - {fileID: 7988639414554134411}
-  - {fileID: -4276161045563891764}
-  - {fileID: 4445861911189020633}
-  - {fileID: 5784124244613381111}
-  - {fileID: 1853412104059895138}
-  - {fileID: 671201987376605792}
-  - {fileID: 2355714690214917469}
-  - {fileID: 5699509533067451405}
-  - {fileID: 1627000072295842062}
-  - {fileID: -4950118495850532412}
-  - {fileID: -6848444978704000051}
-  - {fileID: 6899299997069792762}
-  - {fileID: -4500041766848330874}
-  - {fileID: -7368043817502725952}
-  - {fileID: -4397148087705616040}
-  - {fileID: 1026321579327427602}
-  - {fileID: -6248300258923112550}
-  - {fileID: -5198643150167142985}
-  - {fileID: -2712561128440167033}
-  - {fileID: -2046129066348194727}
-  - {fileID: 5094778502957163411}
-  - {fileID: -5160604330551800322}
-  - {fileID: 8380840270721763007}
-  - {fileID: 5300956678577358068}
-  - {fileID: -6048461831718855228}
-  - {fileID: -5341481243305520403}
-  - {fileID: -7031101188358811552}
+  - {fileID: 1135406178284715953}
+  - {fileID: -1805797262953734087}
+  - {fileID: -3417500244571932758}
+  - {fileID: 6718026462461855077}
+  - {fileID: -8631799374698300638}
+  - {fileID: 2600096745012611680}
+  - {fileID: 4815912681186980194}
+  - {fileID: 8973451997572428150}
+  - {fileID: -2484194232876068800}
+  - {fileID: -6900086037300743546}
+  - {fileID: 321025694129688686}
+  - {fileID: -7445281122716638500}
+  - {fileID: 9125380932082176360}
+  - {fileID: -6714435033923916619}
+  - {fileID: 7424419387146147360}
+  - {fileID: -1556579437576963479}
+  - {fileID: -6669667388342272148}
+  - {fileID: 515358634627249847}
+  - {fileID: 465597035287254581}
+  - {fileID: -4714171094434082193}
+  - {fileID: -6327520958392524979}
+  - {fileID: -1655324876756817161}
+  - {fileID: 7992565703786766377}
+  - {fileID: -2020335954518749340}
+  - {fileID: -282265689770731}
+  - {fileID: 8528595617260936831}
+  - {fileID: -2871598962141049542}
+  - {fileID: -924604035373540288}
+  - {fileID: 8925966514069176817}
+  - {fileID: -821781688603792069}
   EditorParameters: []
   MasterBanks:
   - {fileID: -5429546343494386849}
   StringsBanks:
   - {fileID: -8580872373707632746}
-  stringsBankWriteTime: 637673972754791789
+  stringsBankWriteTime: 637674774115709077
   cacheVersion: 6
+--- !u!114 &321025694129688686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Falling
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Falling
+  guid: 7f8c7bf6b2673246be6a23db99c6f1b9
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &465597035287254581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Devouring
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Devouring
+  guid: b2d935376cadfe40adae0cc4e9c801f2
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &515358634627249847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/DragSFX/Devouring Dragon
+  m_EditorClassIdentifier: 
+  Path: event:/DragSFX/Devouring Dragon
+  guid: ad4e63d6caf69147bd194d574ab8690f
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
 --- !u!114 &671201987376605792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -474,8 +941,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Devouring Ray
   guid: 62b905971ff263429bc8f2557fab4911
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -497,6 +963,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Devouring Dragon
   guid: ad4e63d6caf69147bd194d574ab8690f
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &1135406178284715953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/NormalEvolve
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/NormalEvolve
+  guid: 05d68a09a447984196f17e9f099de0e0
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -520,8 +1008,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Falling
   guid: 7f8c7bf6b2673246be6a23db99c6f1b9
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -543,8 +1030,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/LandSlime
   guid: 3bde0e497491aa4d904834e566c921b3
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -566,6 +1052,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/CastLaser
   guid: 7bb4ee15005e2743a46aed90fe78d8b2
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &2600096745012611680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/LionSFX/DeathLion
+  m_EditorClassIdentifier: 
+  Path: event:/LionSFX/DeathLion
+  guid: 3af442604ce597499703adba82510d74
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -589,6 +1097,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Walk
   guid: 396e21617c88d444a09c8e51d312b5eb
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &4815912681186980194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SlimeSFX/LandSlime
+  m_EditorClassIdentifier: 
+  Path: event:/SlimeSFX/LandSlime
+  guid: 3bde0e497491aa4d904834e566c921b3
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -612,8 +1142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Explosion
   guid: d01a31424a2acf4ab5561d9924cbe3fc
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -635,8 +1164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/WalkRay
   guid: eeffddc3e35f4d49988a555d1f89d63c
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -658,8 +1186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/CastChargedLaser
   guid: 7bbbbee0783dd44c9fb4310db3cfb342
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
@@ -681,6 +1208,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/DeathLion
   guid: 3af442604ce597499703adba82510d74
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &6718026462461855077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SlimeSFX/JumpSlime
+  m_EditorClassIdentifier: 
+  Path: event:/SlimeSFX/JumpSlime
+  guid: 122ae9f5a93c9b4da195c94c2bcb1ebf
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -704,6 +1253,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/CastFireball
   guid: 9e4cf0496d577742a4b466b8ec39aab8
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7424419387146147360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/DeathRay
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/DeathRay
+  guid: a85affaa7bfb274da9082535479dc5d8
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -727,6 +1298,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/Stunned
   guid: 0b8bbb2c5c8ac64ab1a1ad1a23b2719e
+  Banks: []
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &7992565703786766377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/Explosion
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/Explosion
+  guid: d01a31424a2acf4ab5561d9924cbe3fc
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0
@@ -734,7 +1327,7 @@ MonoBehaviour:
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 100
   Length: 0
 --- !u!114 &8380840270721763007
 MonoBehaviour:
@@ -750,6 +1343,97 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/MenuUIOnClick
   guid: e88569030b873e4f98d72baea7cf4109
+  Banks: []
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &8528595617260936831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/MenuUIOnClick
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/MenuUIOnClick
+  guid: e88569030b873e4f98d72baea7cf4109
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
+--- !u!114 &8925966514069176817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/JumpLandSound
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/JumpLandSound
+  guid: f18132a02d934445986cd9d21b34f8d0
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &8973451997572428150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/RaySFX/Devouring Ray
+  m_EditorClassIdentifier: 
+  Path: event:/RaySFX/Devouring Ray
+  guid: 62b905971ff263429bc8f2557fab4911
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 0
+--- !u!114 &9125380932082176360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/SharedSFX/DemonKingAnnouncement
+  m_EditorClassIdentifier: 
+  Path: event:/SharedSFX/DemonKingAnnouncement
+  guid: 9b5cbc3e9b0da743b8400c66b8ab38f7
   Banks:
   - {fileID: -5429546343494386849}
   IsStream: 0

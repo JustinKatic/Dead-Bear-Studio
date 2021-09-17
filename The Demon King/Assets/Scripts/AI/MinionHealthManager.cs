@@ -60,7 +60,10 @@ public class MinionHealthManager : HealthManager
             gasFrequencyTimer += Time.deltaTime;
 
             if (gasTimer >= gasDurationOnPlayer)
+            {
                 gasEffect = false;
+                PlayPoisionVFX(false);
+            }
 
             if (gasFrequencyTimer >= gasTickRate)
             {
@@ -68,7 +71,10 @@ public class MinionHealthManager : HealthManager
                 TakeDamage(gasDamage, CurAttackerId);
             }
             if (isStunned)
+            {
                 gasEffect = false;
+                PlayPoisionVFX(false);
+            }
         }
 
         if (beingDevoured || isStunned)
@@ -101,9 +107,27 @@ public class MinionHealthManager : HealthManager
         this.gasDurationOnPlayer = gasDurationOnPlayer;
 
         if (!gasEffect)
+        {
             TakeDamage(gasDamage, CurAttackerId);
+            PlayPoisionVFX(true);
+        }
 
         gasEffect = true;
+    }
+
+    protected void PlayPoisionVFX(bool playing)
+    {
+        photonView.RPC("PlayPoisionVFX_RPC", RpcTarget.All, playing);
+    }
+
+
+    [PunRPC]
+    void PlayPoisionVFX_RPC(bool playing)
+    {
+        if (playing)
+            poisonedStatusVfx.SetActive(true);
+        else
+            poisonedStatusVfx.SetActive(false);
     }
 
     #region Take Damage/ Heal Damage
