@@ -7,8 +7,14 @@ public class DragonProjectileController : MonoBehaviourPun
 {
     private int attackerId;
 
-    public GameObject EnemyGasEffect;
-    public GameObject FriendlyGasEffect;
+    public GameObject ChildEnemyGasEffect;
+    public GameObject ChildFriendlyGasEffect;
+
+    public GameObject AdultEnemyGasEffect;
+    public GameObject AdultFriendlyGasEffect;
+
+    public GameObject KingEnemyGasEffect;
+    public GameObject KingFriendlyGasEffect;
 
     private int projectileHitDmg;
     private int damage;
@@ -17,6 +23,8 @@ public class DragonProjectileController : MonoBehaviourPun
     private float gasDuration;
     private float gasDurationOnPlayer;
     private float gasSize;
+
+    private string evolutionWhoShot;
 
 
     [FMODUnity.EventRef]
@@ -50,7 +58,7 @@ public class DragonProjectileController : MonoBehaviourPun
     }
 
     // Called when the bullet is spawned by the player who spawned it
-    public void Initialize(int attackerId, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize, int projectileHitDmg)
+    public void Initialize(int attackerId, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize, int projectileHitDmg, string evolutionWhoShot)
     {
         this.projectileHitDmg = projectileHitDmg;
         this.attackerId = attackerId;
@@ -60,6 +68,7 @@ public class DragonProjectileController : MonoBehaviourPun
         this.gasDuration = gasDuration;
         this.gasDurationOnPlayer = gasDurationOnPlayer;
         this.gasSize = gasSize;
+        this.evolutionWhoShot = evolutionWhoShot;
 
 
         // set a lifetime of bullet
@@ -91,21 +100,47 @@ public class DragonProjectileController : MonoBehaviourPun
 
     void SpawnGasEffect()
     {
-        photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+        photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize, evolutionWhoShot);
     }
 
     [PunRPC]
-    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize)
+    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize,string evolutionWhoShot)
     {
         if (attackerId == GameManager.instance.myIdIndex)
         {
-            GameObject CreatedGasEffect = Instantiate(FriendlyGasEffect, new Vector3(x, y, z), Quaternion.identity);
-            CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            if (evolutionWhoShot == "Child")
+            {
+                GameObject CreatedGasEffect = Instantiate(ChildFriendlyGasEffect, new Vector3(x, y, z), Quaternion.identity);
+                CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            }
+            else if (evolutionWhoShot == "Adult")
+            {
+                GameObject CreatedGasEffect = Instantiate(AdultFriendlyGasEffect, new Vector3(x, y, z), Quaternion.identity);
+                CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            }
+            else if (evolutionWhoShot == "King")
+            {
+                GameObject CreatedGasEffect = Instantiate(KingFriendlyGasEffect, new Vector3(x, y, z), Quaternion.identity);
+                CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            }
         }
         else
         {
-            GameObject CreatedGasEffect = Instantiate(EnemyGasEffect, new Vector3(x, y, z), Quaternion.identity);
-            CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            if (evolutionWhoShot == "Child")
+            {
+                GameObject CreatedGasEffect = Instantiate(ChildEnemyGasEffect, new Vector3(x, y, z), Quaternion.identity);
+                CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            }
+            else if (evolutionWhoShot == "Adult")
+            {
+                GameObject CreatedGasEffect = Instantiate(AdultEnemyGasEffect, new Vector3(x, y, z), Quaternion.identity);
+                CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            }
+            else if (evolutionWhoShot == "King")
+            {
+                GameObject CreatedGasEffect = Instantiate(KingEnemyGasEffect, new Vector3(x, y, z), Quaternion.identity);
+                CreatedGasEffect.GetComponent<DragonGasEffect>().Initialize(attackerID, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize);
+            }
         }
     }
 

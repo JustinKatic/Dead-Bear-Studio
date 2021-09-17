@@ -13,6 +13,9 @@ public class DragonAbility : AbilityBase
     [SerializeField] private float gasDuration;
     [SerializeField] private float gasSize;
 
+    [SerializeField] private string ChildOrAdultOrKing;
+
+
     [Header("LayersForRaycastToIgnore")]
     [SerializeField] private LayerMask PrimaryProjectileLayersToIgnore;
 
@@ -43,7 +46,7 @@ public class DragonAbility : AbilityBase
         createdPrimaryProjectile.transform.forward = dir;
 
         DragonProjectileController projectileScript = createdPrimaryProjectile.GetComponent<DragonProjectileController>();
-        projectileScript.Initialize(player.id, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize, projectileHitDmg);
+        projectileScript.Initialize(player.id, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize, projectileHitDmg, ChildOrAdultOrKing);
         projectileScript.rb.velocity = (hitPoint - pos).normalized * ProjectileSpeed;
     }
 }
