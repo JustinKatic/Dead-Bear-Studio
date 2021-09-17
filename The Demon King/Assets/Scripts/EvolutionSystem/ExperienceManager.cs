@@ -104,7 +104,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     #region ExperienceBranchFunctions
 
-    void UpdateBranchType(ExperienceBranch branchType, int value)
+    void UpdateBranchType(ExperienceBranch branchType, float value)
     {
         //Update current exp value and sliders
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
@@ -181,7 +181,7 @@ public class ExperienceManager : MonoBehaviourPun
 
 
     //Add the experience based of minion type eaten (called when killed minion or player)
-    public void AddExpereince(MinionType minionType, int expValue)
+    public void AddExpereince(MinionType minionType, float expValue)
     {
         //update red exp
         if (minionType == redMinion)
@@ -273,7 +273,7 @@ public class ExperienceManager : MonoBehaviourPun
         shouldScale = true;
 
         //transform.localScale = BaseScale + Vector3.one * CurrentExp * ScaleAmount;
-        if (CurrentExp >= 1)
+        if (CurrentExp > 0)
         {
             vCam.CameraDistance = baseCamDist + CurrentExp * CamDistanceIncreaseAmount;
             vCam.ShoulderOffset.x = baseCamShoulderX + CurrentExp * CamShoulderOffsetXIncreaseAmount;

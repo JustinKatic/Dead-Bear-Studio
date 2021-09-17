@@ -23,7 +23,7 @@ public class MinionHealthManager : HealthManager
 
     public bool Respawned = false;
 
-    [SerializeField] int minionExpWorth;
+    [SerializeField] float minionExpWorth;
     [SerializeField] int minionScoreWorth;
 
 
