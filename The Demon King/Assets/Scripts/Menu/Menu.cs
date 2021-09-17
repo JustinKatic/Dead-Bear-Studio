@@ -59,6 +59,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [HideInInspector] public string sceneName;
     private string currentRoomName;
     private float roomMaxPlayers = 2;
+    [SerializeField] private GameObject lastActiveMenu;
+
 
     void Start()
     {
@@ -102,6 +104,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         createRoomScreen.SetActive(false);
         lobbyScreen.SetActive(false);
         lobbyBrowserScreen.SetActive(false);
+        SettingsScreen.SetActive(false);
 
         // activate the requested screen
         screen.SetActive(true);
@@ -114,8 +117,18 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(mainSelectableItem);
     }
-    public void OnSettingsButton()
+    //Used specifically for the settings only
+    public void OnSettingsBackButton()
     {
+        SettingsScreen.SetActive(false);
+        lastActiveMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
+    }
+    public void OnSettingsButton(GameObject menu)
+    {
+        lastActiveMenu = menu;
+
         SetScreen(SettingsScreen);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(mainSelectableItem);

@@ -17,7 +17,6 @@ public class MenuSettingsScreen : MonoBehaviour
         settings.SetActive(true);
         soundSettings.SetActive(false);
         playerSettings.SetActive(false);
-        //emoteSettings.SetActive(false);
     }
 
     public void OnButtonClickActivateMenu(GameObject menuToActivate)

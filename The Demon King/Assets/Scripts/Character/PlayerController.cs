@@ -27,8 +27,10 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float InAirDrag = 2f;
     [SerializeField] float VelocityToStartFalling = -7f;
     [SerializeField] float VelocityNeededToPlayGroundSlam = -20f;
+    [SerializeField] GameObject LandingEffect = null;
 
     [HideInInspector] public Vector3 playerJumpVelocity;
+
     private bool isFalling = false;
 
     [Header("Physics")]
@@ -69,8 +71,7 @@ public class PlayerController : MonoBehaviourPun
 
     [HideInInspector] public bool onLaunchPad = false;
 
-    private bool cameraRotation = true;
-    private const string RebindsKey = "rebinds";
+    [HideInInspector] public bool cameraRotation = true;
 
 
 
@@ -468,11 +469,34 @@ public class PlayerController : MonoBehaviourPun
         PlayerSoundManager.Instance.StopFallingSound();
 
         if (playerMoveVelocity.y <= VelocityNeededToPlayGroundSlam)
+        {
             PlayerSoundManager.Instance.PlayJumpLandBigSound();
+            PlayLandingEffect();
+        }
 
         else
             PlayerSoundManager.Instance.PlayJumpLandNormalSound();
     }
+
+    void PlayLandingEffect()
+    {
+        photonView.RPC("PlayLandingEffect_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void PlayLandingEffect_RPC()
+    {
+        LandingEffect.SetActive(true);
+        Invoke("StopLandingEffect", 1);
+
+    }
+    void StopLandingEffect()
+    {
+        LandingEffect.SetActive(false);
+
+    }
+
+
 
     void SetFallingTrue()
     {

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3918138565467203897}
   - component: {fileID: 3918138565467203896}
   - component: {fileID: 3918138565467203894}
-  - component: {fileID: 183148436292117353}
+  - component: {fileID: 7183931749910401255}
   m_Layer: 0
   m_Name: Launch Pad
   m_TagString: Untagged
@@ -96,8 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   launchVelocity: {x: 0, y: 0, z: 0}
---- !u!136 &183148436292117353
-CapsuleCollider:
+--- !u!64 &7183931749910401255
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -106,7 +106,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.7194399
-  m_Height: 4.0008497
-  m_Direction: 1
-  m_Center: {x: -0.040741917, y: -0.73736775, z: -0.00000030454802}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -7734187571854464013, guid: e04235f0be175354098f7118dad95528, type: 3}
