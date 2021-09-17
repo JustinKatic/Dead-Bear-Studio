@@ -42,7 +42,7 @@ public class RebindUI : MonoBehaviour
     private void OnEnable()
     {
         rebindButton.onClick.AddListener(() => DoRebind());
-        //rebindButton.onClick.AddListener(() => ResetBinding());
+        resetButton.onClick.AddListener(() => ResetBinding());
         if (inputActionReference != null)
         {
             InputManager.LoadBindingOverride(actionName);
@@ -61,7 +61,6 @@ public class RebindUI : MonoBehaviour
 
     private void ResetBinding()
     {
-        InputManager.ResetBinding(actionName, bindingIndex);
         UpdateUI();
     }
 
