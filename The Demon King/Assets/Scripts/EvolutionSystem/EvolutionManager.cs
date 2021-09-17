@@ -10,6 +10,8 @@ public class EvolutionManager : MonoBehaviourPun
     [SerializeField] private float TimeToEvolve = 3f;
     [SerializeField] private GameObject EvolveVFX;
     [SerializeField] private GameObject DemonKingEvolveVFX;
+    [SerializeField] private Animator EvolveUIAnim;
+
 
     [Header("MINION TYPES")]
     [SerializeField] private MinionType redMinion;
@@ -166,6 +168,7 @@ public class EvolutionManager : MonoBehaviourPun
             }
 
             playerController.currentAnim.SetBool("Evolve", true);
+            EvolveUIAnim.SetBool("Evolve", true);
 
             //Start UI Timer for evolving
             playerTimers.StartEvolveTimer(TimeToEvolve);
@@ -180,6 +183,7 @@ public class EvolutionManager : MonoBehaviourPun
             //Stop checking for interuption in update
             evolving = false;
             playerController.currentAnim.SetBool("Evolve", false);
+            EvolveUIAnim.SetBool("Evolve", false);
 
             //Stop UI timer for evolving
             playerTimers.StopEvolveTimer();
@@ -259,6 +263,7 @@ public class EvolutionManager : MonoBehaviourPun
         PlayEvolveVFX(false);
         PlayerSoundManager.Instance.StopEvolveSound();
         playerController.currentAnim.SetBool("Evolve", false);
+        EvolveUIAnim.SetBool("Evolve", false);
         evolving = false;
     }
     #endregion

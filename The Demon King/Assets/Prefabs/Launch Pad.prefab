@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3918138565467203898}
   - component: {fileID: 3918138565467203897}
   - component: {fileID: 3918138565467203896}
-  - component: {fileID: 3918138565467203895}
   - component: {fileID: 3918138565467203894}
+  - component: {fileID: 183148436292117353}
   m_Layer: 0
   m_Name: Launch Pad
   m_TagString: Untagged
@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3918138565467203893}
-  m_LocalRotation: {x: 0.25942352, y: -0.648255, z: -0.26597336, w: 0.66462255}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.44, y: 0.59, z: -12.259013}
-  m_LocalScale: {x: 2.1268833, y: 0.3879, z: 2.2818906}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -88.571, z: -43.621}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3918138565467203897
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3918138565467203893}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -7734187571854464013, guid: e04235f0be175354098f7118dad95528, type: 3}
 --- !u!23 &3918138565467203896
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: 002c1402ae56a9841b94797016cf797d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,19 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &3918138565467203895
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3918138565467203893}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3918138565467203894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -108,7 +95,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acfae17cf20a14b438fb22b5fcafc3ae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  launchDirection: {x: 0, y: 10, z: 0}
-  negX: 0
-  negY: 0
-  negZ: 0
+  launchVelocity: {x: 0, y: 0, z: 0}
+--- !u!136 &183148436292117353
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3918138565467203893}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 1.7194399
+  m_Height: 4.0008497
+  m_Direction: 1
+  m_Center: {x: -0.040741917, y: -0.73736775, z: -0.00000030454802}
