@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
     public static event Action rebindCanceled;
     public static event Action<InputAction, int> rebindStarted;
 
-
+    //private List<InputBinding>
     private void OnEnable()
     {
         if (inputActions == null)
@@ -168,9 +168,30 @@ public class InputManager : MonoBehaviour
                 SaveBindingOverride(action);
             }
         }
-           
+    
+    }
+    private void CheckOtherActionBindings()
+    {
+        foreach (var actionName in inputActions)
+        {
+            InputAction action = inputActions.asset.FindAction(actionName.name);
 
-       
+            for (int i = 0; i != action.bindings.Count; i++)
+            {
+                if (action.bindings[i].isComposite)
+                {
+                    for (int j = 0; j < action.bindings.Count && action.bindings[j].isComposite; j++)
+                    {
+                       
+                    }
+                }
+                else
+                {
+                }
+
+                SaveBindingOverride(action);
+            }
+        }
     }
 
 }
