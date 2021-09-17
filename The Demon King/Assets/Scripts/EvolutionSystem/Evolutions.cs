@@ -57,7 +57,7 @@ public class Evolutions : MonoBehaviourPun
 {
     public MinionType MyMinionType;
     public int MaxHealth;
-    public int ExpWorth;
+    public float ExpWorth;
     public int ScoreWorth;
 
 
