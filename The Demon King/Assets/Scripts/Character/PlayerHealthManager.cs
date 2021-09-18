@@ -165,7 +165,7 @@ public class PlayerHealthManager : HealthManager
 
     public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
     {
-        if (isStunned)
+        if (isStunned || invulnerable)
             return;
 
         if (!gasEffect)
