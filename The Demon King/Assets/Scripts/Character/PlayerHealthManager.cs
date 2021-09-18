@@ -278,7 +278,7 @@ public class PlayerHealthManager : HealthManager
             OnBeingStunnedStart();
     }
 
-    protected override void Heal(int amountToHeal)
+    public override void Heal(int amountToHeal)
     {
         //Only running on local player
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);

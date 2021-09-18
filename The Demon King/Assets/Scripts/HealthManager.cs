@@ -14,7 +14,7 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected int healthRegenAmount = 1;
     [SerializeField] protected float healthRegenTickrate = .5f;
     [SerializeField] protected float RespawnTime = 6;
-    
+
     [SerializeField] private float stunnedDuration = 3;
 
 
@@ -202,7 +202,7 @@ public class HealthManager : MonoBehaviourPun
     #endregion
 
     #region HealthFunctions
-    virtual protected void Heal(int amountToHeal)
+    virtual public void Heal(int amountToHeal)
     {
 
     }
