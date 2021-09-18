@@ -14,7 +14,7 @@ public class HealthManager : MonoBehaviourPun
     [SerializeField] protected int healthRegenAmount = 1;
     [SerializeField] protected float healthRegenTickrate = .5f;
     [SerializeField] protected float RespawnTime = 6;
-    [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
+    
     [SerializeField] private float stunnedDuration = 3;
 
 

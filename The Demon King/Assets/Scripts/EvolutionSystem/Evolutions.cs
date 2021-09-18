@@ -59,6 +59,8 @@ public class Evolutions : MonoBehaviourPun
     public int MaxHealth;
     public float ExpWorth;
     public int ScoreWorth;
+    public int AmountToHealAfterStunned;
+
 
 
     [FMODUnity.EventRef]

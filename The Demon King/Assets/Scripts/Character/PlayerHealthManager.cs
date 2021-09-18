@@ -15,6 +15,7 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] private GameObject ExperienceBarContainer;
     [SerializeField] GameObject playerHealVfx;
     [SerializeField] float invulenerableTimeAfterStun = 2f;
+    [HideInInspector] public int AmountOfHealthAddedAfterStunned = 3;
 
 
     [SerializeField] private GameObject rayEndVFX;

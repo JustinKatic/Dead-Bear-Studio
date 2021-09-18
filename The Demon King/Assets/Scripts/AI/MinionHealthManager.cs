@@ -9,6 +9,7 @@ public class MinionHealthManager : HealthManager
 {
     [Header("Model To Disable On Death")]
     [SerializeField] GameObject myModel;
+    [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;
 
     [HideInInspector] public GameObject PlayerWhoShotMe;
     [HideInInspector] public State state;
