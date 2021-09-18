@@ -23,7 +23,6 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
 
     public Rigidbody rb;
 
-    private new ParticleSystem particleSystem;
 
     private void OnEnable()
     {
