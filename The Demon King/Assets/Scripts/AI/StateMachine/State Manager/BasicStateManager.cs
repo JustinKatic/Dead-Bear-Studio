@@ -21,31 +21,29 @@ public class BasicStateManager : StateManager
     protected override void RunStateMachine()
     {
 
-        if (healthManager.CurrentHealth == 1)
+        if (healthManager.CurrentHealth <= 1)
         {
             fleeing = true;
         }
-        else if (healthManager.CurrentHealth >= FleeUntilThisHealth)
+        else
         {
             fleeing = false;
         }
 
         // Logic for the switching of behaviours at runtime
-        if (healthManager.CurrentHealth <= 0)
+        if (healthManager.isStunned)
         {
             SwitchToTheNextState(stunnedState);
-
-        }
-        else if (healthManager.isStunned)
-        {
-            SwitchToTheNextState(stunnedState);
-
             target = null;
+            wanderState.timer = wanderState.waitAtDestinationTimer;
         }
-        else if (fleeing && CheckIfAPlayerIsInMyRadius())
+        else if (fleeing)
         {
-            fleeState.target = target;
-            SwitchToTheNextState(fleeState);
+            if (CheckIfAPlayerIsInMyRadius())
+            {
+                fleeState.target = target;
+                SwitchToTheNextState(fleeState);
+            }
         }
         else
         {

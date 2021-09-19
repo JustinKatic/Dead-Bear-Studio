@@ -6,53 +6,69 @@ using UnityEngine.AI;
 public class WanderState : State
 {
     //Wander Variables
-    Vector3 dest;
+    NavMeshPath dest;
     public bool wanderPosFound;
-
+    public float timer = 0;
+    public float waitAtDestinationTimer = 2f;
+    private bool waitAtLocation = true;
 
     public override void RunCurrentState()
     {
-        PlayeWanderState();
+        PlayWanderState();
     }
 
-    public void PlayeWanderState()
+    public void PlayWanderState()
     {
-        if (wanderPosFound == false || minionHealthManager.Respawned)
+        if (!wanderPosFound || minionHealthManager.Respawned)
         {
             dest = RandomPoint(20f);
-            agent.isStopped = false;
-            wanderPosFound = true;
-            anim.SetBool("Walking", true);
-            minionHealthManager.Respawned = false;
+            anim.SetBool("Walking", false);
         }
 
-        float distanceToDestination = Vector3.Distance(gameObject.transform.position, dest);
-        agent.SetDestination(dest);
-
-        if (distanceToDestination <= 2)
+        if (waitAtLocation)
+        {
+            //if timer is less than waitTime
+            if (timer < waitAtDestinationTimer)
+            {
+                //add Time.deltaTime each time we hit this point
+                timer += Time.deltaTime;
+            }
+            //no longer waiting because timer is greater than 10
+            else
+            {
+                //agent.isStopped = false;
+                waitAtLocation = false;
+                anim.SetBool("Walking", true);
+                minionHealthManager.Respawned = false;
+                agent.SetPath(dest);
+                timer = 0;
+            }
+        }
+        if (agent.remainingDistance <= 0.2f && !waitAtLocation)
+        {
+            waitAtLocation = true;
             wanderPosFound = false;
+        }
     }
-    public Vector3 RandomPoint(float range)
+    public NavMeshPath RandomPoint(float range)
     {
-        Vector3 result = Vector3.zero;
         bool searching = true;
-
+        NavMeshPath path = new NavMeshPath();
         while (searching)
         {
             Vector3 randomPoint = transform.position + Random.insideUnitSphere * range;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
             {
-                NavMeshPath path = new NavMeshPath();
                 agent.CalculatePath(hit.position, path);
                 if (path.status == NavMeshPathStatus.PathComplete)
                 {
-                    result = hit.position;
                     searching = false;
                 }
             }
         }
-        return result;
-    }
+        wanderPosFound = true;
 
+        return path;
+    }
 }
