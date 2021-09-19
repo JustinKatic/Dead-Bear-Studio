@@ -10963,6 +10963,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2601525243974364587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2302942371982314836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3765e5446cd345043a7451fca0dab65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
+  damageFrequency: 1
+  abilityDuration: 8
+  shootCooldown: 1
+  LionKingAbilityMarker: {fileID: 3134839603772019232}
+  abilityMarkerSize: 10
+  AimerLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 8182
 --- !u!114 &6214247227055208921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11074,27 +11095,6 @@ MonoBehaviour:
     LayerIndex: 1
   - SynchronizeType: 1
     LayerIndex: 2
---- !u!114 &2601525243974364587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2302942371982314836}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3765e5446cd345043a7451fca0dab65d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 5
-  damageFrequency: 1
-  abilityDuration: 8
-  shootCooldown: 1
-  LionKingAbilityMarker: {fileID: 3134839603772019232}
-  abilityMarkerSize: 10
-  AimerLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 8182
 --- !u!1 &2303744343335054921
 GameObject:
   m_ObjectHideFlags: 0
@@ -25005,9 +25005,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxGroundMoveSpeed: 5.5
   GroundAcceleration: 25
-  SlopeLimit: 45
+  SlopeLimit: 75
   StepOffset: 0.8
   jumpHeight: 2
+  maximumSlidingAngle: 75
   gravity: -9.82
   DrowningInLavaGravity: -0.5
   MaxAirMoveSpeed: 5
@@ -25030,8 +25031,8 @@ MonoBehaviour:
   currentAnim: {fileID: 190322414822078646}
   vCam: {fileID: 0}
   cc: {fileID: 0}
-  recticle: {fileID: 8599896439959258330}
-  recticleAnimator: {fileID: 3759952805845827693}
+  reticle: {fileID: 0}
+  reticleAnimator: {fileID: 0}
   onLaunchPad: 0
   cameraRotation: 1
 --- !u!114 &6202528700522376435
@@ -29947,6 +29948,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1cc024f2b116f428c2a90721119d0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2716145347858631096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7383777780069845888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3765e5446cd345043a7451fca0dab65d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 5
+  damageFrequency: 1
+  abilityDuration: 8
+  shootCooldown: 1
+  LionKingAbilityMarker: {fileID: 3134839603772019232}
+  abilityMarkerSize: 10
+  AimerLayersToIgnore:
+    serializedVersion: 2
+    m_Bits: 8182
 --- !u!114 &6214392357691738134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30030,27 +30052,6 @@ MonoBehaviour:
     DemonKingAnnouncementSound: event:/SharedSFX/DemonKingAnnouncement
     RayChargeUpSound: event:/RaySFX/ChargeLaser
     RayFullyChargedUpShootSound: event:/RaySFX/CastChargedLaser
---- !u!114 &2716145347858631096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7383777780069845888}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3765e5446cd345043a7451fca0dab65d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 5
-  damageFrequency: 1
-  abilityDuration: 8
-  shootCooldown: 1
-  LionKingAbilityMarker: {fileID: 3134839603772019232}
-  abilityMarkerSize: 10
-  AimerLayersToIgnore:
-    serializedVersion: 2
-    m_Bits: 8182
 --- !u!1 &7387896934997910928
 GameObject:
   m_ObjectHideFlags: 0

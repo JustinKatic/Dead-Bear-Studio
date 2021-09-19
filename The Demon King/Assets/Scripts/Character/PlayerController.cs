@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float SlopeLimit = 45f;
     [SerializeField] float StepOffset = 0.3f;
     [SerializeField] float jumpHeight;
+    [SerializeField] float maximumSlidingAngle = 70;
+
 
     private float currentMoveSpeed = 0;
     private bool isJumping;
@@ -66,12 +68,15 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public CinemachineVirtualCamera vCam;
     [HideInInspector] public CharacterController cc;
 
-    [SerializeField] private GameObject recticle;
-    [SerializeField] private Animator recticleAnimator;
+    [SerializeField] private GameObject reticle;
+    [SerializeField] private Animator reticleAnimator;
 
     [HideInInspector] public bool onLaunchPad = false;
 
     [HideInInspector] public bool cameraRotation = true;
+    private Vector3 hitNormal;
+    private bool onSlope;
+    private float slideFriction = 0.3f;
 
 
 
@@ -88,7 +93,7 @@ public class PlayerController : MonoBehaviourPun
                 col.gameObject.layer = LayerMask.NameToLayer("EnemyPlayer");
             }
             gameObject.layer = LayerMask.NameToLayer("EnemyParent");
-            Destroy(recticle.gameObject);
+            Destroy(reticle.gameObject);
         }
         //Run following if local player
         else
@@ -160,7 +165,7 @@ public class PlayerController : MonoBehaviourPun
     void PlayRectAnim_RPC()
     {
         if (photonView.IsMine)
-            recticleAnimator.Play("ReticleAnimation");
+            reticleAnimator.Play("ReticleAnimation");
     }
 
     #endregion
@@ -192,15 +197,18 @@ public class PlayerController : MonoBehaviourPun
             //pushes player onto ground
             if (cc.isGrounded && playerJumpVelocity.y < 0)
             {
-                playerJumpVelocity.y = -2f;
-                //Set jumping false and allow CC to stepUp
-                if (isJumping)
+                if (!onSlope)
                 {
-                    IsJumpingAndGrounded();
-                }
-                if (isFalling)
-                {
-                    IsFallingAndGrounded();
+                    playerJumpVelocity.y = -2f;
+                    //Set jumping false and allow CC to stepUp
+                    if (isJumping)
+                    {
+                        IsJumpingAndGrounded();
+                    }
+                    if (isFalling)
+                    {
+                        IsFallingAndGrounded();
+                    }
                 }
                 if (onLaunchPad)
                     onLaunchPad = false;
@@ -212,7 +220,7 @@ public class PlayerController : MonoBehaviourPun
 
 
             //Get the players current movement velocity based of inputs and relative direction
-            if (cc.isGrounded)
+            if (cc.isGrounded && !onSlope)
             {
                 GroundMovement();
             }
@@ -226,10 +234,18 @@ public class PlayerController : MonoBehaviourPun
             if (onLaunchPad)
                 playerMoveVelocity = playerJumpVelocity;
 
+
+            if (onSlope && cc.isGrounded)
+            {
+                playerMoveVelocity.x += (1f - hitNormal.y) * hitNormal.x * (1f - slideFriction);
+                playerMoveVelocity.z += (1f - hitNormal.y) * hitNormal.z * (1f - slideFriction);
+            }
+
             //Move the character based of the players velocity values
             if (cc.enabled)
                 cc.Move(playerMoveVelocity * Time.deltaTime);
 
+            onSlope = (Vector3.Angle(Vector3.up, hitNormal) >= maximumSlidingAngle);
             if (playerInputs.magnitude >= 0.1f)
                 currentAnim.SetFloat("Speed", currentMoveSpeed);
             else
@@ -237,7 +253,10 @@ public class PlayerController : MonoBehaviourPun
                 currentAnim.SetFloat("Speed", 5);
             }
 
-            SetAnimInputs();
+            if (!onSlope)
+            {
+                SetAnimInputs();
+            }
         }
     }
 
@@ -301,6 +320,9 @@ public class PlayerController : MonoBehaviourPun
         {
             Rigidbody body = hit.collider.attachedRigidbody;
 
+            hitNormal = hit.normal;
+
+
             // no rigidbody
             if (body == null || body.isKinematic)
                 return;
@@ -351,7 +373,6 @@ public class PlayerController : MonoBehaviourPun
                 _cinemachineTargetYaw += playerLookInput.x * (MouseSensitivity * 10) * Time.deltaTime;
                 _cinemachineTargetPitch += playerLookInput.y * (MouseSensitivity * 10) * Time.deltaTime;
             }
-
         }
 
         // clamp our rotations so our values are limited 360 degrees
