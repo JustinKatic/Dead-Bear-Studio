@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &5735699902506913966
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361276616891269479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5325499282047410056, guid: e25309783be58ee41b96232a5aaa186f, type: 3}
+--- !u!64 &6657447561592884500
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5361276617671383088}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8896385861054528696, guid: a7a91dfdd215b2a4290477179e06d18f, type: 3}
 --- !u!1 &5880845965346507684
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,12 +37,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1321537753150561888}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1321537753150561888
 Transform:
@@ -39,12 +67,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8284076870281904398}
-  m_Layer: 0
-  m_Name: BrokenPillarBase
+  m_Layer: 3
+  m_Name: PillarBaseBroken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &8284076870281904398
 Transform:
@@ -117,8 +145,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_PillarBottom_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a7a91dfdd215b2a4290477179e06d18f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a7a91dfdd215b2a4290477179e06d18f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a7a91dfdd215b2a4290477179e06d18f, type: 3}
+--- !u!1 &5361276617671383088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a7a91dfdd215b2a4290477179e06d18f, type: 3}
+  m_PrefabInstance: {fileID: 5090894401776133473}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4696344020691534474 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a7a91dfdd215b2a4290477179e06d18f, type: 3}
@@ -179,8 +220,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_PillarMidBroke_01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e25309783be58ee41b96232a5aaa186f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e25309783be58ee41b96232a5aaa186f, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e25309783be58ee41b96232a5aaa186f, type: 3}
+--- !u!1 &5361276616891269479 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e25309783be58ee41b96232a5aaa186f, type: 3}
+  m_PrefabInstance: {fileID: 5090894401935555638}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4696344020532190173 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e25309783be58ee41b96232a5aaa186f, type: 3}
