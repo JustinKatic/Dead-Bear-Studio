@@ -4,12 +4,14 @@ using UnityEngine;
 using Photon.Pun;
 
 
-public class LionKingAbility : MonoBehaviourPun
+public class KingAbility : MonoBehaviourPun
 {
     [Header("Modifiable Stats")]
     [SerializeField] private int damage;
     [SerializeField] private float damageFrequency;
     [SerializeField] private float abilityDuration;
+    [SerializeField] private string kingAbilityEffectName;
+
 
 
     [SerializeField] private float shootCooldown = 1f;
@@ -102,8 +104,8 @@ public class LionKingAbility : MonoBehaviourPun
 
     void PerformAbility()
     {
-        GameObject createdAbility = PhotonNetwork.Instantiate("LionKingAbility", targetPos, Quaternion.identity);
-        LionKingAbilityEffect lionKingAbilityEffect = createdAbility.GetComponent<LionKingAbilityEffect>();
+        GameObject createdAbility = PhotonNetwork.Instantiate(kingAbilityEffectName, targetPos, Quaternion.identity);
+        KingAbilityEffect lionKingAbilityEffect = createdAbility.GetComponent<KingAbilityEffect>();
         lionKingAbilityEffect.Initialize(player.id, damageFrequency, abilityDuration, damage);
     }
 
