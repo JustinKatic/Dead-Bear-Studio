@@ -79,6 +79,11 @@ public class PlayerController : MonoBehaviourPun
     private float slideFriction = 0.3f;
 
 
+    private bool knockback;
+    private GameObject playerWhoKnockedMeBack;
+
+
+
 
     #region Start Up
     private void Awake()
@@ -233,6 +238,13 @@ public class PlayerController : MonoBehaviourPun
             playerMoveVelocity.y = playerJumpVelocity.y;
             if (onLaunchPad)
                 playerMoveVelocity = playerJumpVelocity;
+
+            if (knockback)
+            {
+                playerMoveVelocity = playerJumpVelocity;
+                if (Vector3.Distance(playerWhoKnockedMeBack.transform.position, transform.position) >= 15)
+                    knockback = false;
+            }
 
 
             if (onSlope && cc.isGrounded)
@@ -541,6 +553,36 @@ public class PlayerController : MonoBehaviourPun
         SetFallingTrue();
 
         onLaunchPad = true;
+    }
+
+    public void KnockBack(Vector3 KnockBackPos, int IdOfPlayerWhoCalledKnockBack, float knockBackForce)
+    {
+        photonView.RPC("KnockBack_RPC", RpcTarget.All, KnockBackPos.x, KnockBackPos.y, KnockBackPos.z, IdOfPlayerWhoCalledKnockBack, knockBackForce);
+    }
+
+    [PunRPC]
+    public void KnockBack_RPC(float x, float y, float z, int IdOfPlayerWhoCalledKnockBack,float knockBackForce)
+    {
+        if (!photonView.IsMine)
+            return;
+
+        Vector3 ObjB = new Vector3(x, y, z);
+
+        Vector3 dir = -(transform.position - ObjB).normalized * knockBackForce;
+
+        playerJumpVelocity = dir;
+
+
+        playerWhoKnockedMeBack = GameManager.instance.GetPlayer(IdOfPlayerWhoCalledKnockBack).gameObject;
+
+        isJumping = true;
+        //Sets CC not to try and stepUp while in air
+        cc.stepOffset = 0;
+        cc.slopeLimit = 0;
+
+        SetFallingTrue();
+
+        knockback = true;
     }
 
     #endregion
