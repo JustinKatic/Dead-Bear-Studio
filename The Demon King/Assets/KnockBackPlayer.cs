@@ -11,6 +11,9 @@ public class KnockBackPlayer : MonoBehaviourPun
     public float knockBackForce = 30;
     public float knockBackRange = 15;
     public float knockBackUpPos = 4;
+    public GameObject pushBackEffectObj;
+
+
 
 
 
@@ -26,20 +29,14 @@ public class KnockBackPlayer : MonoBehaviourPun
 
     private void Ability2_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        Collider[] cols = Physics.OverlapSphere(transform.position, knockBackRange, layersCanHit);
-        foreach (var col in cols)
-        {
-            if (col.CompareTag("PlayerParent"))
-            {
-                KnockBackPos = col.transform.position + ((col.transform.position - transform.position).normalized * 5);
-                KnockBackPos.y = transform.position.y + knockBackUpPos;
-                col.GetComponent<PlayerController>().KnockBack(KnockBackPos, playerController.id, knockBackForce);
-            }
-        }
+        photonView.RPC("SpawnPushbackEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, knockBackForce, knockBackRange, knockBackUpPos, playerController.id);
     }
 
-    private void OnDrawGizmos()
+    [PunRPC]
+    void SpawnPushbackEffect_RPC(float x, float y, float z, float knockBackForce, float knockBackRange, float knockBackUpPos, int IdOfPlayerWhoSpawnedKnockback)
     {
-        Gizmos.DrawWireSphere(KnockBackPos, .5f);
+        GameObject pushBackEffect = Instantiate(pushBackEffectObj, new Vector3(x, y, z), Quaternion.identity);
+        PushBackAbility PushBackAbility = pushBackEffect.GetComponent<PushBackAbility>();
+        PushBackAbility.Init(IdOfPlayerWhoSpawnedKnockback, knockBackForce, knockBackRange, knockBackUpPos);
     }
 }

@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviourPun
 
 
     [HideInInspector] public bool knockback;
-    private GameObject playerWhoKnockedMeBack;
+    
 
 
 
@@ -575,9 +575,6 @@ public class PlayerController : MonoBehaviourPun
         Vector3 dir = -(transform.position - ObjB).normalized * knockBackForce;
 
         playerJumpVelocity = dir;
-
-
-        playerWhoKnockedMeBack = GameManager.instance.GetPlayer(IdOfPlayerWhoCalledKnockBack).gameObject;
 
         isJumping = true;
         //Sets CC not to try and stepUp while in air
