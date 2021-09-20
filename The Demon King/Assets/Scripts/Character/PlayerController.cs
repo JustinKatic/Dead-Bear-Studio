@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviourPun
     private float slideFriction = 0.3f;
 
 
-    private bool knockback;
+    [HideInInspector] public bool knockback;
     private GameObject playerWhoKnockedMeBack;
 
 
@@ -195,6 +195,7 @@ public class PlayerController : MonoBehaviourPun
             {
                 playerJumpVelocity.y += DrowningInLavaGravity * Time.deltaTime;
                 onLaunchPad = false;
+                knockback = false;
             }
 
             AccelerateMoveSpeed();
@@ -217,6 +218,8 @@ public class PlayerController : MonoBehaviourPun
                 }
                 if (onLaunchPad)
                     onLaunchPad = false;
+                if (knockback)
+                    knockback = false;
             }
             else if (playerMoveVelocity.y <= VelocityToStartFalling)
             {
@@ -242,8 +245,8 @@ public class PlayerController : MonoBehaviourPun
             if (knockback)
             {
                 playerMoveVelocity = playerJumpVelocity;
-                if (Vector3.Distance(playerWhoKnockedMeBack.transform.position, transform.position) >= 15)
-                    knockback = false;
+                //if (Vector3.Distance(playerWhoKnockedMeBack.transform.position, transform.position) >= 15)
+                //    knockback = false;
             }
 
 
@@ -510,6 +513,7 @@ public class PlayerController : MonoBehaviourPun
             PlayerSoundManager.Instance.PlayJumpLandNormalSound();
 
         onLaunchPad = false;
+        knockback = false;
     }
 
     void PlayLandingEffect()
@@ -561,7 +565,7 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void KnockBack_RPC(float x, float y, float z, int IdOfPlayerWhoCalledKnockBack,float knockBackForce)
+    public void KnockBack_RPC(float x, float y, float z, int IdOfPlayerWhoCalledKnockBack, float knockBackForce)
     {
         if (!photonView.IsMine)
             return;
