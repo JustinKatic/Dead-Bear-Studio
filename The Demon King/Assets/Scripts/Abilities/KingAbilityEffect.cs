@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class LionKingAbilityEffect : MonoBehaviourPun
+public class KingAbilityEffect : MonoBehaviourPun
 {
     private int attackerId;
     private float damageFrequency;
