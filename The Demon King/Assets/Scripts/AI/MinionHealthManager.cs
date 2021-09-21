@@ -29,8 +29,8 @@ public class MinionHealthManager : HealthManager
 
     [SerializeField] Material myMatInstance;
 
-
-
+    private IEnumerator damageEffectCo;
+    [SerializeField] float TimeToLerpOutOfDmgEffect = 2;
 
 
     #region StartUp
@@ -187,15 +187,26 @@ public class MinionHealthManager : HealthManager
             if (CurrentHealth <= 0)
                 OnBeingStunnedStart();
         }
-        StartCoroutine(ToggleDmgShader());
+        if (damageEffectCo != null)
+            StopCoroutine(damageEffectCo);
+        damageEffectCo = ToggleDmgShader();
+        StartCoroutine(damageEffectCo);
     }
 
     IEnumerator ToggleDmgShader()
     {
-        myMatInstance.SetFloat("_DamageEffectTIme", 1);
-        yield return new WaitForSeconds(0.3f);
-        myMatInstance.SetFloat("_DamageEffectTIme", 0);
+        float lerpTime = 0;
+
+
+        while (lerpTime < TimeToLerpOutOfDmgEffect)
+        {
+            float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / TimeToLerpOutOfDmgEffect));
+            lerpTime += Time.deltaTime * 0.4f;
+            myMatInstance.SetFloat("_DamageEffectTIme", valToBeLerped);
+            yield return null;
+        }
     }
+
 
     public override void Heal(int amountToHeal)
     {

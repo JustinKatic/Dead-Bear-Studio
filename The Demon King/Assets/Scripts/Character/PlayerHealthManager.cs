@@ -54,6 +54,8 @@ public class PlayerHealthManager : HealthManager
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
+    private IEnumerator damageEffectCo;
+    [SerializeField] float TimeToLerpOutOfDmgEffect = 2;
 
 
     #region Startup
@@ -288,14 +290,24 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     void PlayDmgShader_RPC()
     {
-        StartCoroutine(ToggleDmgShader());
+        if (damageEffectCo != null)
+            StopCoroutine(damageEffectCo);
+        damageEffectCo = ToggleDmgShader();
+        StartCoroutine(damageEffectCo);
     }
 
     IEnumerator ToggleDmgShader()
     {
-        evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTIme", 1);
-        yield return new WaitForSeconds(0.3f);
-        evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTIme", 0);
+        float lerpTime = 0;
+
+
+        while (lerpTime < TimeToLerpOutOfDmgEffect)
+        {
+            float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / TimeToLerpOutOfDmgEffect));
+            lerpTime += Time.deltaTime * 0.4f;
+            evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTIme", valToBeLerped);
+            yield return null;
+        }
     }
 
 
