@@ -57,13 +57,13 @@ public class EvolutionManager : MonoBehaviourPun
 
         foreach (var evolution in evolutions)
         {
-            Renderer[] children;
-            children = evolution.GetComponentsInChildren<Renderer>(true);
+            SkinnedMeshRenderer[] children;
+            children = evolution.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
             var newMat = Instantiate(evolution.myMatInstance);
             evolution.myMatInstance = newMat;
 
-            foreach (Renderer rend in children)
+            foreach (SkinnedMeshRenderer rend in children)
             {
                 var mats = new Material[rend.materials.Length];
                 for (var j = 0; j < rend.materials.Length; j++)
