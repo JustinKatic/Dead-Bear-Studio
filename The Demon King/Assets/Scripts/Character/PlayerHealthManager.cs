@@ -250,7 +250,10 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     public void TakeDamage_RPC(int damage, int attackerID)
     {
-        if (invulnerable || CurrentHealth <= 0 || beingDevoured)
+        if (CurrentHealth <= 0 || beingDevoured)
+            return;
+        PlayDmgShader();
+        if (invulnerable)
             return;
 
         if (CurrentHealth - damage <= 0)
@@ -261,7 +264,6 @@ public class PlayerHealthManager : HealthManager
         //Remove health
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
 
-        PlayDmgShader();
 
         if (attackerID != 0)
         {
@@ -570,7 +572,9 @@ public class PlayerHealthManager : HealthManager
     IEnumerator BecomeInvulenerable()
     {
         invulnerable = true;
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("_IsDamageImmune", 1);
         yield return new WaitForSeconds(invulenerableTimeAfterStun);
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("_IsDamageImmune", 0);
         invulnerable = false;
     }
 }
