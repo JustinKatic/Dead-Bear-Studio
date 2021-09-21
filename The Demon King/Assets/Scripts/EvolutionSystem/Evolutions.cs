@@ -61,6 +61,7 @@ public class Evolutions : MonoBehaviourPun
     public int ScoreWorth;
     public int AmountToHealAfterStunned;
     public int AmountToHealWhenEvolveing;
+    public Material myMatInstance;
 
 
 

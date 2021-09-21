@@ -13,6 +13,7 @@ public class EvolutionManager : MonoBehaviourPun
     [SerializeField] private Animator EvolveUIAnim;
 
 
+
     [Header("MINION TYPES")]
     [SerializeField] private MinionType redMinion;
     [SerializeField] private MinionType greenMinion;
@@ -20,7 +21,7 @@ public class EvolutionManager : MonoBehaviourPun
 
     //List to hold all evolutions
     [HideInInspector] public List<Evolutions> evolutions = new List<Evolutions>();
-    [HideInInspector] public Evolutions activeEvolution;
+    public Evolutions activeEvolution;
     [HideInInspector] public Evolutions nextEvolution;
 
     //Components
@@ -51,6 +52,26 @@ public class EvolutionManager : MonoBehaviourPun
 
         //Gets components that everyone needs access too
         evolutions = GetComponentsInChildren<Evolutions>(true).ToList();
+
+        foreach (var evolution in evolutions)
+        {
+            Renderer[] children;
+            children = evolution.GetComponentsInChildren<Renderer>(true);
+
+            var newMat = Instantiate(evolution.myMatInstance);
+            evolution.myMatInstance = newMat;
+
+            foreach (Renderer rend in children)
+            {
+                var mats = new Material[rend.materials.Length];
+                for (var j = 0; j < rend.materials.Length; j++)
+                {
+                    mats[j] = newMat;
+                }
+                rend.materials = mats;
+            }
+        }
+
         playerHealthManager = GetComponent<PlayerHealthManager>();
 
         if (photonView.IsMine)
@@ -120,6 +141,7 @@ public class EvolutionManager : MonoBehaviourPun
             {
                 evolution.gameObject.SetActive(true);
                 playerHealthManager.MyMinionType = evolution.MyMinionType;
+                activeEvolution = evolution;
                 return;
             }
         }
@@ -251,6 +273,7 @@ public class EvolutionManager : MonoBehaviourPun
             if (evolution.tag == nextModelsTag)
             {
                 evolution.gameObject.SetActive(true);
+                activeEvolution = evolution;
                 playerHealthManager.MyMinionType = evolution.MyMinionType;
             }
         }

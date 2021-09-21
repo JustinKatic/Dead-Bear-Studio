@@ -27,6 +27,10 @@ public class MinionHealthManager : HealthManager
     [SerializeField] float minionExpWorth;
     [SerializeField] int minionScoreWorth;
 
+    [SerializeField] Material myMatInstance;
+
+
+
 
 
     #region StartUp
@@ -43,6 +47,23 @@ public class MinionHealthManager : HealthManager
         CurrentHealth = MaxHealth;
         SetAIHealthValues(MaxHealth);
         agent = GetComponent<NavMeshAgent>();
+
+
+        Renderer[] children;
+        children = myModel.GetComponentsInChildren<Renderer>(true);
+
+        var newMat = Instantiate(myMatInstance);
+        myMatInstance = newMat;
+
+        foreach (Renderer rend in children)
+        {
+            var mats = new Material[rend.materials.Length];
+            for (var j = 0; j < rend.materials.Length; j++)
+            {
+                mats[j] = newMat;
+            }
+            rend.materials = mats;
+        }
     }
     #endregion
 
@@ -166,7 +187,16 @@ public class MinionHealthManager : HealthManager
             if (CurrentHealth <= 0)
                 OnBeingStunnedStart();
         }
+        StartCoroutine(ToggleDmgShader());
     }
+
+    IEnumerator ToggleDmgShader()
+    {
+        myMatInstance.SetFloat("_DamageEffectTIme", 1);
+        yield return new WaitForSeconds(0.3f);
+        myMatInstance.SetFloat("_DamageEffectTIme", 0);
+    }
+
     public override void Heal(int amountToHeal)
     {
         //Only running on local player

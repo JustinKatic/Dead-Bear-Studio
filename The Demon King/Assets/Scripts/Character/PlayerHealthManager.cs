@@ -31,6 +31,7 @@ public class PlayerHealthManager : HealthManager
     private PlayerController PlayerWhoDevouredMeController;
     private PlayerHealthManager playerWhoLastShotMeHealthManager;
     private DemonKingEvolution demonKingEvolution;
+    private EvolutionManager evolutionManager;
     private CrownHealthManager demonKingCrownHealthManager;
     private Devour devour;
 
@@ -65,6 +66,8 @@ public class PlayerHealthManager : HealthManager
 
         playerHudHealthBarMat = Instantiate(PlayerHudHealthBarImg.material);
         PlayerHudHealthBarImg.material = playerHudHealthBarMat;
+
+        evolutionManager = GetComponent<EvolutionManager>();
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -256,8 +259,7 @@ public class PlayerHealthManager : HealthManager
         //Remove health
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
 
-
-
+        PlayDmgShader();
 
         if (attackerID != 0)
         {
@@ -277,6 +279,25 @@ public class PlayerHealthManager : HealthManager
         if (CurrentHealth <= 0)
             OnBeingStunnedStart();
     }
+
+    void PlayDmgShader()
+    {
+        photonView.RPC("PlayDmgShader_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void PlayDmgShader_RPC()
+    {
+        StartCoroutine(ToggleDmgShader());
+    }
+
+    IEnumerator ToggleDmgShader()
+    {
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTIme", 1);
+        yield return new WaitForSeconds(0.3f);
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTIme", 0);
+    }
+
 
     public override void Heal(int amountToHeal)
     {
@@ -477,6 +498,7 @@ public class PlayerHealthManager : HealthManager
             currentHealthOffset = healthOffset;
         }
     }
+
     #endregion
 
     #region Stun
