@@ -55,7 +55,9 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] private Slider healthRegenTimerSlider;
 
     private IEnumerator damageEffectCo;
-    [SerializeField] float TimeToLerpOutOfDmgEffect = 2;
+    [SerializeField] float TimeToLerpOutOfDmgEffect = .5f;
+
+    private IEnumerator beingDevourEffectCo;
 
 
     #region Startup
@@ -208,16 +210,46 @@ public class PlayerHealthManager : HealthManager
         debuffTimer.StopStunTimer();
         debuffTimer.StartBeingDevouredTimer(TimeTakenToBeDevoured);
         beingDevoured = true;
+        PlayDevourEffect();
     }
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
         debuffTimer.StopBeingDevouredTimer();
+        StopDevourEffect();
         PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
         PlayerWhoDevouredMeController.vCam.m_Priority = 12;
         KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
         KilledByUIPanel.SetActive(true);
         Respawn(true);
+    }
+
+    void PlayDevourEffect()
+    {
+        photonView.RPC("PlayDevourEffect_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void PlayDevourEffect_RPC()
+    {
+        if (beingDevourEffectCo != null)
+            StopCoroutine(beingDevourEffectCo);
+        beingDevourEffectCo = ToggleDevourShader();
+        StartCoroutine(beingDevourEffectCo);
+    }
+
+    IEnumerator ToggleDevourShader()
+    {
+        float lerpTime = 0;
+
+        while (lerpTime < TimeTakenToBeDevoured)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDevoured));
+            lerpTime += Time.deltaTime;
+            evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", valToBeLerped);
+            yield return null;
+        }
+        beingDevourEffectCo = null;
     }
 
 
@@ -236,7 +268,21 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             debuffTimer.StopBeingDevouredTimer();
+            StopDevourEffect();
         }
+    }
+
+    void StopDevourEffect()
+    {
+        photonView.RPC("StopDevourEffect_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void StopDevourEffect_RPC()
+    {
+        if (beingDevourEffectCo != null)
+            StopCoroutine(beingDevourEffectCo);
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", 0);
     }
 
     #endregion
@@ -306,8 +352,8 @@ public class PlayerHealthManager : HealthManager
         while (lerpTime < TimeToLerpOutOfDmgEffect)
         {
             float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / TimeToLerpOutOfDmgEffect));
-            lerpTime += Time.deltaTime * 0.4f;
-            evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTIme", valToBeLerped);
+            lerpTime += Time.deltaTime;
+            evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTime", valToBeLerped);
             yield return null;
         }
     }

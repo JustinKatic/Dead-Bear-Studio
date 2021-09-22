@@ -37,6 +37,8 @@ public class EvolutionManager : MonoBehaviourPun
     private bool evolving = false;
 
     private IEnumerator changeEvolutionCo;
+    private IEnumerator EvolutionEffectCo;
+
 
     private List<MinionType> minionTypes = new List<MinionType>();
 
@@ -55,13 +57,13 @@ public class EvolutionManager : MonoBehaviourPun
 
         foreach (var evolution in evolutions)
         {
-            Renderer[] children;
-            children = evolution.GetComponentsInChildren<Renderer>(true);
+            SkinnedMeshRenderer[] children;
+            children = evolution.GetComponentsInChildren<SkinnedMeshRenderer>(true);
 
             var newMat = Instantiate(evolution.myMatInstance);
             evolution.myMatInstance = newMat;
 
-            foreach (Renderer rend in children)
+            foreach (SkinnedMeshRenderer rend in children)
             {
                 var mats = new Material[rend.materials.Length];
                 for (var j = 0; j < rend.materials.Length; j++)
@@ -308,9 +310,34 @@ public class EvolutionManager : MonoBehaviourPun
     void PlayEvolveVFX_RPC(bool enabled)
     {
         if (enabled)
+        {
             EvolveVFX.SetActive(true);
+
+            EvolutionEffectCo = ToggleEvolveShader();
+            StartCoroutine(EvolutionEffectCo);
+        }
         else
+        {
             EvolveVFX.SetActive(false);
+
+            if (EvolutionEffectCo != null)
+                StopCoroutine(EvolutionEffectCo);
+            activeEvolution.myMatInstance.SetFloat("_EvolvingEffectTime", 0);
+        }
+    }
+
+    IEnumerator ToggleEvolveShader()
+    {
+        float lerpTime = 0;
+
+        while (lerpTime < TimeToEvolve)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeToEvolve));
+            lerpTime += Time.deltaTime;
+            activeEvolution.myMatInstance.SetFloat("_EvolvingEffectTime", valToBeLerped);
+            yield return null;
+        }
+        EvolutionEffectCo = null;
     }
 
     void PlayDemonKingEvolveVFX(bool Enabled)
@@ -322,9 +349,18 @@ public class EvolutionManager : MonoBehaviourPun
     void DemonKingEvolutionVFX(bool enabled)
     {
         if (enabled)
+        {
             DemonKingEvolveVFX.SetActive(true);
+            EvolutionEffectCo = ToggleEvolveShader();
+            StartCoroutine(EvolutionEffectCo);
+        }
         else
+        {
             DemonKingEvolveVFX.SetActive(false);
+            if (EvolutionEffectCo != null)
+                StopCoroutine(EvolutionEffectCo);
+            activeEvolution.myMatInstance.SetFloat("_EvolvingEffectTime", 0);
+        }
     }
     #endregion
 }

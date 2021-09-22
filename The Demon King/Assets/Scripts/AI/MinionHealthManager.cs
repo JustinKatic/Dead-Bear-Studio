@@ -32,6 +32,8 @@ public class MinionHealthManager : HealthManager
     private IEnumerator damageEffectCo;
     [SerializeField] float TimeToLerpOutOfDmgEffect = 2;
 
+    private IEnumerator beingDevourEffectCo;
+
 
     #region StartUp
     void Awake()
@@ -201,8 +203,8 @@ public class MinionHealthManager : HealthManager
         while (lerpTime < TimeToLerpOutOfDmgEffect)
         {
             float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / TimeToLerpOutOfDmgEffect));
-            lerpTime += Time.deltaTime * 0.4f;
-            myMatInstance.SetFloat("_DamageEffectTIme", valToBeLerped);
+            lerpTime += Time.deltaTime;
+            myMatInstance.SetFloat("_DamageEffectTime", valToBeLerped);
             yield return null;
         }
     }
@@ -224,13 +226,66 @@ public class MinionHealthManager : HealthManager
         if (photonView.IsMine)
         {
             beingDevoured = true;
+            PlayDevourEffect();
         }
     }
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
         Respawn();
+        StopDevourEffect();
     }
+
+    void PlayDevourEffect()
+    {
+        photonView.RPC("PlayDevourEffect_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void PlayDevourEffect_RPC()
+    {
+        if (beingDevourEffectCo != null)
+            StopCoroutine(beingDevourEffectCo);
+        beingDevourEffectCo = ToggleDevourShader();
+        StartCoroutine(beingDevourEffectCo);
+    }
+
+    IEnumerator ToggleDevourShader()
+    {
+        float lerpTime = 0;
+
+        while (lerpTime < TimeTakenToBeDevoured)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDevoured));
+            lerpTime += Time.deltaTime;
+            myMatInstance.SetFloat("_BeingDevouredEffectTime", valToBeLerped);
+            yield return null;
+        }
+        beingDevourEffectCo = null;
+    }
+
+    void StopDevourEffect()
+    {
+        photonView.RPC("StopDevourEffect_RPC", RpcTarget.All);
+    }
+
+    [PunRPC]
+    void StopDevourEffect_RPC()
+    {
+        if (beingDevourEffectCo != null)
+            StopCoroutine(beingDevourEffectCo);
+        myMatInstance.SetFloat("_BeingDevouredEffectTime", 0);
+    }
+
+    [PunRPC]
+    protected override void InterruptDevourOnSelf_RPC()
+    {
+        base.InterruptDevourOnSelf_RPC();
+        if (photonView.IsMine)
+            StopDevourEffect();
+
+    }
+
     #endregion
 
     #region Respawn
