@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!64 &7959475676849542310
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5320011032506457113}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4947568047776972491, guid: c80c5883787accb4cbedc2f25a4b6973, type: 3}
+--- !u!64 &7959475676849542311
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6739373167682366139}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7390954653430001652, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
 --- !u!1 &9075959046852138493
 GameObject:
   m_ObjectHideFlags: 0
@@ -9,7 +37,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5041420924116616461}
-  m_Layer: 0
+  - component: {fileID: 7959475676849542305}
+  m_Layer: 3
   m_Name: PillarMetalTop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,6 +61,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &7959475676849542305
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9075959046852138493}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1001 &4977902594333204808
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -87,8 +130,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_TrimMetal_PillarTop
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c80c5883787accb4cbedc2f25a4b6973, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c80c5883787accb4cbedc2f25a4b6973, type: 3}
+--- !u!1 &5320011032506457113 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c80c5883787accb4cbedc2f25a4b6973, type: 3}
+  m_PrefabInstance: {fileID: 4977902594333204808}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4800742045276997283 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c80c5883787accb4cbedc2f25a4b6973, type: 3}
@@ -145,12 +197,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6647a5a555a864943a5de80bcf5c660a, type: 2}
     - target: {fileID: 919132149155446097, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
       propertyPath: m_Name
       value: SM_PillarTop_01
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
+--- !u!1 &6739373167682366139 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
+  m_PrefabInstance: {fileID: 5856502375141644266}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6254585762754457601 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: a3dece78dc51d1f489a05707479a4dcf, type: 3}
