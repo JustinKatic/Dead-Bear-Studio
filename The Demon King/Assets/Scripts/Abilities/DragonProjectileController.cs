@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class DragonProjectileController : MonoBehaviourPun
 {
@@ -104,9 +105,9 @@ public class DragonProjectileController : MonoBehaviourPun
     }
 
     [PunRPC]
-    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize,string evolutionWhoShot)
+    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize, string evolutionWhoShot)
     {
-        if (attackerId == GameManager.instance.myIdIndex)
+        if (attackerId == PhotonNetwork.LocalPlayer.GetPlayerNumber())
         {
             if (evolutionWhoShot == "Child")
             {

@@ -133,6 +133,9 @@ public class CharacterEditor : EditorWindow
     }
     private void Awake()
     {
+        GetEvolutionInformation(lionType, "Lion");
+        GetEvolutionInformation(rayType, "Ray");
+        GetEvolutionInformation(dragonType, "Dragon");
 
     }
     private void OnGUI()
@@ -160,11 +163,7 @@ public class CharacterEditor : EditorWindow
             GetEvolutionInformation(dragonType,"Dragon");
             DisplayEvolutionLayout("Dragon");
         }
-        //else if (toolbarSel == 3)
-        //{
-        //    GetEvolutionInformation(dragonType, "Slime");
-        //    DisplayEvolutionLayout("Slime");
-        //}
+
     }
     private void OnValidate()
     {
@@ -288,7 +287,9 @@ public class CharacterEditor : EditorWindow
         GUILayout.Space(50f);
         EditorGUILayout.EndHorizontal();
 
-        EditorGUILayout.BeginHorizontal();
+        GUILayout.Space(10f);
+
+        EditorGUILayout.BeginHorizontal(textFields);
         GUILayout.Label("EXP Value", EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(expWorthEvo0, GUIContent.none, propertyFields);
@@ -300,6 +301,8 @@ public class CharacterEditor : EditorWindow
         EditorGUILayout.PropertyField(expWorthEvo3, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
         EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(10f);
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Health Regained Stun", EditorStyles.boldLabel, textFields);
@@ -313,6 +316,8 @@ public class CharacterEditor : EditorWindow
         EditorGUILayout.PropertyField(healAfterStunnedEvo3, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
         EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(10f);
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Health When Evolving", EditorStyles.boldLabel, textFields);
@@ -342,6 +347,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Cooldown", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -354,6 +361,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(cooldownEvo3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Charge Up Time", EditorStyles.boldLabel, textFields);
@@ -368,6 +377,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Laser Duration", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -379,6 +390,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Auto Shoot Time", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -389,6 +402,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(autoShootTimer3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Laser Frequency", EditorStyles.boldLabel, textFields);
@@ -419,6 +434,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Cooldown", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -431,6 +448,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(cooldownEvo3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
@@ -445,6 +464,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("AOE Radius", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -455,6 +476,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(aoeRadius3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("AOE Damage", EditorStyles.boldLabel, textFields);
@@ -485,6 +508,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Damage Frequency", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -495,6 +520,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(damageFrequency3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Reapply Frequency", EditorStyles.boldLabel, textFields);
@@ -509,6 +536,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Gas Duration", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -519,6 +548,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(gasDuration3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Gas Radius", EditorStyles.boldLabel, textFields);
@@ -531,6 +562,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
+            GUILayout.Space(10f);
+
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("gas Duration On Player", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
@@ -541,6 +574,8 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(gasDurationOnPlayer3, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);

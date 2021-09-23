@@ -90,6 +90,8 @@ public class PlayerController : MonoBehaviourPun
     private void Awake()
     {
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();
+        playerHealth = GetComponent<PlayerHealthManager>();
+
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -107,7 +109,6 @@ public class PlayerController : MonoBehaviourPun
             //Get Components
             CharacterInputs = InputManager.inputActions;
             cc = GetComponent<CharacterController>();
-            playerHealth = GetComponent<PlayerHealthManager>();
             mainCamera = Camera.main;
 
             vCam.m_Priority = 11;
@@ -161,8 +162,7 @@ public class PlayerController : MonoBehaviourPun
     {
         id = ID;
         GameManager.instance.players[id] = this;
-        if (photonView.IsMine)
-            playerHealth.PlayerId = ID;
+        playerHealth.PlayerId = ID;
     }
 
     public void PlayRectAnim()
