@@ -96,10 +96,6 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-    private void Start()
-    {
-        PlayerId = player.id;
-    }
     #endregion
 
     protected override void Update()

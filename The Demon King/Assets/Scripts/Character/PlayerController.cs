@@ -67,6 +67,7 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public Animator currentAnim = null;
     [HideInInspector] public CinemachineVirtualCamera vCam;
     [HideInInspector] public CharacterController cc;
+    private PlayerHealthManager playerHealth;
 
     [SerializeField] private GameObject reticle;
     [SerializeField] private Animator reticleAnimator;
@@ -80,7 +81,7 @@ public class PlayerController : MonoBehaviourPun
 
 
     [HideInInspector] public bool knockback;
-    
+
 
 
 
@@ -106,6 +107,7 @@ public class PlayerController : MonoBehaviourPun
             //Get Components
             CharacterInputs = InputManager.inputActions;
             cc = GetComponent<CharacterController>();
+            playerHealth = GetComponent<PlayerHealthManager>();
             mainCamera = Camera.main;
 
             vCam.m_Priority = 11;
@@ -159,6 +161,7 @@ public class PlayerController : MonoBehaviourPun
     {
         id = ID;
         GameManager.instance.players[id] = this;
+        playerHealth.PlayerId = ID;
     }
 
     public void PlayRectAnim()
