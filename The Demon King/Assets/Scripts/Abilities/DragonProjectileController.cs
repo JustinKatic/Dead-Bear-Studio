@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Pun.UtilityScripts;
 
 public class DragonProjectileController : MonoBehaviourPun
 {
@@ -89,7 +90,7 @@ public class DragonProjectileController : MonoBehaviourPun
 
             DealDamageToPlayersAndMinions(other);
 
-            SpawnGasEffect();
+            SpawnGasEffect(other.GetComponent<PlayerHealthManager>().PlayerId);
 
             FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);
 
@@ -98,15 +99,15 @@ public class DragonProjectileController : MonoBehaviourPun
     }
 
 
-    void SpawnGasEffect()
+    void SpawnGasEffect(int PlayerHitId)
     {
         photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize, evolutionWhoShot);
     }
 
     [PunRPC]
-    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize,string evolutionWhoShot)
+    void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize, string evolutionWhoShot)
     {
-        if (attackerId == GameManager.instance.myIdIndex)
+        if (attackerId == PhotonNetwork.LocalPlayer.GetPlayerNumber())
         {
             if (evolutionWhoShot == "Child")
             {
