@@ -35,6 +35,8 @@ public class EvolutionManager : MonoBehaviourPun
     private LeaderboardManager leaderboardManager;
 
     private bool evolving = false;
+    private KnockBackPlayer knockBackPlayer;
+
 
     private IEnumerator changeEvolutionCo;
     private IEnumerator EvolutionEffectCo;
@@ -84,6 +86,9 @@ public class EvolutionManager : MonoBehaviourPun
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             playerTimers = GetComponentInChildren<PlayerTimers>();
             leaderboardManager = GetComponent<LeaderboardManager>();
+            knockBackPlayer = GetComponent<KnockBackPlayer>();
+
+
 
             //get and set a random minion type
             SetMyMinionTypeOnStart();
@@ -216,6 +221,7 @@ public class EvolutionManager : MonoBehaviourPun
             if (demonKingEvolution.AmITheDemonKing)
             {
                 PlayDemonKingEvolveVFX(false);
+                knockBackPlayer.SpawnPushBack();
                 playerHealthManager.invulnerable = false;
                 PlayerSoundManager.Instance.StopDemonKingEvolveSound();
                 PlayerSoundManager.Instance.PlayDemonKingAnnouncementSound();
