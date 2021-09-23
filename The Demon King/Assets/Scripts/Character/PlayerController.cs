@@ -161,7 +161,8 @@ public class PlayerController : MonoBehaviourPun
     {
         id = ID;
         GameManager.instance.players[id] = this;
-        playerHealth.PlayerId = ID;
+        if (photonView.IsMine)
+            playerHealth.PlayerId = ID;
     }
 
     public void PlayRectAnim()
