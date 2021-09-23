@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class DragonAbility : AbilityBase
 {
-    [Header("Player Status")]
+    //[Header("Player Status")]
     [SerializeField] private float gasDurationOnPlayer;
     [SerializeField] private float damageFrequency;
-    [Header("Projectile")]
+    //[Header("Projectile")]
     [SerializeField] private int projectileHitDmg;
-    [Header("Gas Status")]
+    //[Header("Gas Status")]
     [SerializeField] private float frequencyToReapplyGas;
     [SerializeField] private float gasDuration;
     [SerializeField] private float gasSize;
