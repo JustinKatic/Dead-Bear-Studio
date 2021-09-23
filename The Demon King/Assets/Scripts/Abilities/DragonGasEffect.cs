@@ -63,7 +63,7 @@ public class DragonGasEffect : MonoBehaviour
                 //tell the minion who was hit to take damage
                 MinionHealthManager minionHealth = col.GetComponentInParent<MinionHealthManager>();
                 //call gas effect
-                minionHealth.ApplyGasEffect(damageOverTimeDamage, attackerId, damageFrequency, gasDurationOnPlayer);
+                minionHealth.ApplyGasEffect_RPC(damageOverTimeDamage, attackerId, damageFrequency, gasDurationOnPlayer);
             }
         }
     }

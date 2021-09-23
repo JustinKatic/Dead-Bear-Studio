@@ -164,6 +164,7 @@ public class DragonProjectileController : MonoBehaviourPun
             if (playerHealth.PlayerId != attackerId)
             {
                 playerHealth.TakeDamage(projectileHitDmg, attackerId);
+                playerHealth.ApplyGasEffect(damage, attackerId, damageFrequency, gasDurationOnPlayer);
                 GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
             }
         }
@@ -173,6 +174,7 @@ public class DragonProjectileController : MonoBehaviourPun
             //tell the minion who was hit to take damage
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(projectileHitDmg, attackerId);
+            minionHealth.ApplyGasEffect(damage, attackerId, damageFrequency, gasDurationOnPlayer);
             GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
         }
     }

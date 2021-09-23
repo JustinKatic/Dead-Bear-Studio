@@ -168,7 +168,13 @@ public class PlayerHealthManager : HealthManager
 
     public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
     {
-        if (isStunned || invulnerable)
+        photonView.RPC("ApplyGasEffect_RPC", RpcTarget.All, damageOverTimeDamage, attackerId, gasFrequency, gasDurationOnPlayer);
+    }
+
+    [PunRPC]
+    public void ApplyGasEffect_RPC(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
+    {
+        if (!photonView.IsMine || isStunned || invulnerable)
             return;
 
         if (!gasEffect)
