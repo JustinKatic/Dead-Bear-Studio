@@ -61,7 +61,6 @@ public class GameManager : MonoBehaviourPun
             if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
             {
                 myIdIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-                Debug.Log(myIdIndex);
 
                 Hashtable PlayerId = new Hashtable();
                 PlayerId.Add("PlayerId", myIdIndex);

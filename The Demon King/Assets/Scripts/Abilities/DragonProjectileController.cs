@@ -107,7 +107,14 @@ public class DragonProjectileController : MonoBehaviourPun
     [PunRPC]
     void SpawnGasEffect_RPC(float x, float y, float z, int attackerID, int damage, float damageFrequency, float frequencyToReapplyGas, float gasDuration, float gasDurationOnPlayer, float gasSize, string evolutionWhoShot)
     {
-        if (attackerId == PhotonNetwork.LocalPlayer.GetPlayerNumber())
+        int index = -1;
+
+        if (photonView.IsMine)
+        {
+            index = GameManager.instance.myIdIndex;
+        }
+
+        if (attackerId == index)
         {
             if (evolutionWhoShot == "Child")
             {
