@@ -90,7 +90,7 @@ public class DragonProjectileController : MonoBehaviourPun
 
             DealDamageToPlayersAndMinions(other);
 
-            SpawnGasEffect(other.GetComponent<PlayerHealthManager>().PlayerId);
+            SpawnGasEffect();
 
             FMODUnity.RuntimeManager.PlayOneShotAttached(OnTriggerSound, gameObject);
 
@@ -99,7 +99,7 @@ public class DragonProjectileController : MonoBehaviourPun
     }
 
 
-    void SpawnGasEffect(int PlayerHitId)
+    void SpawnGasEffect()
     {
         photonView.RPC("SpawnGasEffect_RPC", RpcTarget.All, transform.position.x, transform.position.y, transform.position.z, attackerId, damage, damageFrequency, frequencyToReapplyGas, gasDuration, gasDurationOnPlayer, gasSize, evolutionWhoShot);
     }
