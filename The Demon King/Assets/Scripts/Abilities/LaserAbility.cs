@@ -7,15 +7,15 @@ using System;
 
 public class LaserAbility : MonoBehaviourPun
 {
-    [Header("Damage")]
+    //[Header("Damage")]
     [SerializeField] private int damage = 1;
-    [Header("Timers")]
+    //[Header("Timers")]
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private float ChargeupTime = 2f;
     [SerializeField] private float ShootAutomaticallyAt = 3f;
 
 
-    [Header("Laser")]
+    //[Header("Laser")]
     [SerializeField] private float baseLaserDuration = 1f;
     private float laserDuration;
 

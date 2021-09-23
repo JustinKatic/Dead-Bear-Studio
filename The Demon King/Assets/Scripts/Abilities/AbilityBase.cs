@@ -8,7 +8,7 @@ using Photon.Pun;
 [System.Serializable]
 public class AbilityBase : MonoBehaviourPun
 {
-    [Header("Modifiable Stats")]
+    //[Header("Modifiable Stats")]
     [SerializeField] protected float ProjectileSpeed;
     [SerializeField] protected int damage;
     [SerializeField] protected float shootCooldown = 0.3f;
