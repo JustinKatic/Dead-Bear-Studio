@@ -41,13 +41,13 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
 
     private void OnEnable()
-    {
+    {       
         StartChat(NetworkManager.instance.RoomName, PhotonNetwork.NickName);
     }
 
     private void OnDisable()
     {
-        chatClient.Unsubscribe(new string[] { NetworkManager.instance.RoomName });
+        chatClient.Unsubscribe(new string[] { currentChatRoom });
     }
 
     // Update is called once per frame
