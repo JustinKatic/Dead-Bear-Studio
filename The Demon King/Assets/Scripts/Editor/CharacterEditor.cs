@@ -161,14 +161,7 @@ public class CharacterEditor : EditorWindow
             GetEvolutionInformation(dragonType, "Dragon");
             DisplayEvolutionLayout("Dragon");
         }
-        evolution0.ApplyModifiedProperties();
-        evolution0.Update();
-        evolution1.ApplyModifiedProperties();
-        evolution1.Update();
-        evolution2.ApplyModifiedProperties();
-        evolution2.Update();
-        evolution3.ApplyModifiedProperties();
-        evolution3.Update();
+
 
     }
     void SetSerializedObjectsAndPlayers()
@@ -219,6 +212,7 @@ public class CharacterEditor : EditorWindow
             if (i == 0)
             {
                 evolution0 = new SerializedObject(evolutionType[i]);
+                evolution0.Update();
                 maxHealthEvo0 = evolution0.FindProperty("MaxHealth");
                 expWorthEvo0 = evolution0.FindProperty("ExpWorth");
                 healAfterStunnedEvo0 = evolution0.FindProperty("AmountToHealAfterStunned");
@@ -226,6 +220,7 @@ public class CharacterEditor : EditorWindow
             else if (i == 1)
             {
                 evolution1 = new SerializedObject(evolutionType[i]);
+                evolution1.Update();
                 maxHealthEvo1 = evolution1.FindProperty("MaxHealth");
                 expWorthEvo1 = evolution1.FindProperty("ExpWorth");
                 healAfterStunnedEvo1 = evolution1.FindProperty("AmountToHealAfterStunned");
@@ -234,6 +229,7 @@ public class CharacterEditor : EditorWindow
             else if (i == 2)
             {
                 evolution2 = new SerializedObject(evolutionType[i]);
+                evolution2.Update();
                 maxHealthEvo2 = evolution2.FindProperty("MaxHealth");
                 expWorthEvo2 = evolution2.FindProperty("ExpWorth");
                 healAfterStunnedEvo2 = evolution2.FindProperty("AmountToHealAfterStunned");
@@ -242,6 +238,7 @@ public class CharacterEditor : EditorWindow
             else if (i == 3)
             {
                 evolution3 = new SerializedObject(evolutionType[i]);
+                evolution3.Update();
                 maxHealthEvo3 = evolution3.FindProperty("MaxHealth");
                 expWorthEvo3 = evolution3.FindProperty("ExpWorth");
                 healAfterStunnedEvo3 = evolution3.FindProperty("AmountToHealAfterStunned");
@@ -260,6 +257,7 @@ public class CharacterEditor : EditorWindow
             {
                 GetLionAbilityVariables(i);
             }
+
         }
     }
 
@@ -606,7 +604,10 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.EndHorizontal();
 
         }
-
+        evolution0.ApplyModifiedProperties();
+        evolution1.ApplyModifiedProperties();
+        evolution2.ApplyModifiedProperties();
+        evolution3.ApplyModifiedProperties();
     }
     void GetLionAbilityVariables(int level)
     {

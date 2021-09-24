@@ -158,7 +158,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""id"": ""56603216-e5d1-4f51-97fa-1095a1087cf9"",
                     ""path"": ""<Gamepad>/leftStick"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertX=false)"",
                     ""groups"": ""Gamepad"",
                     ""action"": ""Move"",
                     ""isComposite"": false,
