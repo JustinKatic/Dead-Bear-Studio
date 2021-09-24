@@ -70,21 +70,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //Checks if the scene is found within the build settings, otherwise load game as default
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
-            ChatManager.instance.chatClient.Unsubscribe(new string[] { RoomName });
-
             PhotonNetwork.LoadLevel(sceneName);
         }
         else
         {
-            ChatManager.instance.chatClient.Unsubscribe(new string[] { RoomName });
-
             PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
-        }
-        if (sceneName == "Menu")
-        {
-            ChatManager.instance.StartChat(RoomName, PhotonNetwork.NickName);
-
         }
 
         levelNotLoading = true;
