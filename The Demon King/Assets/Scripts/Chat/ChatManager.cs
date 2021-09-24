@@ -36,14 +36,15 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     // Start is called before the first frame update
     void Start()
     {
-        //DontDestroyOnLoad(this.gameObject);       
+        //DontDestroyOnLoad(this.gameObject); 
+        StartChat(NetworkManager.instance.RoomName, PhotonNetwork.NickName);
+
     }
-    
+
     void Awake()
     {
         instance = this;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -53,7 +54,11 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         }
         
     }
+    private void OnDisable()
+    {
+        chatClient.Unsubscribe(new string[] { currentChatRoom });
 
+    }
     public void DebugReturn(DebugLevel level, string message)
     {
 
@@ -144,6 +149,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     /// <summary>To avoid that the Editor becomes unresponsive, disconnect all Photon connections in OnDestroy.</summary>
     public void OnDestroy()
     {
+
         if (this.chatClient != null)
         {
             this.chatClient.Disconnect();
@@ -207,12 +213,14 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     }
     public void StartChat(string roomName, string playerName)
     {
-        ChatManager chatNewComponent = FindObjectOfType<ChatManager>();
+        Debug.Log(roomName);
+        Debug.Log(playerName);
+        ChatManager chatNewComponent = this;
         chatNewComponent.userID = playerName;
         currentChatRoom = roomName;
         chatNewComponent.Connect();
         this.enabled = true;
-        
+ 
     }
     
 }

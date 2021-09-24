@@ -64,9 +64,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-        if (NetworkManager.instance.RoomName != null)
-            ChatManager.instance.StartChat(NetworkManager.instance.RoomName, PhotonNetwork.NickName);
-
         List<string> sceneNames = new List<string>();
 
         foreach (var scene in scenes)
@@ -266,7 +263,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLeaveLobbyButton()
     {
         PhotonNetwork.LeaveRoom();
-        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
         currentRoomName = null;
         SetScreen(mainScreen);
         EventSystem.current.SetSelectedGameObject(null);
@@ -288,7 +284,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         currentRoomName = roomName;
 
-        PhotonNetwork.JoinRoom(roomName);
+        NetworkManager.instance.JoinRoom(roomName);
     }
 
 

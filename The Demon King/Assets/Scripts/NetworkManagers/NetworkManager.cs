@@ -43,6 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+
     }
 
     // creates a new room of the requested room name
@@ -59,6 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // joins a room of the requested room name
     public void JoinRoom(string roomName)
     {
+        RoomName = roomName;
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -77,6 +79,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
         }
+
 
         levelNotLoading = true;
     }
