@@ -151,6 +151,20 @@ public class CharacterEditor : EditorWindow
     }
     private void OnGUI()
     {
+        if (Player == null)
+        {
+            Player = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Player.prefab", typeof(GameObject));
+            evolutions = Player.GetComponentsInChildren<Evolutions>(true);
+            dragonType.Clear();
+            rayType.Clear();
+            lionType.Clear();
+
+            dragonAbility.Clear();
+            rayAbility.Clear();
+            lionAbility.Clear();
+
+            UpdateLists();
+        }
 
         GUILayout.BeginHorizontal();
         toolbarSel = GUILayout.Toolbar(toolbarSel, toolbarStrings);
@@ -341,6 +355,14 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(20f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
+            GUILayout.Space(50f);
+            EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
+
+            EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(damageEvo0, GUIContent.none, propertyFields);
@@ -372,9 +394,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Charge Up Time", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
-            EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);        
             EditorGUILayout.PropertyField(chargeUpTime1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(chargeUpTime2, GUIContent.none, propertyFields);
@@ -502,9 +522,25 @@ public class CharacterEditor : EditorWindow
         {
             GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
             GUILayout.Space(20f);
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Cooldown", EditorStyles.boldLabel, textFields);
+            GUILayout.Space(50f);
+            EditorGUILayout.PropertyField(cooldownEvo0, GUIContent.none, propertyFields);
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
+            GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
+            GUILayout.Space(50f);
+            EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
+            GUILayout.Space(50f);
+            EditorGUILayout.EndHorizontal();
+
+            GUILayout.Space(10f);
+
+            EditorGUILayout.BeginHorizontal();
+            GUILayout.Label("Hit Damage", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(damageEvo0, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
@@ -533,9 +569,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Reapply Frequency", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
-            EditorGUILayout.PropertyField(cooldownEvo0, GUIContent.none, propertyFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(frequencyToReapplyGas1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(frequencyToReapplyGas2, GUIContent.none, propertyFields);
@@ -580,15 +614,6 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.PropertyField(gasDurationOnPlayer2, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(gasDurationOnPlayer3, GUIContent.none, propertyFields);
-            GUILayout.Space(50f);
-            EditorGUILayout.EndHorizontal();
-
-            GUILayout.Space(10f);
-
-            EditorGUILayout.BeginHorizontal();
-            GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
-            EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.EndHorizontal();
 
