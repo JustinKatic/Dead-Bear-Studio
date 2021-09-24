@@ -7,9 +7,9 @@ public class KingAbilityEffect : MonoBehaviourPun
 {
     private int attackerId;
     private float damageFrequency;
-    private float radius;
     private int damage;
     [SerializeField] private LayerMask layersCanDamage;
+    private Animator anim;
 
 
     public void Initialize(int attackerId, float damageFrequency, float abilityDuration, int damage)
@@ -20,8 +20,9 @@ public class KingAbilityEffect : MonoBehaviourPun
             this.damageFrequency = damageFrequency;
             this.damage = damage;
 
-            radius = transform.localScale.x / 2;
+            Invoke("EndAnimation", abilityDuration - 0.4f);
             Invoke("DestroySelf", abilityDuration);
+            anim = GetComponent<Animator>();
         }
     }
 
@@ -33,11 +34,18 @@ public class KingAbilityEffect : MonoBehaviourPun
     }
     void DestroySelf()
     {
-        PhotonNetwork.Destroy(gameObject);
+        PhotonNetwork.Destroy(gameObject.transform.parent.gameObject);
+    }
+
+    void EndAnimation()
+    {
+        anim.Play("DKsecondFXEnd");
     }
 
     void CallEffectOnMinionsAndPlayers()
     {
+        float radius = transform.localScale.x / 2;
+
         Collider[] cols = Physics.OverlapSphere(transform.position, radius, layersCanDamage);
         //stores refrence to tag collided with
 
