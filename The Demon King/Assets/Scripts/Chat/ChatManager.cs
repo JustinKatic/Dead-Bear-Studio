@@ -31,17 +31,19 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     [HideInInspector] public string userID;
 
     [SerializeField] private Color32 textColorMessage;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //DontDestroyOnLoad(this.gameObject);       
-    }
     
     void Awake()
     {
-        instance = this;
+
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+        DontDestroyOnLoad(gameObject);
     }
 
     // Update is called once per frame
@@ -78,7 +80,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnConnected()
     {
-        Debug.Log(userID + "Connection Successful");
         this.chatClient.SetOnlineStatus(ChatUserStatus.Online); // You can set your online state (without a mesage).
         chatClient.Subscribe(currentChatRoom);
 
@@ -118,7 +119,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
 
-        Debug.Log("OnSubscribed: " + string.Join(", ", channels));    
     }
 
     public void OnUnsubscribed(string[] channels)
@@ -192,7 +192,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
         this.currentChatRoom = channelName;
         this.CurrentChannelText.text = SubscribedChannel.ToStringMessages();
-        Debug.Log("ShowChannel: " + this.currentChatRoom);
 
     }
     public void Connect()
@@ -203,7 +202,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         chatClient.AuthValues = new AuthenticationValues(this.userID);
         chatClient.ConnectUsingSettings(this.chatAppSettings);
         
-        Debug.Log("Connecting as: " + this.userID);
     }
     public void StartChat(string roomName, string playerName)
     {
