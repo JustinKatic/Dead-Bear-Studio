@@ -105,7 +105,7 @@ public class KingAbility : MonoBehaviourPun
     void PerformAbility()
     {
         GameObject createdAbility = PhotonNetwork.Instantiate(kingAbilityEffectName, targetPos, Quaternion.identity);
-        KingAbilityEffect lionKingAbilityEffect = createdAbility.GetComponent<KingAbilityEffect>();
+        KingAbilityEffect lionKingAbilityEffect = createdAbility.GetComponentInChildren<KingAbilityEffect>();
         lionKingAbilityEffect.Initialize(player.id, damageFrequency, abilityDuration, damage);
     }
 
