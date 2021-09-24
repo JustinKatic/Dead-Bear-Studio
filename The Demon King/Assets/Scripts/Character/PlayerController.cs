@@ -79,12 +79,7 @@ public class PlayerController : MonoBehaviourPun
     private bool onSlope;
     private float slideFriction = 0.3f;
 
-
     [HideInInspector] public bool knockback;
-
-
-
-
 
     #region Start Up
     private void Awake()
