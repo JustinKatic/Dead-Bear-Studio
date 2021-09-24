@@ -33,17 +33,21 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     [SerializeField] private Color32 textColorMessage;
 
 
-    void Awake()
+    // Start is called before the first frame update
+    void Start()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-        }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(this.gameObject);       
+    }
+
+
+    private void OnEnable()
+    {
+        StartChat(NetworkManager.instance.RoomName, PhotonNetwork.NickName);
+    }
+
+    private void OnDisable()
+    {
+        chatClient.Unsubscribe(new string[] { NetworkManager.instance.RoomName });
     }
 
     // Update is called once per frame
