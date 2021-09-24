@@ -195,7 +195,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SetScreen(lobbyScreen);
 
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
-        ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
         PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
 
         if (roomIsPublic)
@@ -264,7 +263,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnLeaveLobbyButton()
     {
         PhotonNetwork.LeaveRoom();
-        ChatManager.instance.chatClient.Unsubscribe(new string[] { currentRoomName });
         currentRoomName = null;
         SetScreen(mainScreen);
         EventSystem.current.SetSelectedGameObject(null);
