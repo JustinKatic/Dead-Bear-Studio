@@ -64,6 +64,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
+        if (NetworkManager.instance.RoomName != null)
+            ChatManager.instance.StartChat(NetworkManager.instance.RoomName, PhotonNetwork.NickName);
 
         List<string> sceneNames = new List<string>();
 

@@ -294,7 +294,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         }
 
 
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(2f);
 
         NetworkManager.instance.ChangeScene("Menu");
     }
