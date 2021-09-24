@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CharacterEditor : EditorWindow
 {
-    string[] toolbarStrings = { "Ray Demon", "Lion Demon", "Dragon Demon"};
+    string[] toolbarStrings = { "Ray Demon", "Lion Demon", "Dragon Demon" };
 
     List<Evolutions> dragonType = new List<Evolutions>();
     List<Evolutions> lionType = new List<Evolutions>();
@@ -19,7 +19,7 @@ public class CharacterEditor : EditorWindow
 
     int toolbarSel = 0;
     float maxHealth = 2;
-    
+
     GUILayoutOption[] propertyFields = { GUILayout.Width(150) };
     GUILayoutOption[] textFields = { GUILayout.Width(150) };
 
@@ -81,7 +81,7 @@ public class CharacterEditor : EditorWindow
 
     //AOE explosive Ability
     SerializedProperty aoeRadius1;
-    SerializedProperty aoeDamage1; 
+    SerializedProperty aoeDamage1;
     SerializedProperty aoeRadius2;
     SerializedProperty aoeDamage2;
     SerializedProperty aoeRadius3;
@@ -116,7 +116,7 @@ public class CharacterEditor : EditorWindow
     SerializedProperty frequencyToReapplyGas2;
     SerializedProperty gasDuration2;
     SerializedProperty gasSize2;
-    SerializedProperty gasDurationOnPlayer2; 
+    SerializedProperty gasDurationOnPlayer2;
 
     SerializedProperty projectileHit3;
     SerializedProperty damageFrequency3;
@@ -130,18 +130,27 @@ public class CharacterEditor : EditorWindow
     public static void OpenWindow()
     {
         GetWindow<CharacterEditor>("Characters");
-    }
-    private void Awake()
-    {
-        GetEvolutionInformation(lionType, "Lion");
-        GetEvolutionInformation(rayType, "Ray");
-        GetEvolutionInformation(dragonType, "Dragon");
 
+    }
+    private void OnEnable()
+    {
+        if (Player == null)
+        {
+            Player = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Player.prefab", typeof(GameObject));
+            evolutions = Player.GetComponentsInChildren<Evolutions>(true);
+            dragonType.Clear();
+            rayType.Clear();
+            lionType.Clear();
+
+            dragonAbility.Clear();
+            rayAbility.Clear();
+            lionAbility.Clear();
+
+            UpdateLists();
+        }
     }
     private void OnGUI()
     {
-        Player = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Player.prefab", typeof(GameObject));
-        evolutions = Player.GetComponentsInChildren<Evolutions>(true);
 
         GUILayout.BeginHorizontal();
         toolbarSel = GUILayout.Toolbar(toolbarSel, toolbarStrings);
@@ -160,27 +169,22 @@ public class CharacterEditor : EditorWindow
         }
         else if (toolbarSel == 2)
         {
-            GetEvolutionInformation(dragonType,"Dragon");
+            GetEvolutionInformation(dragonType, "Dragon");
             DisplayEvolutionLayout("Dragon");
         }
+        evolution0.ApplyModifiedProperties();
+        evolution0.Update();
+        evolution1.ApplyModifiedProperties();
+        evolution1.Update();
+        evolution2.ApplyModifiedProperties();
+        evolution2.Update();
+        evolution3.ApplyModifiedProperties();
+        evolution3.Update();
 
     }
-    private void OnValidate()
-    {
-        
-    }
-
     private void OnHierarchyChange()
     {
-        dragonType.Clear();
-        rayType.Clear();
-        lionType.Clear();
 
-        dragonAbility.Clear();
-        rayAbility.Clear();
-        lionAbility.Clear();
-
-        UpdateLists();
     }
     private void UpdateLists()
     {
@@ -215,7 +219,7 @@ public class CharacterEditor : EditorWindow
                 evolution0 = new SerializedObject(evolutionType[i]);
                 maxHealthEvo0 = evolution0.FindProperty("MaxHealth");
                 expWorthEvo0 = evolution0.FindProperty("ExpWorth");
-                healAfterStunnedEvo0 = evolution0.FindProperty("AmountToHealAfterStunned");               
+                healAfterStunnedEvo0 = evolution0.FindProperty("AmountToHealAfterStunned");
             }
             else if (i == 1)
             {
@@ -223,7 +227,7 @@ public class CharacterEditor : EditorWindow
                 maxHealthEvo1 = evolution1.FindProperty("MaxHealth");
                 expWorthEvo1 = evolution1.FindProperty("ExpWorth");
                 healAfterStunnedEvo1 = evolution1.FindProperty("AmountToHealAfterStunned");
-                healWhenEvolvingEvo1 = evolution1.FindProperty("AmountToHealWhenEvolveing");                
+                healWhenEvolvingEvo1 = evolution1.FindProperty("AmountToHealWhenEvolveing");
             }
             else if (i == 2)
             {
@@ -231,30 +235,30 @@ public class CharacterEditor : EditorWindow
                 maxHealthEvo2 = evolution2.FindProperty("MaxHealth");
                 expWorthEvo2 = evolution2.FindProperty("ExpWorth");
                 healAfterStunnedEvo2 = evolution2.FindProperty("AmountToHealAfterStunned");
-                healWhenEvolvingEvo2 = evolution2.FindProperty("AmountToHealWhenEvolveing");            
+                healWhenEvolvingEvo2 = evolution2.FindProperty("AmountToHealWhenEvolveing");
             }
             else if (i == 3)
             {
-                evolution3 = new SerializedObject(evolutionType[i]);           
+                evolution3 = new SerializedObject(evolutionType[i]);
                 maxHealthEvo3 = evolution3.FindProperty("MaxHealth");
                 expWorthEvo3 = evolution3.FindProperty("ExpWorth");
                 healAfterStunnedEvo3 = evolution3.FindProperty("AmountToHealAfterStunned");
-                healWhenEvolvingEvo3 = evolution3.FindProperty("AmountToHealWhenEvolveing");                
+                healWhenEvolvingEvo3 = evolution3.FindProperty("AmountToHealWhenEvolveing");
             }
 
             if (type == "Ray")
             {
                 GetRayAbilityVariables(i);
             }
-            else if(type == "Dragon")
+            else if (type == "Dragon")
             {
                 GetDragonAbilityVariables(i);
             }
-            else if(type == "Lion")
+            else if (type == "Lion")
             {
                 GetLionAbilityVariables(i);
             }
-        } 
+        }
     }
 
     void DisplayEvolutionLayout(string evolutionType)
@@ -265,6 +269,7 @@ public class CharacterEditor : EditorWindow
         GUILayout.Label(evolution0.targetObject.name, EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
         GUILayout.Label(evolution1.targetObject.name, EditorStyles.boldLabel, textFields);
+
         GUILayout.Space(50f);
         GUILayout.Label(evolution2.targetObject.name, EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
@@ -294,7 +299,7 @@ public class CharacterEditor : EditorWindow
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(expWorthEvo0, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
-        EditorGUILayout.PropertyField(expWorthEvo1,GUIContent.none, propertyFields);
+        EditorGUILayout.PropertyField(expWorthEvo1, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(expWorthEvo2, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
@@ -321,18 +326,19 @@ public class CharacterEditor : EditorWindow
 
         EditorGUILayout.BeginHorizontal();
         GUILayout.Label("Health When Evolving", EditorStyles.boldLabel, textFields);
-        GUILayout.Space(50f);
+        GUILayout.Space(252f);
         EditorGUILayout.PropertyField(healWhenEvolvingEvo1, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(healWhenEvolvingEvo2, GUIContent.none, propertyFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(healWhenEvolvingEvo3, GUIContent.none, propertyFields);
-        GUILayout.Space(50f);
         EditorGUILayout.EndHorizontal();
+        GUILayout.Space(50f);
 
         if (evolutionType == "Ray")
         {
             GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
+            GUILayout.Space(20f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
@@ -381,7 +387,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Laser Duration", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(laserDuration1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(laserDuration2, GUIContent.none, propertyFields);
@@ -394,7 +400,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Auto Shoot Time", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(autoShootTimer1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(autoShootTimer2, GUIContent.none, propertyFields);
@@ -407,7 +413,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Laser Frequency", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(laserFrequency1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(laserFrequency2, GUIContent.none, propertyFields);
@@ -420,6 +426,7 @@ public class CharacterEditor : EditorWindow
         else if (evolutionType == "Lion")
         {
             GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
+            GUILayout.Space(20f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
@@ -468,7 +475,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("AOE Radius", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(aoeRadius1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(aoeRadius2, GUIContent.none, propertyFields);
@@ -481,7 +488,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("AOE Damage", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(aoeDamage1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(aoeDamage2, GUIContent.none, propertyFields);
@@ -493,7 +500,8 @@ public class CharacterEditor : EditorWindow
         }
         else if (evolutionType == "Dragon")
         {
-            GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);         
+            GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
+            GUILayout.Space(20f);
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
@@ -512,7 +520,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Damage Frequency", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(damageFrequency1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(damageFrequency2, GUIContent.none, propertyFields);
@@ -540,7 +548,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Gas Duration", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(gasDuration1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(gasDuration2, GUIContent.none, propertyFields);
@@ -553,7 +561,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("Gas Radius", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(gasSize1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(gasSize2, GUIContent.none, propertyFields);
@@ -566,7 +574,7 @@ public class CharacterEditor : EditorWindow
 
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label("gas Duration On Player", EditorStyles.boldLabel, textFields);
-            GUILayout.Space(50f);
+            GUILayout.Space(252f);
             EditorGUILayout.PropertyField(gasDurationOnPlayer1, GUIContent.none, propertyFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(gasDurationOnPlayer2, GUIContent.none, propertyFields);
@@ -589,14 +597,14 @@ public class CharacterEditor : EditorWindow
     }
     void GetLionAbilityVariables(int level)
     {
-        if (level == 0 )
+        if (level == 0)
         {
             abilityEvolution0 = new SerializedObject(lionType[level].GetComponent<AbilityBase>());
             damageEvo0 = abilityEvolution0.FindProperty("damage");
             cooldownEvo0 = abilityEvolution0.FindProperty("shootCooldown");
             projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");
         }
-        else if(level == 1)
+        else if (level == 1)
         {
             abilityEvolution1 = new SerializedObject(lionType[level].GetComponent<AoeExplosionAbility>());
             damageEvo1 = abilityEvolution1.FindProperty("damage");
@@ -605,7 +613,7 @@ public class CharacterEditor : EditorWindow
             aoeRadius1 = abilityEvolution1.FindProperty("aoeRadius");
             aoeDamage1 = abilityEvolution1.FindProperty("aoeDamage");
 
-           
+
         }
         else if (level == 2)
         {
@@ -616,16 +624,16 @@ public class CharacterEditor : EditorWindow
             aoeRadius2 = abilityEvolution2.FindProperty("aoeRadius");
             aoeDamage2 = abilityEvolution2.FindProperty("aoeDamage");
 
-           
+
         }
-        else if(level == 3)
+        else if (level == 3)
         {
             abilityEvolution3 = new SerializedObject(lionType[level].GetComponent<AoeExplosionAbility>());
             damageEvo3 = abilityEvolution3.FindProperty("damage");
             cooldownEvo3 = abilityEvolution3.FindProperty("shootCooldown");
             projectileSpeedEvo3 = abilityEvolution3.FindProperty("ProjectileSpeed");
             aoeRadius3 = abilityEvolution3.FindProperty("aoeRadius");
-            aoeDamage3 = abilityEvolution3.FindProperty("aoeDamage");           
+            aoeDamage3 = abilityEvolution3.FindProperty("aoeDamage");
         }
     }
     void GetDragonAbilityVariables(int level)
@@ -635,7 +643,7 @@ public class CharacterEditor : EditorWindow
             abilityEvolution0 = new SerializedObject(dragonType[level].GetComponent<AbilityBase>());
             damageEvo0 = abilityEvolution0.FindProperty("damage");
             cooldownEvo0 = abilityEvolution0.FindProperty("shootCooldown");
-            projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");           
+            projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");
         }
         else if (level == 1)
         {
@@ -645,7 +653,7 @@ public class CharacterEditor : EditorWindow
             frequencyToReapplyGas1 = abilityEvolution1.FindProperty("frequencyToReapplyGas");
             gasDuration1 = abilityEvolution1.FindProperty("gasDuration");
             gasSize1 = abilityEvolution1.FindProperty("gasSize");
-            gasDurationOnPlayer1 = abilityEvolution1.FindProperty("gasDurationOnPlayer");           
+            gasDurationOnPlayer1 = abilityEvolution1.FindProperty("gasDurationOnPlayer");
         }
         else if (level == 2)
         {
@@ -665,7 +673,7 @@ public class CharacterEditor : EditorWindow
             frequencyToReapplyGas3 = abilityEvolution3.FindProperty("frequencyToReapplyGas");
             gasDuration3 = abilityEvolution3.FindProperty("gasDuration");
             gasSize3 = abilityEvolution3.FindProperty("gasSize");
-            gasDurationOnPlayer3 = abilityEvolution3.FindProperty("gasDurationOnPlayer");           
+            gasDurationOnPlayer3 = abilityEvolution3.FindProperty("gasDurationOnPlayer");
         }
     }
     void GetRayAbilityVariables(int level)
@@ -675,7 +683,7 @@ public class CharacterEditor : EditorWindow
             abilityEvolution0 = new SerializedObject(rayType[level].GetComponent<AbilityBase>());
             damageEvo0 = abilityEvolution0.FindProperty("damage");
             cooldownEvo0 = abilityEvolution0.FindProperty("shootCooldown");
-            projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");          
+            projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");
         }
         else if (level == 1)
         {
@@ -685,7 +693,7 @@ public class CharacterEditor : EditorWindow
             chargeUpTime1 = abilityEvolution1.FindProperty("ChargeupTime");
             laserDuration1 = abilityEvolution1.FindProperty("baseLaserDuration");
             laserFrequency1 = abilityEvolution1.FindProperty("damageFrequency");
-            autoShootTimer1 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");          
+            autoShootTimer1 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");
         }
         else if (level == 2)
         {
@@ -695,7 +703,7 @@ public class CharacterEditor : EditorWindow
             chargeUpTime2 = abilityEvolution1.FindProperty("ChargeupTime");
             laserDuration2 = abilityEvolution1.FindProperty("baseLaserDuration");
             laserFrequency2 = abilityEvolution1.FindProperty("damageFrequency");
-            autoShootTimer2 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");         
+            autoShootTimer2 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");
         }
         else if (level == 3)
         {
@@ -707,5 +715,10 @@ public class CharacterEditor : EditorWindow
             laserFrequency3 = abilityEvolution1.FindProperty("damageFrequency");
             autoShootTimer3 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");
         }
+    }
+    void UpdateVariablesIfChanged()
+    {
+
+
     }
 }
