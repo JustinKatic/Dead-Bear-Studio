@@ -134,37 +134,12 @@ public class CharacterEditor : EditorWindow
     }
     private void OnEnable()
     {
-        if (Player == null)
-        {
-            Player = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Player.prefab", typeof(GameObject));
-            evolutions = Player.GetComponentsInChildren<Evolutions>(true);
-            dragonType.Clear();
-            rayType.Clear();
-            lionType.Clear();
+        SetSerializedObjectsAndPlayers();
 
-            dragonAbility.Clear();
-            rayAbility.Clear();
-            lionAbility.Clear();
-
-            UpdateLists();
-        }
     }
     private void OnGUI()
     {
-        if (Player == null)
-        {
-            Player = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Player.prefab", typeof(GameObject));
-            evolutions = Player.GetComponentsInChildren<Evolutions>(true);
-            dragonType.Clear();
-            rayType.Clear();
-            lionType.Clear();
-
-            dragonAbility.Clear();
-            rayAbility.Clear();
-            lionAbility.Clear();
-
-            UpdateLists();
-        }
+        SetSerializedObjectsAndPlayers();
 
         GUILayout.BeginHorizontal();
         toolbarSel = GUILayout.Toolbar(toolbarSel, toolbarStrings);
@@ -196,9 +171,22 @@ public class CharacterEditor : EditorWindow
         evolution3.Update();
 
     }
-    private void OnHierarchyChange()
+    void SetSerializedObjectsAndPlayers()
     {
+        if (Player == null)
+        {
+            Player = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Resources/Player.prefab", typeof(GameObject));
+            evolutions = Player.GetComponentsInChildren<Evolutions>(true);
+            dragonType.Clear();
+            rayType.Clear();
+            lionType.Clear();
 
+            dragonAbility.Clear();
+            rayAbility.Clear();
+            lionAbility.Clear();
+
+            UpdateLists();
+        }
     }
     private void UpdateLists()
     {
@@ -740,10 +728,5 @@ public class CharacterEditor : EditorWindow
             laserFrequency3 = abilityEvolution1.FindProperty("damageFrequency");
             autoShootTimer3 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");
         }
-    }
-    void UpdateVariablesIfChanged()
-    {
-
-
     }
 }
