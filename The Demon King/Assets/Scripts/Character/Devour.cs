@@ -106,7 +106,7 @@ public class Devour : MonoBehaviourPun
         }
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         playerController.CharacterInputs.Player.Interact.performed -= OnInteract;
 

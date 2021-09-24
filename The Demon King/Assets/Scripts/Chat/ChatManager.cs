@@ -26,7 +26,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     private string joinRoomMessage = "Has Joined The Chat";
     private string leaveRoomMessage = "Has Left";
 
-    
     [SerializeField] private Color32 textColorUserName;
     [HideInInspector] public string userID;
 

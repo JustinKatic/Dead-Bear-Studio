@@ -58,7 +58,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public bool roomIsPublic = true;
     [HideInInspector] public string sceneName;
     private string currentRoomName;
-    private float roomMaxPlayers = 2;
+    private float roomMaxPlayers = 8;
     [SerializeField] private GameObject lastActiveMenu;
 
 
@@ -285,8 +285,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnJoinRoomButton(string roomName)
     {
         currentRoomName = roomName;
-
-        PhotonNetwork.JoinRoom(roomName);
+        NetworkManager.instance.JoinRoom(roomName);
     }
 
 
