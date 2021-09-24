@@ -13,11 +13,11 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     protected internal ChatAppSettings chatAppSettings;
     // instance
     public static ChatManager instance;
-
-    [HideInInspector] public string currentChatRoom;
+    
+    [HideInInspector]public string currentChatRoom;
     private ChatChannel SubscribedChannel;
-
-
+    
+    
     public TMP_InputField InputFieldChat;   // set in inspector
     public TMP_Text CurrentChannelText;     // set in inspector
     public int HistoryLengthToFetch; // set in inspector. Up to a certain degree, previously sent messages can be fetched for context
@@ -26,7 +26,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     private string joinRoomMessage = "Has Joined The Chat";
     private string leaveRoomMessage = "Has Left";
 
-
+    
     [SerializeField] private Color32 textColorUserName;
     [HideInInspector] public string userID;
 
@@ -38,16 +38,10 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         //DontDestroyOnLoad(this.gameObject);       
     }
-
-
-    private void OnEnable()
-    {       
-        StartChat(NetworkManager.instance.RoomName, PhotonNetwork.NickName);
-    }
-
-    private void OnDisable()
+    
+    void Awake()
     {
-        chatClient.Unsubscribe(new string[] { currentChatRoom });
+        instance = this;
     }
 
     // Update is called once per frame
@@ -57,7 +51,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         {
             this.chatClient.Service(); // make sure to call this regularly! it limits effort internally, so calling often is ok!
         }
-
+        
     }
 
     public void DebugReturn(DebugLevel level, string message)
@@ -74,9 +68,9 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         else
         {
             Debug.Log(message);
-        }
+        }    
     }
-
+    
     public void OnDisconnected()
     {
         throw new System.NotImplementedException();
@@ -115,16 +109,16 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnSubscribed(string[] channels, bool[] results)
     {
-
+        
         // in this demo, we simply send a message into each channel. This is NOT a must have!
         foreach (string channel in channels)
         {
-            chatClient.PublishMessage(channel, joinRoomMessage); // you don't HAVE to send a msg on join but you could.
+            chatClient.PublishMessage(channel,joinRoomMessage); // you don't HAVE to send a msg on join but you could.
         }
-
+        
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
 
-        Debug.Log("OnSubscribed: " + string.Join(", ", channels));
+        Debug.Log("OnSubscribed: " + string.Join(", ", channels));    
     }
 
     public void OnUnsubscribed(string[] channels)
@@ -174,8 +168,8 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         if (string.IsNullOrEmpty(inputLine))
             return;
-
-
+        
+        
         this.chatClient.PublishMessage(currentChatRoom, inputLine);
 
     }
@@ -208,7 +202,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         chatClient.UseBackgroundWorkerForSending = true;
         chatClient.AuthValues = new AuthenticationValues(this.userID);
         chatClient.ConnectUsingSettings(this.chatAppSettings);
-
+        
         Debug.Log("Connecting as: " + this.userID);
     }
     public void StartChat(string roomName, string playerName)
@@ -218,7 +212,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         currentChatRoom = roomName;
         chatNewComponent.Connect();
         this.enabled = true;
-
+        
     }
-
+    
 }
