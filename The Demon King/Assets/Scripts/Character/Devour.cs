@@ -106,13 +106,19 @@ public class Devour : MonoBehaviourPun
         }
     }
 
+    private void OnDisable()
+    {
+        playerController.CharacterInputs.Player.Interact.performed -= OnInteract;
+
+    }
+
     void CheckForDevour()
     {
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
         //Shoots ray from center of screen
-        if (Physics.SphereCast(ray, 3, out hit, 15, LayersCanDevour))
+        if (Physics.SphereCast(ray, 2, out hit, 15, LayersCanDevour))
         {
             //If raycast hits player/minion/crown
             if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
