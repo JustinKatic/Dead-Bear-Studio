@@ -22,6 +22,7 @@ public class CharacterEditor : EditorWindow
 
     GUILayoutOption[] propertyFields = { GUILayout.Width(150) };
     GUILayoutOption[] textFields = { GUILayout.Width(150) };
+    GUIStyle headings = new GUIStyle();
 
     //Evolution 0 Object
     SerializedObject evolution0;
@@ -135,7 +136,7 @@ public class CharacterEditor : EditorWindow
     private void OnEnable()
     {
         SetSerializedObjectsAndPlayers();
-
+        headings.normal.textColor = Color.yellow;
     }
     private void OnGUI()
     {
@@ -161,14 +162,7 @@ public class CharacterEditor : EditorWindow
             GetEvolutionInformation(dragonType, "Dragon");
             DisplayEvolutionLayout("Dragon");
         }
-        evolution0.ApplyModifiedProperties();
-        evolution0.Update();
-        evolution1.ApplyModifiedProperties();
-        evolution1.Update();
-        evolution2.ApplyModifiedProperties();
-        evolution2.Update();
-        evolution3.ApplyModifiedProperties();
-        evolution3.Update();
+
 
     }
     void SetSerializedObjectsAndPlayers()
@@ -219,6 +213,7 @@ public class CharacterEditor : EditorWindow
             if (i == 0)
             {
                 evolution0 = new SerializedObject(evolutionType[i]);
+                evolution0.Update();
                 maxHealthEvo0 = evolution0.FindProperty("MaxHealth");
                 expWorthEvo0 = evolution0.FindProperty("ExpWorth");
                 healAfterStunnedEvo0 = evolution0.FindProperty("AmountToHealAfterStunned");
@@ -226,6 +221,7 @@ public class CharacterEditor : EditorWindow
             else if (i == 1)
             {
                 evolution1 = new SerializedObject(evolutionType[i]);
+                evolution1.Update();
                 maxHealthEvo1 = evolution1.FindProperty("MaxHealth");
                 expWorthEvo1 = evolution1.FindProperty("ExpWorth");
                 healAfterStunnedEvo1 = evolution1.FindProperty("AmountToHealAfterStunned");
@@ -234,6 +230,7 @@ public class CharacterEditor : EditorWindow
             else if (i == 2)
             {
                 evolution2 = new SerializedObject(evolutionType[i]);
+                evolution2.Update();
                 maxHealthEvo2 = evolution2.FindProperty("MaxHealth");
                 expWorthEvo2 = evolution2.FindProperty("ExpWorth");
                 healAfterStunnedEvo2 = evolution2.FindProperty("AmountToHealAfterStunned");
@@ -242,6 +239,7 @@ public class CharacterEditor : EditorWindow
             else if (i == 3)
             {
                 evolution3 = new SerializedObject(evolutionType[i]);
+                evolution3.Update();
                 maxHealthEvo3 = evolution3.FindProperty("MaxHealth");
                 expWorthEvo3 = evolution3.FindProperty("ExpWorth");
                 healAfterStunnedEvo3 = evolution3.FindProperty("AmountToHealAfterStunned");
@@ -260,14 +258,19 @@ public class CharacterEditor : EditorWindow
             {
                 GetLionAbilityVariables(i);
             }
+
         }
     }
 
     void DisplayEvolutionLayout(string evolutionType)
     {
+        GUILayout.Space(20f);
+
         EditorGUILayout.BeginHorizontal();
+
+
         GUILayout.Label("Evolution Name", EditorStyles.boldLabel, textFields);
-        GUILayout.Space(50f);
+        GUILayout.Space(70f);
         GUILayout.Label(evolution0.targetObject.name, EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
         GUILayout.Label(evolution1.targetObject.name, EditorStyles.boldLabel, textFields);
@@ -279,9 +282,15 @@ public class CharacterEditor : EditorWindow
         GUILayout.Space(50f);
         EditorGUILayout.EndHorizontal();
 
-        GUILayout.Label("Health Variables", EditorStyles.boldLabel);
+        GUILayout.Space(20f);
+
+        GUILayout.Label("Health Variables", headings);
+        GUILayout.Space(20f);
 
         EditorGUILayout.BeginHorizontal();
+
+        GUILayout.Space(20f);
+
         GUILayout.Label("Max Health", EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(maxHealthEvo0, GUIContent.none, propertyFields);
@@ -297,6 +306,9 @@ public class CharacterEditor : EditorWindow
         GUILayout.Space(10f);
 
         EditorGUILayout.BeginHorizontal(textFields);
+
+        GUILayout.Space(20f);
+
         GUILayout.Label("EXP Value", EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(expWorthEvo0, GUIContent.none, propertyFields);
@@ -312,6 +324,9 @@ public class CharacterEditor : EditorWindow
         GUILayout.Space(10f);
 
         EditorGUILayout.BeginHorizontal();
+
+        GUILayout.Space(20f);
+
         GUILayout.Label("Health Regained Stun", EditorStyles.boldLabel, textFields);
         GUILayout.Space(50f);
         EditorGUILayout.PropertyField(healAfterStunnedEvo0, GUIContent.none, propertyFields);
@@ -327,6 +342,9 @@ public class CharacterEditor : EditorWindow
         GUILayout.Space(10f);
 
         EditorGUILayout.BeginHorizontal();
+
+        GUILayout.Space(20f);
+
         GUILayout.Label("Health When Evolving", EditorStyles.boldLabel, textFields);
         GUILayout.Space(252f);
         EditorGUILayout.PropertyField(healWhenEvolvingEvo1, GUIContent.none, propertyFields);
@@ -339,10 +357,14 @@ public class CharacterEditor : EditorWindow
 
         if (evolutionType == "Ray")
         {
-            GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
+
+
+            GUILayout.Label("Ability Variables", headings, textFields);
             GUILayout.Space(20f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
@@ -351,6 +373,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(damageEvo0, GUIContent.none, propertyFields);
@@ -366,6 +390,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Cooldown", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(cooldownEvo0, GUIContent.none, propertyFields);
@@ -381,6 +407,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Charge Up Time", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);        
             EditorGUILayout.PropertyField(chargeUpTime1, GUIContent.none, propertyFields);
@@ -394,6 +422,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Laser Duration", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(laserDuration1, GUIContent.none, propertyFields);
@@ -407,6 +437,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Auto Shoot Time", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(autoShootTimer1, GUIContent.none, propertyFields);
@@ -420,6 +452,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Laser Frequency", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(laserFrequency1, GUIContent.none, propertyFields);
@@ -433,10 +467,12 @@ public class CharacterEditor : EditorWindow
         }
         else if (evolutionType == "Lion")
         {
-            GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
+            GUILayout.Label("Ability Variables", headings, textFields);
             GUILayout.Space(20f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Damage", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(damageEvo0, GUIContent.none, propertyFields);
@@ -452,6 +488,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Cooldown", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(cooldownEvo0, GUIContent.none, propertyFields);
@@ -467,6 +505,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
@@ -482,6 +522,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("AOE Radius", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(aoeRadius1, GUIContent.none, propertyFields);
@@ -495,6 +537,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("AOE Damage", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(aoeDamage1, GUIContent.none, propertyFields);
@@ -508,9 +552,11 @@ public class CharacterEditor : EditorWindow
         }
         else if (evolutionType == "Dragon")
         {
-            GUILayout.Label("Ability Variables", EditorStyles.boldLabel, textFields);
+            GUILayout.Label("Ability Variables", headings, textFields);
             GUILayout.Space(20f);
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Cooldown", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(cooldownEvo0, GUIContent.none, propertyFields);
@@ -519,6 +565,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Projectile Speed", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(projectileSpeedEvo0, GUIContent.none, propertyFields);
@@ -528,6 +576,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Hit Damage", EditorStyles.boldLabel, textFields);
             GUILayout.Space(50f);
             EditorGUILayout.PropertyField(damageEvo0, GUIContent.none, propertyFields);
@@ -543,6 +593,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Damage Frequency", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(damageFrequency1, GUIContent.none, propertyFields);
@@ -556,6 +608,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Reapply Frequency", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(frequencyToReapplyGas1, GUIContent.none, propertyFields);
@@ -569,6 +623,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Gas Duration", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(gasDuration1, GUIContent.none, propertyFields);
@@ -582,6 +638,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("Gas Radius", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(gasSize1, GUIContent.none, propertyFields);
@@ -595,6 +653,8 @@ public class CharacterEditor : EditorWindow
             GUILayout.Space(10f);
 
             EditorGUILayout.BeginHorizontal();
+            GUILayout.Space(20f);
+
             GUILayout.Label("gas Duration On Player", EditorStyles.boldLabel, textFields);
             GUILayout.Space(252f);
             EditorGUILayout.PropertyField(gasDurationOnPlayer1, GUIContent.none, propertyFields);
@@ -606,7 +666,10 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.EndHorizontal();
 
         }
-
+        evolution0.ApplyModifiedProperties();
+        evolution1.ApplyModifiedProperties();
+        evolution2.ApplyModifiedProperties();
+        evolution3.ApplyModifiedProperties();
     }
     void GetLionAbilityVariables(int level)
     {
