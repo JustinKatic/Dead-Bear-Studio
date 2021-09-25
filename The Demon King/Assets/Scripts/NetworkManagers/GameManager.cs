@@ -50,10 +50,10 @@ public class GameManager : MonoBehaviourPun
             players.Add(null);
         }
 
-        StartCoroutine(Test());
+        StartCoroutine(CheckIfAllPlayersInGame());
     }
 
-    IEnumerator Test()
+    IEnumerator CheckIfAllPlayersInGame()
     {
         indexAssigned = false;
         while (!indexAssigned)

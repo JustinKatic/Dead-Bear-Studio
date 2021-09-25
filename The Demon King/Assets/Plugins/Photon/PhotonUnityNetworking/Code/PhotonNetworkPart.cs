@@ -720,7 +720,7 @@ namespace Photon.Pun
             {
                 if (view == null)
                 {
-                    Debug.LogError("Null view");
+                    //Debug.LogError("Null view");
                     continue;
                 }
 

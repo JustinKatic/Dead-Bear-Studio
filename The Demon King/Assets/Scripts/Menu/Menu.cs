@@ -64,7 +64,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-
         List<string> sceneNames = new List<string>();
 
         foreach (var scene in scenes)
@@ -195,6 +194,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SetScreen(lobbyScreen);
 
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+        ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
         PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
 
         if (roomIsPublic)
@@ -284,7 +284,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         currentRoomName = roomName;
 
-        PhotonNetwork.JoinRoom(roomName);
+        NetworkManager.instance.JoinRoom(roomName);
     }
 
 
