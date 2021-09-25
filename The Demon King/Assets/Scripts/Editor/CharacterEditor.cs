@@ -6,20 +6,14 @@ using UnityEngine;
 public class CharacterEditor : EditorWindow
 {
     string[] toolbarStrings = { "Ray Demon", "Lion Demon", "Dragon Demon" };
-
+    Vector2 scrollPos;
     List<Evolutions> dragonType = new List<Evolutions>();
     List<Evolutions> lionType = new List<Evolutions>();
     List<Evolutions> rayType = new List<Evolutions>();
 
-    List<DragonAbility> dragonAbility = new List<DragonAbility>();
-    List<AoeExplosionAbility> lionAbility = new List<AoeExplosionAbility>();
-    List<LaserAbility> rayAbility = new List<LaserAbility>();
-
     Evolutions[] evolutions;
 
     int toolbarSel = 0;
-    float maxHealth = 2;
-
     GUILayoutOption[] propertyFields = { GUILayout.Width(150) };
     GUILayoutOption[] textFields = { GUILayout.Width(150) };
     GUIStyle headings = new GUIStyle();
@@ -67,6 +61,7 @@ public class CharacterEditor : EditorWindow
     //Evolution 3 Object
     SerializedObject evolution3;
     SerializedObject abilityEvolution3;
+    SerializedObject kingAbilityEvolution;
 
     //Evolution 3 Health Variables
     SerializedProperty maxHealthEvo3;
@@ -126,6 +121,11 @@ public class CharacterEditor : EditorWindow
     SerializedProperty gasSize3;
     SerializedProperty gasDurationOnPlayer3;
 
+    //King Ability variables
+    SerializedProperty kingAbilityDamage;
+    SerializedProperty kingAbilityDamageFrequency;
+    SerializedProperty kingAbilityDuration;
+
     GameObject Player;
     [MenuItem("Window/Character Editor")]
     public static void OpenWindow()
@@ -175,10 +175,6 @@ public class CharacterEditor : EditorWindow
             rayType.Clear();
             lionType.Clear();
 
-            dragonAbility.Clear();
-            rayAbility.Clear();
-            lionAbility.Clear();
-
             UpdateLists();
         }
     }
@@ -191,18 +187,15 @@ public class CharacterEditor : EditorWindow
             if (evoName.Contains("Dragon") || evoName.Contains("Green"))
             {
                 dragonType.Add(evolutions[i]);
-                dragonAbility.Add(evolutions[i].GetComponent<DragonAbility>());
             }
             else if (evoName.Contains("Ray") || evoName.Contains("Blue"))
             {
                 rayType.Add(evolutions[i]);
-                rayAbility.Add(evolutions[i].GetComponent<LaserAbility>());
 
             }
             else if (evoName.Contains("Lion") || evoName.Contains("Red") || evoName.Contains("Dracon"))
             {
                 lionType.Add(evolutions[i]);
-                lionAbility.Add(evolutions[i].GetComponent<AoeExplosionAbility>());
             }
         }
     }
@@ -264,6 +257,13 @@ public class CharacterEditor : EditorWindow
 
     void DisplayEvolutionLayout(string evolutionType)
     {
+        abilityEvolution0.Update();
+        abilityEvolution1.Update();
+        abilityEvolution2.Update();
+        abilityEvolution3.Update();
+        kingAbilityEvolution.Update();
+        scrollPos = EditorGUILayout.BeginScrollView(scrollPos, true, false);
+
         GUILayout.Space(20f);
 
         EditorGUILayout.BeginHorizontal();
@@ -666,16 +666,39 @@ public class CharacterEditor : EditorWindow
             EditorGUILayout.EndHorizontal();
 
         }
+        GUILayout.Space(50f);
+
+        GUILayout.Label("King Ability Variables", headings, textFields);
+        GUILayout.Space(20f);
+
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.PropertyField(kingAbilityDamage);
+
+        EditorGUILayout.PropertyField(kingAbilityDamageFrequency);
+
+        EditorGUILayout.PropertyField(kingAbilityDuration);
+
+        EditorGUILayout.EndHorizontal();
+
+
+        EditorGUILayout.EndScrollView();
+
         evolution0.ApplyModifiedProperties();
         evolution1.ApplyModifiedProperties();
         evolution2.ApplyModifiedProperties();
         evolution3.ApplyModifiedProperties();
+        abilityEvolution0.ApplyModifiedProperties();
+        abilityEvolution1.ApplyModifiedProperties();
+        abilityEvolution2.ApplyModifiedProperties();
+        abilityEvolution3.ApplyModifiedProperties();
+        kingAbilityEvolution.ApplyModifiedProperties();
     }
     void GetLionAbilityVariables(int level)
     {
         if (level == 0)
         {
             abilityEvolution0 = new SerializedObject(lionType[level].GetComponent<AbilityBase>());
+            abilityEvolution0.Update();
             damageEvo0 = abilityEvolution0.FindProperty("damage");
             cooldownEvo0 = abilityEvolution0.FindProperty("shootCooldown");
             projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");
@@ -705,11 +728,16 @@ public class CharacterEditor : EditorWindow
         else if (level == 3)
         {
             abilityEvolution3 = new SerializedObject(lionType[level].GetComponent<AoeExplosionAbility>());
+            kingAbilityEvolution = new SerializedObject(lionType[level].GetComponent<KingAbility>());
+
             damageEvo3 = abilityEvolution3.FindProperty("damage");
             cooldownEvo3 = abilityEvolution3.FindProperty("shootCooldown");
             projectileSpeedEvo3 = abilityEvolution3.FindProperty("ProjectileSpeed");
             aoeRadius3 = abilityEvolution3.FindProperty("aoeRadius");
             aoeDamage3 = abilityEvolution3.FindProperty("aoeDamage");
+            kingAbilityDamage = kingAbilityEvolution.FindProperty("damage");
+            kingAbilityDamageFrequency = kingAbilityEvolution.FindProperty("damageFrequency");
+            kingAbilityDuration = kingAbilityEvolution.FindProperty("abilityDuration");
         }
     }
     void GetDragonAbilityVariables(int level)
@@ -717,6 +745,7 @@ public class CharacterEditor : EditorWindow
         if (level == 0)
         {
             abilityEvolution0 = new SerializedObject(dragonType[level].GetComponent<AbilityBase>());
+            abilityEvolution0.Update();
             damageEvo0 = abilityEvolution0.FindProperty("damage");
             cooldownEvo0 = abilityEvolution0.FindProperty("shootCooldown");
             projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");
@@ -734,6 +763,7 @@ public class CharacterEditor : EditorWindow
         else if (level == 2)
         {
             abilityEvolution2 = new SerializedObject(dragonType[level].GetComponent<DragonAbility>());
+
             projectileHit2 = abilityEvolution2.FindProperty("projectileHitDmg");
             damageFrequency2 = abilityEvolution2.FindProperty("damageFrequency");
             frequencyToReapplyGas2 = abilityEvolution2.FindProperty("frequencyToReapplyGas");
@@ -744,12 +774,18 @@ public class CharacterEditor : EditorWindow
         else if (level == 3)
         {
             abilityEvolution3 = new SerializedObject(dragonType[level].GetComponent<DragonAbility>());
+            kingAbilityEvolution = new SerializedObject(dragonType[level].GetComponent<KingAbility>());
+
             projectileHit3 = abilityEvolution3.FindProperty("projectileHitDmg");
             damageFrequency3 = abilityEvolution3.FindProperty("damageFrequency");
             frequencyToReapplyGas3 = abilityEvolution3.FindProperty("frequencyToReapplyGas");
             gasDuration3 = abilityEvolution3.FindProperty("gasDuration");
             gasSize3 = abilityEvolution3.FindProperty("gasSize");
             gasDurationOnPlayer3 = abilityEvolution3.FindProperty("gasDurationOnPlayer");
+
+            kingAbilityDamage = kingAbilityEvolution.FindProperty("damage");
+            kingAbilityDamageFrequency = kingAbilityEvolution.FindProperty("damageFrequency"); 
+            kingAbilityDuration = kingAbilityEvolution.FindProperty("abilityDuration"); 
         }
     }
     void GetRayAbilityVariables(int level)
@@ -757,6 +793,7 @@ public class CharacterEditor : EditorWindow
         if (level == 0)
         {
             abilityEvolution0 = new SerializedObject(rayType[level].GetComponent<AbilityBase>());
+
             damageEvo0 = abilityEvolution0.FindProperty("damage");
             cooldownEvo0 = abilityEvolution0.FindProperty("shootCooldown");
             projectileSpeedEvo0 = abilityEvolution0.FindProperty("ProjectileSpeed");
@@ -764,6 +801,7 @@ public class CharacterEditor : EditorWindow
         else if (level == 1)
         {
             abilityEvolution1 = new SerializedObject(rayType[level].GetComponent<LaserAbility>());
+
             damageEvo1 = abilityEvolution1.FindProperty("damage");
             cooldownEvo1 = abilityEvolution1.FindProperty("shootCooldown");
             chargeUpTime1 = abilityEvolution1.FindProperty("ChargeupTime");
@@ -774,6 +812,7 @@ public class CharacterEditor : EditorWindow
         else if (level == 2)
         {
             abilityEvolution2 = new SerializedObject(rayType[level].GetComponent<LaserAbility>());
+
             damageEvo2 = abilityEvolution2.FindProperty("damage");
             cooldownEvo2 = abilityEvolution2.FindProperty("shootCooldown");
             chargeUpTime2 = abilityEvolution1.FindProperty("ChargeupTime");
@@ -784,12 +823,19 @@ public class CharacterEditor : EditorWindow
         else if (level == 3)
         {
             abilityEvolution3 = new SerializedObject(rayType[level].GetComponent<LaserAbility>());
+
+            kingAbilityEvolution = new SerializedObject(rayType[level].GetComponent<KingAbility>());
+
             damageEvo3 = abilityEvolution3.FindProperty("damage");
             cooldownEvo3 = abilityEvolution3.FindProperty("shootCooldown");
             chargeUpTime3 = abilityEvolution1.FindProperty("ChargeupTime");
             laserDuration3 = abilityEvolution1.FindProperty("baseLaserDuration");
             laserFrequency3 = abilityEvolution1.FindProperty("damageFrequency");
             autoShootTimer3 = abilityEvolution1.FindProperty("ShootAutomaticallyAt");
+
+            kingAbilityDamage = kingAbilityEvolution.FindProperty("damage");
+            kingAbilityDamageFrequency = kingAbilityEvolution.FindProperty("damageFrequency");
+            kingAbilityDuration = kingAbilityEvolution.FindProperty("abilityDuration");
         }
     }
 }

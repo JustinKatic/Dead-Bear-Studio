@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public class KingAbility : MonoBehaviourPun
 {
-    [Header("Modifiable Stats")]
+    //[Header("Modifiable Stats")]
     [SerializeField] private int damage;
     [SerializeField] private float damageFrequency;
     [SerializeField] private float abilityDuration;
