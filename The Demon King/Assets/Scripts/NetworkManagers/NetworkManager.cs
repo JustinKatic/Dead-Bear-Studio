@@ -92,6 +92,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        Debug.Log("A Player left room");
+        if (PhotonNetwork.IsMasterClient && GameManager.instance != null)
+        {
+            bool IsThereAKing = false;
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                if (GameManager.instance.GetPlayer((int)player.CustomProperties["PlayerId"]).GetComponent<DemonKingEvolution>().AmITheDemonKing)
+                {
+                    IsThereAKing = true;
+                }
 
+            }
+            if (!IsThereAKing)
+                GameObject.FindGameObjectWithTag("DemonKingCrown").GetComponent<CrownHealthManager>().CrownRespawn(true);
+        }
     }
 }
