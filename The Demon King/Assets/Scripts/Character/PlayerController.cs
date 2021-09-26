@@ -144,9 +144,12 @@ public class PlayerController : MonoBehaviourPun
     [PunRPC]
     public void Initialize(Player player, float spawnY, float spawnZ)
     {
-        photonView.RPC("SetId", RpcTarget.All, GameManager.instance.myIdIndex);
-        _cinemachineTargetYaw = spawnY;
-        _cinemachineTargetPitch = spawnZ;
+        if (photonView.IsMine)
+        {
+            photonView.RPC("SetId", RpcTarget.All, GameManager.instance.myIdIndex);
+            _cinemachineTargetYaw = spawnY;
+            _cinemachineTargetPitch = spawnZ;
+        }
 
         //Set photon player
         photonPlayer = player;
