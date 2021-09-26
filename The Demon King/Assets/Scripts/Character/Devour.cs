@@ -113,27 +113,56 @@ public class Devour : MonoBehaviourPun
 
     void CheckForDevour()
     {
-        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        GameObject ClosestTarget = null;
+        
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         RaycastHit hit;
-
-        //Shoots ray from center of screen
-        if (Physics.SphereCast(ray, 2, out hit, 15, LayersCanDevour))
+        
+        if (Physics.Raycast(ray, out hit, 15,LayersCanDevour))
         {
-            //If raycast hits player/minion/crown
-            if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
+            if (hit.transform.CompareTag("PlayerParent") ||hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
-                if (Vector3.Distance(devourPoint.position, hit.point) > devourRange)
+                if (hit.transform.GetComponent<HealthManager>().canBeDevoured)
                 {
-                    if (targetCanDevour != null)
-                    {
-                        targetCanDevour.DevourTargetIcon.SetActive(false);
-                        targetCanDevour = null;
-                    }
-                    return;
+                    ClosestTarget = hit.transform.gameObject;
                 }
             }
+        }
 
-            HealthManager hitHealthManager = hit.transform.gameObject.GetComponent<HealthManager>();
+        if (ClosestTarget == null)
+        {
+            Collider[] targets = Physics.OverlapSphere(devourPoint.position, 4);
+
+            foreach (var target in targets)
+            {
+                //If raycast hits player/minion/crown
+                if (target.CompareTag("PlayerParent") || target.CompareTag("Minion") || target.CompareTag("DemonKingCrown"))
+                {
+                    if (target.gameObject.GetComponent<HealthManager>().canBeDevoured)
+                    {
+                        if (ClosestTarget == null)
+                        {
+                            ClosestTarget = target.gameObject;
+                        }
+                        if (Vector3.Distance(devourPoint.position, target.transform.position) < Vector3.Distance(devourPoint.position, ClosestTarget.transform.position))
+                        {
+                            ClosestTarget = target.gameObject;
+                        }
+                    }
+                }
+            
+            }
+        }
+       
+        if (targetCanDevour != null)
+        {
+            targetCanDevour.DevourTargetIcon.SetActive(false);
+            targetCanDevour = null;
+        }
+
+        if (ClosestTarget != null)
+        {
+            HealthManager hitHealthManager = ClosestTarget.transform.gameObject.GetComponent<HealthManager>();
 
             //check if a target was hit and target can be devoured
             if (hitHealthManager != null && hitHealthManager.canBeDevoured)
@@ -283,4 +312,9 @@ public class Devour : MonoBehaviourPun
         PlayerSoundManager.Instance.StopDevourSound();
     }
     #endregion
+
+    void CheckForDevourTarget()
+    {
+        Collider[] targets = Physics.OverlapSphere(transform.position, 2);
+    }
 }
