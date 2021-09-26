@@ -45,8 +45,8 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float BottomClamp = -30.0f;
     [SerializeField] float CameraAngleOverride = 0.0f;
     public float MouseSensitivity;
-    private float _cinemachineTargetYaw;
-    private float _cinemachineTargetPitch;
+    [HideInInspector] public float _cinemachineTargetYaw;
+    [HideInInspector] public float _cinemachineTargetPitch;
     private Camera mainCamera;
 
     public bool drowningInLava = false;
@@ -142,11 +142,12 @@ public class PlayerController : MonoBehaviourPun
     }
 
     [PunRPC]
-    public void Initialize(Player player)
+    public void Initialize(Player player, float spawnY, float spawnZ)
     {
-        //gives player an ID
-        if (photonView.IsMine)
-            photonView.RPC("SetId", RpcTarget.All, GameManager.instance.myIdIndex);
+        photonView.RPC("SetId", RpcTarget.All, GameManager.instance.myIdIndex);
+        _cinemachineTargetYaw = spawnY;
+        _cinemachineTargetPitch = spawnZ;
+
         //Set photon player
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
