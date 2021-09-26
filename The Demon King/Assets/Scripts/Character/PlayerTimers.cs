@@ -30,6 +30,11 @@ public class PlayerTimers : MonoBehaviour
     [SerializeField] private Image respawnTimerImg;
     private bool playRespawn = false;
 
+    [Header("KingAbility")]
+    [SerializeField] private Image KingAbilityParent;
+    [SerializeField] private Image KingAbilityTimerImg;
+    private bool playKingAbility = false;
+
 
     private float TimeToCompleteAnimation;
     private float ActiveTime = 0f;
@@ -99,11 +104,25 @@ public class PlayerTimers : MonoBehaviour
         StartTimer(RespawnParent, Duration);
         playRespawn = true;
     }
-        
+
     public void StopRespawnTimer()
     {
         StopTimer(RespawnParent);
         playRespawn = false;
+    }
+    #endregion
+
+    #region KingAbilityTimer
+    public void StartKingAbilityTimer(float Duration)
+    {
+        StartTimer(KingAbilityParent, Duration);
+        playKingAbility = true;
+    }
+
+    public void StopKingAbilityTimer()
+    {
+        StopTimer(KingAbilityParent);
+        playKingAbility = false;
     }
     #endregion
 
@@ -128,6 +147,11 @@ public class PlayerTimers : MonoBehaviour
         else if (playRespawn)
         {
             LerpFillImg(respawnTimerImg);
+        }
+
+        if (playKingAbility)
+        {
+            LerpFillImg(KingAbilityTimerImg);
         }
     }
 
