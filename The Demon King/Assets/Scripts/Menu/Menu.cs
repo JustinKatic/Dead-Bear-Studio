@@ -173,6 +173,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         EventSystem.current.SetSelectedGameObject(lobbyBrowserScreen);
     }
 
+    public void OnQuitGameButton()
+    {
+        Application.Quit();
+        Debug.Log("Application Quit");
+    }
+
     // CREATE ROOM SCREEN
     public void OnPlayerRoomValueChanged(TMP_InputField playerRoomNameInput)
     {
