@@ -153,7 +153,6 @@ public class PlayerController : MonoBehaviourPun
 
         //Set photon player
         photonPlayer = player;
-        //Sets player id inside of gameManager = to this
     }
 
     [PunRPC]

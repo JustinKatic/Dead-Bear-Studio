@@ -114,18 +114,18 @@ public class GameManager : MonoBehaviourPun
 
     public void IncrementSpawnPos()
     {
-        photonView.RPC("IncrementSpawnPos_RPC", RpcTarget.All);
-    }
-
-
-    [PunRPC]
-    public void IncrementSpawnPos_RPC()
-    {
         spawnIndex++;
 
         if (spawnIndex >= spawnPoints.Length)
             spawnIndex = 0;
     }
+
+
+    //[PunRPC]
+    //public void IncrementSpawnPos_RPC()
+    //{
+
+    //}
 
 
     public PlayerController GetPlayer(int playerId)

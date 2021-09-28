@@ -51,6 +51,8 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] private TextMeshProUGUI healthBarTxt;
     [SerializeField] private GameObject namebarTxt;
 
+    private UIManager ui;
+
 
     [SerializeField] private Slider healthRegenTimerSlider;
 
@@ -72,6 +74,8 @@ public class PlayerHealthManager : HealthManager
         PlayerHudHealthBarImg.material = playerHudHealthBarMat;
 
         evolutionManager = GetComponent<EvolutionManager>();
+        ui = GameObject.FindGameObjectWithTag("GameManager").GetComponent<UIManager>();
+        CurrentHealth = MaxHealth;
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -82,7 +86,6 @@ public class PlayerHealthManager : HealthManager
         {
             debuffTimer = GetComponentInChildren<PlayerTimers>();
             overheadHealthBar.gameObject.SetActive(false);
-            CurrentHealth = MaxHealth;
             experienceManager = GetComponent<ExperienceManager>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             demonKingCrownHealthManager = FindObjectOfType<CrownHealthManager>();
@@ -155,7 +158,7 @@ public class PlayerHealthManager : HealthManager
             else
                 playerHealVfx.SetActive(false);
         }
-        else
+        if (!photonView.IsMine)
         {
             if (currentHealthOffset > 0)
             {
@@ -209,36 +212,45 @@ public class PlayerHealthManager : HealthManager
     #region Devour
     protected override void OnBeingDevourStart()
     {
-        debuffTimer.StopStunTimer();
-        debuffTimer.StartBeingDevouredTimer(TimeTakenToBeDevoured);
+        if (photonView.IsMine)
+        {
+            debuffTimer.StopStunTimer();
+            debuffTimer.StartBeingDevouredTimer(TimeTakenToBeDevoured);
+        }
         beingDevoured = true;
         PlayDevourEffect();
     }
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
-        debuffTimer.StopBeingDevouredTimer();
-        StopDevourEffect();
         PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
-        PlayerWhoDevouredMeController.vCam.m_Priority = 12;
-        KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
-        KilledByUIPanel.SetActive(true);
-        Respawn(true);
+        if (photonView.IsMine)
+        {
+            debuffTimer.StopBeingDevouredTimer();
+            PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+            KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+            KilledByUIPanel.SetActive(true);
+        }
+
+        StopDevourEffect();
+
+        if (photonView.IsMine)
+            Respawn(true);
     }
 
     void PlayDevourEffect()
-    {
-        photonView.RPC("PlayDevourEffect_RPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void PlayDevourEffect_RPC()
     {
         if (beingDevourEffectCo != null)
             StopCoroutine(beingDevourEffectCo);
         beingDevourEffectCo = ToggleDevourShader();
         StartCoroutine(beingDevourEffectCo);
     }
+
+    //[PunRPC]
+    //void PlayDevourEffect_RPC()
+    //{
+
+    //}
 
     IEnumerator ToggleDevourShader()
     {
@@ -270,29 +282,29 @@ public class PlayerHealthManager : HealthManager
         if (photonView.IsMine)
         {
             debuffTimer.StopBeingDevouredTimer();
-            StopDevourEffect();
         }
+        StopDevourEffect();
     }
 
     void StopDevourEffect()
-    {
-        photonView.RPC("StopDevourEffect_RPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void StopDevourEffect_RPC()
     {
         if (beingDevourEffectCo != null)
             StopCoroutine(beingDevourEffectCo);
         evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", 0);
     }
 
+    //[PunRPC]
+    //void StopDevourEffect_RPC()
+    //{
+
+    //}
+
     #endregion
 
     #region Take Damage/ Heal Damage
     public void TakeDamage(int damage, int attackerID)
     {
-        photonView.RPC("TakeDamage_RPC", player.photonPlayer, damage, attackerID);
+        photonView.RPC("TakeDamage_RPC", RpcTarget.All, damage, attackerID);
     }
 
     [PunRPC]
@@ -360,8 +372,13 @@ public class PlayerHealthManager : HealthManager
         }
     }
 
-
     public override void Heal(int amountToHeal)
+    {
+        photonView.RPC("Heal_RPC", RpcTarget.All, amountToHeal);
+    }
+
+    [PunRPC]
+    void Heal_RPC(int amountToHeal)
     {
         //Only running on local player
         CurrentHealth = Mathf.Clamp(CurrentHealth + amountToHeal, 0, MaxHealth);
@@ -393,6 +410,13 @@ public class PlayerHealthManager : HealthManager
             isStunned = false;
             isRespawning = true;
 
+            DisablePlayerOnRespawn();
+
+
+            if (PlayerWhoDevouredMeController != null)
+                ui.SomeoneKilledSomeone(player.photonPlayer, PlayerWhoDevouredMeController.photonPlayer);
+
+
             if (photonView.IsMine)
             {
                 player.onLaunchPad = false;
@@ -413,7 +437,6 @@ public class PlayerHealthManager : HealthManager
 
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
-                DisablePlayerOnRespawn();
 
                 //Check if the player died via no player death
                 if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
@@ -422,6 +445,9 @@ public class PlayerHealthManager : HealthManager
                     AwardLastPlayerWhoShotMe(photonView.ViewID);
                     playerWhoLastShotMeHealthManager = null;
                 }
+                else if (!DidIDieFromPlayer)
+                    ui.SomeoneKilledSomeone(player.photonPlayer, player.photonPlayer);
+
             }
             else
             {
@@ -444,6 +470,7 @@ public class PlayerHealthManager : HealthManager
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
             isRespawning = false;
+            PlayerWhoDevouredMeController = null;
         }
     }
 
@@ -469,17 +496,21 @@ public class PlayerHealthManager : HealthManager
 
     void DisablePlayerOnRespawn()
     {
-        Stun(false);
-        stunnedTimer = 0;
         GameManager.instance.IncrementSpawnPos();
-        player.DisableMovement();
-        player.cc.enabled = false;
-        transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
-        player._cinemachineTargetYaw = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.y;
-        player._cinemachineTargetPitch = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.z;
 
-        player.cc.enabled = true;
-        player.currentAnim.SetBool("Stunned", false);
+        if (photonView.IsMine)
+        {
+            Stun(false);
+            stunnedTimer = 0;
+            player.DisableMovement();
+            player.cc.enabled = false;
+            transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
+            player._cinemachineTargetYaw = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.y;
+            player._cinemachineTargetPitch = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.z;
+
+            player.cc.enabled = true;
+            player.currentAnim.SetBool("Stunned", false);
+        }
     }
 
     void EnablePlayerOnRespawn()
@@ -542,12 +573,6 @@ public class PlayerHealthManager : HealthManager
 
     public void UpdateHealthBar(int CurrentHealth, float healthOffset)
     {
-        photonView.RPC("UpdateHealthBar_RPC", RpcTarget.All, CurrentHealth, healthOffset);
-    }
-
-    [PunRPC]
-    public void UpdateHealthBar_RPC(int CurrentHealth, float healthOffset)
-    {
         //Run following if local player
         if (photonView.IsMine)
         {
@@ -563,6 +588,11 @@ public class PlayerHealthManager : HealthManager
             currentHealthOffset = healthOffset;
         }
     }
+
+    //[PunRPC]
+    //public void UpdateHealthBar_RPC(int CurrentHealth, float healthOffset)
+    //{
+    //}
 
     #endregion
 

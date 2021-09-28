@@ -81,18 +81,15 @@ public class HealthManager : MonoBehaviourPun
     virtual protected void Update()
     {
         //Run following if local player
-        if (photonView.IsMine)
+        if (isStunned)
         {
-            if (isStunned)
+            stunnedTimer += Time.deltaTime;
+            if (stunnedTimer >= StunnedDuration)
             {
-                stunnedTimer += Time.deltaTime;
-                if (stunnedTimer >= StunnedDuration)
+                if (!beingDevoured)
                 {
-                    if (!beingDevoured)
-                    {
-                        OnBeingStunnedEnd();
-                        stunnedTimer = 0;
-                    }
+                    OnBeingStunnedEnd();
+                    stunnedTimer = 0;
                 }
             }
         }
@@ -111,19 +108,15 @@ public class HealthManager : MonoBehaviourPun
     {
         canBeDevoured = false;
 
-        if (photonView.IsMine)
+        if (!coRunning)
         {
-            if (!coRunning)
-            {
-                Debug.Log("Entered co");
-                coRunning = true;
-                myDevourCo = DevourCorutine();
-                StartCoroutine(myDevourCo);
-            }
-            else
-            {
-                GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
-            }
+            coRunning = true;
+            myDevourCo = DevourCorutine();
+            StartCoroutine(myDevourCo);
+        }
+        else
+        {
+            GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
         }
 
 
@@ -176,12 +169,9 @@ public class HealthManager : MonoBehaviourPun
         CurAttackerId = 0;
         coRunning = false;
 
-        if (photonView.IsMine)
-        {
-            StopCoroutine(myDevourCo);
-            OnBeingStunnedEnd();
-            stunnedTimer = 0;
-        }
+        StopCoroutine(myDevourCo);
+        OnBeingStunnedEnd();
+        stunnedTimer = 0;
     }
 
     #endregion
