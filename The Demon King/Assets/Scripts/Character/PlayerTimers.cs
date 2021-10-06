@@ -39,6 +39,9 @@ public class PlayerTimers : MonoBehaviour
     private float TimeToCompleteAnimation;
     private float ActiveTime = 0f;
 
+    private float ActiveDemonKingTime = 0f;
+    private float TimeToCompleteDemonKingAbilityAnim;
+
 
 
 
@@ -115,7 +118,7 @@ public class PlayerTimers : MonoBehaviour
     #region KingAbilityTimer
     public void StartKingAbilityTimer(float Duration)
     {
-        StartTimer(KingAbilityParent, Duration);
+        StartKingAbilityTimer(KingAbilityParent, Duration);
         playKingAbility = true;
     }
 
@@ -151,7 +154,7 @@ public class PlayerTimers : MonoBehaviour
 
         if (playKingAbility)
         {
-            LerpFillImg(KingAbilityTimerImg);
+            LerpKingAbilityFillImg(KingAbilityTimerImg);
         }
     }
 
@@ -168,6 +171,21 @@ public class PlayerTimers : MonoBehaviour
         TimeToCompleteAnimation = Duration;
         ParentImg.gameObject.SetActive(true);
     }
+
+    public void LerpKingAbilityFillImg(Image ImgToChange)
+    {
+        ActiveDemonKingTime += Time.deltaTime;
+        float percent = ActiveDemonKingTime / TimeToCompleteDemonKingAbilityAnim;
+        ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
+    }
+
+    public void StartKingAbilityTimer(Image ParentImg, float Duration)
+    {
+        ActiveDemonKingTime = 0;
+        TimeToCompleteDemonKingAbilityAnim = Duration;
+        ParentImg.gameObject.SetActive(true);
+    }
+
 
     void StopTimer(Image ParentImg)
     {
