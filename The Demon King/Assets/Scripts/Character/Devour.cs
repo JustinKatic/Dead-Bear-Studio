@@ -118,7 +118,7 @@ public class Devour : MonoBehaviourPun
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         RaycastHit hit;
         
-        if (Physics.Raycast(ray, out hit, 15,LayersCanDevour))
+        if (Physics.Raycast(ray, out hit, devourRange,LayersCanDevour))
         {
             if (hit.transform.CompareTag("PlayerParent") ||hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
