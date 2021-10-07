@@ -50,10 +50,10 @@ public class GameManager : MonoBehaviourPun
             players.Add(null);
         }
 
-        StartCoroutine(Test());
+        StartCoroutine(CheckIfAllPlayersInGame());
     }
 
-    IEnumerator Test()
+    IEnumerator CheckIfAllPlayersInGame()
     {
         indexAssigned = false;
         while (!indexAssigned)
@@ -103,10 +103,10 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer_RPC()
     {
-        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[myIdIndex].position, Quaternion.identity);
+        GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[myIdIndex].position, spawnPoints[myIdIndex].rotation);
 
         // initialize the player for all other players
-        playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
+        playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints[myIdIndex].eulerAngles.y, spawnPoints[myIdIndex].eulerAngles.z);
 
         LoadingScreen.SetActive(false);
     }

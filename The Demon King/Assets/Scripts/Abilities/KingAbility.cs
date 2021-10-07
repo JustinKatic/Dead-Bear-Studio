@@ -6,18 +6,18 @@ using Photon.Pun;
 
 public class KingAbility : MonoBehaviourPun
 {
-    [Header("Modifiable Stats")]
+    //[Header("Modifiable Stats")]
     [SerializeField] private int damage;
     [SerializeField] private float damageFrequency;
     [SerializeField] private float abilityDuration;
     [SerializeField] private string kingAbilityEffectName;
 
-
-
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private GameObject LionKingAbilityMarker = null;
     [SerializeField] private float abilityMarkerSize = 4;
     [SerializeField] private LayerMask AimerLayersToIgnore;
+
+    [SerializeField] PlayerTimers PlayerTimers;
 
     private Vector3 targetPos;
 
@@ -75,6 +75,12 @@ public class KingAbility : MonoBehaviourPun
     private void OnEnable()
     {
         canShoot = true;
+        PlayerTimers.StartKingAbilityTimer(0);
+    }
+
+    private void OnDisable()
+    {
+        PlayerTimers.StopKingAbilityTimer();
     }
 
     private void Ability2_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)
@@ -112,6 +118,7 @@ public class KingAbility : MonoBehaviourPun
     public IEnumerator CanShoot(float timer)
     {
         canShoot = false;
+        PlayerTimers.StartKingAbilityTimer(timer);
         yield return new WaitForSeconds(timer);
         canShoot = true;
     }

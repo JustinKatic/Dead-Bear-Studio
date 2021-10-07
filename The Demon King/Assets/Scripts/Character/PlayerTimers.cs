@@ -30,9 +30,17 @@ public class PlayerTimers : MonoBehaviour
     [SerializeField] private Image respawnTimerImg;
     private bool playRespawn = false;
 
+    [Header("KingAbility")]
+    [SerializeField] private Image KingAbilityParent;
+    [SerializeField] private Image KingAbilityTimerImg;
+    private bool playKingAbility = false;
+
 
     private float TimeToCompleteAnimation;
     private float ActiveTime = 0f;
+
+    private float ActiveDemonKingTime = 0f;
+    private float TimeToCompleteDemonKingAbilityAnim;
 
 
 
@@ -99,11 +107,25 @@ public class PlayerTimers : MonoBehaviour
         StartTimer(RespawnParent, Duration);
         playRespawn = true;
     }
-        
+
     public void StopRespawnTimer()
     {
         StopTimer(RespawnParent);
         playRespawn = false;
+    }
+    #endregion
+
+    #region KingAbilityTimer
+    public void StartKingAbilityTimer(float Duration)
+    {
+        StartKingAbilityTimer(KingAbilityParent, Duration);
+        playKingAbility = true;
+    }
+
+    public void StopKingAbilityTimer()
+    {
+        StopTimer(KingAbilityParent);
+        playKingAbility = false;
     }
     #endregion
 
@@ -129,6 +151,11 @@ public class PlayerTimers : MonoBehaviour
         {
             LerpFillImg(respawnTimerImg);
         }
+
+        if (playKingAbility)
+        {
+            LerpKingAbilityFillImg(KingAbilityTimerImg);
+        }
     }
 
     public void LerpFillImg(Image ImgToChange)
@@ -144,6 +171,21 @@ public class PlayerTimers : MonoBehaviour
         TimeToCompleteAnimation = Duration;
         ParentImg.gameObject.SetActive(true);
     }
+
+    public void LerpKingAbilityFillImg(Image ImgToChange)
+    {
+        ActiveDemonKingTime += Time.deltaTime;
+        float percent = ActiveDemonKingTime / TimeToCompleteDemonKingAbilityAnim;
+        ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
+    }
+
+    public void StartKingAbilityTimer(Image ParentImg, float Duration)
+    {
+        ActiveDemonKingTime = 0;
+        TimeToCompleteDemonKingAbilityAnim = Duration;
+        ParentImg.gameObject.SetActive(true);
+    }
+
 
     void StopTimer(Image ParentImg)
     {

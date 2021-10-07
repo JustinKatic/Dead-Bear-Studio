@@ -475,6 +475,9 @@ public class PlayerHealthManager : HealthManager
         player.DisableMovement();
         player.cc.enabled = false;
         transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
+        player._cinemachineTargetYaw = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.y;
+        player._cinemachineTargetPitch = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.z;
+
         player.cc.enabled = true;
         player.currentAnim.SetBool("Stunned", false);
     }

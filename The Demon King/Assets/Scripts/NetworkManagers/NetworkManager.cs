@@ -43,6 +43,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();
+
     }
 
     // creates a new room of the requested room name
@@ -59,6 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     // joins a room of the requested room name
     public void JoinRoom(string roomName)
     {
+        RoomName = roomName;
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -78,6 +80,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             Debug.Log("Scene Not Found in Build Settings");
         }
 
+
         levelNotLoading = true;
     }
 
@@ -89,6 +92,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
+        Debug.Log("A Player left room");
+        if (PhotonNetwork.IsMasterClient && GameManager.instance != null)
+        {
+            bool IsThereAKing = false;
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                if (GameManager.instance.GetPlayer((int)player.CustomProperties["PlayerId"]).GetComponent<DemonKingEvolution>().AmITheDemonKing)
+                {
+                    IsThereAKing = true;
+                }
 
+            }
+            if (!IsThereAKing)
+                GameObject.FindGameObjectWithTag("DemonKingCrown").GetComponent<CrownHealthManager>().CrownRespawn(true);
+        }
     }
 }
