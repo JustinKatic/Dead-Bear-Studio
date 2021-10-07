@@ -44,6 +44,18 @@ public class EvolutionManager : MonoBehaviourPun
 
     private List<MinionType> minionTypes = new List<MinionType>();
 
+     public float TimeAsLionKingTimer;
+     public float TimeAsRayKingTimer;
+     public float TimeAsDragonKingTimer;
+
+     public float TimeAsSlimeTimer;
+     public float TimeAsLionTimer;
+     public float TimeAsRayTimer;
+     public float TimeAsDragonTimer;
+
+
+
+
 
     #region Start Up Handles getting components and setting starting evolution
     private void Awake()
@@ -111,6 +123,7 @@ public class EvolutionManager : MonoBehaviourPun
     }
     #endregion
 
+
     #region Set Starting Type
     private void SetMyMinionTypeOnStart()
     {
@@ -162,6 +175,38 @@ public class EvolutionManager : MonoBehaviourPun
         {
             if (evolving && playerHealthManager.isStunned)
                 InteruptEvolution();
+
+
+            //Update time as a slime
+            if (activeEvolution.gameObject.name.Contains("Ooze"))
+                TimeAsSlimeTimer += Time.deltaTime;
+
+            //Update time as Lion/Lion King
+            else if (activeEvolution.MyMinionType == redMinion)
+            {
+                if (demonKingEvolution.AmITheDemonKing)
+                    TimeAsLionKingTimer += Time.deltaTime;
+
+                TimeAsLionTimer += Time.deltaTime;
+            }
+
+            //Update time as Dragon/Dragon King
+            else if (activeEvolution.MyMinionType == greenMinion)
+            {
+                if (demonKingEvolution.AmITheDemonKing)
+                    TimeAsLionKingTimer += Time.deltaTime;
+
+                TimeAsDragonTimer += Time.deltaTime;
+            }
+
+            //Update time as Ray/Ray King
+            else if (activeEvolution.MyMinionType == blueMinion)
+            {
+                if (demonKingEvolution.AmITheDemonKing)
+                    TimeAsLionKingTimer += Time.deltaTime;
+
+                TimeAsRayTimer += Time.deltaTime;
+            }
         }
     }
     #endregion

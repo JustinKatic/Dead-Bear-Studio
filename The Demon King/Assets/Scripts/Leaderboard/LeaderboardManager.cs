@@ -23,6 +23,7 @@ struct LeaderBoardList
 public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 {
     PlayerController playerController;
+    EvolutionManager evolutionManager;
     public GameObject LeaderBoardHUD;
 
     public int DemonKingScore;
@@ -89,6 +90,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         if (photonView.IsMine)
         {
             playerController = GetComponentInParent<PlayerController>();
+            evolutionManager = GetComponentInParent<EvolutionManager>();
             transformViewClassic = GetComponent<PhotonTransformViewClassic>();
             playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
             playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
@@ -265,8 +267,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         demonKingVFX.SetActive(false);
         overheadNameTag.SetActive(true);
 
-        GameManager.instance.GetComponent<EndGameLeaderboardManager>().DisplayEndgameLeaderboard();
+        GameManager.instance.GetComponent<EndGameLeaderboardManager>().DisplayEndgameLeaderboard(matchTime, evolutionManager.TimeAsSlimeTimer, evolutionManager.TimeAsLionTimer, evolutionManager.TimeAsLionKingTimer,
+            evolutionManager.TimeAsRayTimer, evolutionManager.TimeAsRayKingTimer, evolutionManager.TimeAsDragonTimer, evolutionManager.TimeAsDragonKingTimer, playerController.SlimeDamageOutput, playerController.LionDamageOutput,
+            playerController.RayDamageOutput, playerController.DragonDamageOutput);
 
+        DemonKingInGameAnalytics.instance.SendEndGameStatsAnalytics();
+        DemonKingInGameAnalytics.instance.SendEvolutionAnalytics();
 
         foreach (var player in players.items)
         {
@@ -295,6 +301,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
 
         yield return new WaitForSeconds(30f);
+
 
         NetworkManager.instance.ChangeScene("Menu");
     }

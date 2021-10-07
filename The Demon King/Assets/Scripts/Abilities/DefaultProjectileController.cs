@@ -80,6 +80,7 @@ public class DefaultProjectileController : MonoBehaviourPun
             {
                 playerHealth.TakeDamage(damage, attackerId);
                 GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+                GameManager.instance.GetPlayer(attackerId).IncreaseSlimeDamage(damage);
             }
         }
         //If tag is Minion
@@ -89,6 +90,7 @@ public class DefaultProjectileController : MonoBehaviourPun
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(damage, attackerId);
             GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+            GameManager.instance.GetPlayer(attackerId).IncreaseSlimeDamage(damage);
         }
     }
 }

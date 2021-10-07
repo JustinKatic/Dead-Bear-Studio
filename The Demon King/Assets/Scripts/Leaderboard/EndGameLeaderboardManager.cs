@@ -14,6 +14,7 @@ struct EndGameLeaderBoardList
     public int playersConsumed;
     public int MinionsConsumed;
     public int PlayerDeaths;
+    public bool IslocalPlayer;
 }
 
 public class EndGameLeaderboardManager : MonoBehaviourPun
@@ -25,7 +26,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
     public GameObject EndgameLeaderboardBackground;
 
 
-    public void DisplayEndgameLeaderboard()
+    public void DisplayEndgameLeaderboard(float matchTime, float TimeAsSlime, float TimeAsLion, float TimeAsLionKing, float TimeAsRay, float TimeAsRayKing, float TimeAsDragon, float TimeAsDragonKing, int slimeDmg, int LionDmg, int rayDmg, int dragonDmg)
     {
         EndgameLeaderboardBackground.SetActive(true);
 
@@ -46,6 +47,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             dataToEnterIntoEndGameLeaderboardList.PlayerDeaths = (int)player.CustomProperties["PlayerDeaths"];
             dataToEnterIntoEndGameLeaderboardList.playersConsumed = (int)player.CustomProperties["PlayerKills"];
             dataToEnterIntoEndGameLeaderboardList.MinionsConsumed = (int)player.CustomProperties["MinionKills"];
+            dataToEnterIntoEndGameLeaderboardList.IslocalPlayer = player.IsLocal;
 
 
             //Add info into leaderboard list
@@ -79,8 +81,32 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             if (sortedScoreList[p].PlayerDeaths == sortedDeathsList[0].PlayerDeaths)
                 playerEndGameLeaderboardPanel[p].HighestDeathsImg.SetActive(true);
 
+            if (player.IslocalPlayer)
+            {
+                DemonKingInGameAnalytics.instance.DemonKingScore = player.DemonKingScore;
+                DemonKingInGameAnalytics.instance.PlayerDeaths = player.PlayerDeaths;
+                DemonKingInGameAnalytics.instance.PlayerConsumed = player.playersConsumed;
+                DemonKingInGameAnalytics.instance.MinionsConsumed = player.MinionsConsumed;
+                DemonKingInGameAnalytics.instance.MatchDuration = matchTime;
+
+                DemonKingInGameAnalytics.instance.TimeSpentAsSlime = TimeAsSlime;
+
+                DemonKingInGameAnalytics.instance.TimeSpentAsLion = TimeAsLion;
+                DemonKingInGameAnalytics.instance.TimeSpentAsLionKing = TimeAsLionKing;
+
+                DemonKingInGameAnalytics.instance.TimeSpentAsRay = TimeAsRay;
+                DemonKingInGameAnalytics.instance.TimeSpentAsRayKing = TimeAsRayKing;
+
+                DemonKingInGameAnalytics.instance.TimeSpentAsDragon = TimeAsDragon;
+                DemonKingInGameAnalytics.instance.TimeSpentAsDragonKing = TimeAsDragonKing;
+
+                DemonKingInGameAnalytics.instance.SlimeDamageOutput = slimeDmg;
+                DemonKingInGameAnalytics.instance.LionDamageOutput = LionDmg;
+                DemonKingInGameAnalytics.instance.RayDamageOutput = rayDmg;
+                DemonKingInGameAnalytics.instance.DragonDamageOutput = dragonDmg;
+            }
+
             p++;
         }
     }
-
 }

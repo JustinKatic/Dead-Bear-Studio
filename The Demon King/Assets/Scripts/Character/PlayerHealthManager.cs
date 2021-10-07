@@ -124,6 +124,7 @@ public class PlayerHealthManager : HealthManager
                 {
                     gasFrequencyTimer = 0;
                     TakeDamage(gasDamage, CurAttackerId);
+                    GameManager.instance.GetPlayer(CurAttackerId).IncreaseDragonDamage(gasDamage);
                 }
                 if (isStunned)
                 {

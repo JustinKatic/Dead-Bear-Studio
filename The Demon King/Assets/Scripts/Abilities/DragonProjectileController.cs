@@ -166,6 +166,7 @@ public class DragonProjectileController : MonoBehaviourPun
                 playerHealth.TakeDamage(projectileHitDmg, attackerId);
                 playerHealth.ApplyGasEffect(damage, attackerId, damageFrequency, gasDurationOnPlayer);
                 GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+                GameManager.instance.GetPlayer(attackerId).IncreaseDragonDamage(damage);
             }
         }
         //If tag is Minion
@@ -176,6 +177,7 @@ public class DragonProjectileController : MonoBehaviourPun
             minionHealth.TakeDamage(projectileHitDmg, attackerId);
             minionHealth.ApplyGasEffect(damage, attackerId, damageFrequency, gasDurationOnPlayer);
             GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+            GameManager.instance.GetPlayer(attackerId).IncreaseDragonDamage(damage);
         }
     }
 }

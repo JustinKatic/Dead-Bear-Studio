@@ -228,6 +228,8 @@ public class LaserAbility : MonoBehaviourPun
             {
                 playerHealth.TakeDamage(DamageToDeal, player.id);
                 GameManager.instance.GetPlayer(player.id).PlayRectAnim();
+
+                GameManager.instance.GetPlayer(player.id).IncreaseRayDamage(damage);
             }
         }
         //If tag is Minion
@@ -237,6 +239,8 @@ public class LaserAbility : MonoBehaviourPun
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(DamageToDeal, player.id);
             GameManager.instance.GetPlayer(player.id).PlayRectAnim();
+
+            GameManager.instance.GetPlayer(player.id).IncreaseRayDamage(damage);
         }
     }
 

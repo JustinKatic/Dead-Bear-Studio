@@ -96,6 +96,8 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
                 playerHealth.TakeDamage(damage, attackerId);
                 if (!aoeDmg)
                     GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+
+                GameManager.instance.GetPlayer(attackerId).IncreaseLionDamage(damage);
             }
         }
         //If tag is Minion
@@ -106,6 +108,8 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             minionHealth.TakeDamage(damage, attackerId);
             if (!aoeDmg)
                 GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+
+            GameManager.instance.GetPlayer(attackerId).IncreaseLionDamage(damage);
         }
     }
 
