@@ -74,8 +74,11 @@ public class KingAbility : MonoBehaviourPun
 
     private void OnEnable()
     {
-        canShoot = true;
-        PlayerTimers.StartKingAbilityTimer(0);
+        if (photonView.IsMine)
+        {
+            canShoot = true;
+            PlayerTimers.StartKingAbilityTimer(0);
+        }
     }
 
     private void OnDisable()
