@@ -458,6 +458,7 @@ MonoBehaviour:
   roomIsPublic: 1
   sceneName: 
   lastActiveMenu: {fileID: 0}
+  spectatorMode: 0
 --- !u!4 &476375924
 Transform:
   m_ObjectHideFlags: 0
@@ -922,10 +923,10 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1975993028}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 0
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: SetSpectatorMode
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1071,7 +1072,6 @@ MonoBehaviour:
   maxPlayers: 20
   RoomName: 
   levelNotLoading: 1
-  spectatorMode: 0
 --- !u!4 &1975993031
 Transform:
   m_ObjectHideFlags: 0
@@ -1452,7 +1452,7 @@ PrefabInstance:
       objectReference: {fileID: 476375923}
     - target: {fileID: 5536748583547479611, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5536748583567256510, guid: abe78ee9170a14941bf46df3462ab67f, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
