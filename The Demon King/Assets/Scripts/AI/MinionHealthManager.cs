@@ -7,6 +7,8 @@ using UnityEngine.AI;
 
 public class MinionHealthManager : HealthManager
 {
+    public int MaxHealth;
+
     [Header("Model To Disable On Death")]
     [SerializeField] GameObject myModel;
     [SerializeField] protected int AmountOfHealthAddedAfterStunned = 3;

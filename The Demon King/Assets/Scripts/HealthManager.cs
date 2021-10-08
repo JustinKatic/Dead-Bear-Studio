@@ -9,7 +9,6 @@ using UnityEngine.UI;
 public class HealthManager : MonoBehaviourPun
 {
     [Header("HealthStats")]
-    [HideInInspector] public int MaxHealth;
     [SerializeField] protected float TimeBeforeHealthRegen = 3f;
     [SerializeField] protected int healthRegenAmount = 1;
     [SerializeField] protected float healthRegenTickrate = .5f;

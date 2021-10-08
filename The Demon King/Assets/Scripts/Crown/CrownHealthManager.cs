@@ -8,6 +8,7 @@ public class CrownHealthManager : HealthManager
     public GameObject model;
     public GameObject VFX;
     private Collider col;
+    private int MaxHealth;
 
     void Start()
     {
