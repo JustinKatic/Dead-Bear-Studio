@@ -208,6 +208,36 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
     }
 
+    public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
+    {
+        base.OnRoomPropertiesUpdate(propertiesThatChanged);
+    }
+
+    public void OnGameTimeIncrease(bool shouldUpdateProperty)
+    {
+        NetworkManager.instance.GameTimeLimit += 60;
+        if (shouldUpdateProperty)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+    }
+    public void OnGameTimeDecrease(bool shouldUpdateProperty)
+    {
+        NetworkManager.instance.GameTimeLimit -= 60;
+        if (shouldUpdateProperty)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+    }
+    public void OnPointsToWinIncrease(bool shouldUpdateProperty)
+    {
+        NetworkManager.instance.PointsToWin += 10;
+        if (shouldUpdateProperty)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+    }
+    public void OnPointsToWinDecrease(bool shouldUpdateProperty)
+    {
+        NetworkManager.instance.PointsToWin -= 10;
+        if (shouldUpdateProperty)
+            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+    }
+
     public override void OnJoinedRoom()
     {
         SetScreen(lobbyScreen);

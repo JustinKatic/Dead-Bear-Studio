@@ -4,13 +4,21 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     public int maxPlayers = 10;
 
     public string RoomName;
+    public int GameTimeLimit;
+    public int PointsToWin;
     public bool levelNotLoading = true;
+
+    [HideInInspector] public string GameTimeLimitString = "T";
+    [HideInInspector] public string PointsToWinString = "P";
+
+
 
     // instance
     public static NetworkManager instance;
@@ -53,6 +61,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = (byte)roomMaxPlayers;
 
+        options.CustomRoomProperties = new Hashtable { { GameTimeLimitString, GameTimeLimit }, { PointsToWinString, PointsToWin } };
+
         RoomName = roomName.ToUpper();
 
         PhotonNetwork.CreateRoom(RoomName, options);
@@ -63,6 +73,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         RoomName = roomName;
         PhotonNetwork.JoinRoom(roomName);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        GameTimeLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties[GameTimeLimitString];
+        PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[PointsToWinString];
     }
 
     // changes the scene through Photon's system
