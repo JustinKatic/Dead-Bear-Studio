@@ -12,7 +12,6 @@ public class CrownHealthManager : HealthManager
     void Start()
     {
         isStunned = true;
-        MaxHealth = 0;
         col = GetComponent<Collider>();
         canBeDevoured = true;
     }

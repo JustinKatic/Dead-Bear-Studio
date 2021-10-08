@@ -40,6 +40,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+
     public override void OnConnectedToMaster()
     {
         PhotonNetwork.JoinLobby();

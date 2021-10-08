@@ -9,6 +9,8 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.EventSystems;
 using Random = UnityEngine.Random;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
@@ -60,6 +62,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private string currentRoomName;
     private float roomMaxPlayers = 2;
     [SerializeField] private GameObject lastActiveMenu;
+
+    public bool spectatorMode = false;
 
 
     void Start()
@@ -195,6 +199,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     // called when we join a room
     // set the screen to be the Lobby and update the UI for all players
+
+    public void SetSpectatorMode()
+    {
+        spectatorMode = !spectatorMode;
+        Hashtable SpectatorMode = new Hashtable();
+        SpectatorMode.Add("IsSpectator", spectatorMode);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
+    }
+
     public override void OnJoinedRoom()
     {
         SetScreen(lobbyScreen);
@@ -202,6 +215,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
         PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
+
+        Hashtable SpectatorMode = new Hashtable();
+        SpectatorMode.Add("IsSpectator", spectatorMode);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
 
         if (roomIsPublic)
         {
