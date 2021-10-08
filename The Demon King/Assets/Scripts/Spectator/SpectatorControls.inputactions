@@ -20,6 +20,30 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Increase Speed",
+                    "type": "Button",
+                    "id": "8a8aec95-6b82-440b-8251-2457154db04d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Raise",
+                    "type": "Button",
+                    "id": "40aa6d33-3756-4f1c-a8bc-0b386c610ea9",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Lower",
+                    "type": "Button",
+                    "id": "bdb35713-aea1-4f8a-81ba-2c9f1ca7bb6d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -83,9 +107,42 @@
                     "id": "c6b5fc7c-e114-40c1-8ee7-debcfe552604",
                     "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "InvertVector2(invertX=false)",
                     "groups": "",
                     "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f9ae2ed-cf11-484b-b7fc-53925542310c",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Increase Speed",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "595e9fa9-8e16-407e-b57e-e0700fdda508",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Raise",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c929f440-3ffc-4b60-9af4-956977f99f0c",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Lower",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

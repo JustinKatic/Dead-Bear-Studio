@@ -33,6 +33,30 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Increase Speed"",
+                    ""type"": ""Button"",
+                    ""id"": ""8a8aec95-6b82-440b-8251-2457154db04d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Raise"",
+                    ""type"": ""Button"",
+                    ""id"": ""40aa6d33-3756-4f1c-a8bc-0b386c610ea9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Lower"",
+                    ""type"": ""Button"",
+                    ""id"": ""bdb35713-aea1-4f8a-81ba-2c9f1ca7bb6d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -96,9 +120,42 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                     ""id"": ""c6b5fc7c-e114-40c1-8ee7-debcfe552604"",
                     ""path"": ""<Mouse>/delta"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""InvertVector2(invertX=false)"",
                     ""groups"": """",
                     ""action"": ""Rotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5f9ae2ed-cf11-484b-b7fc-53925542310c"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Increase Speed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""595e9fa9-8e16-407e-b57e-e0700fdda508"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Raise"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c929f440-3ffc-4b60-9af4-956977f99f0c"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Lower"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -111,6 +168,9 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_Move = m_Movement.FindAction("Move", throwIfNotFound: true);
         m_Movement_Rotate = m_Movement.FindAction("Rotate", throwIfNotFound: true);
+        m_Movement_IncreaseSpeed = m_Movement.FindAction("Increase Speed", throwIfNotFound: true);
+        m_Movement_Raise = m_Movement.FindAction("Raise", throwIfNotFound: true);
+        m_Movement_Lower = m_Movement.FindAction("Lower", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -162,12 +222,18 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
     private IMovementActions m_MovementActionsCallbackInterface;
     private readonly InputAction m_Movement_Move;
     private readonly InputAction m_Movement_Rotate;
+    private readonly InputAction m_Movement_IncreaseSpeed;
+    private readonly InputAction m_Movement_Raise;
+    private readonly InputAction m_Movement_Lower;
     public struct MovementActions
     {
         private @SpectatorControls m_Wrapper;
         public MovementActions(@SpectatorControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Movement_Move;
         public InputAction @Rotate => m_Wrapper.m_Movement_Rotate;
+        public InputAction @IncreaseSpeed => m_Wrapper.m_Movement_IncreaseSpeed;
+        public InputAction @Raise => m_Wrapper.m_Movement_Raise;
+        public InputAction @Lower => m_Wrapper.m_Movement_Lower;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -183,6 +249,15 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                 @Rotate.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnRotate;
                 @Rotate.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnRotate;
                 @Rotate.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnRotate;
+                @IncreaseSpeed.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnIncreaseSpeed;
+                @IncreaseSpeed.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnIncreaseSpeed;
+                @IncreaseSpeed.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnIncreaseSpeed;
+                @Raise.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnRaise;
+                @Raise.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnRaise;
+                @Raise.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnRaise;
+                @Lower.started -= m_Wrapper.m_MovementActionsCallbackInterface.OnLower;
+                @Lower.performed -= m_Wrapper.m_MovementActionsCallbackInterface.OnLower;
+                @Lower.canceled -= m_Wrapper.m_MovementActionsCallbackInterface.OnLower;
             }
             m_Wrapper.m_MovementActionsCallbackInterface = instance;
             if (instance != null)
@@ -193,6 +268,15 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                 @Rotate.started += instance.OnRotate;
                 @Rotate.performed += instance.OnRotate;
                 @Rotate.canceled += instance.OnRotate;
+                @IncreaseSpeed.started += instance.OnIncreaseSpeed;
+                @IncreaseSpeed.performed += instance.OnIncreaseSpeed;
+                @IncreaseSpeed.canceled += instance.OnIncreaseSpeed;
+                @Raise.started += instance.OnRaise;
+                @Raise.performed += instance.OnRaise;
+                @Raise.canceled += instance.OnRaise;
+                @Lower.started += instance.OnLower;
+                @Lower.performed += instance.OnLower;
+                @Lower.canceled += instance.OnLower;
             }
         }
     }
@@ -201,5 +285,8 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
+        void OnIncreaseSpeed(InputAction.CallbackContext context);
+        void OnRaise(InputAction.CallbackContext context);
+        void OnLower(InputAction.CallbackContext context);
     }
 }

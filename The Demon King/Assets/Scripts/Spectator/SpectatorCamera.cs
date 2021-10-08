@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class SpectatorCamera : MonoBehaviourPun
 {
     private SpectatorControls spectatorControls;
     [SerializeField] float CameraAngleOverride = 0.0f;
     [SerializeField] float MouseSensitivity;
-
+    [SerializeField] private float spectatorMoveSpeed = 10;
     private Vector2 playerLookInput;
     private Vector2 playerMoveInput;
     private float _cinemachineTargetYaw;
@@ -20,12 +21,46 @@ public class SpectatorCamera : MonoBehaviourPun
     [HideInInspector] public int id;
     [HideInInspector] public Player photonPlayer;
     // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
+        //Run following if local player 
         if (photonView.IsMine)
         {
-            spectatorControls = GetComponent<SpectatorControls>();
+            spectatorControls = new SpectatorControls();
 
+            spectatorControls.Movement.IncreaseSpeed.started += OnShiftDown;
+            spectatorControls.Movement.IncreaseSpeed.canceled += OnShiftUp;
+            
+            //Enable the player inputs
+            spectatorControls.Enable();
+            //lock players cursor and set invis.
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
+
+    private void OnShiftUp(InputAction.CallbackContext obj)
+    {
+        spectatorMoveSpeed = 20;
+    }
+
+    private void OnShiftDown(InputAction.CallbackContext obj)
+    {
+        spectatorMoveSpeed = 40;
+    }
+
+
+    //Disable character input
+    private void OnDisable()
+    {
+        //Run following if local player
+        if (photonView.IsMine)
+        {
+            //Disable the player inputs
+            spectatorControls.Disable();
+            spectatorControls.Movement.IncreaseSpeed.started -= OnShiftDown;
+            spectatorControls.Movement.IncreaseSpeed.canceled -= OnShiftUp;
         }
     }
     [PunRPC]
@@ -44,8 +79,21 @@ public class SpectatorCamera : MonoBehaviourPun
         if (photonView.IsMine)
         {
             playerLookInput = spectatorControls.Movement.Rotate.ReadValue<Vector2>();
+            playerMoveInput = spectatorControls.Movement.Move.ReadValue<Vector2>();
+
+           MoveCamera();
+
         }
+    }
+
+    void MoveCamera()
+    {
         
+            // movement
+            float y = 0;
+
+            Vector3 dir = transform.right * playerMoveInput.x + transform.up * y + transform.forward * playerMoveInput.y;
+            transform.position += dir * spectatorMoveSpeed * Time.deltaTime;
     }
 
     private void LateUpdate()

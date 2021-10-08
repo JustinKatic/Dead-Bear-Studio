@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
     public string playerPrefabLocation;
+    public string spectatorPrefabLocation;
+
     public List<PlayerController> players;
     public Transform[] spawnPoints;
 
@@ -106,6 +108,9 @@ public class GameManager : MonoBehaviourPun
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == true)
         {
             //LOAD SPECTAOR PREFAB
+            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints[myIdIndex].position, spawnPoints[myIdIndex].rotation);
+            spectatorPrefab.GetComponent<SpectatorCamera>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
+
         }
         else
         {
