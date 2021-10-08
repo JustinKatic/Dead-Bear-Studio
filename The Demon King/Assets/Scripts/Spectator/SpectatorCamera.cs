@@ -88,12 +88,14 @@ public class SpectatorCamera : MonoBehaviourPun
 
     void MoveCamera()
     {
+        // movement
+        float y = 0;
         
-            // movement
-            float y = 0;
+        y += spectatorControls.Movement.Raise.ReadValue<float>();
+        y -= spectatorControls.Movement.Lower.ReadValue<float>();
 
-            Vector3 dir = transform.right * playerMoveInput.x + transform.up * y + transform.forward * playerMoveInput.y;
-            transform.position += dir * spectatorMoveSpeed * Time.deltaTime;
+        Vector3 dir = transform.right * playerMoveInput.x + transform.up * y + transform.forward * playerMoveInput.y;
+        transform.position += dir * spectatorMoveSpeed * Time.deltaTime;
     }
 
     private void LateUpdate()

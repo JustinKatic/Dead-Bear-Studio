@@ -44,17 +44,17 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Raise"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""40aa6d33-3756-4f1c-a8bc-0b386c610ea9"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """"
                 },
                 {
                     ""name"": ""Lower"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""bdb35713-aea1-4f8a-81ba-2c9f1ca7bb6d"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Integer"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
