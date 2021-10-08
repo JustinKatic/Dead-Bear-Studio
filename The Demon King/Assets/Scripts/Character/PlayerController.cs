@@ -148,6 +148,7 @@ public class PlayerController : MonoBehaviourPun
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
             MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", MouseSensitivity);
+            
             //Subsribes to the on action change event and detects what the current activecontroller is
             InputSystem.onActionChange += (obj, change) =>
             {
@@ -156,7 +157,6 @@ public class PlayerController : MonoBehaviourPun
                     var inputAction = (InputAction)obj;
                     var lastControl = inputAction.activeControl;
                     CurrentInputDevice = lastControl.device;
-
                     // Debug.Log($"device: {CurrentInputDevice.displayName}");
                 }
             };
