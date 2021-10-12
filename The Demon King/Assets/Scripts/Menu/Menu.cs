@@ -208,9 +208,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
     }
 
+
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        base.OnRoomPropertiesUpdate(propertiesThatChanged);
+        NetworkManager.instance.GameTimeLimit = (int)propertiesThatChanged["T"];
+        NetworkManager.instance.PointsToWin = (int)propertiesThatChanged["P"];
     }
 
     public void OnGameTimeIncrease(bool shouldUpdateProperty)
