@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class SpectatorCamera : MonoBehaviourPun
     private Vector2 playerMoveInput;
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
+    [HideInInspector] public CinemachineVirtualCamera vCam;
+
     
     //Photon Components
     [HideInInspector] public int id;
@@ -27,11 +30,12 @@ public class SpectatorCamera : MonoBehaviourPun
         //Run following if local player 
         if (photonView.IsMine)
         {
+            vCam = GetComponentInChildren<CinemachineVirtualCamera>();
             spectatorControls = new SpectatorControls();
 
             spectatorControls.Movement.IncreaseSpeed.started += OnShiftDown;
             spectatorControls.Movement.IncreaseSpeed.canceled += OnShiftUp;
-            
+            vCam.m_Priority = 12;
             //Enable the player inputs
             spectatorControls.Enable();
             //lock players cursor and set invis.
