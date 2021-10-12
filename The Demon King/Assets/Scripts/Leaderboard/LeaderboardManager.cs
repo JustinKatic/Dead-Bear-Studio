@@ -183,6 +183,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
+            if ((bool)player.CustomProperties["IsSpectator"])
+                continue;
+
             LeaderBoardList dataToEnterIntoLeaderboardList = new LeaderBoardList();
             //get players name
             dataToEnterIntoLeaderboardList.PlayerNickName = player.NickName;
@@ -207,6 +210,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         bool wasThereAKing = false;
         foreach (LeaderBoardList player in sortedLeaderboardList)
         {
+
             if (i <= numberOfPlayerToDisplay)
                 playerLeaderboardSlot[i].gameObject.SetActive(true);
 
