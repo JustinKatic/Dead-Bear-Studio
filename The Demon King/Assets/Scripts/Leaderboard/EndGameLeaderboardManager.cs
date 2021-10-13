@@ -49,7 +49,6 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             dataToEnterIntoEndGameLeaderboardList.MinionsConsumed = (int)player.CustomProperties["MinionKills"];
             dataToEnterIntoEndGameLeaderboardList.IslocalPlayer = player.IsLocal;
 
-
             //Add info into leaderboard list
             endGameLeaderBoardList.Add(dataToEnterIntoEndGameLeaderboardList);
         }
