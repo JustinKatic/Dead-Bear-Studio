@@ -211,8 +211,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        NetworkManager.instance.GameTimeLimit = (int)propertiesThatChanged["T"];
-        NetworkManager.instance.PointsToWin = (int)propertiesThatChanged["P"];
+        if (propertiesThatChanged.ContainsKey("T"))
+        {
+            NetworkManager.instance.GameTimeLimit = (int)propertiesThatChanged["T"];
+        }
+        if (propertiesThatChanged.ContainsKey("P"))
+        {
+            NetworkManager.instance.PointsToWin = (int)propertiesThatChanged["P"];
+        }
     }
 
     public void OnGameTimeIncrease(bool shouldUpdateProperty)
