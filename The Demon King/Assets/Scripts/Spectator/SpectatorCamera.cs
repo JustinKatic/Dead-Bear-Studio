@@ -13,13 +13,14 @@ public class SpectatorCamera : MonoBehaviourPun
     [SerializeField] float CameraAngleOverride = 0.0f;
     [SerializeField] float MouseSensitivity;
     [SerializeField] private float spectatorMoveSpeed = 10;
+    [SerializeField] private GameObject HUD;
     private Vector2 playerLookInput;
     private Vector2 playerMoveInput;
     private float _cinemachineTargetYaw;
     private float _cinemachineTargetPitch;
     [HideInInspector] public CinemachineVirtualCamera vCam;
 
-    
+
     //Photon Components
     [HideInInspector] public int id;
     [HideInInspector] public Player photonPlayer;
@@ -41,6 +42,10 @@ public class SpectatorCamera : MonoBehaviourPun
             //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+        }
+        else
+        {
+            HUD.gameObject.SetActive(false);
         }
     }
 
@@ -85,7 +90,7 @@ public class SpectatorCamera : MonoBehaviourPun
             playerLookInput = spectatorControls.Movement.Rotate.ReadValue<Vector2>();
             playerMoveInput = spectatorControls.Movement.Move.ReadValue<Vector2>();
 
-           MoveCamera();
+            MoveCamera();
 
         }
     }
@@ -94,7 +99,7 @@ public class SpectatorCamera : MonoBehaviourPun
     {
         // movement
         float y = 0;
-        
+
         y += spectatorControls.Movement.Raise.ReadValue<float>();
         y -= spectatorControls.Movement.Lower.ReadValue<float>();
 
@@ -107,7 +112,7 @@ public class SpectatorCamera : MonoBehaviourPun
         if (photonView.IsMine)
             CameraRotation();
     }
-    
+
     private void CameraRotation()
     {
         // if there is an input and camera position is not fixed
