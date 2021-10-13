@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 
 
-struct EndGameLeaderBoardList
+public struct EndGameLeaderBoardList
 {
     public string PlayerNickName;
     public int DemonKingScore;
@@ -20,7 +20,7 @@ struct EndGameLeaderBoardList
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
     [Header("Leaderboard Display")]
-    List<EndGameLeaderBoardList> endGameLeaderBoardList = new List<EndGameLeaderBoardList>();
+    public List<EndGameLeaderBoardList> endGameLeaderBoardList = new List<EndGameLeaderBoardList>();
     public List<EndGameLeaderboardPanel> playerEndGameLeaderboardPanel = new List<EndGameLeaderboardPanel>();
 
     public GameObject EndgameLeaderboardBackground;
@@ -34,7 +34,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
+            if ((bool)player.CustomProperties["IsSpectator"])
                 continue;
 
             playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
