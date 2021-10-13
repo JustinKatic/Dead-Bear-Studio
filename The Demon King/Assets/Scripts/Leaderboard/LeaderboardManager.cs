@@ -285,7 +285,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
             foreach (var player in players.items)
             {
-                player.GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
+                SpectatorCamera spec = player.GetComponent<SpectatorCamera>();
+                if (spec != null)
+                    player.GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
             }
 
             if (playerPositionOnScoreboard == 0)
