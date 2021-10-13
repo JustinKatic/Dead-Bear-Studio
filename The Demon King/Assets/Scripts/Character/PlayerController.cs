@@ -79,10 +79,10 @@ public class PlayerController : MonoBehaviourPun
     private bool onSlope;
     private float slideFriction = 0.3f;
 
-    [HideInInspector] public int SlimeDamageOutput;
-    [HideInInspector] public int LionDamageOutput;
-    [HideInInspector] public int RayDamageOutput;
-    [HideInInspector] public int DragonDamageOutput;
+    public int SlimeDamageOutput;
+    public int LionDamageOutput;
+    public int RayDamageOutput;
+    public int DragonDamageOutput;
 
     public void IncreaseSlimeDamage(int value)
     {
