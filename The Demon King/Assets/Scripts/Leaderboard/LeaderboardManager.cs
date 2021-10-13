@@ -147,17 +147,23 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        for (int i = 0; i < PhotonNetwork.PlayerList.Count(); i++)
+        foreach (var slot in playerLeaderboardSlot)
         {
-            playerLeaderboardSlot[i].gameObject.SetActive(true);
+            slot.gameObject.SetActive(true);
         }
     }
 
     private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        for (int i = numberOfPlayerToDisplay + 1; i <= PhotonNetwork.PlayerList.Count(); i++)
+        int i = 0;
+        foreach (var slot in playerLeaderboardSlot)
         {
-            playerLeaderboardSlot[i].gameObject.SetActive(false);
+            if (i <= numberOfPlayerToDisplay)
+            {
+                i++;
+                continue;
+            }
+            slot.gameObject.SetActive(false);
         }
     }
 
