@@ -30,15 +30,15 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
     {
         EndgameLeaderboardBackground.SetActive(true);
 
-        for (int i = 0; i < PhotonNetwork.PlayerList.Count(); i++)
-        {
-            playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
-        }
-
-        endGameLeaderBoardList.Clear();
+        int i = 0;
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
+            if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
+                continue;
+
+            playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
+            i++;
             EndGameLeaderBoardList dataToEnterIntoEndGameLeaderboardList = new EndGameLeaderBoardList();
             //get players name
             dataToEnterIntoEndGameLeaderboardList.PlayerNickName = player.NickName;
