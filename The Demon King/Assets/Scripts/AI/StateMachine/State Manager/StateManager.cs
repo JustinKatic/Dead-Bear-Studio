@@ -26,6 +26,7 @@ public class StateManager : MonoBehaviourPun
     [SerializeField] protected float ChasingOrFleeingMovementSpeed;
     [Header("Chasing")]
     [SerializeField] protected float ChasePlayerForX;
+    [SerializeField] protected int healthToFleeAt;
     [SerializeField] protected float RadiusDistanceToStartChasingPlayer;
     protected float chaseTimer;
     protected bool chasing = false;

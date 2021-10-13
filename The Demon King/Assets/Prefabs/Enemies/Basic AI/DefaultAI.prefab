@@ -507,7 +507,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5bd1845b943e64da48f3aefc8c2875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxHealth: 15
   TimeBeforeHealthRegen: 3
   healthRegenAmount: 1
   healthRegenTickrate: 0.5
@@ -530,6 +529,7 @@ MonoBehaviour:
   canBeDevoured: 0
   isStunned: 0
   healthOffsetTime: 5
+  MaxHealth: 15
   myModel: {fileID: 1534572014454437786}
   AmountOfHealthAddedAfterStunned: 5
   PlayerWhoShotMe: {fileID: 0}
@@ -702,6 +702,7 @@ MonoBehaviour:
   WanderingMovementSpeed: 3.5
   ChasingOrFleeingMovementSpeed: 4.5
   ChasePlayerForX: 3
+  healthToFleeAt: 5
   RadiusDistanceToStartChasingPlayer: 5
   TimeTillNextAttack: 1
   AttackRange: 2

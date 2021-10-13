@@ -21,7 +21,7 @@ public class BasicStateManager : StateManager
     protected override void RunStateMachine()
     {
 
-        if (healthManager.CurrentHealth <= 1)
+        if (healthManager.CurrentHealth <= healthToFleeAt)
         {
             fleeing = true;
         }
