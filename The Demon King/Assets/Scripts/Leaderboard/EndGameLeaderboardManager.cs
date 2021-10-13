@@ -7,7 +7,7 @@ using System.Linq;
 using UnityEngine;
 
 
-struct EndGameLeaderBoardList
+public struct EndGameLeaderBoardList
 {
     public string PlayerNickName;
     public int DemonKingScore;
@@ -20,7 +20,7 @@ struct EndGameLeaderBoardList
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
     [Header("Leaderboard Display")]
-    List<EndGameLeaderBoardList> endGameLeaderBoardList = new List<EndGameLeaderBoardList>();
+    public List<EndGameLeaderBoardList> endGameLeaderBoardList = new List<EndGameLeaderBoardList>();
     public List<EndGameLeaderboardPanel> playerEndGameLeaderboardPanel = new List<EndGameLeaderboardPanel>();
 
     public GameObject EndgameLeaderboardBackground;
@@ -30,15 +30,15 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
     {
         EndgameLeaderboardBackground.SetActive(true);
 
-        for (int i = 0; i < PhotonNetwork.PlayerList.Count(); i++)
-        {
-            playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
-        }
-
-        endGameLeaderBoardList.Clear();
+        int i = 0;
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
+            if ((bool)player.CustomProperties["IsSpectator"])
+                continue;
+
+            playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
+            i++;
             EndGameLeaderBoardList dataToEnterIntoEndGameLeaderboardList = new EndGameLeaderBoardList();
             //get players name
             dataToEnterIntoEndGameLeaderboardList.PlayerNickName = player.NickName;
@@ -48,7 +48,6 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             dataToEnterIntoEndGameLeaderboardList.playersConsumed = (int)player.CustomProperties["PlayerKills"];
             dataToEnterIntoEndGameLeaderboardList.MinionsConsumed = (int)player.CustomProperties["MinionKills"];
             dataToEnterIntoEndGameLeaderboardList.IslocalPlayer = player.IsLocal;
-
 
             //Add info into leaderboard list
             endGameLeaderBoardList.Add(dataToEnterIntoEndGameLeaderboardList);

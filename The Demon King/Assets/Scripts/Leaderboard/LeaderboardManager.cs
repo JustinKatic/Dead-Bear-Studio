@@ -89,6 +89,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     {
         if (photonView.IsMine)
         {
+            if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
+                return;
+
             playerController = GetComponentInParent<PlayerController>();
             evolutionManager = GetComponentInParent<EvolutionManager>();
             transformViewClassic = GetComponent<PhotonTransformViewClassic>();
@@ -147,7 +150,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        for (int i = 0; i < PhotonNetwork.PlayerList.Count(); i++)
+        for (int i = 0; i < leaderBoardList.Count; i++)
         {
             playerLeaderboardSlot[i].gameObject.SetActive(true);
         }
@@ -155,7 +158,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        for (int i = numberOfPlayerToDisplay + 1; i <= PhotonNetwork.PlayerList.Count(); i++)
+        for (int i = numberOfPlayerToDisplay + 1; i <= leaderBoardList.Count; i++)
         {
             playerLeaderboardSlot[i].gameObject.SetActive(false);
         }
@@ -255,54 +258,58 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     IEnumerator ReturnToLobbyCo()
     {
-        PlayerHealthManager health = GetComponent<PlayerHealthManager>();
-        Devour devour = GetComponent<Devour>();
-
-        if (health.beingDevoured)
-            health.InterruptDevourOnSelf();
-        if (devour.IsDevouring)
-            devour.InteruptDevouring();
-
-        transformViewClassic.m_PositionModel.TeleportIfDistanceGreaterThan = 0;
-        podiumVCam.m_Priority = 15;
-        playerController.DisableAllInputs();
-        playerHUD.SetActive(false);
-        playerNameOverhead.SetActive(true);
-        demonKingVFX.SetActive(false);
-        overheadNameTag.SetActive(true);
-
-        GameManager.instance.GetComponent<EndGameLeaderboardManager>().DisplayEndgameLeaderboard(matchTime, evolutionManager.TimeAsSlimeTimer, evolutionManager.TimeAsLionTimer, evolutionManager.TimeAsLionKingTimer,
-            evolutionManager.TimeAsRayTimer, evolutionManager.TimeAsRayKingTimer, evolutionManager.TimeAsDragonTimer, evolutionManager.TimeAsDragonKingTimer, playerController.SlimeDamageOutput, playerController.LionDamageOutput,
-            playerController.RayDamageOutput, playerController.DragonDamageOutput);
-
-        DemonKingInGameAnalytics.instance.SendEndGameStatsAnalytics();
-        DemonKingInGameAnalytics.instance.SendEvolutionAnalytics();
-
-        foreach (var player in players.items)
+        if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
         {
-            player.GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
-        }
+            PlayerHealthManager health = GetComponent<PlayerHealthManager>();
+            Devour devour = GetComponent<Devour>();
 
-        if (playerPositionOnScoreboard == 0)
-        {
-            playerController.transform.position = podium1.position;
-            playerController.transform.rotation = podium1.transform.rotation;
-        }
-        else if (playerPositionOnScoreboard == 1)
-        {
-            playerController.transform.position = podium2.position;
-            playerController.transform.rotation = podium2.transform.rotation;
-        }
-        else if (playerPositionOnScoreboard == 2)
-        {
-            playerController.transform.position = podium3.position;
-            playerController.transform.rotation = podium3.transform.rotation;
-        }
-        else
-        {
-            playerController.transform.position = new Vector3(0, -200, 0);
-        }
+            if (health.beingDevoured)
+                health.InterruptDevourOnSelf();
+            if (devour.IsDevouring)
+                devour.InteruptDevouring();
 
+            transformViewClassic.m_PositionModel.TeleportIfDistanceGreaterThan = 0;
+            podiumVCam.m_Priority = 15;
+            playerController.DisableAllInputs();
+            playerHUD.SetActive(false);
+            playerNameOverhead.SetActive(true);
+            demonKingVFX.SetActive(false);
+            overheadNameTag.SetActive(true);
+
+            GameManager.instance.GetComponent<EndGameLeaderboardManager>().DisplayEndgameLeaderboard(matchTime, evolutionManager.TimeAsSlimeTimer, evolutionManager.TimeAsLionTimer, evolutionManager.TimeAsLionKingTimer,
+                evolutionManager.TimeAsRayTimer, evolutionManager.TimeAsRayKingTimer, evolutionManager.TimeAsDragonTimer, evolutionManager.TimeAsDragonKingTimer, playerController.SlimeDamageOutput, playerController.LionDamageOutput,
+                playerController.RayDamageOutput, playerController.DragonDamageOutput);
+
+            DemonKingInGameAnalytics.instance.SendEndGameStatsAnalytics();
+            DemonKingInGameAnalytics.instance.SendEvolutionAnalytics();
+
+            foreach (var player in players.items)
+            {
+                SpectatorCamera spec = player.GetComponent<SpectatorCamera>();
+                if (spec == null)
+                    player.GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
+            }
+
+            if (playerPositionOnScoreboard == 0)
+            {
+                playerController.transform.position = podium1.position;
+                playerController.transform.rotation = podium1.transform.rotation;
+            }
+            else if (playerPositionOnScoreboard == 1)
+            {
+                playerController.transform.position = podium2.position;
+                playerController.transform.rotation = podium2.transform.rotation;
+            }
+            else if (playerPositionOnScoreboard == 2)
+            {
+                playerController.transform.position = podium3.position;
+                playerController.transform.rotation = podium3.transform.rotation;
+            }
+            else
+            {
+                playerController.transform.position = new Vector3(0, -200, 0);
+            }
+        }
 
         yield return new WaitForSeconds(30f);
 
