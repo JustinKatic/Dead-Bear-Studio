@@ -11,7 +11,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public int maxPlayers = 10;
 
     public string RoomName;
-    public int GameTimeLimit;
+    public float GameTimeLimit;
     public int PointsToWin;
     public bool levelNotLoading = true;
 
@@ -77,7 +77,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        GameTimeLimit = (int)PhotonNetwork.CurrentRoom.CustomProperties[GameTimeLimitString];
+        GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[GameTimeLimitString];
         PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[PointsToWinString];
     }
 

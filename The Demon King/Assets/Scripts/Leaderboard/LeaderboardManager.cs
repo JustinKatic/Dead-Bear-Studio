@@ -27,7 +27,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     public GameObject LeaderBoardHUD;
 
     public int DemonKingScore;
-    public IntSO DemonKingScoreRequiredToWin;
+    private int DemonKingScoreRequiredToWin;
 
     [Header("DemonKing Display")]
     [SerializeField] private PlayerLeaderboardPanel DemonKingPanel;
@@ -54,7 +54,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     int numberOfPlayerToDisplay = 2;
 
-    [SerializeField] private float matchTime = 900;
+    private float matchTime;
     [SerializeField] private float timeToAwardDoubleScore = 300;
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
@@ -89,6 +89,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     {
         if (photonView.IsMine)
         {
+            matchTime = NetworkManager.instance.GameTimeLimit;
+            DemonKingScoreRequiredToWin = NetworkManager.instance.PointsToWin;
+
             if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
                 return;
 
@@ -231,7 +234,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 DemonKingPanel.DemonKingScoreText.text = player.DemonKingScore.ToString();
                 DemonKingPanel.UpdateSliderValue(player.DemonKingScore);
                 DemonKingPanel.CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
-                if (player.DemonKingScore >= DemonKingScoreRequiredToWin.value)
+                if (player.DemonKingScore >= DemonKingScoreRequiredToWin)
                     DidAWinOccur = true;
             }
 

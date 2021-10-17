@@ -1785,6 +1785,8 @@ MonoBehaviour:
   privateRoomToggle: {fileID: 242456882}
   maxPlayerInput: {fileID: 1643780612}
   createRoomSelectableItem: {fileID: 83861332580241203}
+  createRoomTimeLimitText: {fileID: 5233914419498148799}
+  createRoomPointsToWinText: {fileID: 3205836115257084731}
   playerListText: {fileID: 83861332661362276}
   roomInfoText: {fileID: 83861332693270212}
   startGameButton: {fileID: 83861333734850830}
@@ -1805,6 +1807,12 @@ MonoBehaviour:
   - SceneName: Valley Of Death
     SceneMaxPlayers: 7
   lobbySelectableItem: {fileID: 83861333734850828}
+  lobbyTimeLimitText: {fileID: 8776302401876508183}
+  lobbyPointsToWinText: {fileID: 1799358114553528028}
+  lobbyTimeDecreaseButton: {fileID: 5005816371292681041}
+  lobbyTimeIncreaseButton: {fileID: 8193937263097617036}
+  lobbyScoreIncreaseButton: {fileID: 7456824177691661492}
+  lobbyScoreDecreaseButton: {fileID: 2936047078154724568}
   roomListContainer: {fileID: 83861333909493305}
   roomButtonPrefab: {fileID: 7612701457216302844, guid: 58c21847e08a74248a9a53380eae1d96, type: 3}
   roomSearchBar: {fileID: 126826774}
@@ -2593,7 +2601,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0.645887}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4517,7 +4525,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5681,7 +5689,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6830,7 +6838,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 699699417}
   m_HandleRect: {fileID: 699699416}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7558,8 +7566,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxPlayers: 20
   RoomName: 
-  GameTimeLimit: 111
-  PointsToWin: 111
+  GameTimeLimit: 900
+  PointsToWin: 200
   levelNotLoading: 1
   GameTimeLimitString: T
   PointsToWinString: P
@@ -10783,8 +10791,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000010014, y: 462.4088}
-  m_SizeDelta: {x: 406.6, y: 0}
+  m_AnchoredPosition: {x: 0.000010014, y: 151.50876}
+  m_SizeDelta: {x: 406.6, y: 5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &83861333909493310
 GameObject:
