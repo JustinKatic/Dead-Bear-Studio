@@ -13,10 +13,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public string RoomName;
     public float GameTimeLimit;
     public int PointsToWin;
+    public int currentSceneIndex = 0;
     public bool levelNotLoading = true;
 
     [HideInInspector] public string GameTimeLimitString = "T";
     [HideInInspector] public string PointsToWinString = "P";
+    [HideInInspector] public string ActiveSceneIndexString = "S";
+
 
 
 
@@ -61,7 +64,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = (byte)roomMaxPlayers;
 
-        options.CustomRoomProperties = new Hashtable { { GameTimeLimitString, GameTimeLimit }, { PointsToWinString, PointsToWin } };
+        options.CustomRoomProperties = new Hashtable { { GameTimeLimitString, GameTimeLimit }, { PointsToWinString, PointsToWin }, { ActiveSceneIndexString, currentSceneIndex } };
 
         RoomName = roomName.ToUpper();
 
@@ -79,6 +82,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[GameTimeLimitString];
         PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[PointsToWinString];
+        currentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[ActiveSceneIndexString];
     }
 
     // changes the scene through Photon's system

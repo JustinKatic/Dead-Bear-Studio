@@ -42,10 +42,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private TextMeshProUGUI playerListText;
     [SerializeField] private TextMeshProUGUI roomInfoText;
     [SerializeField] private Button startGameButton;
-    [SerializeField] private TMP_Dropdown sceneDropdown;
     [SerializeField] private Button RoomPrivacyButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
-    public List<SceneInformation> scenes;
+    [SerializeField] private List<SceneInformation> scenes;
+    [SerializeField] private Image CurrentSceneDisplayImg;
+    [SerializeField] private Button SceneChangeLeftButton;
+    [SerializeField] private Button SceneChangeRighttButton;
+
+
     [SerializeField] private GameObject lobbySelectableItem;
 
     [SerializeField] private TextMeshProUGUI lobbyTimeLimitText;
@@ -80,19 +84,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-        List<string> sceneNames = new List<string>();
-
-        foreach (var scene in scenes)
-        {
-            sceneNames.Add(scene.SceneName);
-        }
-
         createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
         lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
         createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
+        CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
 
-        sceneDropdown.AddOptions(sceneNames);
+
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
@@ -228,17 +226,22 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        if (propertiesThatChanged.ContainsKey("T"))
+        if (propertiesThatChanged.ContainsKey(NetworkManager.instance.GameTimeLimitString))
         {
-            NetworkManager.instance.GameTimeLimit = (float)propertiesThatChanged["T"];
+            NetworkManager.instance.GameTimeLimit = (float)propertiesThatChanged[NetworkManager.instance.GameTimeLimit];
             createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
             lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
         }
-        if (propertiesThatChanged.ContainsKey("P"))
+        if (propertiesThatChanged.ContainsKey(NetworkManager.instance.PointsToWinString))
         {
-            NetworkManager.instance.PointsToWin = (int)propertiesThatChanged["P"];
+            NetworkManager.instance.PointsToWin = (int)propertiesThatChanged[NetworkManager.instance.PointsToWin];
             createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
             lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
+        }
+        if (propertiesThatChanged.ContainsKey(NetworkManager.instance.ActiveSceneIndexString))
+        {
+            NetworkManager.instance.currentSceneIndex = (int)propertiesThatChanged[NetworkManager.instance.ActiveSceneIndexString];
+            CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;    
         }
     }
 
@@ -287,7 +290,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SpectatorMode.Add("IsSpectator", spectatorMode);
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
 
-        Invoke("UpdateTimeAndScoreInvoke", 0.2f);
+        Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
 
         if (roomIsPublic)
         {
@@ -302,13 +305,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         EventSystem.current.SetSelectedGameObject(lobbySelectableItem);
     }
 
-    void UpdateTimeAndScoreInvoke()
+    void UpdateRoomHashsOnJoinInvoke()
     {
         createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
         lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
 
         createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
+
+        CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
     }
     // called when a player leaves the room - update the lobby UI
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -320,17 +325,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [PunRPC]
     void UpdateLobbyUI()
     {
-
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
-        sceneDropdown.gameObject.SetActive(PhotonNetwork.IsMasterClient);
         RoomPrivacyButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
         lobbyTimeIncreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
         lobbyTimeDecreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
         lobbyScoreIncreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
         lobbyScoreDecreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-
-
+        SceneChangeLeftButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        SceneChangeRighttButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
 
 
 
@@ -352,20 +355,33 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CurrentRoom.IsVisible = false;
         startGameButton.interactable = false;
 
-        //Name of scene is the current dropdown selection
-        if (sceneDropdown != null)
-        {
-            sceneName = sceneDropdown.options[sceneDropdown.value].text;
-        }
-        else
-        {
-            sceneName = "Game";
-        }
+        sceneName = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
+
         // tell everyone to load into the Game scene
         NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, sceneName);
 
         startGameButton.interactable = NetworkManager.instance.levelNotLoading;
     }
+
+    public void OnSceneChangeRightButton()
+    {
+        if (NetworkManager.instance.currentSceneIndex >= scenes.Count - 1)
+            NetworkManager.instance.currentSceneIndex = 0;
+        else
+            NetworkManager.instance.currentSceneIndex++;
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.ActiveSceneIndexString, NetworkManager.instance.currentSceneIndex } });
+    }
+    public void OnSceneChangeLeftButton()
+    {
+        if (NetworkManager.instance.currentSceneIndex <= 0)
+            NetworkManager.instance.currentSceneIndex = scenes.Count - 1;
+        else
+            NetworkManager.instance.currentSceneIndex--;
+
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.ActiveSceneIndexString, NetworkManager.instance.currentSceneIndex } });
+    }
+
 
     // called when the "Leave Lobby" button has been pressed
     public void OnLeaveLobbyButton()

@@ -1475,7 +1475,7 @@ namespace Photon.Pun
                 PhotonNetwork.SetLevelInPropsIfSynced(SceneManagerHelper.ActiveSceneName);
             }
 
-            // Debug.Log("OnLevelWasLoaded photonViewList.Count: " + photonViewList.Count); // Exit Games internal log
+            // Debug.Log(elWasLoaded photonViewList.Count: " + photonViewList.Count); // Exit Games internal log
 
             List<int> removeKeys = new List<int>();
             foreach (KeyValuePair<int, PhotonView> kvp in photonViewList)
