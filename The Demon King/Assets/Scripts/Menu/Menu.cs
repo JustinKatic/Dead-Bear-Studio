@@ -54,6 +54,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [SerializeField] private TextMeshProUGUI lobbyTimeLimitText;
     [SerializeField] private TextMeshProUGUI lobbyPointsToWinText;
+    [SerializeField] private TextMeshProUGUI currentLevelSelectedText;
+
 
     [SerializeField] private Button lobbyTimeDecreaseButton;
     [SerializeField] private Button lobbyTimeIncreaseButton;
@@ -89,6 +91,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
+        currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
 
 
         // disable the menu buttons at the start
@@ -241,7 +244,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         if (propertiesThatChanged.ContainsKey(NetworkManager.instance.ActiveSceneIndexString))
         {
             NetworkManager.instance.currentSceneIndex = (int)propertiesThatChanged[NetworkManager.instance.ActiveSceneIndexString];
-            CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;    
+            CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
+            currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
         }
     }
 
@@ -314,6 +318,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
 
         CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
+        currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
     }
     // called when a player leaves the room - update the lobby UI
     public override void OnPlayerLeftRoom(Player otherPlayer)
