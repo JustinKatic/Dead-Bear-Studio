@@ -73,6 +73,14 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""PushForTalk"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ee96b63-04cd-4976-b535-d5add85696d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -249,6 +257,17 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Devolve"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f08e5bce-daf5-4c76-8bf1-cacf468fdf25"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PushForTalk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -446,6 +465,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Evolve = m_Player.FindAction("Evolve", throwIfNotFound: true);
         m_Player_Devolve = m_Player.FindAction("Devolve", throwIfNotFound: true);
+        m_Player_PushForTalk = m_Player.FindAction("PushForTalk", throwIfNotFound: true);
         // PlayerLook
         m_PlayerLook = asset.FindActionMap("PlayerLook", throwIfNotFound: true);
         m_PlayerLook_Look = m_PlayerLook.FindAction("Look", throwIfNotFound: true);
@@ -514,6 +534,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Evolve;
     private readonly InputAction m_Player_Devolve;
+    private readonly InputAction m_Player_PushForTalk;
     public struct PlayerActions
     {
         private @CharacterInputs m_Wrapper;
@@ -525,6 +546,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Evolve => m_Wrapper.m_Player_Evolve;
         public InputAction @Devolve => m_Wrapper.m_Player_Devolve;
+        public InputAction @PushForTalk => m_Wrapper.m_Player_PushForTalk;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -555,6 +577,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Devolve.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
                 @Devolve.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
                 @Devolve.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
+                @PushForTalk.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushForTalk;
+                @PushForTalk.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushForTalk;
+                @PushForTalk.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushForTalk;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -580,6 +605,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Devolve.started += instance.OnDevolve;
                 @Devolve.performed += instance.OnDevolve;
                 @Devolve.canceled += instance.OnDevolve;
+                @PushForTalk.started += instance.OnPushForTalk;
+                @PushForTalk.performed += instance.OnPushForTalk;
+                @PushForTalk.canceled += instance.OnPushForTalk;
             }
         }
     }
@@ -743,6 +771,7 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnEvolve(InputAction.CallbackContext context);
         void OnDevolve(InputAction.CallbackContext context);
+        void OnPushForTalk(InputAction.CallbackContext context);
     }
     public interface IPlayerLookActions
     {

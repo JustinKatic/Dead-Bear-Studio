@@ -1,0 +1,39 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using Photon.Voice.Unity;
+using Photon.Voice.PUN;
+using UnityEngine.InputSystem;
+using System;
+
+public class PushToTalk : MonoBehaviourPun
+{
+    public Recorder VoiceRecorder;
+    private CharacterInputs CharacterInputs;
+
+    private void Start()
+    {
+        if (photonView.IsMine)
+        {
+            CharacterInputs = InputManager.inputActions;
+            CharacterInputs.Player.PushForTalk.performed += PushForTalkPerformed;
+            CharacterInputs.Player.PushForTalk.canceled += PushForTalkCancelled;
+
+            VoiceRecorder.TransmitEnabled = false;
+        }
+    }
+
+
+    private void PushForTalkPerformed(InputAction.CallbackContext obj)
+    {
+        VoiceRecorder.TransmitEnabled = true;
+        Debug.Log("Talking");
+    }
+    private void PushForTalkCancelled(InputAction.CallbackContext obj)
+    {
+        VoiceRecorder.TransmitEnabled = false;
+        Debug.Log("Stop Talking");
+    }
+}

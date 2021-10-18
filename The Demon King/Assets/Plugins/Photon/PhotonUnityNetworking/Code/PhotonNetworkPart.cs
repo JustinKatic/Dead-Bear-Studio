@@ -297,7 +297,7 @@ namespace Photon.Pun
                 HashSet<GameObject> instantiatedGos = new HashSet<GameObject>();
                 foreach (PhotonView view in photonViewList.Values)
                 {
-                    if (view.isRuntimeInstantiated && view != null)
+                    if (view.isRuntimeInstantiated)
                     {
                         instantiatedGos.Add(view.gameObject); // HashSet keeps each object only once
                     }
@@ -720,7 +720,7 @@ namespace Photon.Pun
             {
                 if (view == null)
                 {
-                    //Debug.LogError("Null view");
+                    Debug.LogError("Null view");
                     continue;
                 }
 
@@ -1475,7 +1475,7 @@ namespace Photon.Pun
                 PhotonNetwork.SetLevelInPropsIfSynced(SceneManagerHelper.ActiveSceneName);
             }
 
-            // Debug.Log(elWasLoaded photonViewList.Count: " + photonViewList.Count); // Exit Games internal log
+            // Debug.Log("OnLevelWasLoaded photonViewList.Count: " + photonViewList.Count); // Exit Games internal log
 
             List<int> removeKeys = new List<int>();
             foreach (KeyValuePair<int, PhotonView> kvp in photonViewList)
@@ -2239,11 +2239,15 @@ namespace Photon.Pun
                 case PunEvent.CloseConnection:
 
                     // MasterClient "requests" a disconnection from us
-                    if (originatingPlayer == null || !originatingPlayer.IsMasterClient)
+                    if (PhotonNetwork.EnableCloseConnection == false)
                     {
-                        Debug.LogError("Error: Someone else(" + originatingPlayer + ") then the masterserver requests a disconnect!");
+                        Debug.LogWarning("CloseConnection received from " + originatingPlayer + ". PhotonNetwork.EnableCloseConnection is false. Ignoring the request (this client stays in the room).");
                     }
-                    else
+                    else if (originatingPlayer == null || !originatingPlayer.IsMasterClient)
+                    {
+                        Debug.LogWarning("CloseConnection received from " + originatingPlayer + ". That player is not the Master Client. " + PhotonNetwork.MasterClient + " is.");
+                    }
+                    else if (PhotonNetwork.EnableCloseConnection)
                     {
                         PhotonNetwork.LeaveRoom(false);
                     }
@@ -2412,6 +2416,16 @@ namespace Photon.Pun
                             int newOwnerId = viewOwnerPair[i];
 
                             PhotonView view = GetPhotonView(viewId);
+                            if (view == null)
+                            {
+                                if (PhotonNetwork.LogLevel >= PunLogLevel.ErrorsOnly)
+                                {
+                                    Debug.LogErrorFormat("Failed to find a PhotonView with ID={0} for incoming OwnershipUpdate event (newOwnerActorNumber={1}), sender={2}. If you load scenes, make sure to pause the message queue.", viewId, newOwnerId, actorNr);
+                                }
+
+                                continue;
+                            }
+
                             Player prevOwner = view.Owner;
                             Player newOwner = CurrentRoom.GetPlayer(newOwnerId, true);
 
