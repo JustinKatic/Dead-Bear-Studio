@@ -15,14 +15,12 @@ public class PushToTalk : MonoBehaviourPun
 
     private void Start()
     {
-        if (photonView.IsMine)
-        {
-            CharacterInputs = InputManager.inputActions;
-            CharacterInputs.Player.PushForTalk.performed += PushForTalkPerformed;
-            CharacterInputs.Player.PushForTalk.canceled += PushForTalkCancelled;
+        CharacterInputs = InputManager.inputActions;
+        CharacterInputs.Enable();
+        CharacterInputs.Player.PushForTalk.performed += PushForTalkPerformed;
+        CharacterInputs.Player.PushForTalk.canceled += PushForTalkCancelled;
 
-            VoiceRecorder.TransmitEnabled = false;
-        }
+        VoiceRecorder.TransmitEnabled = false;
     }
 
 
@@ -35,5 +33,11 @@ public class PushToTalk : MonoBehaviourPun
     {
         VoiceRecorder.TransmitEnabled = false;
         Debug.Log("Stop Talking");
+    }
+
+
+    private void OnDisable()
+    {
+        CharacterInputs.Disable();
     }
 }
