@@ -73,14 +73,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
-                },
-                {
-                    ""name"": ""PushForTalk"",
-                    ""type"": ""Button"",
-                    ""id"": ""3ee96b63-04cd-4976-b535-d5add85696d1"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -259,17 +251,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""action"": ""Devolve"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""f08e5bce-daf5-4c76-8bf1-cacf468fdf25"",
-                    ""path"": ""<Keyboard>/v"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""PushForTalk"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -424,6 +405,33 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""VoiceChat"",
+            ""id"": ""f938161d-1dfe-4df9-a6d5-66fc171e5302"",
+            ""actions"": [
+                {
+                    ""name"": ""PushForTalk"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8cf293c-31cf-4fe5-8f6f-d0680c2d9886"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9a971bcc-4a1c-4851-a147-6d2af0a2f659"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PushForTalk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -465,7 +473,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Evolve = m_Player.FindAction("Evolve", throwIfNotFound: true);
         m_Player_Devolve = m_Player.FindAction("Devolve", throwIfNotFound: true);
-        m_Player_PushForTalk = m_Player.FindAction("PushForTalk", throwIfNotFound: true);
         // PlayerLook
         m_PlayerLook = asset.FindActionMap("PlayerLook", throwIfNotFound: true);
         m_PlayerLook_Look = m_PlayerLook.FindAction("Look", throwIfNotFound: true);
@@ -478,6 +485,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         // Settings
         m_Settings = asset.FindActionMap("Settings", throwIfNotFound: true);
         m_Settings_OpenSettings = m_Settings.FindAction("OpenSettings", throwIfNotFound: true);
+        // VoiceChat
+        m_VoiceChat = asset.FindActionMap("VoiceChat", throwIfNotFound: true);
+        m_VoiceChat_PushForTalk = m_VoiceChat.FindAction("PushForTalk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -534,7 +544,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Evolve;
     private readonly InputAction m_Player_Devolve;
-    private readonly InputAction m_Player_PushForTalk;
     public struct PlayerActions
     {
         private @CharacterInputs m_Wrapper;
@@ -546,7 +555,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Evolve => m_Wrapper.m_Player_Evolve;
         public InputAction @Devolve => m_Wrapper.m_Player_Devolve;
-        public InputAction @PushForTalk => m_Wrapper.m_Player_PushForTalk;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -577,9 +585,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Devolve.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
                 @Devolve.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
                 @Devolve.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDevolve;
-                @PushForTalk.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushForTalk;
-                @PushForTalk.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushForTalk;
-                @PushForTalk.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPushForTalk;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -605,9 +610,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                 @Devolve.started += instance.OnDevolve;
                 @Devolve.performed += instance.OnDevolve;
                 @Devolve.canceled += instance.OnDevolve;
-                @PushForTalk.started += instance.OnPushForTalk;
-                @PushForTalk.performed += instance.OnPushForTalk;
-                @PushForTalk.canceled += instance.OnPushForTalk;
             }
         }
     }
@@ -744,6 +746,39 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         }
     }
     public SettingsActions @Settings => new SettingsActions(this);
+
+    // VoiceChat
+    private readonly InputActionMap m_VoiceChat;
+    private IVoiceChatActions m_VoiceChatActionsCallbackInterface;
+    private readonly InputAction m_VoiceChat_PushForTalk;
+    public struct VoiceChatActions
+    {
+        private @CharacterInputs m_Wrapper;
+        public VoiceChatActions(@CharacterInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @PushForTalk => m_Wrapper.m_VoiceChat_PushForTalk;
+        public InputActionMap Get() { return m_Wrapper.m_VoiceChat; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(VoiceChatActions set) { return set.Get(); }
+        public void SetCallbacks(IVoiceChatActions instance)
+        {
+            if (m_Wrapper.m_VoiceChatActionsCallbackInterface != null)
+            {
+                @PushForTalk.started -= m_Wrapper.m_VoiceChatActionsCallbackInterface.OnPushForTalk;
+                @PushForTalk.performed -= m_Wrapper.m_VoiceChatActionsCallbackInterface.OnPushForTalk;
+                @PushForTalk.canceled -= m_Wrapper.m_VoiceChatActionsCallbackInterface.OnPushForTalk;
+            }
+            m_Wrapper.m_VoiceChatActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @PushForTalk.started += instance.OnPushForTalk;
+                @PushForTalk.performed += instance.OnPushForTalk;
+                @PushForTalk.canceled += instance.OnPushForTalk;
+            }
+        }
+    }
+    public VoiceChatActions @VoiceChat => new VoiceChatActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -771,7 +806,6 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnEvolve(InputAction.CallbackContext context);
         void OnDevolve(InputAction.CallbackContext context);
-        void OnPushForTalk(InputAction.CallbackContext context);
     }
     public interface IPlayerLookActions
     {
@@ -788,5 +822,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     public interface ISettingsActions
     {
         void OnOpenSettings(InputAction.CallbackContext context);
+    }
+    public interface IVoiceChatActions
+    {
+        void OnPushForTalk(InputAction.CallbackContext context);
     }
 }

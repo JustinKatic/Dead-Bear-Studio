@@ -231,13 +231,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         if (propertiesThatChanged.ContainsKey(NetworkManager.instance.GameTimeLimitString))
         {
-            NetworkManager.instance.GameTimeLimit = (float)propertiesThatChanged[NetworkManager.instance.GameTimeLimit];
+            NetworkManager.instance.GameTimeLimit = (float)propertiesThatChanged[NetworkManager.instance.GameTimeLimitString];
             createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
             lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
         }
         if (propertiesThatChanged.ContainsKey(NetworkManager.instance.PointsToWinString))
         {
-            NetworkManager.instance.PointsToWin = (int)propertiesThatChanged[NetworkManager.instance.PointsToWin];
+            NetworkManager.instance.PointsToWin = (int)propertiesThatChanged[NetworkManager.instance.PointsToWinString];
             createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
             lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         }

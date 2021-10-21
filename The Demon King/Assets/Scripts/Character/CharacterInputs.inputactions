@@ -60,14 +60,6 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
-                },
-                {
-                    "name": "PushForTalk",
-                    "type": "Button",
-                    "id": "3ee96b63-04cd-4976-b535-d5add85696d1",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -246,17 +238,6 @@
                     "action": "Devolve",
                     "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f08e5bce-daf5-4c76-8bf1-cacf468fdf25",
-                    "path": "<Keyboard>/v",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "PushForTalk",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         },
@@ -407,6 +388,33 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "OpenSettings",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "VoiceChat",
+            "id": "f938161d-1dfe-4df9-a6d5-66fc171e5302",
+            "actions": [
+                {
+                    "name": "PushForTalk",
+                    "type": "Button",
+                    "id": "c8cf293c-31cf-4fe5-8f6f-d0680c2d9886",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9a971bcc-4a1c-4851-a147-6d2af0a2f659",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PushForTalk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
