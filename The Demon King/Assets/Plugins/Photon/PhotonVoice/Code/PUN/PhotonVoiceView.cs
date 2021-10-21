@@ -23,7 +23,6 @@ namespace Photon.Voice.PUN
     /// This component makes automatic voice stream routing easy for players' characters/avatars.
     /// </summary>
     [AddComponentMenu("Photon Voice/Photon Voice View")]
-    [RequireComponent(typeof(PhotonView))]
     [HelpURL("https://doc.photonengine.com/en-us/voice/v2/getting-started/voice-for-pun")]
     public class PhotonVoiceView : VoiceComponent
     {
