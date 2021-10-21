@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.SceneManagement;
+using Photon.Voice.Unity;
+using Photon.Voice.PUN;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
@@ -27,6 +29,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public static NetworkManager instance;
 
     private PhotonView PV;
+    private PhotonVoiceView VV;
+    private
     void Awake()
     {
         if (instance != null && instance != this)
@@ -40,6 +44,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             {
                 PV = gameObject.AddComponent<PhotonView>();
                 photonView.ViewID = 999;
+                VV = gameObject.AddComponent<PhotonVoiceView>();
+                VV.RecorderInUse = GetComponent<Recorder>();
+                VV.SpeakerInUse = GetComponent<Speaker>();
             }
         }
         DontDestroyOnLoad(gameObject);

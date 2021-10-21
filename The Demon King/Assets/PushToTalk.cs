@@ -7,6 +7,7 @@ using Photon.Voice.Unity;
 using Photon.Voice.PUN;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.SceneManagement;
 
 public class PushToTalk : MonoBehaviourPun
 {
@@ -15,15 +16,14 @@ public class PushToTalk : MonoBehaviourPun
 
     private void Start()
     {
-        if (photonView.IsMine)
-        {
-            CharacterInputs = InputManager.inputActions;
-            CharacterInputs.Player.PushForTalk.performed += PushForTalkPerformed;
-            CharacterInputs.Player.PushForTalk.canceled += PushForTalkCancelled;
+        CharacterInputs = InputManager.inputActions;
+        CharacterInputs.VoiceChat.Enable();
+        CharacterInputs.VoiceChat.PushForTalk.performed += PushForTalkPerformed;
+        CharacterInputs.VoiceChat.PushForTalk.canceled += PushForTalkCancelled;
 
-            VoiceRecorder.TransmitEnabled = false;
-        }
+        VoiceRecorder.TransmitEnabled = false;
     }
+
 
 
     private void PushForTalkPerformed(InputAction.CallbackContext obj)
@@ -35,5 +35,11 @@ public class PushToTalk : MonoBehaviourPun
     {
         VoiceRecorder.TransmitEnabled = false;
         Debug.Log("Stop Talking");
+    }
+
+
+    private void OnDisable()
+    {
+        CharacterInputs.VoiceChat.Disable();
     }
 }
