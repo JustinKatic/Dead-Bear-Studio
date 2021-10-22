@@ -14,12 +14,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
-    [Header("Screens")]
-    [SerializeField] private GameObject mainScreen;
-    [SerializeField] private GameObject createRoomScreen;
-    [SerializeField] private GameObject lobbyScreen;
-    [SerializeField] private GameObject lobbyBrowserScreen;
-    [SerializeField] private GameObject SettingsScreen;
+    [SerializeField] private List<GameObject> screens;
+    [SerializeField] private GameObject ActiveMenu;
 
     [Header("Main Screen")]
     [SerializeField] private Button createRoomButton;
@@ -30,10 +26,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [Header("Create Room Screen")]
     [SerializeField] private Button createNewRoomButton;
-    [SerializeField] private Toggle privateRoomToggle;
     [SerializeField] private TMP_Text maxPlayerInput;
-    [SerializeField] private GameObject createRoomSelectableItem;
-
     [SerializeField] private TextMeshProUGUI createRoomTimeLimitText;
     [SerializeField] private TextMeshProUGUI createRoomPointsToWinText;
 
@@ -41,36 +34,22 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [Header("Lobby")]
     [SerializeField] private TextMeshProUGUI playerListText;
     [SerializeField] private TextMeshProUGUI roomInfoText;
+    [SerializeField] private List<Button> masterClientButtons;
+    
     [SerializeField] private Button startGameButton;
-    [SerializeField] private Button RoomPrivacyButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
     [SerializeField] private List<SceneInformation> scenes;
     [SerializeField] private Image CurrentSceneDisplayImg;
-    [SerializeField] private Button SceneChangeLeftButton;
-    [SerializeField] private Button SceneChangeRighttButton;
-
-
-    [SerializeField] private GameObject lobbySelectableItem;
-
+    
     [SerializeField] private TextMeshProUGUI lobbyTimeLimitText;
     [SerializeField] private TextMeshProUGUI lobbyPointsToWinText;
     [SerializeField] private TextMeshProUGUI currentLevelSelectedText;
-
-
-    [SerializeField] private Button lobbyTimeDecreaseButton;
-    [SerializeField] private Button lobbyTimeIncreaseButton;
-
-    [SerializeField] private Button lobbyScoreIncreaseButton;
-    [SerializeField] private Button lobbyScoreDecreaseButton;
-
-
+    
     [Header("Lobby Browser")]
     [SerializeField] private RectTransform roomListContainer;
     [SerializeField] private GameObject roomButtonPrefab;
     [SerializeField] private TMP_InputField roomSearchBar;
-    [SerializeField] private Button searchRoomButton;
-    [SerializeField] private GameObject lobbyBrowserSelectableItem;
-
+   
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
     private List<RoomInfo> allOpenRooms = new List<RoomInfo>();
@@ -78,11 +57,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public bool roomIsPublic = true;
     [HideInInspector] public string sceneName;
     private string currentRoomName;
-    private float roomMaxPlayers = 2;
-    [SerializeField] private GameObject lastActiveMenu;
+    private float roomMaxPlayers = 8;
 
     public bool spectatorMode = false;
-
 
     void Start()
     {
@@ -92,7 +69,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
         currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
-
 
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
@@ -105,56 +81,47 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         if (PhotonNetwork.InRoom)
         {
             // go to the lobby
-            SetScreen(lobbyScreen);
+            SetScreen();
             UpdateLobbyUI();
 
             // make the room visible again
             PhotonNetwork.CurrentRoom.IsVisible = true;
             PhotonNetwork.CurrentRoom.IsOpen = true;
         }
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
 
         playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
     // changes the currently visible screen
-    void SetScreen(GameObject screen)
+    void SetScreen()
     {
-        // disable all other screens
-        mainScreen.SetActive(false);
-        createRoomScreen.SetActive(false);
-        lobbyScreen.SetActive(false);
-        lobbyBrowserScreen.SetActive(false);
-        SettingsScreen.SetActive(false);
+        if (ActiveMenu != null)
+        {
+            foreach (var screen in screens)
+            {
+                if (screen == ActiveMenu)
+                    screen.SetActive(true);
+                else
+                    screen.SetActive(false);
+            }
+        }
 
-        // activate the requested screen
-        screen.SetActive(true);
     }
 
     // called when the "Back" button gets pressed
-    public void OnBackButton()
+    public void OnButtonClick(GameObject ScreenToActivate)
     {
-        SetScreen(mainScreen);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
+        foreach (var screen in screens)
+        {
+            if (ScreenToActivate == screen)
+            {
+                ActiveMenu = ScreenToActivate;
+                SetScreen();
+                EventSystem.current.SetSelectedGameObject(null);
+                EventSystem.current.SetSelectedGameObject(mainSelectableItem);
+                return;
+            }
+        }
     }
-    //Used specifically for the settings only
-    public void OnSettingsBackButton()
-    {
-        SettingsScreen.SetActive(false);
-        lastActiveMenu.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
-    }
-    public void OnSettingsButton(GameObject menu)
-    {
-        lastActiveMenu = menu;
-
-        SetScreen(SettingsScreen);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
-    }
-
     // MAIN SCREEN
 
     // called when the player name input field has been changed
@@ -178,27 +145,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         roomIsPublic = roomPrivacyChange.isOn;
     }
 
-    // called when the "Create Room" button has been pressed
-    public void OnCreateRoomButton()
-    {
-        SetScreen(createRoomScreen);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(createRoomSelectableItem);
-
-    }
-
-    // called when the "Find Room" button has been pressed
-    public void OnFindRoomButton()
-    {
-        SetScreen(lobbyBrowserScreen);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(lobbyBrowserScreen);
-    }
-
     public void OnQuitGameButton()
     {
         Application.Quit();
-        Debug.Log("Application Quit");
     }
 
     // CREATE ROOM SCREEN
@@ -249,43 +198,34 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
     }
 
-    public void OnGameTimeIncrease(bool shouldUpdateProperty)
+    public void OnPointsToWinChanged(bool IncreasePoints)
     {
-        NetworkManager.instance.GameTimeLimit += 60;
-        createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        if (shouldUpdateProperty)
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
-    }
-    public void OnGameTimeDecrease(bool shouldUpdateProperty)
-    {
-        NetworkManager.instance.GameTimeLimit -= 60;
-        createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        if (shouldUpdateProperty)
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
-    }
-    public void OnPointsToWinIncrease(bool shouldUpdateProperty)
-    {
-        NetworkManager.instance.PointsToWin += 10;
+        if (IncreasePoints)
+            NetworkManager.instance.PointsToWin += 10;
+        else
+            NetworkManager.instance.PointsToWin -= 10;
+
         createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
         lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        if (shouldUpdateProperty)
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
     }
-    public void OnPointsToWinDecrease(bool shouldUpdateProperty)
+    public void OnGameTimeChanged(bool InccreaseTime)
     {
-        NetworkManager.instance.PointsToWin -= 10;
-        createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        if (shouldUpdateProperty)
-            PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+        if (InccreaseTime)
+            NetworkManager.instance.GameTimeLimit += 60;
+        else
+            NetworkManager.instance.GameTimeLimit -= 60;
+         
+        createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
+        lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
     }
 
+    public void UpdateRoomProperties()
+    {
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+    }
+    
     public override void OnJoinedRoom()
     {
-        SetScreen(lobbyScreen);
-
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
         ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
         PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
@@ -297,16 +237,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
 
         if (roomIsPublic)
-        {
             privacyRoomText.text = "Public";
-        }
         else
-        {
             privacyRoomText.text = "Private";
 
-        }
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(lobbySelectableItem);
     }
 
     void UpdateRoomHashsOnJoinInvoke()
@@ -332,16 +266,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
-        RoomPrivacyButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        lobbyTimeIncreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        lobbyTimeDecreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        lobbyScoreIncreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        lobbyScoreDecreaseButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        SceneChangeLeftButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-        SceneChangeRighttButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
-
-
-
+        foreach (var button in masterClientButtons)
+        {
+            button.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+        }
+        
         // display all the players
         playerListText.text = "";
 
@@ -393,11 +322,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         PhotonNetwork.LeaveRoom();
         currentRoomName = null;
-        SetScreen(mainScreen);
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(mainSelectableItem);
     }
-
     // LOBBY BROWSER SCREEN
     GameObject CreateRoomButton()
     {
@@ -406,20 +331,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         return buttonObj;
     }
-
-
+    
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
         currentRoomName = roomName;
-
         NetworkManager.instance.JoinRoom(roomName);
     }
-
-
     public override void OnRoomListUpdate(List<RoomInfo> allRooms)
     {
-        Debug.Log("UPDATING ROOMLIST");
 
         foreach (RoomInfo roomInfo in allRooms)
         {
@@ -466,14 +386,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             buttonComp.onClick.AddListener(() => { OnJoinRoomButton(roomName); });
         }
     }
-
     RoomInfo FindRoom(string name)
     {
         for (int i = 0; i < roomList.Count; i++)
         {
             if (roomList[i].Name == name)
                 return roomList[i];
-
         }
 
         return null;
@@ -486,14 +404,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             roomIsPublic = true;
             privacyRoomText.text = "Public";
             PhotonNetwork.CurrentRoom.IsVisible = true;
-            Debug.Log("Public");
         }
         else
         {
             roomIsPublic = false;
             privacyRoomText.text = "Private";
             PhotonNetwork.CurrentRoom.IsVisible = false;
-            Debug.Log("Private");
 
         }
     }

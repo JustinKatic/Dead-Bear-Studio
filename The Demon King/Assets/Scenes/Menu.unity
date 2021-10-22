@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30194134, g: 0.16741185, b: 0.16043274, a: 1}
+  m_IndirectSpecularColor: {r: 0.30194068, g: 0.16741139, b: 0.16043237, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -537,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3804560278596315044, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -14.629639
+      value: -14.629638
       objectReference: {fileID: 0}
     - target: {fileID: 3804560278596315044, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1134,7 +1134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270.05914, y: -19.537186}
+  m_AnchoredPosition: {x: 270.0592, y: -95.37189}
   m_SizeDelta: {x: 230, y: 230}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &85585259
@@ -3045,25 +3045,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d578aabe78e635d4482e10b764eecd03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainScreen: {fileID: 83861333262564176}
-  createRoomScreen: {fileID: 83861334221550885}
-  lobbyScreen: {fileID: 83861333650070290}
-  lobbyBrowserScreen: {fileID: 83861333993848679}
-  SettingsScreen: {fileID: 5620374618898818936}
+  screens:
+  - {fileID: 83861333262564176}
+  - {fileID: 83861334221550885}
+  - {fileID: 83861333650070290}
+  - {fileID: 83861333993848679}
+  - {fileID: 5620374618898818936}
+  ActiveMenu: {fileID: 83861333262564176}
   createRoomButton: {fileID: 83861332540076013}
   findRoomButton: {fileID: 83861333557704512}
   mainSelectableItem: {fileID: 83861333935160161}
   playerNameInput: {fileID: 83861333935160163}
   createNewRoomButton: {fileID: 83861334490825272}
-  privateRoomToggle: {fileID: 242456882}
   maxPlayerInput: {fileID: 1396246402}
-  createRoomSelectableItem: {fileID: 83861332580241203}
   createRoomTimeLimitText: {fileID: 45485690}
   createRoomPointsToWinText: {fileID: 1274487822}
   playerListText: {fileID: 83861332661362276}
   roomInfoText: {fileID: 83861332693270212}
+  masterClientButtons:
+  - {fileID: 2936047078154724568}
+  - {fileID: 7456824177691661492}
+  - {fileID: 5005816371292681041}
+  - {fileID: 8193937263097617036}
+  - {fileID: 85365911}
+  - {fileID: 1236714418}
   startGameButton: {fileID: 83861333734850830}
-  RoomPrivacyButton: {fileID: 1942924954}
   privacyRoomText: {fileID: 174900406}
   scenes:
   - SceneName: Valley Of Death
@@ -3073,24 +3079,14 @@ MonoBehaviour:
   - SceneName: Kyle_Test_Scene
     SceneDisplayImage: {fileID: -7550580649084452836, guid: f14ba8056e2d47b48b57698f20fc8c6f, type: 3}
   CurrentSceneDisplayImg: {fileID: 802636784}
-  SceneChangeLeftButton: {fileID: 85365911}
-  SceneChangeRighttButton: {fileID: 1236714418}
-  lobbySelectableItem: {fileID: 83861333734850828}
   lobbyTimeLimitText: {fileID: 8776302401876508183}
   lobbyPointsToWinText: {fileID: 1799358114553528028}
   currentLevelSelectedText: {fileID: 1535935255}
-  lobbyTimeDecreaseButton: {fileID: 5005816371292681041}
-  lobbyTimeIncreaseButton: {fileID: 8193937263097617036}
-  lobbyScoreIncreaseButton: {fileID: 7456824177691661492}
-  lobbyScoreDecreaseButton: {fileID: 2936047078154724568}
   roomListContainer: {fileID: 83861333909493305}
   roomButtonPrefab: {fileID: 7612701457216302844, guid: 58c21847e08a74248a9a53380eae1d96, type: 3}
   roomSearchBar: {fileID: 126826774}
-  searchRoomButton: {fileID: 479766156}
-  lobbyBrowserSelectableItem: {fileID: 83861334427763743}
   roomIsPublic: 1
   sceneName: 
-  lastActiveMenu: {fileID: 0}
   spectatorMode: 0
 --- !u!4 &476375924
 Transform:
@@ -4283,7 +4279,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0.8389967}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6811,7 +6807,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1991430854}
   m_HandleRect: {fileID: 1991430853}
   m_Direction: 2
-  m_Value: 1.0000004
+  m_Value: 1
   m_Size: 0.71147037
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -8130,7 +8126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3804560278596315044, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -14.629639
+      value: -14.629638
       objectReference: {fileID: 0}
     - target: {fileID: 4020103857707565169, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_Name
@@ -10649,7 +10645,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 699699416}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.8389967
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12506,11 +12502,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnCreateRoomButton
-        m_Mode: 1
+        m_MethodName: OnButtonClick
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 83861334221550885}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13191,7 +13187,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 270.0592, y: -433.31998}
+  m_AnchoredPosition: {x: 270.0592, y: -660.8241}
   m_SizeDelta: {x: 261.8584, y: 144.7084}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &83861332906389876
@@ -13315,6 +13311,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 83861333262564176}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13827,11 +13835,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnFindRoomButton
-        m_Mode: 1
+        m_MethodName: OnButtonClick
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 83861333993848679}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -14051,11 +14059,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnBackButton
-        m_Mode: 1
+        m_MethodName: OnButtonClick
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 83861333262564176}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -14393,7 +14401,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000010014, y: 120.33199}
+  m_AnchoredPosition: {x: 0.000010014, y: 91.02224}
   m_SizeDelta: {x: 406.6, y: 5}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &83861333909493310
@@ -14979,11 +14987,11 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnBackButton
-        m_Mode: 1
+        m_MethodName: OnButtonClick
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 83861333262564176}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -15112,6 +15120,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: OnButtonClick
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 83861333650070290}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -15468,7 +15488,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15, y: -5.5314026}
+  m_AnchoredPosition: {x: 15, y: -5.531372}
   m_SizeDelta: {x: 251.0959, y: -46.097}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &1820680121234685105
@@ -16415,8 +16435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.206}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92.8759, y: -73.14819}
-  m_SizeDelta: {x: 185.7518, y: 29.259277}
+  m_AnchoredPosition: {x: 92.8759, y: -73.148186}
+  m_SizeDelta: {x: 185.7518, y: 29.259275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &2290077447795158485
 RectTransform:
@@ -16524,8 +16544,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92.8759, y: -102.40747}
-  m_SizeDelta: {x: 185.7518, y: 29.259277}
+  m_AnchoredPosition: {x: 92.8759, y: -102.40746}
+  m_SizeDelta: {x: 185.7518, y: 29.259275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2667995359702490420
 MonoBehaviour:
@@ -16573,7 +16593,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnGameTimeIncrease
+        m_MethodName: OnGameTimeChanged
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16581,7 +16601,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!224 &2706321648131268237
 RectTransform:
@@ -16667,7 +16687,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnPointsToWinDecrease
+        m_MethodName: OnPointsToWinChanged
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16675,7 +16695,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: UpdateRoomProperties
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &3221352167304576952
 MonoBehaviour:
@@ -16892,7 +16924,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnGameTimeDecrease
+        m_MethodName: OnGameTimeChanged
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17064,7 +17096,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnGameTimeDecrease
+        m_MethodName: OnGameTimeChanged
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17072,7 +17104,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: UpdateRoomProperties
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!224 &5025391888369564313
 RectTransform:
@@ -17093,8 +17137,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92.8759, y: -14.629639}
-  m_SizeDelta: {x: 185.7518, y: 29.259277}
+  m_AnchoredPosition: {x: 92.8759, y: -14.629638}
+  m_SizeDelta: {x: 185.7518, y: 29.259275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5065083921593649584
 GameObject:
@@ -17498,10 +17542,10 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnSettingsButton
+        m_MethodName: OnButtonClick
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 83861333262564176}
+          m_ObjectArgument: {fileID: 5620374618898818936}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -20365,7 +20409,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnSettingsBackButton
+        m_MethodName: OnSettingsButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24874,7 +24918,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnPointsToWinDecrease
+        m_MethodName: OnPointsToWinChanged
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24961,8 +25005,20 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnPointsToWinIncrease
+        m_MethodName: OnPointsToWinChanged
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: UpdateRoomProperties
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -25035,7 +25091,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnPointsToWinIncrease
+        m_MethodName: OnPointsToWinChanged
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25043,7 +25099,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!1001 &7754426519548180491
 PrefabInstance:
@@ -25380,8 +25436,20 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 476375923}
         m_TargetAssemblyTypeName: Menu, Assembly-CSharp
-        m_MethodName: OnGameTimeIncrease
+        m_MethodName: OnGameTimeChanged
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 476375923}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
+        m_MethodName: UpdateRoomProperties
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -25424,8 +25492,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 92.8759, y: -43.888916}
-  m_SizeDelta: {x: 185.7518, y: 29.259277}
+  m_AnchoredPosition: {x: 92.8759, y: -43.888912}
+  m_SizeDelta: {x: 185.7518, y: 29.259275}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8485480822119444836
 MonoBehaviour:
@@ -25642,7 +25710,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75.4579, y: -14.629638}
+  m_AnchoredPosition: {x: 75.45791, y: -14.629638}
   m_SizeDelta: {x: 18, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9170224733529925742
