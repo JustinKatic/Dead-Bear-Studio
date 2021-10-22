@@ -11,12 +11,13 @@ GameObject:
   - component: {fileID: 2633663864784463779}
   - component: {fileID: 3974449487792408699}
   - component: {fileID: 2949352098477302042}
-  m_Layer: 0
+  - component: {fileID: 1233441244649002559}
+  m_Layer: 3
   m_Name: SM_Rock_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &2633663864784463779
 Transform:
@@ -81,6 +82,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &1233441244649002559
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2331502392861932987}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2596850408837570759, guid: c8b10e0a2854d7b4f9e1108837a14199, type: 3}
 --- !u!1 &2832673547695298068
 GameObject:
   m_ObjectHideFlags: 0
@@ -106,7 +121,7 @@ Transform:
   m_GameObject: {fileID: 2832673547695298068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.43119928, y: 0.43119928, z: 0.43119928}
   m_Children:
   - {fileID: 2633663864784463779}
   m_Father: {fileID: 0}
