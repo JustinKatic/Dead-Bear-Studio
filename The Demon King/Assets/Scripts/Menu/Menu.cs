@@ -60,6 +60,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     private float roomMaxPlayers = 8;
 
     public bool spectatorMode = false;
+    private GameObject lastActiveMenu;
+
 
     void Start()
     {
@@ -103,24 +105,32 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
                 else
                     screen.SetActive(false);
             }
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(mainSelectableItem);
         }
-
     }
 
     // called when the "Back" button gets pressed
     public void OnButtonClick(GameObject ScreenToActivate)
     {
+        //store the last screen in case we have entered the settings
+        lastActiveMenu = ActiveMenu;
         foreach (var screen in screens)
         {
             if (ScreenToActivate == screen)
             {
                 ActiveMenu = ScreenToActivate;
                 SetScreen();
-                EventSystem.current.SetSelectedGameObject(null);
-                EventSystem.current.SetSelectedGameObject(mainSelectableItem);
+
                 return;
             }
         }
+    }
+
+    //Only used in Settings due to multiple screens potentially to go back to
+    public void OnSettingsBackButton()
+    {
+        OnButtonClick(lastActiveMenu);
     }
     // MAIN SCREEN
 
