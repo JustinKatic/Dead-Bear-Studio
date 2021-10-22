@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 public class EvolutionManager : MonoBehaviourPun
 {
+    [SerializeField] private Image healthBarCurrentDisplayImg;
+
     [Header("Modifiable stats")]
     [SerializeField] private float TimeToEvolve = 3f;
     [SerializeField] private GameObject EvolveVFX;
@@ -44,17 +47,14 @@ public class EvolutionManager : MonoBehaviourPun
 
     private List<MinionType> minionTypes = new List<MinionType>();
 
-     public float TimeAsLionKingTimer;
-     public float TimeAsRayKingTimer;
-     public float TimeAsDragonKingTimer;
+    public float TimeAsLionKingTimer;
+    public float TimeAsRayKingTimer;
+    public float TimeAsDragonKingTimer;
 
-     public float TimeAsSlimeTimer;
-     public float TimeAsLionTimer;
-     public float TimeAsRayTimer;
-     public float TimeAsDragonTimer;
-
-
-
+    public float TimeAsSlimeTimer;
+    public float TimeAsLionTimer;
+    public float TimeAsRayTimer;
+    public float TimeAsDragonTimer;
 
 
     #region Start Up Handles getting components and setting starting evolution
@@ -145,6 +145,8 @@ public class EvolutionManager : MonoBehaviourPun
 
         //Set experince managers current active evolution type to our active type
         experienceManager.UpdateCurrentActiveEvolutionTypeBranch(activeEvolution.MyMinionType);
+        healthBarCurrentDisplayImg.sprite = activeEvolution.MyHealthBarDisplaySprite;
+
     }
 
     void EvolveIntoStartType(string modelToSetActive)
@@ -294,6 +296,19 @@ public class EvolutionManager : MonoBehaviourPun
         activeEvolution = evolution;
 
         experienceManager.UpdateCurrentActiveEvolutionTypeBranch(evolution.MyMinionType);
+
+        if (experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.CurrentExp > experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.level1ExpNeeded.value)
+        {
+            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.adultDisplayImg.SetActive(true);
+            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.childDisplayImg.SetActive(false);
+        }
+        else
+        {
+            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.adultDisplayImg.SetActive(false);
+            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.childDisplayImg.SetActive(true);
+        }
+
+        healthBarCurrentDisplayImg.sprite = activeEvolution.MyHealthBarDisplaySprite;
 
         //scale player to correct size
         if (demonKingEvolution.AmITheDemonKing)
