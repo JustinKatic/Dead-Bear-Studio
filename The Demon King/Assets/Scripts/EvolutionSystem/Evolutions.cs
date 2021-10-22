@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Photon.Pun;
+using UnityEngine.UI;
 
 
 [System.Serializable]
@@ -62,6 +63,8 @@ public class Evolutions : MonoBehaviourPun
     public int AmountToHealAfterStunned;
     public int AmountToHealWhenEvolveing;
     public Material myMatInstance;
+    public Sprite MyHealthBarDisplaySprite;
+
 
 
 

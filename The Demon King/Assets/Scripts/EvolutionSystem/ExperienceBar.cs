@@ -7,11 +7,14 @@ using UnityEngine.UI;
 public class ExperienceBar
 {
     [Header("EXP SLIDER FOR MY TYPE")]
-    public Slider expSlider;
+
 
     public GameObject ActiveExpBarBackground;
-    public GameObject ActiveExpBarCanEvolveTxt;
-
+    //public GameObject ActiveExpBarCanEvolveTxt;
+    public Material expMaterial;
+    public GameObject expThreshholdBar;
+    public GameObject childDisplayImg;
+    public GameObject adultDisplayImg;
 
 
 
@@ -23,8 +26,8 @@ public class ExperienceBar
 
 
     //Upates exp bar slider to current 
-    public void UpdateExpSlider()
+    public void UpdateExpBar(float CurrentExp)
     {
-        expSlider.value = CurrentExp;
+        expMaterial.SetFloat("_CurrentHealth", CurrentExp);
     }
 }
