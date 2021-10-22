@@ -349,7 +349,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             playerListText.text += player.NickName + "\n";
 
         // set the room info text
-        roomInfoText.text = PhotonNetwork.CurrentRoom.Name;
+        roomInfoText.text = "<b>Room Name</b>\n" + PhotonNetwork.CurrentRoom.Name;
     }
 
     // called when the "Start Game" button has been pressed
