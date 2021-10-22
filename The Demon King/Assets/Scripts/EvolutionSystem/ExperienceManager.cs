@@ -91,14 +91,9 @@ public class ExperienceManager : MonoBehaviourPun
     //Set sliders max and current values called locally in Awake()
     void SetExpSliders()
     {
-        redBranch.ExpBar.expSlider.maxValue = redBranch.ExpBar.level2ExpNeeded.value;
-        redBranch.ExpBar.expSlider.value = redBranch.ExpBar.CurrentExp;
-
-        blueBranch.ExpBar.expSlider.maxValue = blueBranch.ExpBar.level2ExpNeeded.value;
-        blueBranch.ExpBar.expSlider.value = blueBranch.ExpBar.CurrentExp;
-
-        greenBranch.ExpBar.expSlider.maxValue = greenBranch.ExpBar.level2ExpNeeded.value;
-        greenBranch.ExpBar.expSlider.value = greenBranch.ExpBar.CurrentExp;
+        redBranch.ExpBar.UpdateExpBar(redBranch.ExpBar.CurrentExp);
+        greenBranch.ExpBar.UpdateExpBar(greenBranch.ExpBar.CurrentExp);
+        blueBranch.ExpBar.UpdateExpBar(blueBranch.ExpBar.CurrentExp);
     }
     #endregion
 
@@ -108,7 +103,7 @@ public class ExperienceManager : MonoBehaviourPun
     {
         //Update current exp value and sliders
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
-        branchType.ExpBar.UpdateExpSlider();
+        branchType.ExpBar.UpdateExpBar(branchType.ExpBar.CurrentExp);
         //Set UI to show active branch type
         UpdateActiveBranchUI(branchType);
 
@@ -135,6 +130,7 @@ public class ExperienceManager : MonoBehaviourPun
                 //Update next evolution to exp that just hit threshold
                 evolutionManager.nextEvolution = branchType.Level1Evolution;
                 SetCanEvolveTrue(branchType);
+                branchType.ExpBar.expThreshholdBar.SetActive(true);
             }
         }
     }
@@ -207,9 +203,11 @@ public class ExperienceManager : MonoBehaviourPun
     //Decreases all exp my given % and updates exp sliders
     void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
     {
-
         branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
-        branchToUpdate.ExpBar.UpdateExpSlider();
+        branchToUpdate.ExpBar.UpdateExpBar(branchToUpdate.ExpBar.CurrentExp);
+
+        if (branchToUpdate.ExpBar.CurrentExp < branchToUpdate.ExpBar.level1ExpNeeded.value)
+            branchToUpdate.ExpBar.expThreshholdBar.SetActive(false);
     }
     #endregion
 
@@ -222,12 +220,12 @@ public class ExperienceManager : MonoBehaviourPun
             redBranch.CanEvolve = true;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = false;
-            if (!demonKingEvolution.AmITheDemonKing)
-            {
-                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            }
+            //if (!demonKingEvolution.AmITheDemonKing)
+            //{
+            //    redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+            //    greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            //    blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            //}
         }
         else if (branch == greenBranch)
         {
@@ -235,24 +233,24 @@ public class ExperienceManager : MonoBehaviourPun
             greenBranch.CanEvolve = true;
             blueBranch.CanEvolve = false;
 
-            if (!demonKingEvolution.AmITheDemonKing)
-            {
-                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            }
+            //if (!demonKingEvolution.AmITheDemonKing)
+            //{
+            //    redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            //    greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+            //    blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            //}
         }
         else if (branch == blueBranch)
         {
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = true;
-            if (!demonKingEvolution.AmITheDemonKing)
-            {
-                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-            }
+            //if (!demonKingEvolution.AmITheDemonKing)
+            //{
+            //    redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            //    greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            //    blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+            //}
         }
     }
     //This runs inside the evolution Manager when the evolution button has been pressed
@@ -321,9 +319,9 @@ public class ExperienceManager : MonoBehaviourPun
         blueBranch.CanEvolve = false;
         greenBranch.CanEvolve = false;
 
-        redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-        greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-        blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        //redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        //greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        //blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
     }
     #endregion
 }
