@@ -229,11 +229,19 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             if (player.AmITheDemonKing)
             {
                 wasThereAKing = true;
-                DemonKingPanel.gameObject.SetActive(true);
+
+                DemonKingPanel.PlayerNameText.gameObject.SetActive(true);
                 DemonKingPanel.PlayerNameText.text = player.PlayerNickName;
+
+                DemonKingPanel.DemonKingScoreText.gameObject.SetActive(true);
                 DemonKingPanel.DemonKingScoreText.text = player.DemonKingScore.ToString();
+
+                DemonKingPanel.FillImg.gameObject.SetActive(true);
                 DemonKingPanel.UpdateSliderValue(player.DemonKingScore);
+
+                DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(true);
                 DemonKingPanel.CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
+
                 if (player.DemonKingScore >= DemonKingScoreRequiredToWin)
                     DidAWinOccur = true;
             }
@@ -247,7 +255,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         }
 
         if (!wasThereAKing)
-            DemonKingPanel.gameObject.SetActive(false);
+        {
+            DemonKingPanel.PlayerNameText.gameObject.SetActive(false);
+            DemonKingPanel.DemonKingScoreText.gameObject.SetActive(false);
+            DemonKingPanel.FillImg.gameObject.SetActive(false);
+            DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(false);
+        }
 
         if (PhotonNetwork.IsMasterClient)
         {
