@@ -33,6 +33,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [Header("Lobby")]
     [SerializeField] private TextMeshProUGUI playerListText;
+    [SerializeField] private GameObject lobbyScreen;
     [SerializeField] private TextMeshProUGUI roomInfoText;
     [SerializeField] private List<Button> masterClientButtons;
     
@@ -83,7 +84,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         if (PhotonNetwork.InRoom)
         {
             // go to the lobby
-            SetScreen();
+            SetScreen(lobbyScreen);
             UpdateLobbyUI();
 
             // make the room visible again
@@ -94,13 +95,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
     // changes the currently visible screen
-    void SetScreen()
+    void SetScreen(GameObject newScreen)
     {
         if (ActiveMenu != null)
         {
             foreach (var screen in screens)
             {
-                if (screen == ActiveMenu)
+                if (screen == newScreen)
                     screen.SetActive(true);
                 else
                     screen.SetActive(false);
@@ -120,7 +121,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             if (ScreenToActivate == screen)
             {
                 ActiveMenu = ScreenToActivate;
-                SetScreen();
+                SetScreen(ActiveMenu);
 
                 return;
             }
@@ -345,6 +346,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
+        SetScreen(lobbyScreen);
         currentRoomName = roomName;
         NetworkManager.instance.JoinRoom(roomName);
     }
