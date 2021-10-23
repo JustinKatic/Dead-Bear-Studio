@@ -8,20 +8,18 @@ public class PlayerLeaderboardPanel : MonoBehaviour
 {
     public TextMeshProUGUI PlayerNameText;
     public TextMeshProUGUI DemonKingScoreText;
-    private Slider slider;
-    public IntSO DemonKingScoreRequiredToWin;
+    public Image FillImg;
+    public FloatSO DemonKingScoreRequiredToWin;
     public Image CurrentEvolutionImg;
 
     private void Awake()
     {
-        slider = GetComponent<Slider>();
-        slider.maxValue = DemonKingScoreRequiredToWin.value;
-        slider.value = 0;
+        FillImg.fillAmount = 0;
     }
 
     public void UpdateSliderValue(int NewValue)
     {
-        if (slider != null)
-            slider.value = NewValue;
+        Debug.Log(NewValue / DemonKingScoreRequiredToWin.value);
+        FillImg.fillAmount = NewValue / DemonKingScoreRequiredToWin.value;
     }
 }

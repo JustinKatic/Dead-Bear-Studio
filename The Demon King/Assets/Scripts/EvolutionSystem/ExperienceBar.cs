@@ -21,8 +21,8 @@ public class ExperienceBar
     public float CurrentExp;
 
     [Header("EXPERIENCE REQUIRED TO EVOLVE")]
-    public IntSO level1ExpNeeded;
-    public IntSO level2ExpNeeded;
+    public FloatSO level1ExpNeeded;
+    public FloatSO level2ExpNeeded;
 
 
     //Upates exp bar slider to current 
