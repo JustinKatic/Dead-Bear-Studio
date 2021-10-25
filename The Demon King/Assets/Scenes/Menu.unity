@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.30194068, g: 0.16741139, b: 0.16043237, a: 1}
+  m_IndirectSpecularColor: {r: 0.30194134, g: 0.16741185, b: 0.16043274, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -537,7 +537,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3804560278596315044, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.559395
+      value: -16.129433
       objectReference: {fileID: 0}
     - target: {fileID: 3804560278596315044, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1134,7 +1134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -13.600006, y: -15.00029}
+  m_AnchoredPosition: {x: -13.600006, y: -15.000305}
   m_SizeDelta: {x: -13.600006, y: -208.2061}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &85585259
@@ -2411,7 +2411,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.2
-  far clip plane: 500
+  far clip plane: 800
   field of view: 40
   orthographic: 0
   orthographic size: 5
@@ -3034,6 +3034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d578aabe78e635d4482e10b764eecd03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomData: {fileID: 11400000, guid: 636d1d6432712914b8f185302390cf0d, type: 2}
   screens:
   - {fileID: 83861333262564176}
   - {fileID: 83861334221550885}
@@ -3477,7 +3478,7 @@ MonoBehaviour:
   m_MinValue: 2
   m_MaxValue: 10
   m_WholeNumbers: 1
-  m_Value: 2
+  m_Value: 10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -6873,8 +6874,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1991430854}
   m_HandleRect: {fileID: 1991430853}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.8204734
+  m_Value: 0.9999994
+  m_Size: 0.8204733
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7006,8 +7007,8 @@ RectTransform:
   m_Father: {fileID: 49900206}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -1.4024, y: 0}
   m_SizeDelta: {x: 17.1951, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8192,7 +8193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3804560278596315044, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -18.559395
+      value: -16.129433
       objectReference: {fileID: 0}
     - target: {fileID: 4020103857707565169, guid: 1c0dcb127f9836342b025a500b61b77e, type: 3}
       propertyPath: m_Name
@@ -8858,7 +8859,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11536,15 +11537,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd2585019a4fa934ea1991650e345b4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPlayers: 20
-  RoomName: 
-  GameTimeLimit: 900
-  PointsToWin: 200
-  currentSceneIndex: 0
-  levelNotLoading: 1
-  GameTimeLimitString: T
-  PointsToWinString: P
-  ActiveSceneIndexString: S
 --- !u!4 &1975993031
 Transform:
   m_ObjectHideFlags: 0
@@ -14329,6 +14321,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 83861333734850830}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &83861333734850831
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15543,7 +15547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 15, y: -5.5313873}
+  m_AnchoredPosition: {x: 15, y: -5.5314026}
   m_SizeDelta: {x: 251.0959, y: -46.097}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!1 &1820680121234685105
@@ -16490,8 +16494,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.206}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 114.241394, y: -92.796974}
-  m_SizeDelta: {x: 228.48279, y: 37.11879}
+  m_AnchoredPosition: {x: 114.241394, y: -80.64716}
+  m_SizeDelta: {x: 228.48279, y: 32.258865}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &2290077447795158485
 RectTransform:
@@ -16599,8 +16603,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 114.241394, y: -129.91577}
-  m_SizeDelta: {x: 228.48279, y: 37.11879}
+  m_AnchoredPosition: {x: 114.241394, y: -112.90603}
+  m_SizeDelta: {x: 228.48279, y: 32.258865}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2667995359702490420
 MonoBehaviour:
@@ -17006,7 +17010,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75.778, y: -18.559395}
+  m_AnchoredPosition: {x: 75.778, y: -16.129433}
   m_SizeDelta: {x: 18, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4741648000614856233
@@ -17056,7 +17060,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11.327032, y: -18.559395}
+  m_AnchoredPosition: {x: 11.327032, y: -16.129433}
   m_SizeDelta: {x: 18, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4833781189736046002
@@ -17192,8 +17196,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 114.241394, y: -18.559395}
-  m_SizeDelta: {x: 228.48279, y: 37.11879}
+  m_AnchoredPosition: {x: 114.241394, y: -16.129433}
+  m_SizeDelta: {x: 228.48279, y: 32.258865}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5065083921593649584
 GameObject:
@@ -24842,6 +24846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 943ff2a7a6b93a746b9e8546b067af03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomData: {fileID: 11400000, guid: 636d1d6432712914b8f185302390cf0d, type: 2}
   currentChatRoom: 
   InputFieldChat: {fileID: 1820680122587161625}
   CurrentChannelText: {fileID: 1820680122767633403}
@@ -25547,8 +25552,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 114.241394, y: -55.678185}
-  m_SizeDelta: {x: 228.48279, y: 37.11879}
+  m_AnchoredPosition: {x: 114.241394, y: -48.388298}
+  m_SizeDelta: {x: 228.48279, y: 32.258865}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &8485480822119444836
 MonoBehaviour:
@@ -25745,7 +25750,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 11.36167, y: -18.559395}
+  m_AnchoredPosition: {x: 11.36167, y: -16.129433}
   m_SizeDelta: {x: 18, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &8995758794678643138
@@ -25765,7 +25770,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 75.45791, y: -18.559395}
+  m_AnchoredPosition: {x: 75.45791, y: -16.129433}
   m_SizeDelta: {x: 18, y: 18}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9170224733529925742
