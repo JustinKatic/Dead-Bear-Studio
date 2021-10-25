@@ -11,7 +11,9 @@ public class ExperienceBar
 
     public GameObject ActiveExpBarBackground;
     //public GameObject ActiveExpBarCanEvolveTxt;
+    [HideInInspector] public Material expMaterialCopy;
     public Material expMaterial;
+    public Image fillImage;
     public GameObject expThreshholdBar;
     public GameObject childDisplayImg;
     public GameObject adultDisplayImg;
@@ -25,9 +27,11 @@ public class ExperienceBar
     public FloatSO level2ExpNeeded;
 
 
+
+
     //Upates exp bar slider to current 
     public void UpdateExpBar(float CurrentExp)
     {
-        expMaterial.SetFloat("_CurrentHealth", CurrentExp);
+        expMaterialCopy.SetFloat("_CurrentHealth", CurrentExp);
     }
 }

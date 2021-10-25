@@ -91,9 +91,14 @@ public class ExperienceManager : MonoBehaviourPun
     //Set sliders max and current values called locally in Awake()
     void SetExpSliders()
     {
-        redBranch.ExpBar.UpdateExpBar(redBranch.ExpBar.CurrentExp);
-        greenBranch.ExpBar.UpdateExpBar(greenBranch.ExpBar.CurrentExp);
-        blueBranch.ExpBar.UpdateExpBar(blueBranch.ExpBar.CurrentExp);
+        redBranch.ExpBar.expMaterialCopy = Instantiate(redBranch.ExpBar.expMaterial);
+        redBranch.ExpBar.fillImage.material = redBranch.ExpBar.expMaterialCopy;
+
+        greenBranch.ExpBar.expMaterialCopy = Instantiate(greenBranch.ExpBar.expMaterial);
+        greenBranch.ExpBar.fillImage.material = greenBranch.ExpBar.expMaterialCopy;
+
+        blueBranch.ExpBar.expMaterialCopy = Instantiate(blueBranch.ExpBar.expMaterial);
+        blueBranch.ExpBar.fillImage.material = blueBranch.ExpBar.expMaterialCopy;
     }
     #endregion
 
