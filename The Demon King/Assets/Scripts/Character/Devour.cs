@@ -108,7 +108,8 @@ public class Devour : MonoBehaviourPun
 
     private void OnDestroy()
     {
-        playerController.CharacterInputs.Player.Interact.performed -= OnInteract;
+        if (photonView.IsMine)
+            playerController.CharacterInputs.Player.Interact.performed -= OnInteract;
     }
 
     void CheckForDevour()
