@@ -14,6 +14,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
+    [SerializeField] private SOMenuData roomData;
+
     [SerializeField] private List<GameObject> screens;
     [SerializeField] private GameObject ActiveMenu;
 
@@ -36,21 +38,21 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private GameObject lobbyScreen;
     [SerializeField] private TextMeshProUGUI roomInfoText;
     [SerializeField] private List<Button> masterClientButtons;
-    
+
     [SerializeField] private Button startGameButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
     [SerializeField] private List<SceneInformation> scenes;
     [SerializeField] private Image CurrentSceneDisplayImg;
-    
+
     [SerializeField] private TextMeshProUGUI lobbyTimeLimitText;
     [SerializeField] private TextMeshProUGUI lobbyPointsToWinText;
     [SerializeField] private TextMeshProUGUI currentLevelSelectedText;
-    
+
     [Header("Lobby Browser")]
     [SerializeField] private RectTransform roomListContainer;
     [SerializeField] private GameObject roomButtonPrefab;
     [SerializeField] private TMP_InputField roomSearchBar;
-   
+
     private List<GameObject> roomButtons = new List<GameObject>();
     private List<RoomInfo> roomList = new List<RoomInfo>();
     private List<RoomInfo> allOpenRooms = new List<RoomInfo>();
@@ -66,12 +68,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-        createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
-        currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
+        // connect to the master server
+        PhotonNetwork.ConnectUsingSettings();
+
+        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
+        lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
+        CurrentSceneDisplayImg.sprite = scenes[roomData.CurrentSceneIndex].SceneDisplayImage;
+        currentLevelSelectedText.text = scenes[roomData.CurrentSceneIndex].SceneName;
 
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
@@ -94,6 +99,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
+
+
+    // joins a room of the requested room name
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
+    }
+
     // changes the currently visible screen
     void SetScreen(GameObject newScreen)
     {
@@ -170,7 +183,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
         currentRoomName = roomNameInput.text.ToUpper();
-        NetworkManager.instance.CreateRoom(roomNameInput.text, (int)roomMaxPlayers);
+
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = (byte)roomMaxPlayers;
+
+        options.CustomRoomProperties = new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin }, { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } };
+
+        roomNameInput.text = roomNameInput.text.ToUpper();
+
+        PhotonNetwork.CreateRoom(roomNameInput.text, options);
     }
 
     // LOBBY SCREEN
@@ -187,54 +208,58 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
 
+
+
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
-        if (propertiesThatChanged.ContainsKey(NetworkManager.instance.GameTimeLimitString))
+        if (propertiesThatChanged.ContainsKey(roomData.GameTimeLimitString))
         {
-            NetworkManager.instance.GameTimeLimit = (float)propertiesThatChanged[NetworkManager.instance.GameTimeLimitString];
-            createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-            lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
+            roomData.GameTimeLimit = (float)propertiesThatChanged[roomData.GameTimeLimitString];
+            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
         }
-        if (propertiesThatChanged.ContainsKey(NetworkManager.instance.PointsToWinString))
+        if (propertiesThatChanged.ContainsKey(roomData.PointsToWinString))
         {
-            NetworkManager.instance.PointsToWin = (int)propertiesThatChanged[NetworkManager.instance.PointsToWinString];
-            createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-            lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
+            roomData.PointsToWin = (int)propertiesThatChanged[roomData.PointsToWinString];
+            createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
+            lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
         }
-        if (propertiesThatChanged.ContainsKey(NetworkManager.instance.ActiveSceneIndexString))
+        if (propertiesThatChanged.ContainsKey(roomData.CurrentSceneIndexString))
         {
-            NetworkManager.instance.currentSceneIndex = (int)propertiesThatChanged[NetworkManager.instance.ActiveSceneIndexString];
-            CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
-            currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
+            roomData.CurrentSceneIndex = (int)propertiesThatChanged[roomData.CurrentSceneIndexString];
+            CurrentSceneDisplayImg.sprite = scenes[roomData.CurrentSceneIndex].SceneDisplayImage;
+            currentLevelSelectedText.text = scenes[roomData.CurrentSceneIndex].SceneName;
         }
     }
 
     public void OnPointsToWinChanged(bool IncreasePoints)
     {
         if (IncreasePoints)
-            NetworkManager.instance.PointsToWin += 10;
+            roomData.PointsToWin += 10;
         else
-            NetworkManager.instance.PointsToWin -= 10;
+            roomData.PointsToWin -= 10;
 
-        createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
+        createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
+        lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
     }
+
+
     public void OnGameTimeChanged(bool InccreaseTime)
     {
         if (InccreaseTime)
-            NetworkManager.instance.GameTimeLimit += 60;
+            roomData.GameTimeLimit += 60;
         else
-            NetworkManager.instance.GameTimeLimit -= 60;
-         
-        createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
+            roomData.GameTimeLimit -= 60;
+
+        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
     }
 
     public void UpdateRoomProperties()
     {
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.GameTimeLimitString, NetworkManager.instance.GameTimeLimit }, { NetworkManager.instance.PointsToWinString, NetworkManager.instance.PointsToWin } });
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin } });
     }
-    
+
     public override void OnJoinedRoom()
     {
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
@@ -244,6 +269,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         Hashtable SpectatorMode = new Hashtable();
         SpectatorMode.Add("IsSpectator", spectatorMode);
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
+
+        roomData.GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[roomData.GameTimeLimitString];
+        roomData.PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.PointsToWinString];
+        roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
 
         Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
 
@@ -256,15 +285,16 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void UpdateRoomHashsOnJoinInvoke()
     {
-        createRoomTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(NetworkManager.instance.GameTimeLimit).ToString();
+        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
 
-        createRoomPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
-        lobbyPointsToWinText.text = NetworkManager.instance.PointsToWin.ToString();
+        createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
+        lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
 
-        CurrentSceneDisplayImg.sprite = scenes[NetworkManager.instance.currentSceneIndex].SceneDisplayImage;
-        currentLevelSelectedText.text = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
+        CurrentSceneDisplayImg.sprite = scenes[roomData.CurrentSceneIndex].SceneDisplayImage;
+        currentLevelSelectedText.text = scenes[roomData.CurrentSceneIndex].SceneName;
     }
+
     // called when a player leaves the room - update the lobby UI
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
@@ -281,7 +311,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             button.gameObject.SetActive(PhotonNetwork.IsMasterClient);
         }
-        
+
         // display all the players
         playerListText.text = "";
 
@@ -298,33 +328,30 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // hide the room
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.CurrentRoom.IsVisible = false;
-        startGameButton.interactable = false;
 
-        sceneName = scenes[NetworkManager.instance.currentSceneIndex].SceneName;
+        sceneName = scenes[roomData.CurrentSceneIndex].SceneName;
 
         // tell everyone to load into the Game scene
         NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, sceneName);
-
-        startGameButton.interactable = NetworkManager.instance.levelNotLoading;
     }
 
     public void OnSceneChangeRightButton()
     {
-        if (NetworkManager.instance.currentSceneIndex >= scenes.Count - 1)
-            NetworkManager.instance.currentSceneIndex = 0;
+        if (roomData.CurrentSceneIndex >= scenes.Count - 1)
+            roomData.CurrentSceneIndex = 0;
         else
-            NetworkManager.instance.currentSceneIndex++;
+            roomData.CurrentSceneIndex++;
 
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.ActiveSceneIndexString, NetworkManager.instance.currentSceneIndex } });
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } });
     }
     public void OnSceneChangeLeftButton()
     {
-        if (NetworkManager.instance.currentSceneIndex <= 0)
-            NetworkManager.instance.currentSceneIndex = scenes.Count - 1;
+        if (roomData.CurrentSceneIndex <= 0)
+            roomData.CurrentSceneIndex = scenes.Count - 1;
         else
-            NetworkManager.instance.currentSceneIndex--;
+            roomData.CurrentSceneIndex--;
 
-        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { NetworkManager.instance.ActiveSceneIndexString, NetworkManager.instance.currentSceneIndex } });
+        PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } });
     }
 
 
@@ -342,14 +369,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         return buttonObj;
     }
-    
+
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
         SetScreen(lobbyScreen);
         currentRoomName = roomName;
-        NetworkManager.instance.JoinRoom(roomName);
+        PhotonNetwork.JoinRoom(roomName);
     }
+
     public override void OnRoomListUpdate(List<RoomInfo> allRooms)
     {
 

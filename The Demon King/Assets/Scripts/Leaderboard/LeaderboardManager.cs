@@ -22,6 +22,8 @@ struct LeaderBoardList
 
 public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 {
+    [SerializeField] private SOMenuData roomData;
+
     PlayerController playerController;
     EvolutionManager evolutionManager;
     public GameObject LeaderBoardHUD;
@@ -89,8 +91,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     {
         if (photonView.IsMine)
         {
-            matchTime = NetworkManager.instance.GameTimeLimit;
-            DemonKingScoreRequiredToWin = NetworkManager.instance.PointsToWin;
+            matchTime = roomData.GameTimeLimit;
+            DemonKingScoreRequiredToWin = roomData.PointsToWin;
 
             if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
                 return;

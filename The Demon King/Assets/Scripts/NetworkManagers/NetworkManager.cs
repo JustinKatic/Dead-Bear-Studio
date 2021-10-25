@@ -10,21 +10,6 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    public int maxPlayers = 10;
-
-    public string RoomName;
-    public float GameTimeLimit;
-    public int PointsToWin;
-    public int currentSceneIndex = 0;
-    public bool levelNotLoading = true;
-
-    [HideInInspector] public string GameTimeLimitString = "T";
-    [HideInInspector] public string PointsToWinString = "P";
-    [HideInInspector] public string ActiveSceneIndexString = "S";
-
-
-
-
     // instance
     public static NetworkManager instance;
 
@@ -52,51 +37,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(gameObject);
     }
 
-    void Start()
-    {
-        // connect to the master server
-        PhotonNetwork.ConnectUsingSettings();
-    }
 
-
-    public override void OnConnectedToMaster()
-    {
-        PhotonNetwork.JoinLobby();
-
-    }
-
-    // creates a new room of the requested room name
-    public void CreateRoom(string roomName, int roomMaxPlayers)
-    {
-        RoomOptions options = new RoomOptions();
-        options.MaxPlayers = (byte)roomMaxPlayers;
-
-        options.CustomRoomProperties = new Hashtable { { GameTimeLimitString, GameTimeLimit }, { PointsToWinString, PointsToWin }, { ActiveSceneIndexString, currentSceneIndex } };
-
-        RoomName = roomName.ToUpper();
-
-        PhotonNetwork.CreateRoom(RoomName, options);
-    }
-
-    // joins a room of the requested room name
-    public void JoinRoom(string roomName)
-    {
-        RoomName = roomName;
-        PhotonNetwork.JoinRoom(roomName);
-    }
-
-    public override void OnJoinedRoom()
-    {
-        GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[GameTimeLimitString];
-        PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[PointsToWinString];
-        currentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[ActiveSceneIndexString];
-    }
 
     // changes the scene through Photon's system
     [PunRPC]
     public void ChangeScene(string sceneName)
     {
-        levelNotLoading = false;
         //Checks if the scene is found within the build settings, otherwise load game as default
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
@@ -107,9 +53,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
         }
-
-
-        levelNotLoading = true;
     }
 
     // called when we disconnect from the Photon server
