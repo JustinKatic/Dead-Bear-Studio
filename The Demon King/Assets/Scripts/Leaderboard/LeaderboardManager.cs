@@ -331,8 +331,21 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
         yield return new WaitForSeconds(30f);
 
+        ChangeScene("Menu");
+    }
 
-        NetworkManager.instance.ChangeScene("Menu");
+    public void ChangeScene(string sceneName)
+    {
+        //Checks if the scene is found within the build settings, otherwise load game as default
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("Game");
+            Debug.Log("Scene Not Found in Build Settings");
+        }
     }
 
     public string FormatTime(float time)

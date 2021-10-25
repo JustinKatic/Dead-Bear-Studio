@@ -332,7 +332,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         sceneName = scenes[roomData.CurrentSceneIndex].SceneName;
 
         // tell everyone to load into the Game scene
-        NetworkManager.instance.photonView.RPC("ChangeScene", RpcTarget.All, sceneName);
+        ChangeScene(sceneName);
     }
 
     public void OnSceneChangeRightButton()
@@ -504,5 +504,25 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         int minutes = (int)time / 60;
         int seconds = (int)time - 60 * minutes;
         return string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        photonView.RPC("ChangeScene_RPC", RpcTarget.All, sceneName);
+    }
+
+    [PunRPC]
+    public void ChangeScene_RPC(string sceneName)
+    {
+        //Checks if the scene is found within the build settings, otherwise load game as default
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel("Game");
+            Debug.Log("Scene Not Found in Build Settings");
+        }
     }
 }

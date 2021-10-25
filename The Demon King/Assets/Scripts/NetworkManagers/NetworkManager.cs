@@ -10,51 +10,6 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-    // instance
-    public static NetworkManager instance;
-
-    private PhotonView PV;
-    private PhotonVoiceView VV;
-    private
-    void Awake()
-    {
-        if (instance != null && instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            instance = this;
-            if (PV == null)
-            {
-                PV = gameObject.AddComponent<PhotonView>();
-                photonView.ViewID = 999;
-                VV = gameObject.AddComponent<PhotonVoiceView>();
-                VV.RecorderInUse = GetComponent<Recorder>();
-                VV.SpeakerInUse = GetComponent<Speaker>();
-            }
-        }
-        DontDestroyOnLoad(gameObject);
-    }
-
-
-
-    // changes the scene through Photon's system
-    [PunRPC]
-    public void ChangeScene(string sceneName)
-    {
-        //Checks if the scene is found within the build settings, otherwise load game as default
-        if (Application.CanStreamedLevelBeLoaded(sceneName))
-        {
-            PhotonNetwork.LoadLevel(sceneName);
-        }
-        else
-        {
-            PhotonNetwork.LoadLevel("Game");
-            Debug.Log("Scene Not Found in Build Settings");
-        }
-    }
-
     // called when we disconnect from the Photon server
     public override void OnDisconnected(DisconnectCause cause)
     {
