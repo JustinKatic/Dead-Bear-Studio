@@ -10,14 +10,12 @@ public class HealthManager : MonoBehaviourPun
 {
     [Header("HealthStats")]
     [SerializeField] protected float TimeBeforeHealthRegen = 3f;
-    [SerializeField] protected int healthRegenAmount = 1;
     [SerializeField] protected float healthRegenTickrate = .5f;
     [SerializeField] protected float RespawnTime = 6;
 
     [SerializeField] private float stunnedDuration = 3;
 
-
-
+    public int healthRegenAmount = 1;
     public float TimeTakenToBeDevoured;
     public float StunnedDuration { get { return stunnedDuration; } private set { stunnedDuration = value; } }
 

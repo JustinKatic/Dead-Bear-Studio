@@ -102,6 +102,7 @@ public class EvolutionManager : MonoBehaviourPun
 
 
 
+
             //get and set a random minion type
             SetMyMinionTypeOnStart();
             //set my active branch to my lvl0 evolution
@@ -116,7 +117,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
             playerController.currentAnim = activeEvolution.animator;
-            playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth);
+            playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth, activeEvolution.TimeTakenToBeDevoured, activeEvolution.healthRegenAmount);
             playerHealthManager.AmountOfHealthAddedAfterStunned = activeEvolution.AmountToHealAfterStunned;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
@@ -320,7 +321,7 @@ public class EvolutionManager : MonoBehaviourPun
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
         playerHealthManager.AmountOfHealthAddedAfterStunned = activeEvolution.AmountToHealAfterStunned;
-        playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth);
+        playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth, activeEvolution.TimeTakenToBeDevoured, activeEvolution.healthRegenAmount);
         playerHealthManager.Heal(activeEvolution.AmountToHealWhenEvolveing);
         leaderboardManager.RaiseUpdateLeaderboardEvent();
     }
