@@ -51,7 +51,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private MinionType blueMinion;
 
 
-    [SerializeField] private GameObjectRuntimeSet players;
+    [SerializeField] private SpawnPointRuntimeSet players;
     bool findingPlayers = true;
 
     int numberOfPlayerToDisplay = 2;
@@ -301,12 +301,13 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             DemonKingInGameAnalytics.instance.SendEndGameStatsAnalytics();
             DemonKingInGameAnalytics.instance.SendEvolutionAnalytics();
 
-            foreach (var player in players.items)
+            for (int i = 0; i < players.Length(); i++)
             {
-                SpectatorCamera spec = player.GetComponent<SpectatorCamera>();
+                SpectatorCamera spec = players.GetItemIndex(i).GetComponent<SpectatorCamera>();
                 if (spec == null)
-                    player.GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
+                    players.GetItemIndex(i).GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
             }
+
 
             if (playerPositionOnScoreboard == 0)
             {

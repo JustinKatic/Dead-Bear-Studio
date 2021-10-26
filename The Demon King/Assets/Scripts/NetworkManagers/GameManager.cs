@@ -16,14 +16,13 @@ public class GameManager : MonoBehaviourPun
     public string spectatorPrefabLocation;
 
     public List<PlayerController> players;
-    public Transform[] spawnPoints;
+
+    public SpawnPointRuntimeSet spawnPoints;
 
     private int playersInGame;
 
     public int myIdIndex;
     private bool indexAssigned = false;
-
-    public int spawnIndex = 0;
 
     public GameObject LoadingScreen;
     public Slider loadingBar;
@@ -108,34 +107,18 @@ public class GameManager : MonoBehaviourPun
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == true)
         {
             //LOAD SPECTAOR PREFAB
-            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints[myIdIndex].position, spawnPoints[myIdIndex].rotation);
+            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints.GetItemIndex(myIdIndex).transform.position, spawnPoints.GetItemIndex(myIdIndex).transform.rotation);
             spectatorPrefab.GetComponent<SpectatorCamera>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
 
         }
         else
         {
-            GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[myIdIndex].position, spawnPoints[myIdIndex].rotation);
+            GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints.GetItemIndex(myIdIndex).transform.position, spawnPoints.GetItemIndex(myIdIndex).transform.rotation);
 
             // initialize the player for all other players
-            playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints[myIdIndex].eulerAngles.y, spawnPoints[myIdIndex].eulerAngles.z);
+            playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(myIdIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(myIdIndex).transform.eulerAngles.z);
         }
         LoadingScreen.SetActive(false);
-    }
-
-
-    public void IncrementSpawnPos()
-    {
-        photonView.RPC("IncrementSpawnPos_RPC", RpcTarget.All);
-    }
-
-
-    [PunRPC]
-    public void IncrementSpawnPos_RPC()
-    {
-        spawnIndex++;
-
-        if (spawnIndex >= spawnPoints.Length)
-            spawnIndex = 0;
     }
 
 

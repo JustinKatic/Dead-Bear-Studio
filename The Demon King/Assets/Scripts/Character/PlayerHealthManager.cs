@@ -58,6 +58,7 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] float TimeToLerpOutOfDmgEffect = .5f;
 
     private IEnumerator beingDevourEffectCo;
+    [SerializeField] private SpawnPointRuntimeSet spawnPoints;
 
 
     #region Startup
@@ -472,16 +473,33 @@ public class PlayerHealthManager : HealthManager
     {
         Stun(false);
         stunnedTimer = 0;
-        GameManager.instance.IncrementSpawnPos();
+        IncrementSpawnPos();
         player.DisableMovement();
         player.cc.enabled = false;
-        transform.position = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].position;
-        player._cinemachineTargetYaw = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.y;
-        player._cinemachineTargetPitch = GameManager.instance.spawnPoints[GameManager.instance.spawnIndex].eulerAngles.z;
+
+        transform.position = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.position;
+        player._cinemachineTargetYaw = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.y;
+        player._cinemachineTargetPitch = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.z;
 
         player.cc.enabled = true;
         player.currentAnim.SetBool("Stunned", false);
     }
+
+    public void IncrementSpawnPos()
+    {
+        photonView.RPC("IncrementSpawnPos_RPC", RpcTarget.All);
+    }
+
+
+    [PunRPC]
+    public void IncrementSpawnPos_RPC()
+    {
+        spawnPoints.CurrentSpawnIndex++;
+
+        if (spawnPoints.CurrentSpawnIndex >= spawnPoints.Length())
+            spawnPoints.CurrentSpawnIndex = 0;
+    }
+
 
     void EnablePlayerOnRespawn()
     {
