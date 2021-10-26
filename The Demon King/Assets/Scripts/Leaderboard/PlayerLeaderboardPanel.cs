@@ -19,7 +19,6 @@ public class PlayerLeaderboardPanel : MonoBehaviour
 
     public void UpdateSliderValue(int NewValue)
     {
-        Debug.Log(NewValue / DemonKingScoreRequiredToWin.value);
         FillImg.fillAmount = NewValue / DemonKingScoreRequiredToWin.value;
     }
 }

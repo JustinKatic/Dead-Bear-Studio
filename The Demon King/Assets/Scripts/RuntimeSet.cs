@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class RuntimeSet<T> : ScriptableObject
 {
-    public List<T> items = new List<T>();
+    private List<T> items = new List<T>();
+
+    private void OnEnable()
+    {
+        Initialize();
+    }
+
     public void Initialize()
     {
         items.Clear();
