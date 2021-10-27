@@ -49,6 +49,7 @@ public class LaserAbility : MonoBehaviourPun
     //Components
     private LineRenderer LaserLine;
     PlayerHealthManager playerHealthManager;
+    private Devour devour;
     private Camera cam;
     private PlayerController player;
 
@@ -63,6 +64,8 @@ public class LaserAbility : MonoBehaviourPun
             player.CharacterInputs.Player.Ability1.performed += Ability1_performed;
             player.CharacterInputs.Player.Ability1.canceled += Ability1_cancelled;
             playerHealthManager = GetComponentInParent<PlayerHealthManager>();
+            devour = GetComponentInParent<Devour>();
+
         }
     }
 
@@ -83,15 +86,35 @@ public class LaserAbility : MonoBehaviourPun
 
     private void Update()
     {
-        ChargeUpLaser();
+        if (devour.IsDevouring || playerHealthManager.beingDevoured)
+        {
+            DisableLaser();
+        }
+        else
+        {
+            ChargeUpLaser();
 
-        FireingLaser();
+            FireingLaser();
+        }
+
     }
 
     private void Ability1_performed(InputAction.CallbackContext obj)
     {
         if (canShoot)
             chargingUp = true;
+    }
+
+    private void DisableLaser()
+    {
+        isFireing = false;
+        LaserLine.enabled = false;
+        rayEndVFX.SetActive(false);
+        chargedUp = false;
+        CancelLinerender();
+        currentLaserTime = 0;
+        StartCoroutine(CanShoot(shootCooldown));
+        damageFrequencyTimer = damageFrequency;
     }
 
     private void Ability1_cancelled(InputAction.CallbackContext obj)
