@@ -8,14 +8,15 @@ public class DragonProjectileController : MonoBehaviourPun
 {
     private int attackerId;
 
-    public GameObject ChildEnemyGasEffect;
+
     public GameObject ChildFriendlyGasEffect;
-
-    public GameObject AdultEnemyGasEffect;
     public GameObject AdultFriendlyGasEffect;
-
-    public GameObject KingEnemyGasEffect;
     public GameObject KingFriendlyGasEffect;
+
+
+    public GameObject ChildEnemyGasEffect;
+    public GameObject AdultEnemyGasEffect;
+    public GameObject KingEnemyGasEffect;
 
     private int projectileHitDmg;
     private int damage;
