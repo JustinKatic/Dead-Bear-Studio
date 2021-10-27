@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float InAirDrag = 2f;
     [SerializeField] float VelocityToStartFalling = -7f;
     [SerializeField] float VelocityNeededToPlayGroundSlam = -20f;
-    [SerializeField] GameObject LandingEffect = null;
+    [SerializeField] GameObject LandingEffectSpawnPos = null;
 
     [HideInInspector] public Vector3 playerJumpVelocity;
 
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviourPun
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
             MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", MouseSensitivity);
-            
+
             //Subsribes to the on action change event and detects what the current activecontroller is
             InputSystem.onActionChange += (obj, change) =>
             {
@@ -532,7 +532,7 @@ public class PlayerController : MonoBehaviourPun
         if (playerMoveVelocity.y <= VelocityNeededToPlayGroundSlam || onLaunchPad)
         {
             PlayerSoundManager.Instance.PlayJumpLandBigSound();
-            PlayLandingEffect();
+            PhotonNetwork.Instantiate("LandingFX", LandingEffectSpawnPos.transform.position, LandingEffectSpawnPos.transform.rotation);
         }
         else
             PlayerSoundManager.Instance.PlayJumpLandNormalSound();
@@ -541,22 +541,6 @@ public class PlayerController : MonoBehaviourPun
         knockback = false;
     }
 
-    void PlayLandingEffect()
-    {
-        photonView.RPC("PlayLandingEffect_RPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void PlayLandingEffect_RPC()
-    {
-        LandingEffect.SetActive(true);
-        Invoke("StopLandingEffect", 1);
-    }
-    void StopLandingEffect()
-    {
-        LandingEffect.SetActive(false);
-
-    }
 
 
 
