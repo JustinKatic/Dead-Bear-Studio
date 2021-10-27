@@ -41,7 +41,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private MinionType blueMinion;
 
 
-    [SerializeField] private SpawnPointRuntimeSet players;
+    [SerializeField] private PlayerControllerRuntimeSet players;
 
     bool findingPlayers = true;
 

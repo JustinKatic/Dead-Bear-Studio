@@ -83,26 +83,23 @@ public class PlayerController : MonoBehaviourPun
     private float coyoteTimer;
     public float coyoteTime;
 
-    public int SlimeDamageOutput;
-    public int LionDamageOutput;
-    public int RayDamageOutput;
-    public int DragonDamageOutput;
+    public DemonKingInGameAnalytics demonKingInGameAnalytics;
 
     public void IncreaseSlimeDamage(int value)
     {
-        SlimeDamageOutput += value;
+        demonKingInGameAnalytics.SlimeDamageOutput += value;
     }
     public void IncreaseLionDamage(int value)
     {
-        LionDamageOutput += value;
+        demonKingInGameAnalytics.LionDamageOutput += value;
     }
     public void IncreaseRayDamage(int value)
     {
-        RayDamageOutput += value;
+        demonKingInGameAnalytics.RayDamageOutput += value;
     }
     public void IncreaseDragonDamage(int value)
     {
-        DragonDamageOutput += value;
+        demonKingInGameAnalytics.DragonDamageOutput += value;
     }
 
     [HideInInspector] public bool knockback;

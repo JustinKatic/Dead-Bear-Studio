@@ -47,7 +47,7 @@ public class Devour : MonoBehaviourPun
             debuffTimer = GetComponentInChildren<PlayerTimers>();
 
             demonKingEvolution = GetComponent<DemonKingEvolution>();
-            leaderboardManager = GetComponentInChildren<LeaderboardManager>();
+            leaderboardManager = FindObjectOfType<LeaderboardManager>();
             //Interact callback
             playerController.CharacterInputs.Player.Interact.performed += OnInteract;
 
@@ -227,8 +227,6 @@ public class Devour : MonoBehaviourPun
             }
         }
     }
-
-
 
 
     void CallDevourOnTarget()

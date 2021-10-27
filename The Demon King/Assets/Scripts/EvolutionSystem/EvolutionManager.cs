@@ -97,7 +97,7 @@ public class EvolutionManager : MonoBehaviourPun
             playerController = GetComponent<PlayerController>();
             demonKingEvolution = GetComponent<DemonKingEvolution>();
             playerTimers = GetComponentInChildren<PlayerTimers>();
-            leaderboardManager = GetComponent<LeaderboardManager>();
+            leaderboardManager = FindObjectOfType<LeaderboardManager>();
             knockBackPlayer = GetComponent<KnockBackPlayer>();
 
 

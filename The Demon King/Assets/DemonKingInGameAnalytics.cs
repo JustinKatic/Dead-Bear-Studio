@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Analytics;
 
-public class DemonKingInGameAnalytics : MonoBehaviour
+[CreateAssetMenu]
+public class DemonKingInGameAnalytics : ScriptableObject
 {
     public bool ShouldPostAnalytics = true;
 
     //END GAME LEADER BOARD INFO
-    public float MatchDuration;             //Match Duration                    //
+    public float MatchDuration;             //Match Duration                    
 
-    public int DemonKingScore;              //Demon king score                  //
-    public int PlayerConsumed;              //Number of players consumed        //
-    public int MinionsConsumed;             //Number of minions consumed        //
-    public int PlayerDeaths;                //Number of times player died       //
+    public int DemonKingScore;              //Demon king score                  
+    public int PlayerConsumed;              //Number of players consumed        
+    public int MinionsConsumed;             //Number of minions consumed        
+    public int PlayerDeaths;                //Number of times player died       
 
-    public float TimeSpentAsLionKing;        //Lion time                        //
-    public float TimeSpentAsRayKing;         //Ray time                         //
-    public float TimeSpentAsDragonKing;      //Dragon time                      //
+    public float TimeSpentAsLionKing;        //Lion time                        
+    public float TimeSpentAsRayKing;         //Ray time                         
+    public float TimeSpentAsDragonKing;      //Dragon time                      
 
     //Player habits
     public int SlimeDamageOutput;           //Slime damage
@@ -25,12 +26,11 @@ public class DemonKingInGameAnalytics : MonoBehaviour
     public int RayDamageOutput;             //Ray damage
     public int DragonDamageOutput;          //Dragon damage
 
-    public float TimeSpentAsSlime;           //Slime time                       //
-    public float TimeSpentAsLion;            //Lion time                        //
-    public float TimeSpentAsRay;             //Ray time                         //
-    public float TimeSpentAsDragon;          //Dragon time                      //
+    public float TimeSpentAsSlime;           //Slime time                       
+    public float TimeSpentAsLion;            //Lion time                        
+    public float TimeSpentAsRay;             //Ray time                         
+    public float TimeSpentAsDragon;          //Dragon time                      
 
-    public static DemonKingInGameAnalytics instance;
 
     public void SendEndGameStatsAnalytics()
     {
@@ -70,10 +70,5 @@ public class DemonKingInGameAnalytics : MonoBehaviour
         };
         AnalyticsResult EvolutionAnalytic = Analytics.CustomEvent(("Evolution Stats"), EvolutionAnalyticData);
         Debug.Log(EvolutionAnalytic);
-    }
-
-    void Awake()
-    {
-        instance = this;
     }
 }
