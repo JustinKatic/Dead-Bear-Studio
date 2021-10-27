@@ -63,24 +63,20 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void Start()
     {
-        if (photonView.IsMine)
-        {
-            matchTime = roomData.GameTimeLimit;
-            DemonKingScoreRequiredToWin = roomData.PointsToWin;
+        matchTime = roomData.GameTimeLimit;
+        DemonKingScoreRequiredToWin = roomData.PointsToWin;
 
-            if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
-                return;
+        if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
+            return;
 
-            InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
-            InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
+        InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
+        InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
 
-            Hashtable DemonKingScoreHash = new Hashtable();
-            DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
-        }
-        else
-            Destroy(this);
+        Hashtable DemonKingScoreHash = new Hashtable();
+        DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
     }
+
 
     private Image GetImage(MinionType minionType)
     {
