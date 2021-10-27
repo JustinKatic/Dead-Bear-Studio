@@ -295,11 +295,11 @@ public class Devour : MonoBehaviourPun
             {
                 int value = targetBeingDevourd.myScoreWorth + demonKingPointExtraPoints;
                 Debug.Log(value);
-                leaderboardManager.UpdateDemonKingScore(value);
+                leaderboardManager.UpdatePlayerScore(value);
             }
             else
             {
-                leaderboardManager.UpdateDemonKingScore(targetBeingDevourd.myScoreWorth);
+                leaderboardManager.UpdatePlayerScore(targetBeingDevourd.myScoreWorth);
             }
 
             healthManager.healthRegenTimer = healthManager.timeForHealthRegenToActivate;

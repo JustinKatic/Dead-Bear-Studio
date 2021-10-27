@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks
@@ -17,20 +18,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Debug.Log("A Player left room");
-        if (PhotonNetwork.IsMasterClient)
+        if (SceneManager.GetActiveScene().name == "Menu")
         {
-            bool IsThereAKing = false;
-            foreach (Player player in PhotonNetwork.PlayerList)
+            Debug.Log("A Player the lobby room");
+        }
+        else
+        {
+            if (PhotonNetwork.IsMasterClient)
             {
-                if (playerControllerRuntimeSet.GetPlayer((int)player.CustomProperties["PlayerId"]).GetComponent<DemonKingEvolution>().AmITheDemonKing)
+                Debug.Log("A Player left the game room");
+                bool IsThereAKing = false;
+                foreach (Player player in PhotonNetwork.PlayerList)
                 {
-                    IsThereAKing = true;
+                    if (playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing)
+                    {
+                        IsThereAKing = true;
+                    }
                 }
-
+                if (!IsThereAKing)
+                    GameObject.FindGameObjectWithTag("DemonKingCrown").GetComponent<CrownHealthManager>().CrownRespawn(true);
             }
-            if (!IsThereAKing)
-                GameObject.FindGameObjectWithTag("DemonKingCrown").GetComponent<CrownHealthManager>().CrownRespawn(true);
         }
     }
 }

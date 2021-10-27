@@ -14,17 +14,14 @@ public class GameManager : MonoBehaviourPun
     public string playerPrefabLocation;
     public string spectatorPrefabLocation;
 
-    public List<PlayerController> players;
-
     public SpawnPointRuntimeSet spawnPoints;
 
     private int playersInGame;
 
-    public int myIdIndex;
+    private int mySpawnIndex;
 
     public GameObject LoadingScreen;
     public Slider loadingBar;
-
 
 
     void Awake()
@@ -49,7 +46,7 @@ public class GameManager : MonoBehaviourPun
         {
             if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
             {
-                myIdIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
+                mySpawnIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
                 indexAssigned = true;
                 ImInGame();
             }
@@ -70,12 +67,12 @@ public class GameManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
-            SpawnPlayer();
+            SpawnPlayers();
         }
     }
 
 
-    public void SpawnPlayer()
+    public void SpawnPlayers()
     {
         photonView.RPC("SpawnPlayer_RPC", RpcTarget.All);
     }
@@ -87,15 +84,14 @@ public class GameManager : MonoBehaviourPun
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == true)
         {
             //LOAD SPECTAOR PREFAB
-            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints.GetItemIndex(myIdIndex).transform.position, spawnPoints.GetItemIndex(myIdIndex).transform.rotation);
+            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints.GetItemIndex(mySpawnIndex).transform.position, spawnPoints.GetItemIndex(mySpawnIndex).transform.rotation);
             spectatorPrefab.GetComponent<SpectatorCamera>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
         }
         else
         {
-            GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints.GetItemIndex(myIdIndex).transform.position, spawnPoints.GetItemIndex(myIdIndex).transform.rotation);
-
+            GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints.GetItemIndex(mySpawnIndex).transform.position, spawnPoints.GetItemIndex(mySpawnIndex).transform.rotation);
             // initialize the player for all other players
-            playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(myIdIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(myIdIndex).transform.eulerAngles.z);
+            playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.z);
         }
         LoadingScreen.SetActive(false);
     }

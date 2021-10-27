@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class LeaderboardData : MonoBehaviour
 {
     public string PlayerNickName;
-    public int DemonKingScore;
+    public int PlayerScore;
     public int playersConsumed;
     public int MinionsConsumed;
     public int PlayerDeaths;
