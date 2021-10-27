@@ -16,7 +16,6 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
     public GameObject EndgameLeaderboardBackground;
 
-
     void DisplayEndGameBoard()
     {
         List<LeaderboardData> sortedPlayerConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.playersConsumed).ToList();
@@ -27,13 +26,13 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
         int i = 0;
         foreach (LeaderboardData data in leaderboardDataList.Data)
         {
-            playerEndGameLeaderboardPanel[i].DemonKingScoreText.text = data.DemonKingScore.ToString();
+            playerEndGameLeaderboardPanel[i].DemonKingScoreText.text = data.PlayerScore.ToString();
             playerEndGameLeaderboardPanel[i].PlayerNameText.text = data.PlayerNickName;
             playerEndGameLeaderboardPanel[i].PlayerDeathsText.text = data.PlayerDeaths.ToString();
             playerEndGameLeaderboardPanel[i].PlayersConsumedText.text = data.playersConsumed.ToString();
             playerEndGameLeaderboardPanel[i].MinionsConsumedText.text = data.MinionsConsumed.ToString();
 
-            if (leaderboardDataList.Data[i].DemonKingScore == leaderboardDataList.Data[0].DemonKingScore)
+            if (leaderboardDataList.Data[i].PlayerScore == leaderboardDataList.Data[0].PlayerScore)
                 playerEndGameLeaderboardPanel[i].HighestScoreImg.SetActive(true);
 
             if (leaderboardDataList.Data[i].playersConsumed == sortedPlayerConsumesList[0].playersConsumed)

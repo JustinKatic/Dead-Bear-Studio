@@ -19,8 +19,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     public GameObject LeaderBoardHUD;
 
-    public int DemonKingScore;
-    private int DemonKingScoreRequiredToWin;
+    public int PlayerScore;
 
     [Header("DemonKing Display")]
     [SerializeField] private PlayerLeaderboardPanel DemonKingPanel;
@@ -47,7 +46,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     int numberOfPlayerToDisplay = 2;
 
-    private float matchTime;
+    // private float matchTimer;
     [SerializeField] private float timeToAwardDoubleScore = 300;
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
@@ -63,9 +62,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void Start()
     {
-        matchTime = roomData.GameTimeLimit;
-        DemonKingScoreRequiredToWin = roomData.PointsToWin;
-
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
             return;
 
@@ -73,10 +69,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
 
         Hashtable DemonKingScoreHash = new Hashtable();
-        DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+        DemonKingScoreHash.Add("PlayerScore", PlayerScore);
         PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
     }
-
 
     private Image GetImage(MinionType minionType)
     {
@@ -90,9 +85,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             return null;
     }
 
-
     private void Update()
     {
+        //NEEDS TO BE CHANGED TO BE A CO IN START SO NOT ALWAYS RUNNING ONCE ITS DONE ITS THING
         if (PhotonNetwork.IsMasterClient)
         {
             if (findingPlayers)
@@ -129,20 +124,19 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         }
     }
 
-    public void UpdateDemonKingScore(int AmountToIncreaseScoreBy)
+    public void UpdatePlayerScore(int AmountToIncreaseScoreBy)
     {
         if (!doubleScoreProced)
-            DemonKingScore += AmountToIncreaseScoreBy;
+            PlayerScore += AmountToIncreaseScoreBy;
         else
-            DemonKingScore += AmountToIncreaseScoreBy * 2;
+            PlayerScore += AmountToIncreaseScoreBy * 2;
 
         Hashtable DemonKingScoreHash = new Hashtable();
-        DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
+        DemonKingScoreHash.Add("PlayerScore", PlayerScore);
         PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
 
         RaiseUpdateLeaderboardEvent();
     }
-
 
     public void UpdateLeaderboard()
     {
@@ -158,7 +152,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
             leaderboardData.PlayerNickName = player.NickName;
             //get players score as demon king
-            leaderboardData.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
+            leaderboardData.PlayerScore = (int)player.CustomProperties["PlayerScore"];
 
             leaderboardData.EvolutionImg = GetImage(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
 
@@ -169,20 +163,19 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             leaderboardDataList.Data.Add(leaderboardData);
         }
 
-        leaderboardDataList.Data.OrderByDescending(o => o.DemonKingScore).ToList();
+        leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
 
         //populate GUI slots with each players name and time as demon king using sorted list
         int i = 0;
         bool wasThereAKing = false;
         foreach (LeaderboardData data in leaderboardDataList.Data)
         {
-
             if (i <= numberOfPlayerToDisplay)
                 playerLeaderboardPanel[i].gameObject.SetActive(true);
 
             playerLeaderboardPanel[i].PlayerNameText.text = data.PlayerNickName;
-            playerLeaderboardPanel[i].DemonKingScoreText.text = data.DemonKingScore.ToString();
-            playerLeaderboardPanel[i].UpdateSliderValue(data.DemonKingScore);
+            playerLeaderboardPanel[i].DemonKingScoreText.text = data.PlayerScore.ToString();
+            playerLeaderboardPanel[i].UpdateSliderValue(data.PlayerScore);
             playerLeaderboardPanel[i].CurrentEvolutionImg.sprite = data.EvolutionImg.sprite;
 
 
@@ -194,17 +187,17 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 DemonKingPanel.PlayerNameText.text = data.PlayerNickName;
 
                 DemonKingPanel.DemonKingScoreText.gameObject.SetActive(true);
-                DemonKingPanel.DemonKingScoreText.text = data.DemonKingScore.ToString();
+                DemonKingPanel.DemonKingScoreText.text = data.PlayerScore.ToString();
 
                 DemonKingPanel.FillImg.gameObject.SetActive(true);
-                DemonKingPanel.UpdateSliderValue(data.DemonKingScore);
+                DemonKingPanel.UpdateSliderValue(data.PlayerScore);
 
                 DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(true);
                 DemonKingPanel.CurrentEvolutionImg.sprite = data.EvolutionImg.sprite;
 
-                if (data.DemonKingScore >= DemonKingScoreRequiredToWin)
-                    DidAWinOccur = true;
             }
+            if (data.PlayerScore >= roomData.PointsToWin)
+                DidAWinOccur = true;
 
             i++;
         }
@@ -259,26 +252,26 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     public void StartMatchTime(double matchTimeStart)
     {
-        matchTime -= (float)(PhotonNetwork.Time - matchTimeStart);
+        roomData.GameTimeLimit -= (float)(PhotonNetwork.Time - matchTimeStart);
         StartCoroutine("MatchTimeCountDown");
     }
 
     IEnumerator MatchTimeCountDown()
     {
-        while (matchTime >= 0f)
+        while (roomData.GameTimeLimit >= 0f)
         {
             yield return new WaitForEndOfFrame();
-            matchTime -= Time.deltaTime;
-            matchTimeText.text = FormatTime(matchTime);
+            roomData.GameTimeLimit -= Time.deltaTime;
+            matchTimeText.text = FormatTime(roomData.GameTimeLimit);
 
-            if (matchTime <= timeToAwardDoubleScore && !doubleScoreProced)
+            if (roomData.GameTimeLimit <= timeToAwardDoubleScore && !doubleScoreProced)
             {
                 doubleScoreProced = true;
                 doubleScorePanel.SetActive(true);
             }
             if (PhotonNetwork.IsMasterClient)
             {
-                if (matchTime <= 0)
+                if (roomData.GameTimeLimit <= 0)
                     RaisePlayerWonEvent();
             }
         }
