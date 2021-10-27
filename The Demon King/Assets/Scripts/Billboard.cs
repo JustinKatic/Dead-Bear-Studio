@@ -23,7 +23,6 @@ public class Billboard : MonoBehaviour
     {
         if (startBillboarding)
         {
-            _cam = Camera.main.transform;
             transform.LookAt(transform.position + _cam.forward);
         }
     }
