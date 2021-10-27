@@ -79,6 +79,10 @@ public class PlayerController : MonoBehaviourPun
     private bool onSlope;
     private float slideFriction = 0.3f;
 
+    private bool coyoteGronded;
+    private float coyoteTimer;
+    public float coyoteTime;
+
     public int SlimeDamageOutput;
     public int LionDamageOutput;
     public int RayDamageOutput;
@@ -256,10 +260,20 @@ public class PlayerController : MonoBehaviourPun
             if (cc.isGrounded && !onSlope)
             {
                 GroundMovement();
+
+                coyoteGronded = true;
+                coyoteTimer = 0;
             }
             else
             {
                 InAirMovement();
+
+                if (!isJumping && coyoteGronded)
+                {
+                    coyoteTimer += Time.deltaTime;
+                    if (coyoteTimer >= coyoteTime)
+                        coyoteGronded = false;
+                }
             }
 
             //Add jump and gravity values to current movements Y
@@ -498,7 +512,7 @@ public class PlayerController : MonoBehaviourPun
     #region Jump/Falling
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (cc.isGrounded)
+        if (coyoteGronded && !isJumping)
         {
             //Sets Y velocity to jump value
             playerJumpVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -540,8 +554,6 @@ public class PlayerController : MonoBehaviourPun
         onLaunchPad = false;
         knockback = false;
     }
-
-
 
 
     void SetFallingTrue()
