@@ -37,7 +37,6 @@ public class MinionHealthManager : HealthManager
     private IEnumerator beingDevourEffectCo;
 
 
-
     #region StartUp
     void Awake()
     {
@@ -96,7 +95,7 @@ public class MinionHealthManager : HealthManager
             {
                 gasFrequencyTimer = 0;
                 TakeDamage(gasDamage, CurAttackerId);
-                GameManager.instance.GetPlayer(CurAttackerId).IncreaseDragonDamage(gasDamage);
+                playerControllerRuntimeSet.GetPlayer(CurAttackerId).IncreaseDragonDamage(gasDamage);
             }
             if (isStunned)
             {
@@ -194,7 +193,7 @@ public class MinionHealthManager : HealthManager
             //Updates this charcters status bar on all players in network
             UpdateHealthBar(CurrentHealth, currentHealthOffset);
 
-            PlayerWhoShotMe = GameManager.instance.GetPlayer(attackerID).gameObject;
+            PlayerWhoShotMe = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject;
 
             //call Stunned() on all player on network if no health left
             if (CurrentHealth <= 0)

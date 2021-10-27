@@ -2,11 +2,10 @@
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Photon.Realtime;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
 using System.Collections.Generic;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+
 
 
 public class GameManager : MonoBehaviourPun
@@ -22,13 +21,10 @@ public class GameManager : MonoBehaviourPun
     private int playersInGame;
 
     public int myIdIndex;
-    private bool indexAssigned = false;
 
     public GameObject LoadingScreen;
     public Slider loadingBar;
 
-    // instance
-    public static GameManager instance;
 
 
     void Awake()
@@ -38,44 +34,28 @@ public class GameManager : MonoBehaviourPun
 
         loadingBar.maxValue = PhotonNetwork.PlayerList.Length;
         loadingBar.value = playersInGame;
-
-        instance = this;
     }
 
 
     void Start()
     {
-        players = new List<PlayerController>();
-        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
-        {
-            players.Add(null);
-        }
-
-        StartCoroutine(CheckIfAllPlayersInGame());
+        StartCoroutine(AssignSpawnIndex());
     }
 
-    IEnumerator CheckIfAllPlayersInGame()
+    IEnumerator AssignSpawnIndex()
     {
-        indexAssigned = false;
+        bool indexAssigned = false;
         while (!indexAssigned)
         {
             if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
             {
                 myIdIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-
-                Hashtable PlayerId = new Hashtable();
-                PlayerId.Add("PlayerId", myIdIndex);
-                PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerId);
-
                 indexAssigned = true;
                 ImInGame();
             }
-
             yield return null;
         }
     }
-
-
 
     void ImInGame()
     {
@@ -118,28 +98,5 @@ public class GameManager : MonoBehaviourPun
             playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(myIdIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(myIdIndex).transform.eulerAngles.z);
         }
         LoadingScreen.SetActive(false);
-    }
-
-
-    public PlayerController GetPlayer(int playerId)
-    {
-        foreach (PlayerController player in players)
-        {
-            if (player != null && player.id == playerId)
-                return player;
-        }
-
-        return null;
-    }
-
-    public PlayerController GetPlayer(GameObject playerObject)
-    {
-        foreach (PlayerController player in players)
-        {
-            if (player != null && player.gameObject == playerObject)
-                return player;
-        }
-
-        return null;
     }
 }

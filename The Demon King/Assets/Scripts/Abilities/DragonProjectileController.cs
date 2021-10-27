@@ -8,6 +8,8 @@ public class DragonProjectileController : MonoBehaviourPun
 {
     private int attackerId;
 
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
+
 
     public GameObject ChildFriendlyGasEffect;
     public GameObject AdultFriendlyGasEffect;
@@ -112,7 +114,7 @@ public class DragonProjectileController : MonoBehaviourPun
 
         if (photonView.IsMine)
         {
-            index = GameManager.instance.myIdIndex;
+            index = PhotonNetwork.LocalPlayer.ActorNumber;
         }
 
         if (attackerId == index)
@@ -166,8 +168,8 @@ public class DragonProjectileController : MonoBehaviourPun
             {
                 playerHealth.TakeDamage(projectileHitDmg, attackerId);
                 playerHealth.ApplyGasEffect(damage, attackerId, damageFrequency, gasDurationOnPlayer);
-                GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
-                GameManager.instance.GetPlayer(attackerId).IncreaseDragonDamage(projectileHitDmg);
+                playerControllerRuntimeSet.GetPlayer(attackerId).PlayRectAnim();
+                playerControllerRuntimeSet.GetPlayer(attackerId).IncreaseDragonDamage(projectileHitDmg);
             }
         }
         //If tag is Minion
@@ -177,8 +179,8 @@ public class DragonProjectileController : MonoBehaviourPun
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(projectileHitDmg, attackerId);
             minionHealth.ApplyGasEffect(damage, attackerId, damageFrequency, gasDurationOnPlayer);
-            GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
-            GameManager.instance.GetPlayer(attackerId).IncreaseDragonDamage(projectileHitDmg);
+            playerControllerRuntimeSet.GetPlayer(attackerId).PlayRectAnim();
+            playerControllerRuntimeSet.GetPlayer(attackerId).IncreaseDragonDamage(projectileHitDmg);
         }
     }
 }

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class AoeExplosionProjectileController : MonoBehaviourPun
 {
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
+
     private int damage = 1;
     private int aoeDamage = 1;
 
@@ -95,9 +97,9 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             {
                 playerHealth.TakeDamage(damage, attackerId);
                 if (!aoeDmg)
-                    GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+                    playerControllerRuntimeSet.GetPlayer(attackerId).PlayRectAnim();
 
-                GameManager.instance.GetPlayer(attackerId).IncreaseLionDamage(damage);
+                playerControllerRuntimeSet.GetPlayer(attackerId).IncreaseLionDamage(damage);
             }
         }
         //If tag is Minion
@@ -107,9 +109,9 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(damage, attackerId);
             if (!aoeDmg)
-                GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
+                playerControllerRuntimeSet.GetPlayer(attackerId).PlayRectAnim();
 
-            GameManager.instance.GetPlayer(attackerId).IncreaseLionDamage(damage);
+            playerControllerRuntimeSet.GetPlayer(attackerId).IncreaseLionDamage(damage);
         }
     }
 

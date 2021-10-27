@@ -10,22 +10,13 @@ using TMPro;
 using ExitGames.Client.Photon;
 using Cinemachine;
 
-struct LeaderBoardList
-{
-    public string PlayerNickName;
-    public int DemonKingScore;
-    public Image EvolutionImg;
-    public bool AmITheDemonKing;
-    public bool IslocalPlayer;
-}
-
 
 public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 {
     [SerializeField] private SOMenuData roomData;
 
-    PlayerController playerController;
-    EvolutionManager evolutionManager;
+    public LeaderboardDataList leaderboardDataList;
+
     public GameObject LeaderBoardHUD;
 
     public int DemonKingScore;
@@ -35,15 +26,14 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private PlayerLeaderboardPanel DemonKingPanel;
 
     [Header("Leaderboard Display")]
-    List<LeaderBoardList> leaderBoardList = new List<LeaderBoardList>();
-    public List<PlayerLeaderboardPanel> playerLeaderboardSlot = new List<PlayerLeaderboardPanel>();
+    public List<PlayerLeaderboardPanel> playerLeaderboardPanel = new List<PlayerLeaderboardPanel>();
 
     public bool DidAWinOccur = false;
 
     [Header("Evolution Images To Display")]
-    [SerializeField] private Image red;
-    [SerializeField] private Image green;
-    [SerializeField] private Image blue;
+    [SerializeField] private Image lionImg;
+    [SerializeField] private Image dragonImg;
+    [SerializeField] private Image rayImg;
 
     [Header("Minion Types")]
     [SerializeField] private MinionType redMinion;
@@ -52,6 +42,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
 
     [SerializeField] private SpawnPointRuntimeSet players;
+
     bool findingPlayers = true;
 
     int numberOfPlayerToDisplay = 2;
@@ -61,30 +52,13 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
 
-
-
-
-    private CinemachineVirtualCamera podiumVCam;
-
-    private Transform podium1;
-    private Transform podium2;
-    private Transform podium3;
-
-    [SerializeField] GameObject playerHUD;
-    [SerializeField] GameObject playerNameOverhead;
-    [SerializeField] GameObject demonKingVFX;
-    [SerializeField] GameObject overheadNameTag;
-
-    private PhotonTransformViewClassic transformViewClassic;
-
-
     private bool doubleScoreProced;
-
-    private int playerPositionOnScoreboard;
 
     private const byte UpdateLeaderboardEvent = 1;
     private const byte StartMatchTimeEvent = 2;
     private const byte PlayerWonEvent = 3;
+
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
 
 
     private void Start()
@@ -97,18 +71,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
                 return;
 
-            playerController = GetComponentInParent<PlayerController>();
-            evolutionManager = GetComponentInParent<EvolutionManager>();
-            transformViewClassic = GetComponent<PhotonTransformViewClassic>();
-            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
-            playerController.CharacterInputs.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
-
-            podium1 = GameObject.Find("Podium1").transform;
-            podium2 = GameObject.Find("Podium2").transform;
-            podium3 = GameObject.Find("Podium3").transform;
-
-            podiumVCam = GameObject.Find("PodiumVCam").GetComponent<CinemachineVirtualCamera>();
-
+            InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
+            InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
 
             Hashtable DemonKingScoreHash = new Hashtable();
             DemonKingScoreHash.Add("DemonKingScore", DemonKingScore);
@@ -121,11 +85,11 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     private Image GetImage(MinionType minionType)
     {
         if (minionType == redMinion)
-            return red;
+            return lionImg;
         else if (minionType == greenMinion)
-            return green;
+            return dragonImg;
         else if (minionType == blueMinion)
-            return blue;
+            return rayImg;
         else
             return null;
     }
@@ -155,17 +119,17 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void DisplayScoreBoard_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        for (int i = 0; i < leaderBoardList.Count; i++)
+        for (int i = 0; i < leaderboardDataList.Length(); i++)
         {
-            playerLeaderboardSlot[i].gameObject.SetActive(true);
+            playerLeaderboardPanel[i].gameObject.SetActive(true);
         }
     }
 
     private void DisplayScoreBoard_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
     {
-        for (int i = numberOfPlayerToDisplay + 1; i <= leaderBoardList.Count; i++)
+        for (int i = numberOfPlayerToDisplay + 1; i <= leaderboardDataList.Length(); i++)
         {
-            playerLeaderboardSlot[i].gameObject.SetActive(false);
+            playerLeaderboardPanel[i].gameObject.SetActive(false);
         }
     }
 
@@ -187,70 +151,63 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     public void UpdateLeaderboard()
     {
         //Clear current leaderboard data
-        leaderBoardList.Clear();
+        leaderboardDataList.Data.Clear();
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             if ((bool)player.CustomProperties["IsSpectator"])
                 continue;
 
-            LeaderBoardList dataToEnterIntoLeaderboardList = new LeaderBoardList();
-            //get players name
-            dataToEnterIntoLeaderboardList.PlayerNickName = player.NickName;
-            //get players time as demon king
-            dataToEnterIntoLeaderboardList.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
+            LeaderboardData leaderboardData = new LeaderboardData();
 
-            dataToEnterIntoLeaderboardList.EvolutionImg = GetImage(GameManager.instance.GetPlayer((int)player.CustomProperties["PlayerId"]).GetComponent<PlayerHealthManager>().MyMinionType);
+            leaderboardData.PlayerNickName = player.NickName;
+            //get players score as demon king
+            leaderboardData.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
 
-            dataToEnterIntoLeaderboardList.AmITheDemonKing = GameManager.instance.GetPlayer((int)player.CustomProperties["PlayerId"]).GetComponent<DemonKingEvolution>().AmITheDemonKing;
+            leaderboardData.EvolutionImg = GetImage(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
 
-            dataToEnterIntoLeaderboardList.IslocalPlayer = player.IsLocal;
+            leaderboardData.AmITheDemonKing = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
 
-            //Add info into leaderboard list
-            leaderBoardList.Add(dataToEnterIntoLeaderboardList);
+            leaderboardData.IslocalPlayer = player.IsLocal;
+
+            leaderboardDataList.Data.Add(leaderboardData);
         }
 
-        //Sort leader board list by time spent as demon king and store in sorted leader board list
-        List<LeaderBoardList> sortedLeaderboardList = leaderBoardList.OrderByDescending(o => o.DemonKingScore).ToList();
+        leaderboardDataList.Data.OrderByDescending(o => o.DemonKingScore).ToList();
 
         //populate GUI slots with each players name and time as demon king using sorted list
         int i = 0;
         bool wasThereAKing = false;
-        foreach (LeaderBoardList player in sortedLeaderboardList)
+        foreach (LeaderboardData data in leaderboardDataList.Data)
         {
 
             if (i <= numberOfPlayerToDisplay)
-                playerLeaderboardSlot[i].gameObject.SetActive(true);
+                playerLeaderboardPanel[i].gameObject.SetActive(true);
 
-            playerLeaderboardSlot[i].PlayerNameText.text = player.PlayerNickName;
-            playerLeaderboardSlot[i].DemonKingScoreText.text = player.DemonKingScore.ToString();
-            playerLeaderboardSlot[i].UpdateSliderValue(player.DemonKingScore);
-            playerLeaderboardSlot[i].CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
+            playerLeaderboardPanel[i].PlayerNameText.text = data.PlayerNickName;
+            playerLeaderboardPanel[i].DemonKingScoreText.text = data.DemonKingScore.ToString();
+            playerLeaderboardPanel[i].UpdateSliderValue(data.DemonKingScore);
+            playerLeaderboardPanel[i].CurrentEvolutionImg.sprite = data.EvolutionImg.sprite;
 
 
-            if (player.AmITheDemonKing)
+            if (data.AmITheDemonKing)
             {
                 wasThereAKing = true;
 
                 DemonKingPanel.PlayerNameText.gameObject.SetActive(true);
-                DemonKingPanel.PlayerNameText.text = player.PlayerNickName;
+                DemonKingPanel.PlayerNameText.text = data.PlayerNickName;
 
                 DemonKingPanel.DemonKingScoreText.gameObject.SetActive(true);
-                DemonKingPanel.DemonKingScoreText.text = player.DemonKingScore.ToString();
+                DemonKingPanel.DemonKingScoreText.text = data.DemonKingScore.ToString();
 
                 DemonKingPanel.FillImg.gameObject.SetActive(true);
-                DemonKingPanel.UpdateSliderValue(player.DemonKingScore);
+                DemonKingPanel.UpdateSliderValue(data.DemonKingScore);
 
                 DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(true);
-                DemonKingPanel.CurrentEvolutionImg.sprite = player.EvolutionImg.sprite;
+                DemonKingPanel.CurrentEvolutionImg.sprite = data.EvolutionImg.sprite;
 
-                if (player.DemonKingScore >= DemonKingScoreRequiredToWin)
+                if (data.DemonKingScore >= DemonKingScoreRequiredToWin)
                     DidAWinOccur = true;
-            }
-
-            if (player.IslocalPlayer)
-            {
-                playerPositionOnScoreboard = i;
             }
 
             i++;
@@ -276,64 +233,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     IEnumerator ReturnToLobbyCo()
     {
-        if (!(bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
-        {
-            PlayerHealthManager health = GetComponent<PlayerHealthManager>();
-            Devour devour = GetComponent<Devour>();
-
-            if (health.beingDevoured)
-                health.InterruptDevourOnSelf();
-            if (devour.IsDevouring)
-                devour.InteruptDevouring();
-
-            transformViewClassic.m_PositionModel.TeleportIfDistanceGreaterThan = 0;
-            podiumVCam.m_Priority = 15;
-            playerController.DisableAllInputs();
-            playerHUD.SetActive(false);
-            playerNameOverhead.SetActive(true);
-            demonKingVFX.SetActive(false);
-            overheadNameTag.SetActive(true);
-
-            GameManager.instance.GetComponent<EndGameLeaderboardManager>().DisplayEndgameLeaderboard(matchTime, evolutionManager.TimeAsSlimeTimer, evolutionManager.TimeAsLionTimer, evolutionManager.TimeAsLionKingTimer,
-                evolutionManager.TimeAsRayTimer, evolutionManager.TimeAsRayKingTimer, evolutionManager.TimeAsDragonTimer, evolutionManager.TimeAsDragonKingTimer, playerController.SlimeDamageOutput, playerController.LionDamageOutput,
-                playerController.RayDamageOutput, playerController.DragonDamageOutput);
-
-            DemonKingInGameAnalytics.instance.SendEndGameStatsAnalytics();
-            DemonKingInGameAnalytics.instance.SendEvolutionAnalytics();
-
-            for (int i = 0; i < players.Length(); i++)
-            {
-                SpectatorCamera spec = players.GetItemIndex(i).GetComponent<SpectatorCamera>();
-                if (spec == null)
-                    players.GetItemIndex(i).GetComponent<PlayerHealthManager>().overheadHealthBar.gameObject.SetActive(false);
-            }
-
-
-            if (playerPositionOnScoreboard == 0)
-            {
-                playerController.transform.position = podium1.position;
-                playerController.transform.rotation = podium1.transform.rotation;
-            }
-            else if (playerPositionOnScoreboard == 1)
-            {
-                playerController.transform.position = podium2.position;
-                playerController.transform.rotation = podium2.transform.rotation;
-            }
-            else if (playerPositionOnScoreboard == 2)
-            {
-                playerController.transform.position = podium3.position;
-                playerController.transform.rotation = podium3.transform.rotation;
-            }
-            else
-            {
-                playerController.transform.position = new Vector3(0, -200, 0);
-            }
-        }
-
-        yield return new WaitForSeconds(30f);
+        yield return new WaitForSeconds(5f);
 
         ChangeScene("Menu");
     }
+
+
 
     public void ChangeScene(string sceneName)
     {

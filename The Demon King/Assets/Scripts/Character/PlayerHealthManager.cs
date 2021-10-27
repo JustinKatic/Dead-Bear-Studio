@@ -124,7 +124,7 @@ public class PlayerHealthManager : HealthManager
                 {
                     gasFrequencyTimer = 0;
                     TakeDamage(gasDamage, CurAttackerId);
-                    GameManager.instance.GetPlayer(CurAttackerId).IncreaseDragonDamage(gasDamage);
+                    playerControllerRuntimeSet.GetPlayer(CurAttackerId).IncreaseDragonDamage(gasDamage);
                 }
                 if (isStunned)
                 {
@@ -220,7 +220,7 @@ public class PlayerHealthManager : HealthManager
     {
         debuffTimer.StopBeingDevouredTimer();
         StopDevourEffect();
-        PlayerWhoDevouredMeController = GameManager.instance.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+        PlayerWhoDevouredMeController = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
         PlayerWhoDevouredMeController.vCam.m_Priority = 12;
         KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
         KilledByUIPanel.SetActive(true);
@@ -316,7 +316,7 @@ public class PlayerHealthManager : HealthManager
 
         if (attackerID != 0)
         {
-            playerWhoLastShotMeHealthManager = GameManager.instance.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
+            playerWhoLastShotMeHealthManager = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
         }
         else
         {

@@ -8,6 +8,9 @@ public class DefaultProjectileController : MonoBehaviourPun
     private int damage = 1;
     private int attackerId;
 
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
+
+
 
     [FMODUnity.EventRef]
     [SerializeField] string OnTriggerSound;
@@ -79,8 +82,8 @@ public class DefaultProjectileController : MonoBehaviourPun
             if (playerHealth.PlayerId != attackerId)
             {
                 playerHealth.TakeDamage(damage, attackerId);
-                GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
-                GameManager.instance.GetPlayer(attackerId).IncreaseSlimeDamage(damage);
+                playerControllerRuntimeSet.GetPlayer(attackerId).PlayRectAnim();
+                playerControllerRuntimeSet.GetPlayer(attackerId).IncreaseSlimeDamage(damage);
             }
         }
         //If tag is Minion
@@ -89,8 +92,8 @@ public class DefaultProjectileController : MonoBehaviourPun
             //tell the minion who was hit to take damage
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(damage, attackerId);
-            GameManager.instance.GetPlayer(attackerId).PlayRectAnim();
-            GameManager.instance.GetPlayer(attackerId).IncreaseSlimeDamage(damage);
+            playerControllerRuntimeSet.GetPlayer(attackerId).PlayRectAnim();
+            playerControllerRuntimeSet.GetPlayer(attackerId).IncreaseSlimeDamage(damage);
         }
     }
 }

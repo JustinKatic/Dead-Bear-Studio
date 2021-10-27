@@ -72,6 +72,7 @@ public class HealthManager : MonoBehaviourPun
     protected float gasDurationOnPlayer;
 
     private bool coRunning = false;
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
 
 
     #region Update Loops
@@ -119,7 +120,7 @@ public class HealthManager : MonoBehaviourPun
             }
             else
             {
-                GameManager.instance.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
+                playerControllerRuntimeSet.GetPlayer(attackerID).photonView.RPC("InteruptDevourOnPersonDevouring_RPC", RpcTarget.All);
             }
         }
 

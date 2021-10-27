@@ -7,6 +7,8 @@ using System;
 
 public class LaserAbility : MonoBehaviourPun
 {
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
+
     //[Header("Damage")]
     [SerializeField] private int damage = 1;
     //[Header("Timers")]
@@ -250,9 +252,9 @@ public class LaserAbility : MonoBehaviourPun
             if (playerHealth.PlayerId != player.id)
             {
                 playerHealth.TakeDamage(DamageToDeal, player.id);
-                GameManager.instance.GetPlayer(player.id).PlayRectAnim();
+                playerControllerRuntimeSet.GetPlayer(player.id).PlayRectAnim();
 
-                GameManager.instance.GetPlayer(player.id).IncreaseRayDamage(damage);
+                playerControllerRuntimeSet.GetPlayer(player.id).IncreaseRayDamage(damage);
             }
         }
         //If tag is Minion
@@ -261,9 +263,8 @@ public class LaserAbility : MonoBehaviourPun
             //tell the minion who was hit to take damage
             MinionHealthManager minionHealth = other.GetComponentInParent<MinionHealthManager>();
             minionHealth.TakeDamage(DamageToDeal, player.id);
-            GameManager.instance.GetPlayer(player.id).PlayRectAnim();
-
-            GameManager.instance.GetPlayer(player.id).IncreaseRayDamage(damage);
+            playerControllerRuntimeSet.GetPlayer(player.id).PlayRectAnim();
+            playerControllerRuntimeSet.GetPlayer(player.id).IncreaseRayDamage(damage);
         }
     }
 

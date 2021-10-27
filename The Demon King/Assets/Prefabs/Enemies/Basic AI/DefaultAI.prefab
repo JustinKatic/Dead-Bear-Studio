@@ -78,10 +78,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeBeforeHealthRegen: 3
-  healthRegenAmount: 1
   healthRegenTickrate: 0.5
   RespawnTime: 6
   stunnedDuration: 3
+  healthRegenAmount: 1
   TimeTakenToBeDevoured: 1
   MyExperienceWorth: 1
   myScoreWorth: 5
@@ -99,6 +99,7 @@ MonoBehaviour:
   canBeDevoured: 0
   isStunned: 0
   healthOffsetTime: 5
+  playerControllerRuntimeSet: {fileID: 11400000, guid: 1b5235893161fbe43939768798897e76, type: 2}
   MaxHealth: 15
   myModel: {fileID: 0}
   AmountOfHealthAddedAfterStunned: 5
@@ -111,6 +112,7 @@ MonoBehaviour:
   minionScoreWorth: 2
   myMatInstance: {fileID: 0}
   TimeToLerpOutOfDmgEffect: 0.5
+  playerControllerRuntimeSet: {fileID: 0}
 --- !u!114 &1534572014928822931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,7 +146,6 @@ MonoBehaviour:
     InterpolateOption: 0
     InterpolateMoveTowardsSpeed: 1
     InterpolateLerpSpeed: 0
-  UseWorldPosition: 0
 --- !u!136 &1534572014928822930
 CapsuleCollider:
   m_ObjectHideFlags: 0

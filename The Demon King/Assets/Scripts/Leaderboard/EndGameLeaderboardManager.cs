@@ -7,105 +7,45 @@ using System.Linq;
 using UnityEngine;
 
 
-public struct EndGameLeaderBoardList
-{
-    public string PlayerNickName;
-    public int DemonKingScore;
-    public int playersConsumed;
-    public int MinionsConsumed;
-    public int PlayerDeaths;
-    public bool IslocalPlayer;
-}
-
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
+    public LeaderboardDataList leaderboardDataList;
     [Header("Leaderboard Display")]
-    public List<EndGameLeaderBoardList> endGameLeaderBoardList = new List<EndGameLeaderBoardList>();
+
     public List<EndGameLeaderboardPanel> playerEndGameLeaderboardPanel = new List<EndGameLeaderboardPanel>();
 
     public GameObject EndgameLeaderboardBackground;
 
 
-    public void DisplayEndgameLeaderboard(float matchTime, float TimeAsSlime, float TimeAsLion, float TimeAsLionKing, float TimeAsRay, float TimeAsRayKing, float TimeAsDragon, float TimeAsDragonKing, int slimeDmg, int LionDmg, int rayDmg, int dragonDmg)
+    void DisplayEndGameBoard()
     {
-        EndgameLeaderboardBackground.SetActive(true);
+        List<LeaderboardData> sortedPlayerConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.playersConsumed).ToList();
+        List<LeaderboardData> sortedMinionConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.MinionsConsumed).ToList();
+        List<LeaderboardData> sortedDeathsList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerDeaths).ToList();
+
 
         int i = 0;
-
-        foreach (Player player in PhotonNetwork.PlayerList)
+        foreach (LeaderboardData data in leaderboardDataList.Data)
         {
-            if ((bool)player.CustomProperties["IsSpectator"])
-                continue;
+            playerEndGameLeaderboardPanel[i].DemonKingScoreText.text = data.DemonKingScore.ToString();
+            playerEndGameLeaderboardPanel[i].PlayerNameText.text = data.PlayerNickName;
+            playerEndGameLeaderboardPanel[i].PlayerDeathsText.text = data.PlayerDeaths.ToString();
+            playerEndGameLeaderboardPanel[i].PlayersConsumedText.text = data.playersConsumed.ToString();
+            playerEndGameLeaderboardPanel[i].MinionsConsumedText.text = data.MinionsConsumed.ToString();
 
-            playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
+            if (leaderboardDataList.Data[i].DemonKingScore == leaderboardDataList.Data[0].DemonKingScore)
+                playerEndGameLeaderboardPanel[i].HighestScoreImg.SetActive(true);
+
+            if (leaderboardDataList.Data[i].playersConsumed == sortedPlayerConsumesList[0].playersConsumed)
+                playerEndGameLeaderboardPanel[i].HighestPlayerConsumesImg.SetActive(true);
+
+            if (leaderboardDataList.Data[i].MinionsConsumed == sortedMinionConsumesList[0].MinionsConsumed)
+                playerEndGameLeaderboardPanel[i].HighestMinionConsumesImg.SetActive(true);
+
+            if (leaderboardDataList.Data[i].PlayerDeaths == sortedDeathsList[0].PlayerDeaths)
+                playerEndGameLeaderboardPanel[i].HighestDeathsImg.SetActive(true);
+
             i++;
-            EndGameLeaderBoardList dataToEnterIntoEndGameLeaderboardList = new EndGameLeaderBoardList();
-            //get players name
-            dataToEnterIntoEndGameLeaderboardList.PlayerNickName = player.NickName;
-            //get players time as demon king
-            dataToEnterIntoEndGameLeaderboardList.DemonKingScore = (int)player.CustomProperties["DemonKingScore"];
-            dataToEnterIntoEndGameLeaderboardList.PlayerDeaths = (int)player.CustomProperties["PlayerDeaths"];
-            dataToEnterIntoEndGameLeaderboardList.playersConsumed = (int)player.CustomProperties["PlayerKills"];
-            dataToEnterIntoEndGameLeaderboardList.MinionsConsumed = (int)player.CustomProperties["MinionKills"];
-            dataToEnterIntoEndGameLeaderboardList.IslocalPlayer = player.IsLocal;
-
-            //Add info into leaderboard list
-            endGameLeaderBoardList.Add(dataToEnterIntoEndGameLeaderboardList);
-        }
-
-        List<EndGameLeaderBoardList> sortedScoreList = endGameLeaderBoardList.OrderByDescending(o => o.DemonKingScore).ToList();
-        List<EndGameLeaderBoardList> sortedPlayerConsumesList = endGameLeaderBoardList.OrderByDescending(o => o.playersConsumed).ToList();
-        List<EndGameLeaderBoardList> sortedMinionConsumesList = endGameLeaderBoardList.OrderByDescending(o => o.MinionsConsumed).ToList();
-        List<EndGameLeaderBoardList> sortedDeathsList = endGameLeaderBoardList.OrderByDescending(o => o.PlayerDeaths).ToList();
-
-
-        int p = 0;
-        foreach (EndGameLeaderBoardList player in sortedScoreList)
-        {
-            playerEndGameLeaderboardPanel[p].DemonKingScoreText.text = player.DemonKingScore.ToString();
-            playerEndGameLeaderboardPanel[p].PlayerNameText.text = player.PlayerNickName;
-            playerEndGameLeaderboardPanel[p].PlayerDeathsText.text = player.PlayerDeaths.ToString();
-            playerEndGameLeaderboardPanel[p].PlayersConsumedText.text = player.playersConsumed.ToString();
-            playerEndGameLeaderboardPanel[p].MinionsConsumedText.text = player.MinionsConsumed.ToString();
-
-            if (sortedScoreList[p].DemonKingScore == sortedScoreList[0].DemonKingScore)
-                playerEndGameLeaderboardPanel[p].HighestScoreImg.SetActive(true);
-
-            if (sortedScoreList[p].playersConsumed == sortedPlayerConsumesList[0].playersConsumed)
-                playerEndGameLeaderboardPanel[p].HighestPlayerConsumesImg.SetActive(true);
-
-            if (sortedScoreList[p].MinionsConsumed == sortedMinionConsumesList[0].MinionsConsumed)
-                playerEndGameLeaderboardPanel[p].HighestMinionConsumesImg.SetActive(true);
-
-            if (sortedScoreList[p].PlayerDeaths == sortedDeathsList[0].PlayerDeaths)
-                playerEndGameLeaderboardPanel[p].HighestDeathsImg.SetActive(true);
-
-            if (player.IslocalPlayer)
-            {
-                DemonKingInGameAnalytics.instance.DemonKingScore = player.DemonKingScore;
-                DemonKingInGameAnalytics.instance.PlayerDeaths = player.PlayerDeaths;
-                DemonKingInGameAnalytics.instance.PlayerConsumed = player.playersConsumed;
-                DemonKingInGameAnalytics.instance.MinionsConsumed = player.MinionsConsumed;
-                DemonKingInGameAnalytics.instance.MatchDuration = matchTime;
-
-                DemonKingInGameAnalytics.instance.TimeSpentAsSlime = TimeAsSlime;
-
-                DemonKingInGameAnalytics.instance.TimeSpentAsLion = TimeAsLion;
-                DemonKingInGameAnalytics.instance.TimeSpentAsLionKing = TimeAsLionKing;
-
-                DemonKingInGameAnalytics.instance.TimeSpentAsRay = TimeAsRay;
-                DemonKingInGameAnalytics.instance.TimeSpentAsRayKing = TimeAsRayKing;
-
-                DemonKingInGameAnalytics.instance.TimeSpentAsDragon = TimeAsDragon;
-                DemonKingInGameAnalytics.instance.TimeSpentAsDragonKing = TimeAsDragonKing;
-
-                DemonKingInGameAnalytics.instance.SlimeDamageOutput = slimeDmg;
-                DemonKingInGameAnalytics.instance.LionDamageOutput = LionDmg;
-                DemonKingInGameAnalytics.instance.RayDamageOutput = rayDmg;
-                DemonKingInGameAnalytics.instance.DragonDamageOutput = dragonDmg;
-            }
-
-            p++;
         }
     }
 }
