@@ -37,6 +37,7 @@ public class MinionHealthManager : HealthManager
     private IEnumerator beingDevourEffectCo;
 
 
+
     #region StartUp
     void Awake()
     {

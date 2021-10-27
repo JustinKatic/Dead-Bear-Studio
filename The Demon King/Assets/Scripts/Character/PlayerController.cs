@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviourPun
     [SerializeField] float InAirDrag = 2f;
     [SerializeField] float VelocityToStartFalling = -7f;
     [SerializeField] float VelocityNeededToPlayGroundSlam = -20f;
-    [SerializeField] GameObject LandingEffect = null;
+    [SerializeField] GameObject LandingEffectSpawnPos = null;
 
     [HideInInspector] public Vector3 playerJumpVelocity;
 
@@ -78,6 +78,10 @@ public class PlayerController : MonoBehaviourPun
     private Vector3 hitNormal;
     private bool onSlope;
     private float slideFriction = 0.3f;
+
+    private bool coyoteGronded;
+    private float coyoteTimer;
+    public float coyoteTime;
 
     public int SlimeDamageOutput;
     public int LionDamageOutput;
@@ -148,7 +152,7 @@ public class PlayerController : MonoBehaviourPun
             }
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
             MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", MouseSensitivity);
-            
+
             //Subsribes to the on action change event and detects what the current activecontroller is
             InputSystem.onActionChange += (obj, change) =>
             {
@@ -256,10 +260,20 @@ public class PlayerController : MonoBehaviourPun
             if (cc.isGrounded && !onSlope)
             {
                 GroundMovement();
+
+                coyoteGronded = true;
+                coyoteTimer = 0;
             }
             else
             {
                 InAirMovement();
+
+                if (!isJumping && coyoteGronded)
+                {
+                    coyoteTimer += Time.deltaTime;
+                    if (coyoteTimer >= coyoteTime)
+                        coyoteGronded = false;
+                }
             }
 
             //Add jump and gravity values to current movements Y
@@ -498,7 +512,7 @@ public class PlayerController : MonoBehaviourPun
     #region Jump/Falling
     private void OnJump(InputAction.CallbackContext obj)
     {
-        if (cc.isGrounded)
+        if (coyoteGronded && !isJumping)
         {
             //Sets Y velocity to jump value
             playerJumpVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
@@ -532,7 +546,7 @@ public class PlayerController : MonoBehaviourPun
         if (playerMoveVelocity.y <= VelocityNeededToPlayGroundSlam || onLaunchPad)
         {
             PlayerSoundManager.Instance.PlayJumpLandBigSound();
-            PlayLandingEffect();
+            PhotonNetwork.Instantiate("LandingFX", LandingEffectSpawnPos.transform.position, LandingEffectSpawnPos.transform.rotation);
         }
         else
             PlayerSoundManager.Instance.PlayJumpLandNormalSound();
@@ -540,24 +554,6 @@ public class PlayerController : MonoBehaviourPun
         onLaunchPad = false;
         knockback = false;
     }
-
-    void PlayLandingEffect()
-    {
-        photonView.RPC("PlayLandingEffect_RPC", RpcTarget.All);
-    }
-
-    [PunRPC]
-    void PlayLandingEffect_RPC()
-    {
-        LandingEffect.SetActive(true);
-        Invoke("StopLandingEffect", 1);
-    }
-    void StopLandingEffect()
-    {
-        LandingEffect.SetActive(false);
-
-    }
-
 
 
     void SetFallingTrue()

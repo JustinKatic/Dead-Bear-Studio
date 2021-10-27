@@ -60,6 +60,8 @@ public class Evolutions : MonoBehaviourPun
     public int MaxHealth;
     public float ExpWorth;
     public int ScoreWorth;
+    public int healthRegenAmount;
+    public float TimeTakenToBeDevoured;
     public int AmountToHealAfterStunned;
     public int AmountToHealWhenEvolveing;
     public Material myMatInstance;

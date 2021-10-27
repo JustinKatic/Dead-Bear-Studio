@@ -5,8 +5,6 @@ using Photon.Pun;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-
-
 public class PlayerHealthManager : HealthManager
 {
     [Header("Player Hud UI")]
@@ -59,6 +57,7 @@ public class PlayerHealthManager : HealthManager
 
     private IEnumerator beingDevourEffectCo;
     [SerializeField] private SpawnPointRuntimeSet spawnPoints;
+
 
 
     #region Startup
@@ -531,19 +530,21 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region HealthBar
-    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth)
+    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount)
     {
-        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth);
+        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth, timeTakenToBeDevoured, healthRegenAmount);
     }
 
     [PunRPC]
-    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth)
+    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
         MyExperienceWorth = expWorth;
         myScoreWorth = scoreWorth;
+        this.healthRegenAmount = healthRegenAmount;
+        TimeTakenToBeDevoured = timeTakenToBeDevoured;
 
         //Run following if not local player
         if (!photonView.IsMine)

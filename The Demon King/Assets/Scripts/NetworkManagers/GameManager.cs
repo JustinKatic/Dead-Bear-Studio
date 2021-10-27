@@ -109,7 +109,6 @@ public class GameManager : MonoBehaviourPun
             //LOAD SPECTAOR PREFAB
             GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints.GetItemIndex(myIdIndex).transform.position, spawnPoints.GetItemIndex(myIdIndex).transform.rotation);
             spectatorPrefab.GetComponent<SpectatorCamera>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
-
         }
         else
         {
