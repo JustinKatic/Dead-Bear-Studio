@@ -88,15 +88,18 @@ public class LaserAbility : MonoBehaviourPun
 
     private void Update()
     {
-        if (devour.IsDevouring || playerHealthManager.beingDevoured)
+        if (photonView.IsMine)
         {
-            DisableLaser();
-        }
-        else
-        {
-            ChargeUpLaser();
+            if (devour.IsDevouring || playerHealthManager.beingDevoured)
+            {
+                DisableLaser();
+            }
+            else
+            {
+                ChargeUpLaser();
 
-            FireingLaser();
+                FireingLaser();
+            }
         }
 
     }
