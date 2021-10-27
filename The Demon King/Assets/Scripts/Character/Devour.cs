@@ -13,6 +13,7 @@ public class Devour : MonoBehaviourPun
     public bool IsDevouring;
     private bool isTargetPlayer = false;
 
+    [SerializeField]private int demonKingPointExtraPoints;
     //Components
     private Camera cam;
     private PlayerController playerController;
@@ -30,8 +31,6 @@ public class Devour : MonoBehaviourPun
 
     private int playerKills = 0;
     private int minionKills = 0;
-
-
 
 
     #region Start Up
@@ -295,6 +294,12 @@ public class Devour : MonoBehaviourPun
             }
 
             if (demonKingEvolution.AmITheDemonKing)
+            {
+                int value = targetBeingDevourd.myScoreWorth + demonKingPointExtraPoints;
+                Debug.Log(value);
+                leaderboardManager.UpdateDemonKingScore(value);
+            }
+            else
             {
                 leaderboardManager.UpdateDemonKingScore(targetBeingDevourd.myScoreWorth);
             }
