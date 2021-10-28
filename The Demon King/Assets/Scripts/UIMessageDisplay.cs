@@ -73,7 +73,8 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
         }
         else if (photonEvent.Code == DisplayPlayerLeftLobby)
         {
-
+            object[] data = (object[])photonEvent.CustomData;
+            DisplayMessage(data[0].ToString() + " Left the room ", MessageType.LeftTheGame);
         }
         else if (photonEvent.Code == DisplayNormalMessage)
         {
