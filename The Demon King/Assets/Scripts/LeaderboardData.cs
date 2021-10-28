@@ -13,4 +13,5 @@ public class LeaderboardData : MonoBehaviour
     public bool IslocalPlayer;
     public Image EvolutionImg;
     public bool AmITheDemonKing;
+    public string activeEvolution;
 }
