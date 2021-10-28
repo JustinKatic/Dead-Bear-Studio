@@ -220,6 +220,42 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     }
 
 
+    void PlayerWon()
+    {
+        //Clear current leaderboard data
+        leaderboardDataList.Data.Clear();
+
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            if ((bool)player.CustomProperties["IsSpectator"])
+                continue;
+
+            LeaderboardData leaderboardData = new LeaderboardData();
+
+            leaderboardData.PlayerNickName = player.NickName;
+            //get players score as demon king
+            leaderboardData.PlayerScore = (int)player.CustomProperties["PlayerScore"];
+
+            leaderboardData.EvolutionImg = GetImage(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+
+            leaderboardData.AmITheDemonKing = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
+
+            leaderboardData.IslocalPlayer = player.IsLocal;
+
+            leaderboardData.activeEvolution = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.gameObject.tag;
+
+            leaderboardData.playersConsumed = (int)player.CustomProperties["PlayerKills"];
+
+            leaderboardData.MinionsConsumed = (int)player.CustomProperties["MinionKills"];
+
+            leaderboardData.PlayerDeaths = (int)player.CustomProperties["PlayerDeaths"];
+
+            leaderboardDataList.Data.Add(leaderboardData);
+        }
+
+        ChangeScene("EndGame");
+    }
+
 
 
     public void ChangeScene(string sceneName)
@@ -306,8 +342,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             StartMatchTime((double)data[0]);
         }
         else if (photonEvent.Code == PlayerWonEvent)
-            ChangeScene("EndGame");
-
+            PlayerWon();
     }
 
     private void OnEnable()

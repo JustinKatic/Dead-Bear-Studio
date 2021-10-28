@@ -6,11 +6,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SOMenuData : ScriptableObject
 {
-    [SerializeField] private int baseMaxPlayers = 10;
-    [SerializeField] private string baseRoomName = "";
-    [SerializeField] private float baseGameTimeLimit = 900;
-    [SerializeField] private int basePointsToWin = 200;
-    [SerializeField] private int baseCurrentSceneIndex = 0;
+    public int baseMaxPlayers = 10;
+    public string baseRoomName = "";
+    public float baseGameTimeLimit = 900;
+    public int basePointsToWin = 200;
+    public int baseCurrentSceneIndex = 0;
 
 
     //Internal Values
