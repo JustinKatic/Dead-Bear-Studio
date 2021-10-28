@@ -40,6 +40,7 @@ public class InGameSettings : MonoBehaviourPun
             
             if (optionsCanOpenOnPress)
             {
+                playerController.inMenus = true;
                 optionsCanOpenOnPress = false;
                 playerController.CharacterInputs.Player.Disable();
                 playerController.CharacterInputs.PlayerLook.Disable();
@@ -54,11 +55,12 @@ public class InGameSettings : MonoBehaviourPun
             else
             {
                 optionsCanOpenOnPress = true;
+                playerController.inMenus = false;
 
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
 
-                if (!playerController.GetComponent<PlayerHealthManager>().isStunned)
+                if (!playerController.GetComponent<PlayerHealthManager>().isStunned && playerController.allowedToEnableMovement)
                 {
                     playerController.CharacterInputs.Player.Enable();
                     playerController.CharacterInputs.Player.Ability1.Enable();
@@ -82,10 +84,15 @@ public class InGameSettings : MonoBehaviourPun
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            playerController.inMenus = false;
 
-            playerController.CharacterInputs.Player.Enable();
-            playerController.CharacterInputs.PlayerLook.Enable();
-            playerController.CharacterInputs.Player.Ability1.Enable();
+            if (playerController.allowedToEnableMovement)
+            {
+                playerController.CharacterInputs.Player.Enable();
+                playerController.CharacterInputs.PlayerLook.Enable();
+                playerController.CharacterInputs.Player.Ability1.Enable();
+            }
+
             
         }
     }
@@ -105,6 +112,7 @@ public class InGameSettings : MonoBehaviourPun
         menuToActivate.SetActive(false);
         
         optionsCanOpenOnPress = true;
+        playerController.inMenus = false;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
