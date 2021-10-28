@@ -4,9 +4,13 @@ using TMPro;
 using Photon.Pun;
 using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class PlayerHealthManager : HealthManager
 {
+    private const byte DisplayPlayerKilledSomeoneMessage = 4;
+
     [Header("Player Hud UI")]
     [SerializeField] protected Canvas MyHUDCanvas;
     [SerializeField] protected Transform HealthBarContainer;
@@ -28,6 +32,8 @@ public class PlayerHealthManager : HealthManager
     private ExperienceManager experienceManager;
     private PlayerController PlayerWhoDevouredMeController;
     private PlayerHealthManager playerWhoLastShotMeHealthManager;
+    private IEnumerator playerWhoLastShotMeLastCo;
+
     private DemonKingEvolution demonKingEvolution;
     private EvolutionManager evolutionManager;
     private CrownHealthManager demonKingCrownHealthManager;
@@ -57,6 +63,8 @@ public class PlayerHealthManager : HealthManager
 
     private IEnumerator beingDevourEffectCo;
     [SerializeField] private SpawnPointRuntimeSet spawnPoints;
+
+    [SerializeField] private float TimeToTrackLastPlayerWhoShotMe = 10;
 
 
 
@@ -223,6 +231,7 @@ public class PlayerHealthManager : HealthManager
         PlayerWhoDevouredMeController = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
         PlayerWhoDevouredMeController.vCam.m_Priority = 12;
         KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+
         KilledByUIPanel.SetActive(true);
         Respawn(true);
     }
@@ -314,14 +323,14 @@ public class PlayerHealthManager : HealthManager
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
 
 
-        if (attackerID != 0)
-        {
-            playerWhoLastShotMeHealthManager = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
-        }
-        else
-        {
-            playerWhoLastShotMeHealthManager = null;
-        }
+
+        if (playerWhoLastShotMeLastCo != null)
+            StopCoroutine(playerWhoLastShotMeLastCo);
+
+        playerWhoLastShotMeLastCo = SetPlayWhoShotMeLastNull();
+        StartCoroutine(playerWhoLastShotMeLastCo);
+        playerWhoLastShotMeHealthManager = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
+
 
         UpdateHealthBar(CurrentHealth, currentHealthOffset);
 
@@ -331,6 +340,12 @@ public class PlayerHealthManager : HealthManager
         //call Stunned() on all player on network if no health left
         if (CurrentHealth <= 0)
             OnBeingStunnedStart();
+    }
+
+    IEnumerator SetPlayWhoShotMeLastNull()
+    {
+        yield return new WaitForSeconds(TimeToTrackLastPlayerWhoShotMe);
+        playerWhoLastShotMeHealthManager = null;
     }
 
     void PlayDmgShader()
@@ -416,12 +431,30 @@ public class PlayerHealthManager : HealthManager
                 PlayerSoundManager.Instance.StopStunnedSound();
                 DisablePlayerOnRespawn();
 
-                //Check if the player died via no player death
-                if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
+
+                if (PlayerWhoDevouredMeController != null)
                 {
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName, PlayerWhoDevouredMeController.photonPlayer.NickName };
+                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
+                }
+                else if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
+                //killed self but a player shot me recently
+                {
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName, playerWhoLastShotMeHealthManager.player.photonPlayer.NickName };
+                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
+
                     //Give the last player who hit exp
                     AwardLastPlayerWhoShotMe(photonView.ViewID);
                     playerWhoLastShotMeHealthManager = null;
+                }
+                //Commited suicide no one shot me recently
+                else
+                {
+
                 }
             }
             else
@@ -506,6 +539,7 @@ public class PlayerHealthManager : HealthManager
         {
             PlayerWhoDevouredMeController.vCam.Priority = 10;
             KilledByUIPanel.SetActive(false);
+            PlayerWhoDevouredMeController = null;
         }
         debuffTimer.StopRespawnTimer();
         experienceManager.CheckIfNeedToDevolve();
