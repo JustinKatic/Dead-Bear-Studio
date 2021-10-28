@@ -11,7 +11,7 @@ public class VoiceManager : MonoBehaviourPun
     [SerializeField] private Recorder Recorder;
     [SerializeField] private Speaker Speaker;
 
-    private VoiceManager instance;
+    public static VoiceManager instance;
     private PhotonView PV;
     private PhotonVoiceView VV;
     private CharacterInputs CharacterInputs;
@@ -28,7 +28,7 @@ public class VoiceManager : MonoBehaviourPun
             if (PV == null)
             {
                 PV = gameObject.AddComponent<PhotonView>();
-                photonView.ViewID = 999;
+                PV.ViewID = 999;
                 VV = gameObject.AddComponent<PhotonVoiceView>();
                 VV.RecorderInUse = Recorder;
                 VV.SpeakerInUse = Speaker;
@@ -53,11 +53,5 @@ public class VoiceManager : MonoBehaviourPun
     {
         Recorder.TransmitEnabled = false;
         Debug.Log("Stop Talking");
-    }
-
-
-    private void OnDisable()
-    {
-        CharacterInputs.VoiceChat.Disable();
     }
 }
