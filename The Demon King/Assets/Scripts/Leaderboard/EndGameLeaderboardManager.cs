@@ -67,7 +67,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             }
             else if (i == 2)
             {
-                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos2.transform.position, spawnPos2.transform.rotation);
+                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos3.transform.position, spawnPos3.transform.rotation);
             }
 
             i++;
