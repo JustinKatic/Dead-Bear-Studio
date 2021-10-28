@@ -163,12 +163,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             leaderboardDataList.Data.Add(leaderboardData);
         }
 
-        leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
+        List<LeaderboardData> sortedPlayerScoreList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
 
         //populate GUI slots with each players name and time as demon king using sorted list
         int i = 0;
         bool wasThereAKing = false;
-        foreach (LeaderboardData data in leaderboardDataList.Data)
+        foreach (LeaderboardData data in sortedPlayerScoreList)
         {
             if (i <= numberOfPlayerToDisplay)
                 playerLeaderboardPanel[i].gameObject.SetActive(true);
@@ -219,13 +219,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         }
     }
 
-
-    IEnumerator ReturnToLobbyCo()
-    {
-        yield return new WaitForSeconds(5f);
-
-        ChangeScene("Menu");
-    }
 
 
 
@@ -313,7 +306,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             StartMatchTime((double)data[0]);
         }
         else if (photonEvent.Code == PlayerWonEvent)
-            StartCoroutine(ReturnToLobbyCo());
+            ChangeScene("EndGame");
+
     }
 
     private void OnEnable()

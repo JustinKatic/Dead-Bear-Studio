@@ -16,15 +16,21 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
     public GameObject EndgameLeaderboardBackground;
 
+    private void Start()
+    {
+        DisplayEndGameBoard();
+    }
+
     void DisplayEndGameBoard()
     {
+        List<LeaderboardData> sortedPlayerScoreList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
         List<LeaderboardData> sortedPlayerConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.playersConsumed).ToList();
         List<LeaderboardData> sortedMinionConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.MinionsConsumed).ToList();
         List<LeaderboardData> sortedDeathsList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerDeaths).ToList();
 
 
         int i = 0;
-        foreach (LeaderboardData data in leaderboardDataList.Data)
+        foreach (LeaderboardData data in sortedPlayerScoreList)
         {
             playerEndGameLeaderboardPanel[i].DemonKingScoreText.text = data.PlayerScore.ToString();
             playerEndGameLeaderboardPanel[i].PlayerNameText.text = data.PlayerNickName;
@@ -43,6 +49,8 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
             if (leaderboardDataList.Data[i].PlayerDeaths == sortedDeathsList[0].PlayerDeaths)
                 playerEndGameLeaderboardPanel[i].HighestDeathsImg.SetActive(true);
+
+            playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
 
             i++;
         }
