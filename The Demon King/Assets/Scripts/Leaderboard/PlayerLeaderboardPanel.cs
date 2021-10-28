@@ -9,7 +9,7 @@ public class PlayerLeaderboardPanel : MonoBehaviour
     public TextMeshProUGUI PlayerNameText;
     public TextMeshProUGUI DemonKingScoreText;
     public Image FillImg;
-    public FloatSO DemonKingScoreRequiredToWin;
+    public SOMenuData roomData;
     public Image CurrentEvolutionImg;
 
     private void Awake()
@@ -19,6 +19,6 @@ public class PlayerLeaderboardPanel : MonoBehaviour
 
     public void UpdateSliderValue(int NewValue)
     {
-        FillImg.fillAmount = NewValue / DemonKingScoreRequiredToWin.value;
+        FillImg.fillAmount = NewValue / (float)roomData.PointsToWin;
     }
 }
