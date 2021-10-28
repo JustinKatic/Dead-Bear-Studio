@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-
 public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
@@ -94,5 +93,10 @@ public class GameManager : MonoBehaviourPun
             playerObj.GetComponent<PlayerController>().photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.z);
         }
         LoadingScreen.SetActive(false);
+    }
+
+    void OnGameStart()
+    {
+        
     }
 }
