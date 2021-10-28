@@ -169,23 +169,15 @@ public class PlayerController : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
-            photonView.RPC("SetId", RpcTarget.All, player.ActorNumber);
             _cinemachineTargetYaw = spawnY;
             _cinemachineTargetPitch = spawnZ;
         }
-
         //Set photon player
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
+        id = photonPlayer.ActorNumber;
     }
 
-    [PunRPC]
-    void SetId(int ID)
-    {
-        id = ID;
-        //GameManager.instance.players[id] = this;
-        playerHealth.PlayerId = ID;
-    }
 
     public void PlayRectAnim()
     {
