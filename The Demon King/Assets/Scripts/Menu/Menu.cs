@@ -206,12 +206,13 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SpectatorMode.Add("IsSpectator", spectatorMode);
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
     }
-
-
-
+    
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            return;
+        
         if (propertiesThatChanged.ContainsKey(roomData.GameTimeLimitString))
         {
             roomData.GameTimeLimit = (float)propertiesThatChanged[roomData.GameTimeLimitString];
@@ -234,6 +235,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnPointsToWinChanged(bool IncreasePoints)
     {
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            return;
+        
         if (IncreasePoints)
             roomData.PointsToWin += 10;
         else
@@ -246,6 +250,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnGameTimeChanged(bool InccreaseTime)
     {
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            return;
         if (InccreaseTime)
             roomData.GameTimeLimit += 60;
         else
@@ -257,6 +263,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void UpdateRoomProperties()
     {
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            return;
         PhotonNetwork.CurrentRoom.SetCustomProperties(new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin } });
     }
 
@@ -337,6 +345,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnSceneChangeRightButton()
     {
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            return;
+        
         if (roomData.CurrentSceneIndex >= scenes.Count - 1)
             roomData.CurrentSceneIndex = 0;
         else
@@ -346,6 +357,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
     public void OnSceneChangeLeftButton()
     {
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InRoom)
+            return;
+        
         if (roomData.CurrentSceneIndex <= 0)
             roomData.CurrentSceneIndex = scenes.Count - 1;
         else
