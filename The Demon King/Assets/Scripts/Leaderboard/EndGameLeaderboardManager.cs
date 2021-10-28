@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
     public LeaderboardDataList leaderboardDataList;
@@ -15,6 +14,12 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
     public List<EndGameLeaderboardPanel> playerEndGameLeaderboardPanel = new List<EndGameLeaderboardPanel>();
 
     public GameObject EndgameLeaderboardBackground;
+
+    [SerializeField] private List<GameObject> playerModels;
+
+    [SerializeField] private GameObject spawnPos1;
+    [SerializeField] private GameObject spawnPos2;
+    [SerializeField] private GameObject spawnPos3;
 
     private void Start()
     {
@@ -52,7 +57,31 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
             playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
 
+            if (i == 0)
+            {
+                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos1.transform.position, spawnPos1.transform.rotation);
+            }
+            else if (i == 1)
+            {
+                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos2.transform.position, spawnPos2.transform.rotation);
+            }
+            else if (i == 2)
+            {
+                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos2.transform.position, spawnPos2.transform.rotation);
+            }
+
             i++;
         }
+    }
+
+    GameObject GetPlayerModel(string modelName)
+    {
+        for (int i = 0; i < playerModels.Count; i++)
+        {
+            if (playerModels[i].name == modelName)
+                return playerModels[i];
+        }
+        return null;
+
     }
 }
