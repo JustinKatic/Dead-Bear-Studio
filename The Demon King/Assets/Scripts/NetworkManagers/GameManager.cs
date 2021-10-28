@@ -4,8 +4,8 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
-using System.Collections.Generic;
-using Photon.Realtime;
+using TMPro;
+
 
 
 public class GameManager : MonoBehaviourPun
@@ -22,9 +22,11 @@ public class GameManager : MonoBehaviourPun
     private int mySpawnIndex;
     public GameObject LoadingScreen;
     public Slider loadingBar;
-    private List<PlayerController> playerObjList = new List<PlayerController>();
-    private List<SpectatorCamera> spectatorObjList = new List<SpectatorCamera>();
-    
+    public PlayerControllerRuntimeSet playerControllerRuntimeSet;
+    public TextMeshProUGUI countDownText;
+
+
+
     void Awake()
     {
         if (!PhotonNetwork.IsConnected)
@@ -69,16 +71,6 @@ public class GameManager : MonoBehaviourPun
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
             SpawnPlayers();
-            
-            if (playerObjList != null)
-            {
-                foreach (var playerController in playerObjList)
-                {
-                    playerController.DisableMovement();
-                }
-            }
-            
-            StartCoroutine(WaitForGameStart());
         }
     }
 
@@ -86,7 +78,7 @@ public class GameManager : MonoBehaviourPun
     {
         photonView.RPC("SpawnPlayer_RPC", RpcTarget.All);
     }
-    
+
     [PunRPC]
     void SpawnPlayer_RPC()
     {
@@ -95,39 +87,34 @@ public class GameManager : MonoBehaviourPun
             //LOAD SPECTAOR PREFAB
             GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints.GetItemIndex(mySpawnIndex).transform.position, spawnPoints.GetItemIndex(mySpawnIndex).transform.rotation);
             SpectatorCamera spectatorCamera = spectatorPrefab.GetComponent<SpectatorCamera>();
-            spectatorObjList.Add(spectatorCamera);
-            
-            spectatorCamera.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
 
+            spectatorCamera.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
         }
         else
         {
             GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints.GetItemIndex(mySpawnIndex).transform.position, spawnPoints.GetItemIndex(mySpawnIndex).transform.rotation);
 
             PlayerController playerController = playerObj.GetComponent<PlayerController>();
-            playerObjList.Add(playerController);
             // initialize the player for all other players
             playerController.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.z);
+            playerController.DisableMovement();
+            StartCoroutine(CountDown());
         }
         LoadingScreen.SetActive(false);
     }
 
-    void StartGame()
+    IEnumerator CountDown()
     {
-        if (playerObjList != null)
+        countDownText.gameObject.SetActive(true);
+        while (waitToStartGameTimer >= 1)
         {
-            foreach (var playerController in playerObjList)
-            {
-                playerController.EnableMovement();
-            }
+            countDownText.text = waitToStartGameTimer.ToString();
+            yield return new WaitForSeconds(1);
+            waitToStartGameTimer--;
         }
+        countDownText.text = "FIGHT!";
+        playerControllerRuntimeSet.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).EnableMovement();
+        yield return new WaitForSeconds(1);
+        countDownText.gameObject.SetActive(false);
     }
-
-    IEnumerator WaitForGameStart()
-    {
-        yield return new WaitForSeconds(waitToStartGameTimer);
-        
-        StartGame();
-    }
-   
 }
