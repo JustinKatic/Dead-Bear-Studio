@@ -94,4 +94,9 @@ public class GameManager : MonoBehaviourPun
         }
         LoadingScreen.SetActive(false);
     }
+
+    void OnGameStart()
+    {
+        
+    }
 }
