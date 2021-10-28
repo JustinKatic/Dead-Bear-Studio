@@ -10,6 +10,7 @@ using ExitGames.Client.Photon;
 public class PlayerHealthManager : HealthManager
 {
     private const byte DisplayPlayerKilledSomeoneMessage = 4;
+    private const byte DisplayPlayerKilledSelfMessage = 5;
 
     [Header("Player Hud UI")]
     [SerializeField] protected Canvas MyHUDCanvas;
@@ -454,7 +455,10 @@ public class PlayerHealthManager : HealthManager
                 //Commited suicide no one shot me recently
                 else
                 {
-
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName};
+                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSelfMessage, data, raiseEventOptions, sendOptions);
                 }
             }
             else

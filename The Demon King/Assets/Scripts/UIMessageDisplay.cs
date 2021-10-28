@@ -68,7 +68,8 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
         }
         else if (photonEvent.Code == DisplayPlayerKilledSelfMessage)
         {
-
+            object[] data = (object[])photonEvent.CustomData;
+            DisplayMessage(data[0].ToString() + " Suicided ", MessageType.Death);
         }
         else if (photonEvent.Code == DisplayPlayerLeftLobby)
         {
