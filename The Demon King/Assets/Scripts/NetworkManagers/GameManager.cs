@@ -7,7 +7,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-
 public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
