@@ -8,7 +8,11 @@ public class SOMenuData : ScriptableObject
 {
     public int baseMaxPlayers = 10;
     public string baseRoomName = "";
+    public float minGameTimeLimit = 0;
+    public float maxGameTimeLimit = 1200;
     public float baseGameTimeLimit = 900;
+    public int minPointsToWin = 0;
+    public int maxPointsToWin = 400;
     public int basePointsToWin = 200;
     public int baseCurrentSceneIndex = 0;
 

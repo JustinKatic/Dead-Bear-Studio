@@ -21,8 +21,8 @@ public class HealthManager : MonoBehaviourPun
 
     [Header("Evolution Stats")]
     [HideInInspector] public float MyExperienceWorth;
-    public int myScoreWorth;
-    public int myDemonKingScoreWorth;
+    [HideInInspector] public int myScoreWorth;
+    [HideInInspector] public int myDemonKingScoreWorth;
 
 
     [HideInInspector] public MinionType MyMinionType;
