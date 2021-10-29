@@ -457,7 +457,7 @@ public class PlayerHealthManager : HealthManager
                 {
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName};
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
                     PhotonNetwork.RaiseEvent(DisplayPlayerKilledSelfMessage, data, raiseEventOptions, sendOptions);
                 }
             }
@@ -568,21 +568,23 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region HealthBar
-    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount)
+    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount, int demonKingScoreWorth)
     {
-        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth, timeTakenToBeDevoured, healthRegenAmount);
+        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth, timeTakenToBeDevoured, healthRegenAmount, demonKingScoreWorth);
     }
 
     [PunRPC]
-    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount)
+    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount, int demonKingScoreWorth)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
 
         MyExperienceWorth = expWorth;
         myScoreWorth = scoreWorth;
+        myDemonKingScoreWorth = demonKingScoreWorth;
         this.healthRegenAmount = healthRegenAmount;
         TimeTakenToBeDevoured = timeTakenToBeDevoured;
+
 
         //Run following if not local player
         if (!photonView.IsMine)
