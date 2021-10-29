@@ -59,16 +59,14 @@ public class Evolutions : MonoBehaviourPun
     public MinionType MyMinionType;
     public int MaxHealth;
     public float ExpWorth;
-    public float DemonKingExpWorth;
     public int ScoreWorth;
+    public int DemonKingScoreWorth;
     public int healthRegenAmount;
     public float TimeTakenToBeDevoured;
     public int AmountToHealAfterStunned;
     public int AmountToHealWhenEvolveing;
     public Material myMatInstance;
     public Sprite MyHealthBarDisplaySprite;
-
-
 
 
     [FMODUnity.EventRef]
