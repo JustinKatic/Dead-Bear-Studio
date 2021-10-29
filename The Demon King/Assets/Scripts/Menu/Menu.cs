@@ -15,7 +15,8 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
     [SerializeField] private SOMenuData roomData;
-
+    [SerializeField] private ChatManager chatManager;
+    
     [SerializeField] private List<GameObject> screens;
     [SerializeField] private GameObject ActiveMenu;
 
