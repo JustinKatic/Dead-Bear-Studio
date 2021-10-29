@@ -120,7 +120,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         // in this demo, we simply send a message into each channel. This is NOT a must have!
         foreach (string channel in channels)
         {
-            chatClient.PublishMessage(channel, joinRoomMessage); // you don't HAVE to send a msg on join but you could.
+            chatClient.PublishMessage(channel,  joinRoomMessage); // you don't HAVE to send a msg on join but you could.
         }
 
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);

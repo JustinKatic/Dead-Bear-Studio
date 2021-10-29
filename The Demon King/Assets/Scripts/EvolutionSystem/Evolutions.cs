@@ -59,6 +59,7 @@ public class Evolutions : MonoBehaviourPun
     public MinionType MyMinionType;
     public int MaxHealth;
     public float ExpWorth;
+    public float DemonKingExpWorth;
     public int ScoreWorth;
     public int healthRegenAmount;
     public float TimeTakenToBeDevoured;
