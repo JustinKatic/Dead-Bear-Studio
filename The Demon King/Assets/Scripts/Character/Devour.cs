@@ -293,9 +293,7 @@ public class Devour : MonoBehaviourPun
 
             if (demonKingEvolution.AmITheDemonKing)
             {
-                int value = targetBeingDevourd.myScoreWorth + demonKingPointExtraPoints;
-                Debug.Log(value);
-                leaderboardManager.UpdatePlayerScore(value);
+                leaderboardManager.UpdatePlayerScore(targetBeingDevourd.myDemonKingScoreWorth);
             }
             else
             {

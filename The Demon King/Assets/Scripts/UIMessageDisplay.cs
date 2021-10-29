@@ -25,7 +25,7 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
     public Color normalColor;                               // normal message text color
 
     public Transform messagePanel;                          // the message area
-    public TextMeshProUGUI messageTextPrefab;				// the message text prefab that gets spawned in the message area
+    public GameObject messageTextPrefab;				// the message text prefab that gets spawned in the message area
 
     public void DisplayMessage(string message, MessageType typeOfMessage)
     {
@@ -51,9 +51,10 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
         }
 
         // the message text itself:
-        TextMeshProUGUI m = Instantiate(messageTextPrefab, messagePanel);
-        m.color = mColor;
-        m.text = message;
+        GameObject m = Instantiate(messageTextPrefab, messagePanel);
+        TextMeshProUGUI t = m.GetComponentInChildren<TextMeshProUGUI>();
+        t.color = mColor;
+        t.text = message;
     }
 
 

@@ -67,13 +67,13 @@ public class PlayerController : MonoBehaviourPun
     [HideInInspector] public Animator currentAnim = null;
     [HideInInspector] public CinemachineVirtualCamera vCam;
     [HideInInspector] public CharacterController cc;
-    private PlayerHealthManager playerHealth;
 
     [SerializeField] private GameObject reticle;
     [SerializeField] private Animator reticleAnimator;
 
     [HideInInspector] public bool onLaunchPad = false;
-
+    [HideInInspector] public bool allowedToEnableMovement = true;
+    [HideInInspector] public bool inMenus = false;
     [HideInInspector] public bool cameraRotation = true;
     private Vector3 hitNormal;
     private bool onSlope;
@@ -108,8 +108,6 @@ public class PlayerController : MonoBehaviourPun
     private void Awake()
     {
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();
-        playerHealth = GetComponent<PlayerHealthManager>();
-
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -158,7 +156,6 @@ public class PlayerController : MonoBehaviourPun
                     var inputAction = (InputAction)obj;
                     var lastControl = inputAction.activeControl;
                     CurrentInputDevice = lastControl.device;
-                    // Debug.Log($"device: {CurrentInputDevice.displayName}");
                 }
             };
         }
@@ -469,10 +466,14 @@ public class PlayerController : MonoBehaviourPun
     public void EnableMovement()
     {
         //Run following if local player
-        if (photonView.IsMine)
+        if (photonView.IsMine )
         {
-            //Enable player inputs, CC and set speeds back to starting speeds.
-            CharacterInputs.Player.Enable();
+            if (!inMenus)
+            {
+                //Enable player inputs, CC and set speeds back to starting speeds.
+                CharacterInputs.Player.Enable();
+            }
+            allowedToEnableMovement = true;
         }
     }
 
@@ -483,6 +484,7 @@ public class PlayerController : MonoBehaviourPun
         {
             //Disable player inputs, CC and set speeds to 0 to prevent movement.
             CharacterInputs.Player.Disable();
+            allowedToEnableMovement = false;
         }
     }
 

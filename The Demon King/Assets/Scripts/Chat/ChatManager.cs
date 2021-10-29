@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using ExitGames.Client.Photon;
 using Photon.Chat;
 using Photon.Chat.Demo;
@@ -24,14 +25,14 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     public TMP_Text CurrentChannelText;     // set in inspector
     public int HistoryLengthToFetch; // set in inspector. Up to a certain degree, previously sent messages can be fetched for context
 
-    [SerializeField] private Color32 textColorJoinedRoom;
     private string joinRoomMessage = "Has Joined The Chat";
     private string leaveRoomMessage = "Has Left";
 
 
-    [SerializeField] private Color32 textColorUserName;
     [HideInInspector] public string userID;
 
+    [SerializeField] private Color32 textColorUserName;
+    [SerializeField] private Color32 textColorJoinedRoom;
     [SerializeField] private Color32 textColorMessage;
 
 
@@ -59,7 +60,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     private void OnDisable()
     {
         chatClient.Unsubscribe(new string[] { currentChatRoom });
-
     }
     public void DebugReturn(DebugLevel level, string message)
     {
@@ -120,7 +120,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         // in this demo, we simply send a message into each channel. This is NOT a must have!
         foreach (string channel in channels)
         {
-            chatClient.PublishMessage(channel, joinRoomMessage); // you don't HAVE to send a msg on join but you could.
+            chatClient.PublishMessage(channel,  joinRoomMessage); // you don't HAVE to send a msg on join but you could.
         }
 
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
@@ -151,7 +151,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     /// <summary>To avoid that the Editor becomes unresponsive, disconnect all Photon connections in OnDestroy.</summary>
     public void OnDestroy()
     {
-
         if (this.chatClient != null)
         {
             this.chatClient.Disconnect();
@@ -199,10 +198,20 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         }
 
         this.currentChatRoom = channelName;
-        this.CurrentChannelText.text = SubscribedChannel.ToStringMessages();
+        this.CurrentChannelText.text = ToStringMessages(SubscribedChannel);
         Debug.Log("ShowChannel: " + this.currentChatRoom);
-
     }
+
+    public string ToStringMessages(ChatChannel currentChannel)
+    {
+        StringBuilder txt = new StringBuilder();
+        for (int i = 0; i < currentChannel.Messages.Count; i++)
+        {
+            txt.AppendLine(string.Format("{0}: {1}", currentChannel.Senders[i], currentChannel.Messages[i]));
+        }
+        return txt.ToString();
+    }
+
     public void Connect()
     {
         chatClient = new ChatClient(this);
@@ -222,7 +231,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         currentChatRoom = roomName;
         chatNewComponent.Connect();
         this.enabled = true;
-
     }
 
 }
