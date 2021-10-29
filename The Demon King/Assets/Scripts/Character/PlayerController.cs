@@ -173,6 +173,7 @@ public class PlayerController : MonoBehaviourPun
         photonPlayer = player;
         //Sets player id inside of gameManager = to this
         id = photonPlayer.ActorNumber;
+        GetComponent<PlayerHealthManager>().PlayerId = id;
     }
 
 
@@ -466,7 +467,7 @@ public class PlayerController : MonoBehaviourPun
     public void EnableMovement()
     {
         //Run following if local player
-        if (photonView.IsMine )
+        if (photonView.IsMine)
         {
             if (!inMenus)
             {

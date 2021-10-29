@@ -1,12 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 
 public class DemonKingEvolution : MonoBehaviourPun
 {
     [HideInInspector] public bool AmITheDemonKing = false;
+    private const byte DisplayPlayerBecomingKingMessage = 7;
+
 
     public float timeSpentAsDemonKing = 0;
 
@@ -40,6 +44,11 @@ public class DemonKingEvolution : MonoBehaviourPun
     {
         if (photonView.IsMine)
         {
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            SendOptions sendOptions = new SendOptions { Reliability = true };
+            object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
+            PhotonNetwork.RaiseEvent(DisplayPlayerBecomingKingMessage, data, raiseEventOptions, sendOptions);
+
             AmITheDemonKing = true;
             AnnounceDemonKing();
             evolutionManager.ActivateDemonKingEvolution();
