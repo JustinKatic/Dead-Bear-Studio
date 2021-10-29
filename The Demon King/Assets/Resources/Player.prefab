@@ -10058,8 +10058,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   MaxHealth: 55
   ExpWorth: 4
-  ScoreWorth: 10
-  healthRegenAmount: 4
+  ScoreWorth: 20
+  DemonKingScoreWorth: 0
+  healthRegenAmount: 5
   TimeTakenToBeDevoured: 3
   AmountToHealAfterStunned: 15
   AmountToHealWhenEvolveing: 20
@@ -13733,13 +13734,22 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.51598173
-        inSlope: 2.2800086
-        outSlope: 2.2800086
+        value: 0.78555006
+        inSlope: 1.872714
+        outSlope: 1.872714
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.08812943
+        outWeight: 0.8884114
+      - serializedVersion: 3
+        time: 0.26269647
+        value: 1
+        inSlope: 0.030977866
+        outSlope: 0.030977866
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.71810097
         value: 0.8439756
@@ -13793,7 +13803,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -13838,7 +13848,8 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   MaxHealth: 40
   ExpWorth: 3
-  ScoreWorth: 5
+  ScoreWorth: 12
+  DemonKingScoreWorth: 18
   healthRegenAmount: 3
   TimeTakenToBeDevoured: 2.5
   AmountToHealAfterStunned: 15
@@ -17320,8 +17331,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   MaxHealth: 55
   ExpWorth: 4
-  ScoreWorth: 10
-  healthRegenAmount: 4
+  ScoreWorth: 20
+  DemonKingScoreWorth: 0
+  healthRegenAmount: 5
   TimeTakenToBeDevoured: 3
   AmountToHealAfterStunned: 15
   AmountToHealWhenEvolveing: 20
@@ -17829,7 +17841,8 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   MaxHealth: 40
   ExpWorth: 3
-  ScoreWorth: 5
+  ScoreWorth: 12
+  DemonKingScoreWorth: 18
   healthRegenAmount: 3
   TimeTakenToBeDevoured: 2.5
   AmountToHealAfterStunned: 15
@@ -18517,6 +18530,8 @@ MonoBehaviour:
   reticle: {fileID: 8599896439959258330}
   reticleAnimator: {fileID: 3759952805845827693}
   onLaunchPad: 0
+  allowedToEnableMovement: 1
+  inMenus: 0
   cameraRotation: 1
   coyoteTime: 0.15
   demonKingInGameAnalytics: {fileID: 11400000, guid: 41cc9dbd81520cc4d90da91bafc187ef, type: 2}
@@ -18623,6 +18638,7 @@ MonoBehaviour:
   TimeTakenToBeDevoured: 3
   MyExperienceWorth: 2
   myScoreWorth: 5
+  myDemonKingScoreWorth: 0
   MyMinionType: {fileID: 0}
   healthBarPrefab: {fileID: 4320337310133678998, guid: c80f99395e78a4b4fb29543589e7c83a, type: 3}
   overheadHealthBar: {fileID: 7366656411520037111}
@@ -18658,6 +18674,7 @@ MonoBehaviour:
   healthRegenTimerSlider: {fileID: 2550875742950130201}
   TimeToLerpOutOfDmgEffect: 0.5
   spawnPoints: {fileID: 11400000, guid: 4619ed0394d4b764eac9eb8b9b08a486, type: 2}
+  TimeToTrackLastPlayerWhoShotMe: 10
 --- !u!114 &2184246549117103819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20179,8 +20196,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   MaxHealth: 20
   ExpWorth: 1
-  ScoreWorth: 2
-  healthRegenAmount: 2
+  ScoreWorth: 8
+  DemonKingScoreWorth: 12
+  healthRegenAmount: 1
   TimeTakenToBeDevoured: 1
   AmountToHealAfterStunned: 10
   AmountToHealWhenEvolveing: 20
@@ -20305,7 +20323,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 8}
+  - {x: 0, y: 0, z: 7.31}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.5
@@ -20314,12 +20332,21 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
+        value: 0.78555006
+        inSlope: 1.872714
+        outSlope: 1.872714
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
+        outWeight: 0.8884114
+      - serializedVersion: 3
+        time: 0.26269647
+        value: 1
+        inSlope: 0.030977866
+        outSlope: 0.030977866
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
         outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.71810097
@@ -20374,7 +20401,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -20460,8 +20487,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   MaxHealth: 30
   ExpWorth: 2
-  ScoreWorth: 3
-  healthRegenAmount: 3
+  ScoreWorth: 10
+  DemonKingScoreWorth: 15
+  healthRegenAmount: 2
   TimeTakenToBeDevoured: 2
   AmountToHealAfterStunned: 15
   AmountToHealWhenEvolveing: 20
@@ -20560,7 +20588,8 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   MaxHealth: 40
   ExpWorth: 3
-  ScoreWorth: 5
+  ScoreWorth: 12
+  DemonKingScoreWorth: 18
   healthRegenAmount: 3
   TimeTakenToBeDevoured: 2.5
   AmountToHealAfterStunned: 15
@@ -21100,8 +21129,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   MaxHealth: 30
   ExpWorth: 2
-  ScoreWorth: 3
-  healthRegenAmount: 3
+  ScoreWorth: 10
+  DemonKingScoreWorth: 15
+  healthRegenAmount: 2
   TimeTakenToBeDevoured: 2
   AmountToHealAfterStunned: 15
   AmountToHealWhenEvolveing: 20
@@ -21558,8 +21588,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 35d12524cafe0ff49aa42173bcdf0149, type: 2}
   MaxHealth: 20
   ExpWorth: 1
-  ScoreWorth: 2
-  healthRegenAmount: 2
+  ScoreWorth: 8
+  DemonKingScoreWorth: 12
+  healthRegenAmount: 1
   TimeTakenToBeDevoured: 1
   AmountToHealAfterStunned: 10
   AmountToHealWhenEvolveing: 20
@@ -21871,8 +21902,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 8de7b1867bcc1d249bc3d952929aa110, type: 2}
   MaxHealth: 30
   ExpWorth: 2
-  ScoreWorth: 3
-  healthRegenAmount: 3
+  ScoreWorth: 10
+  DemonKingScoreWorth: 15
+  healthRegenAmount: 2
   TimeTakenToBeDevoured: 2
   AmountToHealAfterStunned: 15
   AmountToHealWhenEvolveing: 20
@@ -22260,13 +22292,22 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.51598173
-        inSlope: 2.2800086
-        outSlope: 2.2800086
+        value: 0.78555006
+        inSlope: 1.872714
+        outSlope: 1.872714
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.08812943
+        outWeight: 0.8884114
+      - serializedVersion: 3
+        time: 0.26269647
+        value: 1
+        inSlope: 0.030977866
+        outSlope: 0.030977866
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 1
+        outWeight: 0.33333334
       - serializedVersion: 3
         time: 0.71810097
         value: 0.8439756
@@ -22320,7 +22361,7 @@ LineRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     shadowBias: 0.5
     generateLightingData: 0
   m_UseWorldSpace: 1
@@ -22470,8 +22511,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   MaxHealth: 55
   ExpWorth: 4
-  ScoreWorth: 10
-  healthRegenAmount: 4
+  ScoreWorth: 20
+  DemonKingScoreWorth: 0
+  healthRegenAmount: 5
   TimeTakenToBeDevoured: 3
   AmountToHealAfterStunned: 15
   AmountToHealWhenEvolveing: 20
@@ -26440,8 +26482,9 @@ MonoBehaviour:
   MyMinionType: {fileID: 11400000, guid: 3c38542f212baa24cad25cc1596770d8, type: 2}
   MaxHealth: 20
   ExpWorth: 1
-  ScoreWorth: 2
-  healthRegenAmount: 2
+  ScoreWorth: 8
+  DemonKingScoreWorth: 12
+  healthRegenAmount: 1
   TimeTakenToBeDevoured: 1
   AmountToHealAfterStunned: 10
   AmountToHealWhenEvolveing: 20

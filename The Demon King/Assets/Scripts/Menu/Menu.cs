@@ -71,8 +71,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // connect to the master server
         PhotonNetwork.ConnectUsingSettings();
 
-        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
         lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
         CurrentSceneDisplayImg.sprite = scenes[roomData.CurrentSceneIndex].SceneDisplayImage;
@@ -152,9 +152,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnPlayerNameValueChanged(TMP_InputField playerNameInput)
     {
         PhotonNetwork.NickName = playerNameInput.text;
+        if (PhotonNetwork.InLobby)
+        {
+            createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+            findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
 
-        createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
-        findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+        }
         PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
 
@@ -194,11 +197,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CreateRoom(roomNameInput.text, options);
     }
 
-    // LOBBY SCREEN
-
-    // called when we join a room
-    // set the screen to be the Lobby and update the UI for all players
-
     public void SetSpectatorMode()
     {
         spectatorMode = !spectatorMode;
@@ -206,17 +204,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SpectatorMode.Add("IsSpectator", spectatorMode);
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
     }
-
-
-
+    
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
         if (propertiesThatChanged.ContainsKey(roomData.GameTimeLimitString))
         {
             roomData.GameTimeLimit = (float)propertiesThatChanged[roomData.GameTimeLimitString];
-            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
-            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
         }
         if (propertiesThatChanged.ContainsKey(roomData.PointsToWinString))
         {
@@ -234,11 +230,18 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnPointsToWinChanged(bool IncreasePoints)
     {
-        if (IncreasePoints)
-            roomData.PointsToWin += 10;
-        else
-            roomData.PointsToWin -= 10;
 
+        if (IncreasePoints)
+        {
+            if (roomData.PointsToWin < roomData.maxPointsToWin)
+                roomData.PointsToWin += 10;
+        }
+        else
+        {
+            if (roomData.PointsToWin > roomData.minPointsToWin)
+                roomData.PointsToWin -= 10;
+        }
+        
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
         lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
     }
@@ -247,12 +250,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void OnGameTimeChanged(bool InccreaseTime)
     {
         if (InccreaseTime)
-            roomData.GameTimeLimit += 60;
+        {
+            if (roomData.GameTimeLimit < roomData.maxGameTimeLimit)
+                roomData.GameTimeLimit += 60;
+        }
         else
-            roomData.GameTimeLimit -= 60;
-
-        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        {
+            if (roomData.GameTimeLimit > roomData.minGameTimeLimit)
+                roomData.GameTimeLimit -= 60;
+        }
+        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
     }
 
     public void UpdateRoomProperties()
@@ -283,10 +291,16 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     }
 
+    public void OnJoinedLobby()
+    {
+        createRoomButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
+        findRoomButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
+    }
+
     void UpdateRoomHashsOnJoinInvoke()
     {
-        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
-        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit).ToString();
+        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
 
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
         lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
@@ -337,6 +351,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnSceneChangeRightButton()
     {
+
         if (roomData.CurrentSceneIndex >= scenes.Count - 1)
             roomData.CurrentSceneIndex = 0;
         else
@@ -346,6 +361,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
     public void OnSceneChangeLeftButton()
     {
+
         if (roomData.CurrentSceneIndex <= 0)
             roomData.CurrentSceneIndex = scenes.Count - 1;
         else
@@ -497,8 +513,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         return generatedString.ToString();
     }
-
-
+    
     public string FormatTime(float time)
     {
         int minutes = (int)time / 60;
