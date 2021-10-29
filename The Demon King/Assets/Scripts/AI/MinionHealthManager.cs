@@ -28,6 +28,8 @@ public class MinionHealthManager : HealthManager
 
     [SerializeField] float minionExpWorth;
     [SerializeField] int minionScoreWorth;
+    [SerializeField] int DemonKingScoreWorth;
+
 
     [SerializeField] Material myMatInstance;
 
@@ -45,6 +47,7 @@ public class MinionHealthManager : HealthManager
 
         MyExperienceWorth = minionExpWorth;
         myScoreWorth = minionScoreWorth;
+        myDemonKingScoreWorth = DemonKingScoreWorth;
 
         col = GetComponent<Collider>();
         hudCanvas = GetComponentInChildren<Canvas>();

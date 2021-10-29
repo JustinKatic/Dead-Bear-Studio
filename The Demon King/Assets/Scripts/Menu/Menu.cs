@@ -233,12 +233,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         if (IncreasePoints)
         {
-            if (roomData.PointsToWin < 400)
+            if (roomData.PointsToWin < roomData.maxPointsToWin)
                 roomData.PointsToWin += 10;
         }
         else
         {
-            if (roomData.PointsToWin > 10)
+            if (roomData.PointsToWin > roomData.minPointsToWin)
                 roomData.PointsToWin -= 10;
         }
         
@@ -251,12 +251,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         if (InccreaseTime)
         {
-            if (roomData.GameTimeLimit < 1200)
+            if (roomData.GameTimeLimit < roomData.maxGameTimeLimit)
                 roomData.GameTimeLimit += 60;
         }
         else
         {
-            if (roomData.GameTimeLimit > 60)
+            if (roomData.GameTimeLimit > roomData.minGameTimeLimit)
                 roomData.GameTimeLimit -= 60;
         }
         createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);

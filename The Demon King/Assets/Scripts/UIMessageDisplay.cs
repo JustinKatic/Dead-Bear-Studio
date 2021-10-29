@@ -12,17 +12,17 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
     private const byte DisplayPlayerKilledSomeoneMessage = 4;
     private const byte DisplayPlayerKilledSelfMessage = 5;
     private const byte DisplayPlayerLeftLobby = 6;
-    private const byte DisplayNormalMessage = 7;
+    private const byte DisplayPlayerBecomingKingMessage = 7;
 
 
-    public enum MessageType { Death, Kill, LeftTheGame, Normal }
+    public enum MessageType { Death, Kill, LeftTheGame, BecomeKing }
 
 
     [Header("Message colors:")]
     public Color deathColor;                                // death message text color
     public Color killColor;                                 // kill message text color
     public Color playerLeftTheGameColor;                    // player disconnect message text color
-    public Color normalColor;                               // normal message text color
+    public Color PlayerBecomesKingColor;                               // normal message text color
 
     public Transform messagePanel;                          // the message area
     public GameObject messageTextPrefab;				// the message text prefab that gets spawned in the message area
@@ -45,8 +45,8 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
             case MessageType.LeftTheGame:
                 mColor = playerLeftTheGameColor;
                 break;
-            case MessageType.Normal:
-                mColor = normalColor;
+            case MessageType.BecomeKing:
+                mColor = PlayerBecomesKingColor;
                 break;
         }
 
@@ -77,9 +77,10 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
             object[] data = (object[])photonEvent.CustomData;
             DisplayMessage(data[0].ToString() + " Left the room ", MessageType.LeftTheGame);
         }
-        else if (photonEvent.Code == DisplayNormalMessage)
+        else if (photonEvent.Code == DisplayPlayerBecomingKingMessage)
         {
-
+            object[] data = (object[])photonEvent.CustomData;
+            DisplayMessage(data[0].ToString() + " Has become King ", MessageType.LeftTheGame);
         }
     }
 
