@@ -437,7 +437,7 @@ public class PlayerHealthManager : HealthManager
                 {
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName, PlayerWhoDevouredMeController.photonPlayer.NickName };
+                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
                     PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
                 }
                 else if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
@@ -445,7 +445,7 @@ public class PlayerHealthManager : HealthManager
                 {
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName, playerWhoLastShotMeHealthManager.player.photonPlayer.NickName };
+                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
                     PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
 
                     //Give the last player who hit exp
