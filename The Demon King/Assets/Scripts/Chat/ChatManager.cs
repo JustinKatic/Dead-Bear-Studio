@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -27,7 +28,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     private string joinRoomMessage = "Has Joined The Chat";
     private string leaveRoomMessage = "Has Left";
-
+    private string message;
 
     [HideInInspector] public string userID;
 
@@ -85,7 +86,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnConnected()
     {
-        Debug.Log(userID + "Connection Successful");
         this.chatClient.SetOnlineStatus(ChatUserStatus.Online); // You can set your online state (without a mesage).
         chatClient.Subscribe(currentChatRoom);
 
@@ -125,7 +125,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
 
-        Debug.Log("OnSubscribed: " + string.Join(", ", channels));
     }
 
     public void OnUnsubscribed(string[] channels)
@@ -198,18 +197,23 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         }
 
         this.currentChatRoom = channelName;
-        this.CurrentChannelText.text = ToStringMessages(SubscribedChannel);
-        Debug.Log("ShowChannel: " + this.currentChatRoom);
+        ToStringMessages(SubscribedChannel);
     }
 
-    public string ToStringMessages(ChatChannel currentChannel)
+    public void ToStringMessages(ChatChannel currentChannel)
     {
-        StringBuilder txt = new StringBuilder();
+        CurrentChannelText.text = null;
         for (int i = 0; i < currentChannel.Messages.Count; i++)
         {
-            txt.AppendLine(string.Format("{0}: {1}", currentChannel.Senders[i], currentChannel.Messages[i]));
+            //CurrentChannelText.color = new Color(1.0f, 0f, 0f, 1.0f);
+            name = currentChannel.Senders[i];
+            CurrentChannelText.text += "<color=red>" + name + " : ";
+
+            //CurrentChannelText.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            message = "<color=white>" + currentChannel.Messages[i].ToString();
+            CurrentChannelText.text += message;
+            CurrentChannelText.text += Environment.NewLine;
         }
-        return txt.ToString();
     }
 
     public void Connect()
@@ -220,7 +224,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         chatClient.AuthValues = new AuthenticationValues(this.userID);
         chatClient.ConnectUsingSettings(this.chatAppSettings);
 
-        Debug.Log("Connecting as: " + this.userID);
     }
     public void StartChat(string roomName, string playerName)
     {
