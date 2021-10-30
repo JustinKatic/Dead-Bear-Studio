@@ -43,16 +43,16 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             playerEndGameLeaderboardPanel[i].PlayersConsumedText.text = data.playersConsumed.ToString();
             playerEndGameLeaderboardPanel[i].MinionsConsumedText.text = data.MinionsConsumed.ToString();
 
-            if (leaderboardDataList.Data[i].PlayerScore == leaderboardDataList.Data[0].PlayerScore)
+            if (sortedPlayerScoreList[i].PlayerScore == leaderboardDataList.Data[0].PlayerScore)
                 playerEndGameLeaderboardPanel[i].HighestScoreImg.SetActive(true);
 
-            if (leaderboardDataList.Data[i].playersConsumed == sortedPlayerConsumesList[0].playersConsumed)
+            if (sortedPlayerScoreList[i].playersConsumed == sortedPlayerConsumesList[0].playersConsumed)
                 playerEndGameLeaderboardPanel[i].HighestPlayerConsumesImg.SetActive(true);
 
-            if (leaderboardDataList.Data[i].MinionsConsumed == sortedMinionConsumesList[0].MinionsConsumed)
+            if (sortedPlayerScoreList[i].MinionsConsumed == sortedMinionConsumesList[0].MinionsConsumed)
                 playerEndGameLeaderboardPanel[i].HighestMinionConsumesImg.SetActive(true);
 
-            if (leaderboardDataList.Data[i].PlayerDeaths == sortedDeathsList[0].PlayerDeaths)
+            if (sortedPlayerScoreList[i].PlayerDeaths == sortedDeathsList[0].PlayerDeaths)
                 playerEndGameLeaderboardPanel[i].HighestDeathsImg.SetActive(true);
 
             playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
