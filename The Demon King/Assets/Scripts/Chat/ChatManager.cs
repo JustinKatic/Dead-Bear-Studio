@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ExitGames.Client.Photon;
 using Photon.Chat;
@@ -10,6 +11,13 @@ using TMPro;
 using UnityEngine;
 using Random = System.Random;
 
+public class PlayerColorText
+{
+    public bool colorUsed = false;
+    public string colorString;
+    public string user = null;
+
+}
 public class ChatManager : MonoBehaviourPun, IChatClientListener
 {
     [SerializeField] private SOMenuData roomData;
@@ -33,10 +41,11 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     [HideInInspector] public string userID;
 
-    [SerializeField] private Color listOfColorsForNames;
-    
+    [SerializeField] private List<Color> listOfColorsForNames;
+    string assignedTextColor;
 
-    private Dictionary<string, string> playerTextColors = new Dictionary<string, string>();
+
+    private List<PlayerColorText> playerColorTextList = new List<PlayerColorText>();
 
 
     // Start is called before the first frame update
@@ -44,6 +53,13 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         //DontDestroyOnLoad(this.gameObject); 
         StartChat(roomData.RoomName, PhotonNetwork.NickName);
+        
+        foreach (var color in listOfColorsForNames)
+        {
+            PlayerColorText colorToAdd = new PlayerColorText();
+            colorToAdd.colorString = ToRGBHex(color);
+            playerColorTextList.Add(colorToAdd);
+        }
     }
 
     void Awake()
@@ -119,7 +135,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnSubscribed(string[] channels, bool[] results)
     {
-
         // in this demo, we simply send a message into each channel. This is NOT a must have!
         foreach (string channel in channels)
         {
@@ -127,22 +142,41 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         }
 
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
+        //Checks if room already has people
         if (SubscribedChannel.Subscribers.Count > 0)
         {
-            foreach (var user in SubscribedChannel.Subscribers)
+            //Go through the subscribers and assign colors to all players
+            foreach (var user in SubscribedChannel.Subscribers.Reverse())
             {
-                playerTextColors.Add(user,CreateRandomColor());
+                foreach (var textColors in playerColorTextList)
+                {
+                    if (!textColors.colorUsed)
+                    {
+                        textColors.colorUsed = true;
+                        textColors.user = user;
+                        break;
+                    }
+
+                }
             }
         }
         else
         {
-            playerTextColors.Add(PhotonNetwork.NickName,CreateRandomColor());
+            //If the first person in room
+            playerColorTextList[0].colorUsed = true;
+            playerColorTextList[0].user = PhotonNetwork.NickName;
         }
     }
 
     public void OnUnsubscribed(string[] channels)
     {
-        playerTextColors.Remove(PhotonNetwork.NickName);
+        CurrentChannelText.text = null;
+        //Clear the list of players and colors
+        foreach (var colorText in playerColorTextList)
+        {
+            colorText.colorUsed = false;
+            colorText.user = null;
+        }
     }
 
     public void OnStatusUpdate(string user, int status, bool gotMessage, object message)
@@ -152,15 +186,30 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnUserSubscribed(string channel, string user)
     {
-        playerTextColors.Add(user,CreateRandomColor());
-        Debug.LogFormat("OnUserSubscribed: channel=\"{0}\" userId=\"{1}\"", currentChatRoom, user);
+        //Remove the user from the list of colors
+        foreach (var colorText in playerColorTextList)
+        {
+            if (!colorText.colorUsed)
+            {
+                colorText.colorUsed = true;
+                colorText.user = user;
+                break;
+            }
+        }
     }
 
     public void OnUserUnsubscribed(string channel, string user)
     {
-        playerTextColors.Remove(user);
-        Debug.LogFormat("OnUserUnsubscribed: channel=\"{0}\" userId=\"{1}\"", currentChatRoom, user);
-
+        //Assign the newly subscribed player a color
+        foreach (var colorText in playerColorTextList)
+        {
+            if (colorText.user == user)
+            {
+                colorText.colorUsed = false;
+                colorText.user = null;
+            }
+        }
+        
     }
     /// <summary>To avoid that the Editor becomes unresponsive, disconnect all Photon connections in OnDestroy.</summary>
     public void OnDestroy()
@@ -219,22 +268,26 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         //reset the string
         CurrentChannelText.text = null;
+        //Go through the channels messsages to rewrite to channel text
         for (int i = 0; i < currentChannel.Messages.Count; i++)
         {
-            foreach (var player in playerTextColors)
+            
+            foreach (var player in playerColorTextList)
             {
-                if (player.Key == currentChannel.Senders[i])
+                //If the player is still in the room add message to text field
+                if (player.user == currentChannel.Senders[i])
                 {
-                    string nameMessage = player.Value + player.Key + " : ";
+                    string nameMessage = player.colorString + player.user +  " : ";
                     CurrentChannelText.text += nameMessage;
-
+                    //Makes the messaage color white
+                    message = "<color=white>" + currentChannel.Messages[i];
+                    CurrentChannelText.text += message;
+                    //creates a new line
+                    CurrentChannelText.text += Environment.NewLine;
+                    break;
                 }
             }
-            //Makes the messaage color white
-            message = "<color=white>" + currentChannel.Messages[i];
-            CurrentChannelText.text += message;
-            //creates a new line
-            CurrentChannelText.text += Environment.NewLine;
+
         }
     }
 
@@ -267,7 +320,9 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     }
     public static string ToRGBHex(Color c)
     {
-        return string.Format("#{0:X2}{1:X2}{2:X2}", ToByte(c.r), ToByte(c.g), ToByte(c.b));
+        string color = "<color=" + string.Format("#{0:X2}{1:X2}{2:X2}", ToByte(c.r), ToByte(c.g), ToByte(c.b)) + ">";
+
+        return color;
     }
     private static byte ToByte(float f)
     {
