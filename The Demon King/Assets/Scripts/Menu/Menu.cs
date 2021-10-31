@@ -203,13 +203,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnTutorialButton()
     {
-        currentRoomName = "Tutorial";
-        if (allOpenRooms.Count >= 1)
-        {
-            CreateTutorialName(currentRoomName, Random.Range(0,10000));
-        }
-
-        Debug.Log(currentRoomName);
+        currentRoomName = "Tutorial" + Guid.NewGuid().ToString();
 
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 1;
@@ -218,19 +212,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         options.CustomRoomProperties = new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin }, { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } };
 
         PhotonNetwork.CreateRoom(currentRoomName, options);
-    }
-
-    void CreateTutorialName(string roomName, int index)
-    {
-        for (int i = 0; i < allOpenRooms.Count; i++)
-        {
-            if (allOpenRooms[i].Name == roomName)
-            {
-                currentRoomName = currentRoomName + index.ToString();
-                index++;
-                CreateTutorialName(currentRoomName, index);
-            }
-        }
     }
 
 
