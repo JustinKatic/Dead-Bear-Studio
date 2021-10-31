@@ -16,7 +16,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
     [SerializeField] private SOMenuData roomData;
     [SerializeField] private ChatManager chatManager;
-    
+
     [SerializeField] private List<GameObject> screens;
     [SerializeField] private GameObject ActiveMenu;
 
@@ -101,6 +101,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
 
+    private void Update()
+    {
+        Debug.Log(allOpenRooms.Count);
+    }
 
     // joins a room of the requested room name
     public override void OnConnectedToMaster()
@@ -157,7 +161,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
             findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
-
         }
         PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
@@ -198,6 +201,39 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CreateRoom(roomNameInput.text, options);
     }
 
+    public void OnTutorialButton()
+    {
+        currentRoomName = "Tutorial";
+        if (allOpenRooms.Count >= 1)
+        {
+            CreateTutorialName(currentRoomName, Random.Range(0,10000));
+        }
+
+        Debug.Log(currentRoomName);
+
+        RoomOptions options = new RoomOptions();
+        options.MaxPlayers = 1;
+        options.IsVisible = false;
+
+        options.CustomRoomProperties = new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin }, { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } };
+
+        PhotonNetwork.CreateRoom(currentRoomName, options);
+    }
+
+    void CreateTutorialName(string roomName, int index)
+    {
+        for (int i = 0; i < allOpenRooms.Count; i++)
+        {
+            if (allOpenRooms[i].Name == roomName)
+            {
+                currentRoomName = currentRoomName + index.ToString();
+                index++;
+                CreateTutorialName(currentRoomName, index);
+            }
+        }
+    }
+
+
     public void SetSpectatorMode()
     {
         spectatorMode = !spectatorMode;
@@ -205,7 +241,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         SpectatorMode.Add("IsSpectator", spectatorMode);
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
     }
-    
+
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
@@ -242,7 +278,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             if (roomData.PointsToWin > roomData.minPointsToWin)
                 roomData.PointsToWin -= 10;
         }
-        
+
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
         lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
     }
@@ -271,25 +307,41 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public override void OnJoinedRoom()
     {
-        photonView.RPC("UpdateLobbyUI", RpcTarget.All);
-        ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
-        PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
+        if (currentRoomName.Contains("Tutorial"))
+        {
+            PhotonNetwork.CurrentRoom.IsVisible = false;
 
-        Hashtable SpectatorMode = new Hashtable();
-        SpectatorMode.Add("IsSpectator", spectatorMode);
-        PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
-
-        roomData.GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[roomData.GameTimeLimitString];
-        roomData.PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.PointsToWinString];
-        roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
-
-        Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
-
-        if (roomIsPublic)
-            privacyRoomText.text = "Public";
+            Hashtable SpectatorMode = new Hashtable();
+            SpectatorMode.Add("IsSpectator", false);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
+            Invoke("LoadTutorialLevel", 0.2f);
+        }
         else
-            privacyRoomText.text = "Private";
+        {
+            photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+            ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
+            PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
 
+            Hashtable SpectatorMode = new Hashtable();
+            SpectatorMode.Add("IsSpectator", spectatorMode);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
+
+            roomData.GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[roomData.GameTimeLimitString];
+            roomData.PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.PointsToWinString];
+            roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
+
+            Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
+
+            if (roomIsPublic)
+                privacyRoomText.text = "Public";
+            else
+                privacyRoomText.text = "Private";
+        }
+    }
+
+    void LoadTutorialLevel()
+    {
+        ChangeScene("Tutorial");
     }
 
     public void OnJoinedLobby()
@@ -397,7 +449,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> allRooms)
     {
-
         foreach (RoomInfo roomInfo in allRooms)
         {
             //Adds rooms to a list that is used for searching private rooms
@@ -467,7 +518,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             roomIsPublic = false;
             privacyRoomText.text = "Private";
             PhotonNetwork.CurrentRoom.IsVisible = false;
-
         }
     }
 
@@ -514,7 +564,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         return generatedString.ToString();
     }
-    
+
     public string FormatTime(float time)
     {
         int minutes = (int)time / 60;
