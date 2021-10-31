@@ -101,10 +101,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
 
-    private void Update()
-    {
-        Debug.Log(allOpenRooms.Count);
-    }
 
     // joins a room of the requested room name
     public override void OnConnectedToMaster()
