@@ -11,7 +11,7 @@ using TMPro;
 using UnityEngine;
 using Random = System.Random;
 
-public class PlayerColorText
+public class PlayersTextColor
 {
     public bool colorUsed = false;
     public string colorString;
@@ -45,7 +45,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     string assignedTextColor;
 
 
-    private List<PlayerColorText> playerColorTextList = new List<PlayerColorText>();
+    private List<PlayersTextColor> listOfAssignedColors = new List<PlayersTextColor>();
 
 
     // Start is called before the first frame update
@@ -53,12 +53,12 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         //DontDestroyOnLoad(this.gameObject); 
         StartChat(roomData.RoomName, PhotonNetwork.NickName);
-        
+        //Get colors from the list and assign to text colors
         foreach (var color in listOfColorsForNames)
         {
-            PlayerColorText colorToAdd = new PlayerColorText();
+            PlayersTextColor colorToAdd = new PlayersTextColor();
             colorToAdd.colorString = ToRGBHex(color);
-            playerColorTextList.Add(colorToAdd);
+            listOfAssignedColors.Add(colorToAdd);
         }
     }
 
@@ -121,11 +121,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
             // update text
             this.ShowChannel(this.currentChatRoom);
         }
-
-        foreach (var message in messages)
-        {
-            Debug.Log(message.ToString());
-        }
     }
 
     public void OnPrivateMessage(string sender, object message, string channelName)
@@ -135,36 +130,60 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnSubscribed(string[] channels, bool[] results)
     {
-        // in this demo, we simply send a message into each channel. This is NOT a must have!
+        // Send a message when joining
         foreach (string channel in channels)
         {
-            chatClient.PublishMessage(channel,  joinRoomMessage); // you don't HAVE to send a msg on join but you could.
+            chatClient.PublishMessage(channel,  joinRoomMessage);
         }
 
         chatClient.TryGetChannel(currentChatRoom, out SubscribedChannel);
         //Checks if room already has people
         if (SubscribedChannel.Subscribers.Count > 0)
         {
-            //Go through the subscribers and assign colors to all players
-            foreach (var user in SubscribedChannel.Subscribers.Reverse())
-            {
-                foreach (var textColors in playerColorTextList)
-                {
-                    if (!textColors.colorUsed)
-                    {
-                        textColors.colorUsed = true;
-                        textColors.user = user;
-                        break;
-                    }
-
-                }
-            }
+            AssignColorsToUsersInChannelOnSubscribe();
         }
         else
         {
             //If the first person in room
-            playerColorTextList[0].colorUsed = true;
-            playerColorTextList[0].user = PhotonNetwork.NickName;
+            listOfAssignedColors[0].colorUsed = true;
+            listOfAssignedColors[0].user = PhotonNetwork.NickName;
+        }
+    }
+
+    private void AssignColorsToUsersInChannelOnSubscribe()
+    {
+        //Go through the subscribers and assign colors to all players
+        foreach (var user in SubscribedChannel.Subscribers.Reverse())
+        {
+            AssignTextColor(user);
+        }
+    }
+
+    private void AssignTextColor(string newUser)
+    {
+        foreach (var textColors in listOfAssignedColors)
+        {
+            if (!textColors.colorUsed)
+            {
+                textColors.colorUsed = true;
+                textColors.user = newUser;
+                break;
+            }
+
+        }
+    }
+
+    private void RemoveUserFromColorTextList(string userToRemove)
+    {
+        //Remove the user from the list of colors
+        foreach (var colorText in listOfAssignedColors)
+        {
+            if (colorText.user == userToRemove)
+            {
+                colorText.colorUsed = false;
+                colorText.user = null;
+                break;
+            }
         }
     }
 
@@ -172,7 +191,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     {
         CurrentChannelText.text = null;
         //Clear the list of players and colors
-        foreach (var colorText in playerColorTextList)
+        foreach (var colorText in listOfAssignedColors)
         {
             colorText.colorUsed = false;
             colorText.user = null;
@@ -186,29 +205,12 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
 
     public void OnUserSubscribed(string channel, string user)
     {
-        //Remove the user from the list of colors
-        foreach (var colorText in playerColorTextList)
-        {
-            if (!colorText.colorUsed)
-            {
-                colorText.colorUsed = true;
-                colorText.user = user;
-                break;
-            }
-        }
+        AssignTextColor(user);
     }
 
     public void OnUserUnsubscribed(string channel, string user)
     {
-        //Assign the newly subscribed player a color
-        foreach (var colorText in playerColorTextList)
-        {
-            if (colorText.user == user)
-            {
-                colorText.colorUsed = false;
-                colorText.user = null;
-            }
-        }
+        RemoveUserFromColorTextList(user);
         
     }
     /// <summary>To avoid that the Editor becomes unresponsive, disconnect all Photon connections in OnDestroy.</summary>
@@ -255,7 +257,6 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
             bool found = this.chatClient.TryGetChannel(channelName, out SubscribedChannel);
             if (!found)
             {
-                Debug.Log("ShowChannel failed to find channel: " + channelName);
                 return;
             }
         }
@@ -271,23 +272,21 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
         //Go through the channels messsages to rewrite to channel text
         for (int i = 0; i < currentChannel.Messages.Count; i++)
         {
-            
-            foreach (var player in playerColorTextList)
+            foreach (var player in listOfAssignedColors)
             {
                 //If the player is still in the room add message to text field
                 if (player.user == currentChannel.Senders[i])
                 {
-                    string nameMessage = player.colorString + player.user +  " : ";
+                    string nameMessage = $"{player.colorString}{player.user} :";
                     CurrentChannelText.text += nameMessage;
                     //Makes the messaage color white
-                    message = "<color=white>" + currentChannel.Messages[i];
+                    message = $"<color=white> {currentChannel.Messages[i]}";
                     CurrentChannelText.text += message;
                     //creates a new line
                     CurrentChannelText.text += Environment.NewLine;
                     break;
                 }
             }
-
         }
     }
 
@@ -302,8 +301,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     }
     public void StartChat(string roomName, string playerName)
     {
-        Debug.Log(roomName);
-        Debug.Log(playerName);
+
         ChatManager chatNewComponent = this;
         chatNewComponent.userID = playerName;
         currentChatRoom = roomName;
@@ -320,6 +318,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     }
     public static string ToRGBHex(Color c)
     {
+        // Turns the rgb format into a hex string that is made into the tag needed for TMP
         string color = "<color=" + string.Format("#{0:X2}{1:X2}{2:X2}", ToByte(c.r), ToByte(c.g), ToByte(c.b)) + ">";
 
         return color;
