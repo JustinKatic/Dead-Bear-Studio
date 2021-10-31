@@ -13,8 +13,8 @@ public class LaserAbility : MonoBehaviourPun
     [SerializeField] private int damage = 1;
     //[Header("Timers")]
     [SerializeField] private float shootCooldown = 1f;
-    [SerializeField] private float ChargeupTime = 2f;
-    [SerializeField] private float ShootAutomaticallyAt = 3f;
+    //[SerializeField] private float ChargeupTime = 2f;
+    [SerializeField] private float ChargeupTime = 3f;
 
 
     //[Header("Laser")]
@@ -54,6 +54,7 @@ public class LaserAbility : MonoBehaviourPun
     private Devour devour;
     private Camera cam;
     private PlayerController player;
+    [SerializeField] private PlayerTimers timers;
 
 
     private void Start()
@@ -67,7 +68,6 @@ public class LaserAbility : MonoBehaviourPun
             player.CharacterInputs.Player.Ability1.canceled += Ability1_cancelled;
             playerHealthManager = GetComponentInParent<PlayerHealthManager>();
             devour = GetComponentInParent<Devour>();
-
         }
     }
 
@@ -92,6 +92,7 @@ public class LaserAbility : MonoBehaviourPun
         {
             if (devour.IsDevouring || playerHealthManager.beingDevoured)
             {
+                timers.StopRayAbilityTimer();
                 DisableLaser();
             }
             else
@@ -107,7 +108,10 @@ public class LaserAbility : MonoBehaviourPun
     private void Ability1_performed(InputAction.CallbackContext obj)
     {
         if (canShoot)
+        {
             chargingUp = true;
+            timers.StartRayAbilityTimer(ChargeupTime);
+        }
     }
 
     private void DisableLaser()
@@ -129,6 +133,8 @@ public class LaserAbility : MonoBehaviourPun
             SetFireingTrue();
             PlayerSoundManager.Instance.StopRayChargeUpSound();
 
+            timers.StopRayAbilityTimer();
+
             if (chargedUp)
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
             else
@@ -145,10 +151,11 @@ public class LaserAbility : MonoBehaviourPun
 
             PlayerSoundManager.Instance.PlayRayChargeUpSound();
 
-            if (chargeUpTimer >= ShootAutomaticallyAt)
+            if (chargeUpTimer >= ChargeupTime)
             {
                 PlayerSoundManager.Instance.StopRayChargeUpSound();
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
+                timers.StopRayAbilityTimer();
                 SetFireingTrue();
             }
 

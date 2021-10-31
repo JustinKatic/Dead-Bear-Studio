@@ -35,12 +35,20 @@ public class PlayerTimers : MonoBehaviour
     [SerializeField] private Image KingAbilityTimerImg;
     private bool playKingAbility = false;
 
+    [Header("RayAbility")]
+    [SerializeField] private Image RayAbilityParent;
+    [SerializeField] private Image RayAbilityTimerImg;
+    private bool playRayAbility = false;
+
 
     private float TimeToCompleteAnimation;
     private float ActiveTime = 0f;
 
     private float ActiveDemonKingTime = 0f;
     private float TimeToCompleteDemonKingAbilityAnim;
+
+    private float ActiveRayAbilityTime = 0f;
+    private float TimeToCompleteRayAbilityAnim;
 
 
 
@@ -129,6 +137,20 @@ public class PlayerTimers : MonoBehaviour
     }
     #endregion
 
+    #region RayAbilityTimer
+    public void StartRayAbilityTimer(float Duration)
+    {
+        StartRayAbilityTimer(RayAbilityParent, Duration);
+        playRayAbility = true;
+    }
+
+    public void StopRayAbilityTimer()
+    {
+        StopTimer(RayAbilityParent);
+        playRayAbility = false;
+    }
+    #endregion
+
     public void Update()
     {
         if (playStun)
@@ -156,6 +178,11 @@ public class PlayerTimers : MonoBehaviour
         {
             LerpKingAbilityFillImg(KingAbilityTimerImg);
         }
+
+        if (playRayAbility)
+        {
+            LerpRayAbilityFillImg(RayAbilityTimerImg);
+        }
     }
 
     public void LerpFillImg(Image ImgToChange)
@@ -172,17 +199,33 @@ public class PlayerTimers : MonoBehaviour
         ParentImg.gameObject.SetActive(true);
     }
 
-    public void LerpKingAbilityFillImg(Image ImgToChange)
+    void LerpKingAbilityFillImg(Image ImgToChange)
     {
         ActiveDemonKingTime += Time.deltaTime;
         float percent = ActiveDemonKingTime / TimeToCompleteDemonKingAbilityAnim;
         ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
     }
 
-    public void StartKingAbilityTimer(Image ParentImg, float Duration)
+
+    void StartKingAbilityTimer(Image ParentImg, float Duration)
     {
         ActiveDemonKingTime = 0;
         TimeToCompleteDemonKingAbilityAnim = Duration;
+        ParentImg.gameObject.SetActive(true);
+    }
+
+
+    void LerpRayAbilityFillImg(Image ImgToChange)
+    {
+        ActiveRayAbilityTime += Time.deltaTime;
+        float percent = ActiveRayAbilityTime / TimeToCompleteRayAbilityAnim;
+        ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
+    }
+
+    void StartRayAbilityTimer(Image ParentImg, float Duration)
+    {
+        ActiveRayAbilityTime = 0;
+        TimeToCompleteRayAbilityAnim = Duration;
         ParentImg.gameObject.SetActive(true);
     }
 
