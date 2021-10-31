@@ -39,6 +39,8 @@ public class PlayerTimers : MonoBehaviour
     [SerializeField] private Image RayAbilityParent;
     [SerializeField] private Image RayAbilityTimerImg;
     private bool playRayAbility = false;
+    private bool playRayAbilityBackwards = false;
+
 
 
     private float TimeToCompleteAnimation;
@@ -143,11 +145,16 @@ public class PlayerTimers : MonoBehaviour
         StartRayAbilityTimer(RayAbilityParent, Duration);
         playRayAbility = true;
     }
+    public void StartRayAbilityBackwardsTimer(float Duration)
+    {
+        playRayAbilityBackwards = true;
+    }
 
     public void StopRayAbilityTimer()
     {
         StopTimer(RayAbilityParent);
         playRayAbility = false;
+        playRayAbilityBackwards = false;
     }
     #endregion
 
@@ -182,6 +189,12 @@ public class PlayerTimers : MonoBehaviour
         if (playRayAbility)
         {
             LerpRayAbilityFillImg(RayAbilityTimerImg);
+            if (playRayAbilityBackwards)
+                playRayAbility = false;
+        }
+        else if (playRayAbilityBackwards)
+        {
+            LerpRayAbilityBackwardsFillImg(RayAbilityTimerImg);
         }
     }
 
@@ -218,6 +231,12 @@ public class PlayerTimers : MonoBehaviour
     void LerpRayAbilityFillImg(Image ImgToChange)
     {
         ActiveRayAbilityTime += Time.deltaTime;
+        float percent = ActiveRayAbilityTime / TimeToCompleteRayAbilityAnim;
+        ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
+    }
+    void LerpRayAbilityBackwardsFillImg(Image ImgToChange)
+    {
+        ActiveRayAbilityTime -= Time.deltaTime;
         float percent = ActiveRayAbilityTime / TimeToCompleteRayAbilityAnim;
         ImgToChange.fillAmount = Mathf.Lerp(0, 1, percent);
     }

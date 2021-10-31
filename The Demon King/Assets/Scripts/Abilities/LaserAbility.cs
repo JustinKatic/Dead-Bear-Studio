@@ -133,7 +133,7 @@ public class LaserAbility : MonoBehaviourPun
             SetFireingTrue();
             PlayerSoundManager.Instance.StopRayChargeUpSound();
 
-            timers.StopRayAbilityTimer();
+            timers.StartRayAbilityBackwardsTimer(chargeUpTimer);
 
             if (chargedUp)
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
@@ -155,7 +155,7 @@ public class LaserAbility : MonoBehaviourPun
             {
                 PlayerSoundManager.Instance.StopRayChargeUpSound();
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
-                timers.StopRayAbilityTimer();
+                timers.StartRayAbilityBackwardsTimer(chargeUpTimer);
                 SetFireingTrue();
             }
 
@@ -187,6 +187,7 @@ public class LaserAbility : MonoBehaviourPun
                 currentLaserTime = 0;
                 StartCoroutine(CanShoot(shootCooldown));
                 damageFrequencyTimer = damageFrequency;
+                timers.StopRayAbilityTimer();
             }
         }
     }
