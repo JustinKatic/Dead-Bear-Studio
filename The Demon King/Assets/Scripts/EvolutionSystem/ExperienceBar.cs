@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 [System.Serializable]
 public class ExperienceBar
@@ -10,7 +12,7 @@ public class ExperienceBar
 
 
     public GameObject ActiveExpBarBackground;
-    //public GameObject ActiveExpBarCanEvolveTxt;
+    public GameObject ActiveExpBarCanEvolveTxt;
     [HideInInspector] public Material expMaterialCopy;
     public Material expMaterial;
     public Image fillImage;
@@ -27,7 +29,12 @@ public class ExperienceBar
     public FloatSO level2ExpNeeded;
 
 
-
+    public void UpdateActiveExpBarCanEvolveText()
+    {
+        string path = InputManager.inputActions.Player.Evolve.bindings[0].path;
+        string key = path.Split('/').Last();
+        ActiveExpBarCanEvolveTxt.GetComponentInChildren<TextMeshProUGUI>().text = key;
+    }
 
     //Upates exp bar slider to current 
     public void UpdateExpBar(float CurrentExp)

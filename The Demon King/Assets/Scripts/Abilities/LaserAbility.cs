@@ -133,7 +133,7 @@ public class LaserAbility : MonoBehaviourPun
             SetFireingTrue();
             PlayerSoundManager.Instance.StopRayChargeUpSound();
 
-            timers.StartRayAbilityBackwardsTimer(chargeUpTimer);
+            timers.StartRayAbilityBackwardsTimer(laserDuration);
 
             if (chargedUp)
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
@@ -155,13 +155,8 @@ public class LaserAbility : MonoBehaviourPun
             {
                 PlayerSoundManager.Instance.StopRayChargeUpSound();
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
-                timers.StartRayAbilityBackwardsTimer(chargeUpTimer);
+                timers.StartRayAbilityBackwardsTimer(laserDuration);
                 SetFireingTrue();
-            }
-
-            //Shoot laser if max charge time was reached
-            if (chargeUpTimer >= ChargeupTime)
-            {
                 chargedUp = true;
             }
         }

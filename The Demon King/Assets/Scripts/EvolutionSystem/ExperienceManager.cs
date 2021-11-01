@@ -73,6 +73,10 @@ public class ExperienceManager : MonoBehaviourPun
             baseMaxInAirSpeed = playerController.MaxAirMoveSpeed;
 
             SetExpSliders();
+
+            redBranch.ExpBar.UpdateActiveExpBarCanEvolveText();
+            greenBranch.ExpBar.UpdateActiveExpBarCanEvolveText();
+            blueBranch.ExpBar.UpdateActiveExpBarCanEvolveText();
         }
     }
     #endregion
@@ -225,12 +229,12 @@ public class ExperienceManager : MonoBehaviourPun
             redBranch.CanEvolve = true;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = false;
-            //if (!demonKingEvolution.AmITheDemonKing)
-            //{
-            //    redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-            //    greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            //    blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            //}
+            if (!demonKingEvolution.AmITheDemonKing)
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            }
         }
         else if (branch == greenBranch)
         {
@@ -238,24 +242,24 @@ public class ExperienceManager : MonoBehaviourPun
             greenBranch.CanEvolve = true;
             blueBranch.CanEvolve = false;
 
-            //if (!demonKingEvolution.AmITheDemonKing)
-            //{
-            //    redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            //    greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-            //    blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            //}
+            if (!demonKingEvolution.AmITheDemonKing)
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+            }
         }
         else if (branch == blueBranch)
         {
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = true;
-            //if (!demonKingEvolution.AmITheDemonKing)
-            //{
-            //    redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            //    greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            //    blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-            //}
+            if (!demonKingEvolution.AmITheDemonKing)
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+            }
         }
     }
     //This runs inside the evolution Manager when the evolution button has been pressed
@@ -324,9 +328,9 @@ public class ExperienceManager : MonoBehaviourPun
         blueBranch.CanEvolve = false;
         greenBranch.CanEvolve = false;
 
-        //redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-        //greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-        //blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+        blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
     }
     #endregion
 }
