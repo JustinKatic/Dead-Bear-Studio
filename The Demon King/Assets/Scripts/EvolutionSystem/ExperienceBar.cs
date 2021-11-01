@@ -19,6 +19,7 @@ public class ExperienceBar
     public GameObject expThreshholdBar;
     public GameObject childDisplayImg;
     public GameObject adultDisplayImg;
+    public GameObject expBarParent;
 
 
 

@@ -169,18 +169,30 @@ public class ExperienceManager : MonoBehaviourPun
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
+
+            redBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1.1f, 1.2f, 1);
+            greenBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
+            blueBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
         }
         else if (branchType == greenBranch)
         {
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
+
+            redBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
+            greenBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1.1f, 1.2f, 1);
+            blueBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
         }
         else if (branchType == blueBranch)
         {
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
+
+            redBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
+            greenBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
+            blueBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1.1f, 1.2f, 1);
         }
     }
 

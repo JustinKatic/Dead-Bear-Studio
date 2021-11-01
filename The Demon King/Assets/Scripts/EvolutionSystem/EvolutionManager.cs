@@ -147,7 +147,6 @@ public class EvolutionManager : MonoBehaviourPun
         //Set experince managers current active evolution type to our active type
         experienceManager.UpdateCurrentActiveEvolutionTypeBranch(activeEvolution.MyMinionType);
         healthBarCurrentDisplayImg.sprite = activeEvolution.MyHealthBarDisplaySprite;
-
     }
 
     void EvolveIntoStartType(string modelToSetActive)
