@@ -76,6 +76,10 @@ public class HealthManager : MonoBehaviourPun
     private bool coRunning = false;
     public PlayerControllerRuntimeSet playerControllerRuntimeSet;
 
+    private void Start()
+    {
+        UpdateDevourImgText();
+    }
 
     #region Update Loops
     virtual protected void Update()
@@ -98,6 +102,7 @@ public class HealthManager : MonoBehaviourPun
         }
     }
     #endregion
+
 
     #region Devour
 
@@ -140,6 +145,12 @@ public class HealthManager : MonoBehaviourPun
         }
     }
 
+    public void UpdateDevourImgText()
+    {
+        string path = InputManager.inputActions.Player.Interact.bindings[0].path;
+        string key = path.Split('/').Last();
+        DevourTargetIcon.GetComponentInChildren<TextMeshProUGUI>().text = key;
+    }
 
     //Overrides for inherited classes
     protected virtual void OnBeingDevourStart()

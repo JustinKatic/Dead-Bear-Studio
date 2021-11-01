@@ -176,6 +176,9 @@ public class PlayerHealthManager : HealthManager
         healthRegenTimerSlider.value = healthRegenTimer;
     }
 
+
+
+
     public void ApplyGasEffect(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
     {
         photonView.RPC("ApplyGasEffect_RPC", RpcTarget.All, damageOverTimeDamage, attackerId, gasFrequency, gasDurationOnPlayer);
