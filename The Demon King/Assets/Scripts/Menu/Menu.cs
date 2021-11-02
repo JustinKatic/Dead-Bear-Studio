@@ -66,6 +66,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public bool spectatorMode = false;
     private GameObject lastActiveMenu;
 
+    [FMODUnity.EventRef]
+    public string ButtonClickSound;
+
 
     void Start()
     {
@@ -567,5 +570,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
         }
+    }
+
+
+    public void PlayOnButtonClickSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(ButtonClickSound, gameObject);
     }
 }
