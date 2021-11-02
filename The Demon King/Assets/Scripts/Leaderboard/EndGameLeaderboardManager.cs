@@ -17,13 +17,13 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
     [SerializeField] private List<GameObject> playerModels;
 
-    [SerializeField] private GameObject spawnPos1;
-    [SerializeField] private GameObject spawnPos2;
-    [SerializeField] private GameObject spawnPos3;
+    [SerializeField] private GameObject[] spawnPositions;
 
     private void Start()
     {
         DisplayEndGameBoard();
+        StartCoroutine(ReturnToLobby());
+
     }
 
     void DisplayEndGameBoard()
@@ -57,19 +57,8 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
             playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
 
-            if (i == 0)
-            {
-                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos1.transform.position, spawnPos1.transform.rotation);
-            }
-            else if (i == 1)
-            {
-                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos2.transform.position, spawnPos2.transform.rotation);
-            }
-            else if (i == 2)
-            {
-                Instantiate(GetPlayerModel(data.currentModelTag), spawnPos3.transform.position, spawnPos3.transform.rotation);
-            }
 
+            Instantiate(GetPlayerModel(data.currentModelTag), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
             i++;
         }
     }
@@ -82,6 +71,31 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
                 return playerModels[i];
         }
         return null;
+    }
 
+    IEnumerator ReturnToLobby()
+    {
+        yield return new WaitForSeconds(20f);
+        if (PhotonNetwork.IsMasterClient)
+            ChangeScene("Menu");
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        photonView.RPC("ChangeScene_RPC", RpcTarget.All, sceneName);
+    }
+
+    [PunRPC]
+    public void ChangeScene_RPC(string sceneName)
+    {
+        //Checks if the scene is found within the build settings, otherwise load game as default
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            PhotonNetwork.LoadLevel(sceneName);
+        }
+        else
+        {
+            Debug.Log("Scene Not Found in Build Settings");
+        }
     }
 }

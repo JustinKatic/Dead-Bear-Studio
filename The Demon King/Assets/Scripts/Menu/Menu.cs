@@ -75,6 +75,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // connect to the master server
         PhotonNetwork.ConnectUsingSettings();
 
+        roomData.PointsToWin = roomData.basePointsToWin;
+        roomData.GameTimeLimit = roomData.baseGameTimeLimit;
+
         createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
         lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
@@ -95,6 +98,16 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             // go to the lobby
             SetScreen(lobbyScreen);
             UpdateLobbyUI();
+
+            roomData.PointsToWin = roomData.basePointsToWin;
+            roomData.GameTimeLimit = roomData.baseGameTimeLimit;
+
+            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
+            lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
+
+            UpdateRoomProperties();
 
             // make the room visible again
             PhotonNetwork.CurrentRoom.IsVisible = true;
@@ -247,7 +260,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnPointsToWinChanged(bool IncreasePoints)
     {
-
         if (IncreasePoints)
         {
             if (roomData.PointsToWin < roomData.maxPointsToWin)
@@ -567,7 +579,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         else
         {
-            PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
         }
     }

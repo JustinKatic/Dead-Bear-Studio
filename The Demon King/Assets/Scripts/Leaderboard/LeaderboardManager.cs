@@ -267,7 +267,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         }
         else
         {
-            PhotonNetwork.LoadLevel("Game");
             Debug.Log("Scene Not Found in Build Settings");
         }
     }
