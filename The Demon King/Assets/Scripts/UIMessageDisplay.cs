@@ -14,6 +14,8 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
     private const byte DisplayPlayerLeftLobby = 6;
     private const byte DisplayPlayerBecomingKingMessage = 7;
 
+    [SerializeField] private string[] killedMessageList;
+
 
     public enum MessageType { Death, Kill, LeftTheGame, BecomeKing }
 
@@ -65,7 +67,7 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
         if (photonEvent.Code == DisplayPlayerKilledSomeoneMessage)
         {
             object[] data = (object[])photonEvent.CustomData;
-            DisplayMessage(data[0].ToString() + " Killed " + data[1].ToString(), MessageType.Kill);
+            DisplayMessage(data[0].ToString() + " " + killedMessageList[Random.Range(0, killedMessageList.Length)] + " " + data[1].ToString(), MessageType.Kill);
         }
         else if (photonEvent.Code == DisplayPlayerKilledSelfMessage)
         {
