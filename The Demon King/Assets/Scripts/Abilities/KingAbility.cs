@@ -83,7 +83,8 @@ public class KingAbility : MonoBehaviourPun
 
     private void OnDisable()
     {
-        PlayerTimers.StopKingAbilityTimer();
+        if (photonView.IsMine)
+            PlayerTimers.StopKingAbilityTimer();
     }
 
     private void Ability2_performed(UnityEngine.InputSystem.InputAction.CallbackContext obj)

@@ -1,0 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class BillboardLocal : MonoBehaviour
+{
+    private Transform _cam;
+
+    bool startBillboarding = false;
+
+    private void Start()
+    {
+        FindMainCam();
+    }
+    void FindMainCam()
+    {
+        _cam = Camera.main.transform;
+        startBillboarding = true;
+    }
+
+    void LateUpdate()
+    {
+        if (startBillboarding)
+        {
+            transform.LookAt(transform.position + _cam.forward);
+        }
+    }
+}

@@ -242,7 +242,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
             leaderboardData.IslocalPlayer = player.IsLocal;
 
-            leaderboardData.currentModelTag = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.gameObject.name;
+            leaderboardData.currentModelName = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.gameObject.name;
 
             leaderboardData.playersConsumed = (int)player.CustomProperties["PlayerKills"];
 
