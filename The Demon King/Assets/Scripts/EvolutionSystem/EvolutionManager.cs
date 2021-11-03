@@ -37,7 +37,7 @@ public class EvolutionManager : MonoBehaviourPun
 
     private LeaderboardManager leaderboardManager;
 
-    private bool evolving = false;
+    [HideInInspector] public bool evolving = false;
     private KnockBackPlayer knockBackPlayer;
 
 

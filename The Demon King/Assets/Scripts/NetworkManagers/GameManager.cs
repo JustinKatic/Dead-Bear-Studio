@@ -7,7 +7,6 @@ using System.Collections;
 using TMPro;
 
 
-
 public class GameManager : MonoBehaviourPun
 {
     [Header("Players")]
@@ -98,7 +97,8 @@ public class GameManager : MonoBehaviourPun
             // initialize the player for all other players
             playerController.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.z);
             playerController.DisableMovement();
-            StartCoroutine(CountDown());
+            if (SceneManager.GetActiveScene().name != "Tutorial")
+                StartCoroutine(CountDown());
         }
         LoadingScreen.SetActive(false);
     }

@@ -25,6 +25,7 @@ public class MinionHealthManager : HealthManager
     private Material OverheadHealthBarMat;
 
     public bool Respawned = false;
+    public bool reviving = false;
 
     [SerializeField] float minionExpWorth;
     [SerializeField] int minionScoreWorth;
@@ -322,6 +323,7 @@ public class MinionHealthManager : HealthManager
             beingDevoured = false;
             canBeDevoured = false;
             stunnedTimer = 0;
+            reviving = true;
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -340,6 +342,7 @@ public class MinionHealthManager : HealthManager
             myModel.SetActive(true);
             col.enabled = true;
             hudCanvas.enabled = true;
+            reviving = false;
         }
     }
     #endregion
