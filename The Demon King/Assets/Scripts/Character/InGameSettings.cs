@@ -116,10 +116,12 @@ public class InGameSettings : MonoBehaviourPun
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        playerController.CharacterInputs.Player.Enable();
-        playerController.CharacterInputs.PlayerLook.Enable();
-        playerController.CharacterInputs.Player.Ability1.Enable();
+        if (playerController.allowedToEnableMovement)
+        {
+            playerController.CharacterInputs.Player.Enable();
+            playerController.CharacterInputs.PlayerLook.Enable();
+            playerController.CharacterInputs.Player.Ability1.Enable();
+        }
     }
     public void OnClickQuitGame()
     {
