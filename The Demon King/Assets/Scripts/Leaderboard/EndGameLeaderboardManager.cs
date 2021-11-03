@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
@@ -18,6 +19,10 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
     [SerializeField] private List<GameObject> playerModels;
 
     [SerializeField] private GameObject[] spawnPositions;
+
+    [SerializeField] private TextMeshProUGUI playerNameDisplayPrefab;
+
+
 
     private void Start()
     {
@@ -58,7 +63,8 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
 
 
-            Instantiate(GetPlayerModel(data.currentModelTag), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
+            GameObject model = Instantiate(GetPlayerModel(data.currentModelName + "EndGame"), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
+            model.GetComponentInChildren<TextMeshProUGUI>().text = data.PlayerNickName;
             i++;
         }
     }
