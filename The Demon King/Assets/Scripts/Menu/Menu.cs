@@ -62,7 +62,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [HideInInspector] public string sceneName;
     private string currentRoomName;
     private float roomMaxPlayers = 8;
-    
+
     public bool spectatorMode = false;
     private GameObject lastActiveMenu;
 
@@ -222,6 +222,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 1;
         options.IsVisible = false;
+
+        roomData.GameTimeLimit = 900;
+        roomData.PointsToWin = 50;
 
         options.CustomRoomProperties = new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin }, { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } };
 

@@ -39,7 +39,7 @@ public class TutorialManager : MonoBehaviourPun
 
     [Header("Seventh Task")]
     public string SeventhTaskDisplayMessage;
-    public GameObject[] KingAbilityAI;
+    public MinionHealthManager[] KingAbilityAI;
 
     [Header("Eigth Task")]
     public string EigthTaskDisplayMessage;
@@ -190,7 +190,7 @@ public class TutorialManager : MonoBehaviourPun
     {
         foreach (var ai in KingAbilityAI)
         {
-            ai.SetActive(true);
+            ai.gameObject.SetActive(true);
         }
         popupText.text = SeventhTaskDisplayMessage;
         StartCoroutine(KingAbilityTaskCheck());
@@ -205,20 +205,20 @@ public class TutorialManager : MonoBehaviourPun
             int count = 0;
             foreach (var ai in KingAbilityAI)
             {
-                if (ai.activeInHierarchy)
+                if (ai.isStunned)
                     count++;
             }
             if (count >= 3)
                 hasStunnedKingTaskAI = true;
             yield return null;
-            ScoreTask();
         }
+        ScoreTask();
     }
     //START EIGHTH TASK
     public void ScoreTask()
     {
+        popupText.text = EigthTaskDisplayMessage;
         JumpPad2.SetActive(true);
+        ScoreAI.SetActive(true);
     }
-
-
 }
