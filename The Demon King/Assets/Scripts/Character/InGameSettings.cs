@@ -89,9 +89,9 @@ public class InGameSettings : MonoBehaviourPun
             if (playerController.allowedToEnableMovement)
             {
                 playerController.CharacterInputs.Player.Enable();
-                playerController.CharacterInputs.PlayerLook.Enable();
                 playerController.CharacterInputs.Player.Ability1.Enable();
             }
+            playerController.CharacterInputs.PlayerLook.Enable();
 
             
         }
@@ -119,9 +119,10 @@ public class InGameSettings : MonoBehaviourPun
         if (playerController.allowedToEnableMovement)
         {
             playerController.CharacterInputs.Player.Enable();
-            playerController.CharacterInputs.PlayerLook.Enable();
             playerController.CharacterInputs.Player.Ability1.Enable();
         }
+        playerController.CharacterInputs.PlayerLook.Enable();
+
     }
     public void OnClickQuitGame()
     {
