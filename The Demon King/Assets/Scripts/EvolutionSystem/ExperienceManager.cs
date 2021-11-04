@@ -130,6 +130,8 @@ public class ExperienceManager : MonoBehaviourPun
                 evolutionManager.nextEvolution = branchType.Level2Evolution;
                 SetCanEvolveTrue(branchType);
             }
+            else
+                SetCanEvolveFalse();
         }
         // if experience is greater than level 1
         else if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level1ExpNeeded.value)
@@ -141,7 +143,11 @@ public class ExperienceManager : MonoBehaviourPun
                 SetCanEvolveTrue(branchType);
                 branchType.ExpBar.expThreshholdBar.SetActive(true);
             }
+            else
+                SetCanEvolveFalse();
+            
         }
+
     }
 
     //keep track of what branch the current evolution is (Only changed when evolve)
@@ -236,6 +242,7 @@ public class ExperienceManager : MonoBehaviourPun
     //Sets can evolve based of branch type passed in
     public void SetCanEvolveTrue(ExperienceBranch branch)
     {
+        
         if (branch == redBranch)
         {
             redBranch.CanEvolve = true;
@@ -273,9 +280,10 @@ public class ExperienceManager : MonoBehaviourPun
                 blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
             }
         }
+
     }
     //This runs inside the evolution Manager when the evolution button has been pressed
-    public bool CanEvolve()
+    public bool  CanEvolve()
     {
         //Check if I can evolve into any of these types is yes reset can evolve and return true else return false
         if (redBranch.CanEvolve || blueBranch.CanEvolve || greenBranch.CanEvolve)
