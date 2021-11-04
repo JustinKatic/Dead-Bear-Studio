@@ -8,6 +8,7 @@ public class TutorialManager : MonoBehaviourPun
 {
     public PlayerControllerRuntimeSet player;
     public TextMeshProUGUI popupText;
+    public SOMenuData roomdata;
     PlayerController ourPlayer;
 
     [Header("First Task")]
@@ -53,6 +54,7 @@ public class TutorialManager : MonoBehaviourPun
 
     private void Start()
     {
+        roomdata.InTutorial = true;
         StartCoroutine(CheckIfPlayerHadLoaded());
         StartCoroutine(CheckIfAllObjectesHaveBeenLookedAt());
     }

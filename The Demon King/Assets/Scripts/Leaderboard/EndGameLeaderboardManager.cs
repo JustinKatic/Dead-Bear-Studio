@@ -6,9 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
+    public SOMenuData roomdata;
+
     public LeaderboardDataList leaderboardDataList;
     [Header("Leaderboard Display")]
 
@@ -97,7 +100,13 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
         //Checks if the scene is found within the build settings, otherwise load game as default
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
-            PhotonNetwork.LoadLevel(sceneName);
+            if (roomdata.InTutorial)
+            {
+                PhotonNetwork.LeaveRoom();
+                SceneManager.LoadScene(sceneName);
+            }
+            else
+                PhotonNetwork.LoadLevel(sceneName);
         }
         else
         {

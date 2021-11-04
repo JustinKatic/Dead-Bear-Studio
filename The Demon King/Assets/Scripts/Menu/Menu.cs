@@ -89,6 +89,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
         tutorialButton.interactable = false;
+        roomData.InTutorial = false;
 
         // enable the cursor since we hide it when we play the game
         Cursor.lockState = CursorLockMode.None;
@@ -225,6 +226,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         roomData.GameTimeLimit = 900;
         roomData.PointsToWin = 50;
+
 
         options.CustomRoomProperties = new Hashtable { { roomData.GameTimeLimitString, roomData.GameTimeLimit }, { roomData.PointsToWinString, roomData.PointsToWin }, { roomData.CurrentSceneIndexString, roomData.CurrentSceneIndex } };
 
