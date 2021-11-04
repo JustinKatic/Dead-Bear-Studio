@@ -24,9 +24,17 @@ public class AudioSettings : MonoBehaviour
         Music = FMODUnity.RuntimeManager.GetBus("bus:/Master/Music");
         Master = FMODUnity.RuntimeManager.GetBus("bus:/Master");
 
+        SFXSlider.maxValue = 1;
+        MusicSlider.maxValue = 1;
+        MasterSlider.maxValue = 1;
+        
         SFXSlider.value = SFXVolume;
         MusicSlider.value = MusicVolume;
         MasterSlider.value = MasterVolume;
+        
+        SFXSlider.onValueChanged.AddListener(SFXVolumeLevel);
+        MasterSlider.onValueChanged.AddListener(MasterVolumeLevel);
+        MusicSlider.onValueChanged.AddListener(MusicVolumeLevel);
     }
 
     // Update is called once per frame
@@ -37,16 +45,16 @@ public class AudioSettings : MonoBehaviour
         Master.setVolume(MasterVolume);
     }
 
-    public void SFXVolumeLevel(Slider newSFXVolume)
+    public void SFXVolumeLevel(float newSFXVolume)
     {
-        SFXVolume = newSFXVolume.value;
+        SFXVolume = newSFXVolume;
     }
-    public void MasterVolumeLevel(Slider newMasterVolume)
+    public void MasterVolumeLevel(float newMasterVolume)
     {
-        MasterVolume = newMasterVolume.value;
+        MasterVolume = newMasterVolume;
     }    
-    public void MusicVolumeLevel(Slider newMusicVolume)
+    public void MusicVolumeLevel(float newMusicVolume)
     {
-        MusicVolume = newMusicVolume.value;
+        MusicVolume = newMusicVolume;
     }
 }
