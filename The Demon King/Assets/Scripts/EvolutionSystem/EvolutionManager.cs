@@ -79,6 +79,8 @@ public class EvolutionManager : MonoBehaviourPun
 
             foreach (SkinnedMeshRenderer rend in children)
             {
+                if (rend.material.name.Contains("Crown"))
+                    continue;
                 var mats = new Material[rend.materials.Length];
                 for (var j = 0; j < rend.materials.Length; j++)
                 {

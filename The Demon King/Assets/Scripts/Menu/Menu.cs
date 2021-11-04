@@ -15,7 +15,6 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
     [SerializeField] private SOMenuData roomData;
-    [SerializeField] private ChatManager chatManager;
 
     [SerializeField] private List<GameObject> screens;
     [SerializeField] private GameObject ActiveMenu;
@@ -23,6 +22,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [Header("Main Screen")]
     [SerializeField] private Button createRoomButton;
     [SerializeField] private Button findRoomButton;
+    [SerializeField] private Button tutorialButton;
     [SerializeField] private GameObject mainSelectableItem;
     [SerializeField] private TMP_InputField playerNameInput;
 
@@ -62,7 +62,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [HideInInspector] public string sceneName;
     private string currentRoomName;
     private float roomMaxPlayers = 8;
-
+    
     public bool spectatorMode = false;
     private GameObject lastActiveMenu;
 
@@ -88,6 +88,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
         findRoomButton.interactable = false;
+        tutorialButton.interactable = false;
 
         // enable the cursor since we hide it when we play the game
         Cursor.lockState = CursorLockMode.None;
@@ -173,6 +174,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         {
             createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
             findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+            tutorialButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
         }
         PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
@@ -340,6 +342,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         createRoomButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
         findRoomButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
+        tutorialButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
     }
 
     void UpdateRoomHashsOnJoinInvoke()
