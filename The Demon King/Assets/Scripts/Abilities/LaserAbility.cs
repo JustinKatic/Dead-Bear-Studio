@@ -102,7 +102,11 @@ public class LaserAbility : MonoBehaviourPun
                 FireingLaser();
             }
         }
+    }
 
+    private void OnDisable()
+    {
+        timers.StopRayAbilityTimer();
     }
 
     private void Ability1_performed(InputAction.CallbackContext obj)

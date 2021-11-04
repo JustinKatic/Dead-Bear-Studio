@@ -62,6 +62,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void Start()
     {
+        leaderboardDataList.Data.Clear();
+
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
             return;
 
@@ -84,6 +86,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         else
             return null;
     }
+
 
     private void Update()
     {
