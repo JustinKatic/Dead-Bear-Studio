@@ -12,7 +12,7 @@ public class KingAbility : MonoBehaviourPun
     [SerializeField] private float abilityDuration;
     [SerializeField] private string kingAbilityEffectName;
 
-    [SerializeField] private float shootCooldown = 1f;
+    public float shootCooldown = 1f;
     [SerializeField] private GameObject LionKingAbilityMarker = null;
     [SerializeField] private float abilityMarkerSize = 4;
     [SerializeField] private LayerMask AimerLayersToIgnore;

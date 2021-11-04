@@ -30,11 +30,23 @@ public class TutorialManager : MonoBehaviourPun
 
     [Header("Fourth Task")]
     public string FifthTaskDisplayMessage;
-    public GameObject JumpPad;
+    public GameObject JumpPad1;
 
     [Header("Sixth Task")]
     public string SixthTaskDisplayMessage;
-    public GameObject Crown;
+    public GameObject CrownModel;
+    public GameObject CrownVFX;
+
+    [Header("Seventh Task")]
+    public string SeventhTaskDisplayMessage;
+    public GameObject[] KingAbilityAI;
+
+    [Header("Eigth Task")]
+    public string EigthTaskDisplayMessage;
+    public GameObject JumpPad2;
+    public GameObject ScoreAI;
+
+
 
 
 
@@ -143,14 +155,70 @@ public class TutorialManager : MonoBehaviourPun
     void JumpPadTask()
     {
         popupText.text = FifthTaskDisplayMessage;
-        JumpPad.SetActive(true);
+        JumpPad1.SetActive(true);
     }
 
     //SXITH TASK CONSUME THE CROWN
     public void ConsumeCrownTask()
     {
         popupText.text = SixthTaskDisplayMessage;
-        Crown.SetActive(true);
+        CrownModel.SetActive(true);
+        CrownVFX.SetActive(true);
+        StartCoroutine(ConsumedCrownCheck());
     }
+
+    IEnumerator ConsumedCrownCheck()
+    {
+        bool crownComsumed = false;
+        while (!crownComsumed)
+        {
+            if (!CrownModel.activeInHierarchy)
+                crownComsumed = true;
+            yield return null;
+        }
+        //START SEVENTH TASK
+        Debug.Log("Crown Consumed");
+        KingAbility[] kingAbility = ourPlayer.GetComponentsInChildren<KingAbility>(true);
+        foreach (var ability in kingAbility)
+        {
+            ability.shootCooldown = 1;
+        }
+        KingAbilityTask();
+    }
+
+    public void KingAbilityTask()
+    {
+        foreach (var ai in KingAbilityAI)
+        {
+            ai.SetActive(true);
+        }
+        popupText.text = SeventhTaskDisplayMessage;
+        StartCoroutine(KingAbilityTaskCheck());
+    }
+
+
+    IEnumerator KingAbilityTaskCheck()
+    {
+        bool hasStunnedKingTaskAI = false;
+        while (!hasStunnedKingTaskAI)
+        {
+            int count = 0;
+            foreach (var ai in KingAbilityAI)
+            {
+                if (ai.activeInHierarchy)
+                    count++;
+            }
+            if (count >= 3)
+                hasStunnedKingTaskAI = true;
+            yield return null;
+            ScoreTask();
+        }
+    }
+    //START EIGHTH TASK
+    public void ScoreTask()
+    {
+        JumpPad2.SetActive(true);
+    }
+
 
 }
