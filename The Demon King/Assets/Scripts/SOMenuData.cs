@@ -6,6 +6,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class SOMenuData : ScriptableObject
 {
+    public bool InTutorial = false;
+
     public int baseMaxPlayers = 10;
     public string baseRoomName = "";
     public float minGameTimeLimit = 0;

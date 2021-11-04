@@ -16,13 +16,14 @@ public class GameManager : MonoBehaviourPun
     public SpawnPointRuntimeSet spawnPoints;
 
     private int playersInGame;
-    private float waitToStartGameTimer = 5f;
+    private int startGameTimer = 5;
 
     private int mySpawnIndex;
     public GameObject LoadingScreen;
     public Slider loadingBar;
     public PlayerControllerRuntimeSet playerControllerRuntimeSet;
-    public TextMeshProUGUI countDownText;
+    public Sprite[] startGameTimerPrefabs;
+    public Image startGameTimerImg;
 
 
 
@@ -105,16 +106,14 @@ public class GameManager : MonoBehaviourPun
 
     IEnumerator CountDown()
     {
-        countDownText.gameObject.SetActive(true);
-        while (waitToStartGameTimer >= 1)
+        startGameTimerImg.gameObject.SetActive(true);
+        while (startGameTimer >= 1)
         {
-            countDownText.text = waitToStartGameTimer.ToString();
+            startGameTimerImg.sprite = startGameTimerPrefabs[startGameTimer - 1];
             yield return new WaitForSeconds(1);
-            waitToStartGameTimer--;
+            startGameTimer--;
         }
-        countDownText.text = "FIGHT!";
         playerControllerRuntimeSet.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).EnableMovement();
-        yield return new WaitForSeconds(1);
-        countDownText.gameObject.SetActive(false);
+        startGameTimerImg.gameObject.SetActive(false);
     }
 }
