@@ -25,7 +25,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private PlayerLeaderboardPanel DemonKingPanel;
 
     [Header("Leaderboard Display")]
-    public List<PlayerLeaderboardPanel> playerLeaderboardPanel = new List<PlayerLeaderboardPanel>();
+    public List<PlayerLeaderboardPanel> playerLeaderboardPanel;
 
     public bool DidAWinOccur = false;
 
@@ -62,6 +62,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void Start()
     {
+        leaderboardDataList.Data.Clear();
+
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
             return;
 
@@ -84,6 +86,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         else
             return null;
     }
+
 
     private void Update()
     {
