@@ -65,7 +65,10 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         leaderboardDataList.Data.Clear();
 
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
+        {
+            LeaderBoardHUD.SetActive(false);
             return;
+        }
 
         InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.started += DisplayScoreBoard_started;
         InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.canceled += DisplayScoreBoard_canceled;
