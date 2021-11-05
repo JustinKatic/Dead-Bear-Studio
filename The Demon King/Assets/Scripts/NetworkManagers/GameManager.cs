@@ -25,8 +25,6 @@ public class GameManager : MonoBehaviourPun
     public Sprite[] startGameTimerPrefabs;
     public Image startGameTimerImg;
 
-
-
     void Awake()
     {
         if (!PhotonNetwork.IsConnected)

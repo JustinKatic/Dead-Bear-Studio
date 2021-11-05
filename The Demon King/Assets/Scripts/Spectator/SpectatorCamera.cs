@@ -13,7 +13,6 @@ public class SpectatorCamera : MonoBehaviourPun
     [SerializeField] float CameraAngleOverride = 0.0f;
     [SerializeField] float MouseSensitivity;
     [SerializeField] private float spectatorMoveSpeed = 10;
-    [SerializeField] private GameObject HUD;
     private Vector2 playerLookInput;
     private Vector2 playerMoveInput;
     private float _cinemachineTargetYaw;
@@ -42,10 +41,6 @@ public class SpectatorCamera : MonoBehaviourPun
             //lock players cursor and set invis.
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-        }
-        else
-        {
-            HUD.gameObject.SetActive(false);
         }
     }
 
