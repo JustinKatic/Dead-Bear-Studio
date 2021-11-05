@@ -41,6 +41,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
 
     [SerializeField] private PlayerControllerRuntimeSet players;
+    [SerializeField] private SpawnPointRuntimeSet playerCount;
+
+
 
     bool findingPlayers = true;
 
@@ -98,7 +101,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         {
             if (findingPlayers)
             {
-                if (players.Length() == PhotonNetwork.PlayerList.Length)
+                if (playerCount.Length() == PhotonNetwork.PlayerList.Length)
                 {
                     findingPlayers = false;
                     Invoke("InvokeUpdateLeaderboard", 1f);
