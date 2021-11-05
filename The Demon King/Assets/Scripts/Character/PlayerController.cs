@@ -313,7 +313,6 @@ public class PlayerController : MonoBehaviourPun
         if (photonView.IsMine)
         {
             CameraRotation();
-
         }
     }
     #endregion
