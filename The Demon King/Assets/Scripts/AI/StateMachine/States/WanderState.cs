@@ -12,6 +12,13 @@ public class WanderState : State
     public float waitAtDestinationTimer = 2f;
     private bool waitAtLocation = true;
 
+    private Vector3 defaultPos;
+
+    private void Start()
+    {
+        defaultPos = transform.position;
+    }
+
     public override void RunCurrentState()
     {
         PlayWanderState();
@@ -21,7 +28,7 @@ public class WanderState : State
     {
         if (!wanderPosFound || minionHealthManager.Respawned)
         {
-            dest = RandomPoint(20f);
+            dest = RandomPoint(10f);
             anim.SetBool("Walking", false);
         }
 
@@ -54,8 +61,10 @@ public class WanderState : State
     {
         bool searching = true;
         NavMeshPath path = new NavMeshPath();
-        while (searching)
+        int numberOfChecks = 0;
+        while (searching && numberOfChecks <= 20)
         {
+            numberOfChecks++;
             Vector3 randomPoint = transform.position + Random.insideUnitSphere * range;
             NavMeshHit hit;
             if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
@@ -66,7 +75,20 @@ public class WanderState : State
                     searching = false;
                 }
             }
+            if (numberOfChecks >= 20)
+            {
+                Debug.Log("20 Checks");
+                if (NavMesh.SamplePosition(defaultPos, out hit, 1.0f, NavMesh.AllAreas))
+                {
+                    agent.CalculatePath(hit.position, path);
+                    if (path.status == NavMeshPathStatus.PathComplete)
+                    {
+                        searching = false;
+                    }
+                }
+            }
         }
+
         wanderPosFound = true;
 
         return path;
