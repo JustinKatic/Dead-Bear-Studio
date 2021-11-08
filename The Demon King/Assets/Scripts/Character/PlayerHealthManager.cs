@@ -33,7 +33,7 @@ public class PlayerHealthManager : HealthManager
     private ExperienceManager experienceManager;
     private PlayerController PlayerWhoDevouredMeController;
     private PlayerHealthManager playerWhoLastShotMeHealthManager;
-    private IEnumerator playerWhoLastShotMeLastCo;
+    private IEnumerator SetPlayerWhoLastShotMeLastNullCo;
 
     private DemonKingEvolution demonKingEvolution;
     private EvolutionManager evolutionManager;
@@ -44,7 +44,7 @@ public class PlayerHealthManager : HealthManager
     [HideInInspector] public bool isRespawning = false;
     private PlayerTimers debuffTimer;
 
-    [HideInInspector] public int PlayerId;
+    public int PlayerId;
 
     public Image overheadHudHealthbarImg;
     private Material OverheadHealthBarMat;
@@ -192,13 +192,13 @@ public class PlayerHealthManager : HealthManager
 
         if (!gasEffect)
         {
+            CurAttackerId = attackerId;
             TakeDamage(damageOverTimeDamage, CurAttackerId);
             PlayPoisionVFX(true);
         }
         gasTimer = 0;
         gasEffect = true;
         gasDamage = damageOverTimeDamage;
-        CurAttackerId = attackerId;
         gasTickRate = gasFrequency;
         this.gasDurationOnPlayer = gasDurationOnPlayer;
     }
@@ -326,14 +326,14 @@ public class PlayerHealthManager : HealthManager
         //Remove health
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
 
+        Debug.Log("att ID " + attackerID);
 
+        if (SetPlayerWhoLastShotMeLastNullCo != null)
+            StopCoroutine(SetPlayerWhoLastShotMeLastNullCo);
 
-        if (playerWhoLastShotMeLastCo != null)
-            StopCoroutine(playerWhoLastShotMeLastCo);
-
-        playerWhoLastShotMeLastCo = SetPlayWhoShotMeLastNull();
-        StartCoroutine(playerWhoLastShotMeLastCo);
-        playerWhoLastShotMeHealthManager = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject?.GetComponent<PlayerHealthManager>();
+        SetPlayerWhoLastShotMeLastNullCo = SetPlayerWhoShotMeLastNull();
+        StartCoroutine(SetPlayerWhoLastShotMeLastNullCo);
+        playerWhoLastShotMeHealthManager = playerControllerRuntimeSet.GetPlayer(attackerID).GetComponent<PlayerHealthManager>();
 
 
         UpdateHealthBar(CurrentHealth, currentHealthOffset);
@@ -346,7 +346,7 @@ public class PlayerHealthManager : HealthManager
             OnBeingStunnedStart();
     }
 
-    IEnumerator SetPlayWhoShotMeLastNull()
+    IEnumerator SetPlayerWhoShotMeLastNull()
     {
         yield return new WaitForSeconds(TimeToTrackLastPlayerWhoShotMe);
         playerWhoLastShotMeHealthManager = null;

@@ -138,7 +138,6 @@ public class MinionHealthManager : HealthManager
         if (isStunned || !photonView.IsMine)
             return;
 
-        CurAttackerId = attackerId;
         gasTimer = 0;
         gasDamage = damageOverTimeDamage;
         gasTickRate = gasFrequency;
@@ -146,6 +145,7 @@ public class MinionHealthManager : HealthManager
 
         if (!gasEffect)
         {
+            CurAttackerId = attackerId;
             TakeDamage(gasDamage, CurAttackerId);
             PlayPoisionVFX(true);
         }
