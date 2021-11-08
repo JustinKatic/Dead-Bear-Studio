@@ -5,12 +5,10 @@ using UnityEngine;
 public class DragonGasEffect : MonoBehaviour
 {
     private int attackerId;
-    [SerializeField] private int damageOverTimeDamage;
-    [SerializeField] private float damageFrequency;
-    [SerializeField] private float frequencyToReapplyGas;
-    [SerializeField] private float gasDuration;
-    [SerializeField] private float gasSize;
-    [SerializeField] private float gasDurationOnPlayer;
+    private int damageOverTimeDamage;
+    private float damageFrequency;
+    private float frequencyToReapplyGas;
+    private float gasDurationOnPlayer;
 
     [SerializeField] private LayerMask layersGasCanDamage;
     private float radius;
@@ -21,9 +19,8 @@ public class DragonGasEffect : MonoBehaviour
         this.damageOverTimeDamage = damageOverTimeDamage;
         this.damageFrequency = damageFrequency;
         this.frequencyToReapplyGas = frequencyToReapplyGas;
-        this.gasDuration = gasDuration;
         this.gasDurationOnPlayer = gasDurationOnPlayer;
-        this.gasSize = gasSize;
+
         transform.localScale = new Vector3(gasSize, gasSize, gasSize);
         radius = transform.localScale.x / 2;
         Invoke("DestroySelf", gasDuration);
