@@ -361,4 +361,10 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     {
         PhotonNetwork.RemoveCallbackTarget(this);
     }
+
+    private void OnDestroy()
+    {
+        InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.started -= DisplayScoreBoard_started;
+        InputManager.inputActions.DisplayScoreBoard.DisplayScoreBoard.canceled -= DisplayScoreBoard_canceled;
+    }
 }
