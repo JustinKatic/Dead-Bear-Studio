@@ -238,6 +238,7 @@ public class LaserAbility : MonoBehaviourPun
         chargingUp = false;
         canShoot = false;
         isFireing = true;
+        player.currentAnim.SetTrigger("Attack");
     }
 
 
