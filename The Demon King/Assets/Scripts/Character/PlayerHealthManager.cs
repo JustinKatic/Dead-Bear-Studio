@@ -258,15 +258,34 @@ public class PlayerHealthManager : HealthManager
     {
         float lerpTime = 0;
 
-        while (lerpTime < TimeTakenToBeDevoured)
+        while (lerpTime < (TimeTakenToBeDevoured / 2))
         {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDevoured));
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
             lerpTime += Time.deltaTime;
             evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", valToBeLerped);
             yield return null;
         }
+
+        if (beingDevourEffectCo != null)
+            StopCoroutine(beingDevourEffectCo);
+        beingDevourEffectCo = ToggleDisinegrateShader();
+        StartCoroutine(beingDevourEffectCo);
+    }
+
+    IEnumerator ToggleDisinegrateShader()
+    {
+        float lerpTime = 0;
+
+        while (lerpTime < (TimeTakenToBeDevoured / 2))
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
+            lerpTime += Time.deltaTime;
+            evolutionManager.activeEvolution.myMatInstance.SetFloat("_DisintegrateEffectTime", valToBeLerped);
+            yield return null;
+        }
         beingDevourEffectCo = null;
     }
+
 
 
     [PunRPC]
@@ -299,6 +318,8 @@ public class PlayerHealthManager : HealthManager
         if (beingDevourEffectCo != null)
             StopCoroutine(beingDevourEffectCo);
         evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", 0);
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("DisintegrateEffectTime", 0);
+
     }
 
     #endregion

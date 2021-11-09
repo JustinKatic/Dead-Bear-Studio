@@ -268,11 +268,30 @@ public class MinionHealthManager : HealthManager
     {
         float lerpTime = 0;
 
-        while (lerpTime < TimeTakenToBeDevoured)
+        while (lerpTime < (TimeTakenToBeDevoured / 2))
         {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDevoured));
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
             lerpTime += Time.deltaTime;
             myMatInstance.SetFloat("_BeingDevouredEffectTime", valToBeLerped);
+            yield return null;
+        }
+        if (beingDevourEffectCo != null)
+            StopCoroutine(beingDevourEffectCo);
+        beingDevourEffectCo = ToggleDisinegrateShader();
+        StartCoroutine(beingDevourEffectCo);
+    }
+
+    IEnumerator ToggleDisinegrateShader()
+    {
+        float lerpTime = 0;
+
+        while (lerpTime < (TimeTakenToBeDevoured / 2))
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
+            lerpTime += Time.deltaTime;
+            Debug.Log(valToBeLerped);
+            Debug.Log(lerpTime);
+            myMatInstance.SetFloat("_DisintegrateEffectTime", valToBeLerped);
             yield return null;
         }
         beingDevourEffectCo = null;
@@ -289,6 +308,8 @@ public class MinionHealthManager : HealthManager
         if (beingDevourEffectCo != null)
             StopCoroutine(beingDevourEffectCo);
         myMatInstance.SetFloat("_BeingDevouredEffectTime", 0);
+        myMatInstance.SetFloat("_DisintegrateEffectTime", 0);
+
     }
 
     [PunRPC]
