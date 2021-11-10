@@ -179,7 +179,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             tutorialButton.interactable = false;
             return;
         }
-        
+
         PhotonNetwork.NickName = playerNameInput.text;
         if (PhotonNetwork.InLobby)
         {
@@ -359,7 +359,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnJoinedLobby()
     {
-        createRoomButton.interactable = ValidateString(PhotonNetwork.NickName); 
+        createRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
         findRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
         tutorialButton.interactable = ValidateString(PhotonNetwork.NickName);
     }
@@ -612,22 +612,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     private bool ValidateString(string name)
-    {            
-        bool userNameValid = true;
-        int letterCount = 0;
-        
+    {
         if (!string.IsNullOrEmpty(name))
         {
             foreach (var letter in name)
             {
-                if (letter >= 65 && letter <= 90 || letter >= 97 && letter <= 122)
-                    letterCount++;
+                if (letter != 32)
+                    return true;
             }
         }
-
-        if (letterCount == 0)
-            userNameValid = false;
-        
-        return userNameValid;
+        return false;
     }
 }
