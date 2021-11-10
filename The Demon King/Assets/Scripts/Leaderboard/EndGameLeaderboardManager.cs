@@ -70,6 +70,8 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
             GameObject model = Instantiate(GetPlayerModel(data.currentModelName + "EndGame"), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
             model.GetComponentInChildren<TextMeshProUGUI>().text = data.PlayerNickName;
+            if (i >= 3)
+                model.GetComponent<Animator>().SetBool("4thPlaceAnim", true);
             i++;
             yield return new WaitForSeconds(TimeBetweenEachAnim);
         }
