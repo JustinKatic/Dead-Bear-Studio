@@ -92,11 +92,6 @@ public class RebindUI : MonoBehaviour
     }
     void UpdateUI()
     {
-        if (actionText != null)
-        {
-            actionText.text = actionName;
-        }
-
         if (Application.isPlaying)
         {
             rebindText.text = InputManager.GetBindingName(actionName, bindingIndex);
