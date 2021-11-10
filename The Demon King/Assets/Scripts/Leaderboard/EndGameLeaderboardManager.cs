@@ -12,6 +12,8 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 {
     public SOMenuData roomdata;
 
+    public float TimeBetweenEachAnim = 0.5f;
+
     public LeaderboardDataList leaderboardDataList;
     [Header("Leaderboard Display")]
 
@@ -29,12 +31,12 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
     private void Start()
     {
-        DisplayEndGameBoard();
+        StartCoroutine(DisplayEndGameBoard());
         StartCoroutine(ReturnToLobby());
 
     }
 
-    void DisplayEndGameBoard()
+    IEnumerator DisplayEndGameBoard()
     {
         List<LeaderboardData> sortedPlayerScoreList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
         List<LeaderboardData> sortedPlayerConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.playersConsumed).ToList();
@@ -68,7 +70,10 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
             GameObject model = Instantiate(GetPlayerModel(data.currentModelName + "EndGame"), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
             model.GetComponentInChildren<TextMeshProUGUI>().text = data.PlayerNickName;
+            if (i >= 3)
+                model.GetComponent<Animator>().SetBool("4thPlaceAnim", true);
             i++;
+            yield return new WaitForSeconds(TimeBetweenEachAnim);
         }
     }
 
