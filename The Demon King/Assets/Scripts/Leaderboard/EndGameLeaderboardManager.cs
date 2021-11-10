@@ -43,6 +43,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
         List<LeaderboardData> sortedMinionConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.MinionsConsumed).ToList();
         List<LeaderboardData> sortedDeathsList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerDeaths).ToList();
 
+        playerNameDisplayPrefab.text = sortedPlayerScoreList[0].PlayerNickName;
 
         int i = 0;
         foreach (LeaderboardData data in sortedPlayerScoreList)
