@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerControlSettingsMenu : MonoBehaviour
 {
     private Slider sensitivitySlider;
+    
     private void Start()
     {
         sensitivitySlider = GetComponent<Slider>();
