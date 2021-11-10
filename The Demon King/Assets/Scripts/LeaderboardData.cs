@@ -11,7 +11,7 @@ public class LeaderboardData : MonoBehaviour
     public int MinionsConsumed;
     public int PlayerDeaths;
     public bool IslocalPlayer;
-    public Image EvolutionImg;
+    public Sprite EvolutionSprite;
     public bool AmITheDemonKing;
     public string currentModelName;
 }

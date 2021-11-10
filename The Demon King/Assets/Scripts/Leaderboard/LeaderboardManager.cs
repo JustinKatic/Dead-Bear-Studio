@@ -30,9 +30,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     public bool DidAWinOccur = false;
 
     [Header("Evolution Images To Display")]
-    [SerializeField] private Image lionImg;
-    [SerializeField] private Image dragonImg;
-    [SerializeField] private Image rayImg;
+    [SerializeField] private Sprite lionImg;
+    [SerializeField] private Sprite dragonImg;
+    [SerializeField] private Sprite rayImg;
 
     [Header("Minion Types")]
     [SerializeField] private MinionType redMinion;
@@ -81,7 +81,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
     }
 
-    private Image GetImage(MinionType minionType)
+    private Sprite GetSprite(MinionType minionType)
     {
         if (minionType == redMinion)
             return lionImg;
@@ -163,7 +163,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             //get players score as demon king
             leaderboardData.PlayerScore = (int)player.CustomProperties["PlayerScore"];
 
-            leaderboardData.EvolutionImg = GetImage(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+            leaderboardData.EvolutionSprite = GetSprite(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
 
             leaderboardData.AmITheDemonKing = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
 
@@ -185,7 +185,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             playerLeaderboardPanel[i].PlayerNameText.text = data.PlayerNickName;
             playerLeaderboardPanel[i].DemonKingScoreText.text = data.PlayerScore.ToString();
             playerLeaderboardPanel[i].UpdateSliderValue(data.PlayerScore);
-            playerLeaderboardPanel[i].CurrentEvolutionImg.sprite = data.EvolutionImg.sprite;
+            playerLeaderboardPanel[i].CurrentEvolutionImg.sprite = data.EvolutionSprite;
 
 
             if (data.AmITheDemonKing)
@@ -202,7 +202,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 DemonKingPanel.UpdateSliderValue(data.PlayerScore);
 
                 DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(true);
-                DemonKingPanel.CurrentEvolutionImg.sprite = data.EvolutionImg.sprite;
+                DemonKingPanel.CurrentEvolutionImg.sprite = data.EvolutionSprite;
 
             }
             if (data.PlayerScore >= roomData.PointsToWin)
@@ -245,7 +245,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             //get players score as demon king
             leaderboardData.PlayerScore = (int)player.CustomProperties["PlayerScore"];
 
-            leaderboardData.EvolutionImg = GetImage(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+            leaderboardData.EvolutionSprite = GetSprite(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
 
             leaderboardData.AmITheDemonKing = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
 
