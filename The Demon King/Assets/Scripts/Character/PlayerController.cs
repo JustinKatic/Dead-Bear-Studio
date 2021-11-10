@@ -148,16 +148,18 @@ public class PlayerController : MonoBehaviourPun
             gameObject.layer = LayerMask.NameToLayer("PlayerParent");
             MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", MouseSensitivity);
 
+            // Re-enable when controllers are reimplemented
+            
             //Subsribes to the on action change event and detects what the current activecontroller is
-            InputSystem.onActionChange += (obj, change) =>
-            {
-                if (change == InputActionChange.ActionPerformed)
-                {
-                    var inputAction = (InputAction)obj;
-                    var lastControl = inputAction.activeControl;
-                    CurrentInputDevice = lastControl.device;
-                }
-            };
+            //InputSystem.onActionChange += (obj, change) =>
+           //{
+                //if (change == InputActionChange.ActionPerformed)
+                //{
+                    //var inputAction = (InputAction)obj;
+                    //var lastControl = inputAction.activeControl;
+                    //CurrentInputDevice = lastControl.device;
+                //}
+            //};
         }
     }
 
@@ -406,16 +408,8 @@ public class PlayerController : MonoBehaviourPun
         // if there is an input and camera position is not fixed
         if (playerLookInput.sqrMagnitude >= 0.01)
         {
-            if (CurrentInputDevice.name == "Mouse")
-            {
-                _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
-                _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
-            }
-            else
-            {
-                _cinemachineTargetYaw += playerLookInput.x * (MouseSensitivity * 10) * Time.deltaTime;
-                _cinemachineTargetPitch += playerLookInput.y * (MouseSensitivity * 10) * Time.deltaTime;
-            }
+            _cinemachineTargetYaw += playerLookInput.x * MouseSensitivity * Time.deltaTime;
+            _cinemachineTargetPitch += playerLookInput.y * MouseSensitivity * Time.deltaTime;
         }
 
         // clamp our rotations so our values are limited 360 degrees
