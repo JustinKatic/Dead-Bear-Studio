@@ -172,12 +172,20 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // called when the player name input field has been changed
     public void OnPlayerNameValueChanged(TMP_InputField playerNameInput)
     {
+        if (!ValidateString(playerNameInput.text))
+        {
+            createRoomButton.interactable = false;
+            findRoomButton.interactable = false;
+            tutorialButton.interactable = false;
+            return;
+        }
+        
         PhotonNetwork.NickName = playerNameInput.text;
         if (PhotonNetwork.InLobby)
         {
-            createRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
-            findRoomButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
-            tutorialButton.interactable = !string.IsNullOrEmpty(playerNameInput.text);
+            createRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
+            findRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
+            tutorialButton.interactable = ValidateString(PhotonNetwork.NickName);
         }
         PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
@@ -201,7 +209,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // CREATE ROOM SCREEN
     public void OnPlayerRoomValueChanged(TMP_InputField playerRoomNameInput)
     {
-        createNewRoomButton.interactable = !string.IsNullOrEmpty(playerRoomNameInput.text);
+        createNewRoomButton.interactable = ValidateString(playerRoomNameInput.text);
     }
 
     public void OnCreateButton(TMP_InputField roomNameInput)
@@ -348,9 +356,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnJoinedLobby()
     {
-        createRoomButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
-        findRoomButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
-        tutorialButton.interactable = !string.IsNullOrEmpty(PhotonNetwork.NickName);
+        createRoomButton.interactable = ValidateString(PhotonNetwork.NickName); 
+        findRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
+        tutorialButton.interactable = ValidateString(PhotonNetwork.NickName);
     }
 
     void UpdateRoomHashsOnJoinInvoke()
@@ -598,5 +606,25 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public void PlayOnButtonClickSound()
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(ButtonClickSound, gameObject);
+    }
+
+    private bool ValidateString(string name)
+    {            
+        bool userNameValid = true;
+        int letterCount = 0;
+        
+        if (!string.IsNullOrEmpty(name))
+        {
+            foreach (var letter in name)
+            {
+                if (letter >= 65 && letter <= 90 || letter >= 97 && letter <= 122)
+                    letterCount++;
+            }
+        }
+
+        if (letterCount == 0)
+            userNameValid = false;
+        
+        return userNameValid;
     }
 }
