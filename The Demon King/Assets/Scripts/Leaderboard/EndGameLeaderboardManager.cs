@@ -27,17 +27,25 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
     [SerializeField] private TextMeshProUGUI playerNameDisplayPrefab;
 
+    [FMODUnity.EventRef]
+    public string ChainSound;
+
+    private FMOD.Studio.EventInstance chainSoundInstance;
+
 
 
     private void Start()
     {
         StartCoroutine(DisplayEndGameBoard());
         StartCoroutine(ReturnToLobby());
-
     }
 
     IEnumerator DisplayEndGameBoard()
     {
+        chainSoundInstance = FMODUnity.RuntimeManager.CreateInstance(ChainSound);
+        chainSoundInstance.start();
+
+
         List<LeaderboardData> sortedPlayerScoreList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
         List<LeaderboardData> sortedPlayerConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.playersConsumed).ToList();
         List<LeaderboardData> sortedMinionConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.MinionsConsumed).ToList();
@@ -76,6 +84,8 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             i++;
             yield return new WaitForSeconds(TimeBetweenEachAnim);
         }
+        chainSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+
     }
 
     GameObject GetPlayerModel(string modelName)
