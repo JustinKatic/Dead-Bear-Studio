@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8215395079407836157}
   - component: {fileID: -8840863911467885845}
   m_Layer: 0
-  m_Name: DragonGasFriendly
+  m_Name: DragonGasFriendlyChild
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,12 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8c3956884337242964028eae0bdbfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageOverTimeDamage: 0
-  damageFrequency: 0
-  frequencyToReapplyGas: 0
-  gasDuration: 0
-  gasSize: 0
-  gasDurationOnPlayer: 0
   layersGasCanDamage:
     serializedVersion: 2
     m_Bits: 512
@@ -115,6 +109,62 @@ PrefabInstance:
     - target: {fileID: 647378427708815236, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
       propertyPath: m_Name
       value: ToonExplosionFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime2
+      value: 28527
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime1
+      value: 64957
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0.27234492
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 0.49056602
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.062014937
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.4716981
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.28356427
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_NumColorKeys
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4615550639974513675, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
       propertyPath: m_RootOrder
@@ -160,6 +210,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8790553370277534598, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: b1e43fb97dea264419df7fb9f0644889, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
 --- !u!4 &7303833134983695787 stripped

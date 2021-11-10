@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6930175165672385593}
   - component: {fileID: 2519097827649013424}
   m_Layer: 0
-  m_Name: DragonGasEnemy
+  m_Name: DragonGasEnemyKing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,12 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8c3956884337242964028eae0bdbfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageOverTimeDamage: 0
-  damageFrequency: 0
-  frequencyToReapplyGas: 0
-  gasDuration: 0
-  gasSize: 0
-  gasDurationOnPlayer: 0
   layersGasCanDamage:
     serializedVersion: 2
     m_Bits: 2048
@@ -115,6 +109,54 @@ PrefabInstance:
     - target: {fileID: 647378427708815236, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
       propertyPath: m_Name
       value: ToonExplosionFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime2
+      value: 26600
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime1
+      value: 56669
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime2
+      value: 41634
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.r
+      value: 0.66519344
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.b
+      value: 0.5471698
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.g
+      value: 0.5078368
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.r
+      value: 0.10014236
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.b
+      value: 0.2705055
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.g
+      value: 0.8584906
+      objectReference: {fileID: 0}
+    - target: {fileID: 4327473030607025220, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.r
+      value: 0.8067912
       objectReference: {fileID: 0}
     - target: {fileID: 4615550639974513675, guid: 2a4b20c2853032b42b0c2ddf20ec458c, type: 3}
       propertyPath: m_RootOrder
