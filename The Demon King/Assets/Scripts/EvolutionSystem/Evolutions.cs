@@ -63,6 +63,7 @@ public class Evolutions : MonoBehaviourPun
     public int DemonKingScoreWorth;
     public int healthRegenAmount;
     public float TimeTakenToBeDevoured;
+    public float TimeTakenToBeDesinegrated;
     public int AmountToHealAfterStunned;
     public int AmountToHealWhenEvolveing;
     public Material myMatInstance;
