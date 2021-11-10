@@ -17,6 +17,8 @@ public class HealthManager : MonoBehaviourPun
 
     public int healthRegenAmount = 1;
     public float TimeTakenToBeDevoured;
+    public float TimeTakenToBeDesinegrated;
+
     public float StunnedDuration { get { return stunnedDuration; } private set { stunnedDuration = value; } }
 
     [Header("Evolution Stats")]
