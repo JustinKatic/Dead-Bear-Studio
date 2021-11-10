@@ -330,6 +330,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             roomData.GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[roomData.GameTimeLimitString];
             roomData.PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.PointsToWinString];
             roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
+            roomData.RoomName = PhotonNetwork.CurrentRoom.Name;
 
             Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
 
