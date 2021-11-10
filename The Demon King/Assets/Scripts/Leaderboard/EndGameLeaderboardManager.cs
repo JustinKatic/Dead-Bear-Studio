@@ -53,7 +53,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             playerEndGameLeaderboardPanel[i].PlayersConsumedText.text = data.playersConsumed.ToString();
             playerEndGameLeaderboardPanel[i].MinionsConsumedText.text = data.MinionsConsumed.ToString();
 
-            if (sortedPlayerScoreList[i].PlayerScore == leaderboardDataList.Data[0].PlayerScore)
+            if (sortedPlayerScoreList[i].PlayerScore == sortedPlayerScoreList[0].PlayerScore)
                 playerEndGameLeaderboardPanel[i].HighestScoreImg.SetActive(true);
 
             if (sortedPlayerScoreList[i].playersConsumed == sortedPlayerConsumesList[0].playersConsumed)
