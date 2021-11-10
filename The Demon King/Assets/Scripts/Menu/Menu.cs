@@ -72,8 +72,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-        Camera.main.transform.position = new Vector3(1098.39f,-862.333f,1792.887f);
-        Camera.main.transform.eulerAngles = new Vector3(12.92f,47.58f, -0.004f);
+        Camera.main.transform.position = new Vector3(1098.39f, -862.333f, 1792.887f);
+        Camera.main.transform.eulerAngles = new Vector3(12.92f, 47.58f, -0.004f);
         // connect to the master server
         PhotonNetwork.ConnectUsingSettings();
 
@@ -179,7 +179,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             tutorialButton.interactable = false;
             return;
         }
-        
+
         PhotonNetwork.NickName = playerNameInput.text;
         if (PhotonNetwork.InLobby)
         {
@@ -224,6 +224,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         roomNameInput.text = roomNameInput.text.ToUpper();
 
         PhotonNetwork.CreateRoom(roomNameInput.text, options);
+
     }
 
     public void OnTutorialButton()
@@ -327,6 +328,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         else
         {
+            SetScreen(lobbyScreen);
+
             photonView.RPC("UpdateLobbyUI", RpcTarget.All);
             ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
             PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
@@ -356,7 +359,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnJoinedLobby()
     {
-        createRoomButton.interactable = ValidateString(PhotonNetwork.NickName); 
+        createRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
         findRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
         tutorialButton.interactable = ValidateString(PhotonNetwork.NickName);
     }
@@ -609,22 +612,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     private bool ValidateString(string name)
-    {            
-        bool userNameValid = true;
-        int letterCount = 0;
-        
+    {
         if (!string.IsNullOrEmpty(name))
         {
             foreach (var letter in name)
             {
-                if (letter >= 65 && letter <= 90 || letter >= 97 && letter <= 122)
-                    letterCount++;
+                if (letter != 32)
+                    return true;
             }
         }
-
-        if (letterCount == 0)
-            userNameValid = false;
-        
-        return userNameValid;
+        return false;
     }
 }
