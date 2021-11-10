@@ -119,7 +119,7 @@ public class EvolutionManager : MonoBehaviourPun
         {
             PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
             playerController.currentAnim = activeEvolution.animator;
-            playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth, activeEvolution.TimeTakenToBeDevoured, activeEvolution.healthRegenAmount, activeEvolution.DemonKingScoreWorth);
+            playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth, activeEvolution.TimeTakenToBeDevoured, activeEvolution.healthRegenAmount, activeEvolution.DemonKingScoreWorth, activeEvolution.TimeTakenToBeDesinegrated);
             playerHealthManager.AmountOfHealthAddedAfterStunned = activeEvolution.AmountToHealAfterStunned;
             playerController.CharacterInputs.Player.Evolve.performed += Evolve_performed;
         }
@@ -322,7 +322,7 @@ public class EvolutionManager : MonoBehaviourPun
         PlayerSoundManager.Instance.ChangeCurrentEvolutionSounds(activeEvolution.ModelAnimationSounds);
         playerController.currentAnim = activeEvolution.animator;
         playerHealthManager.AmountOfHealthAddedAfterStunned = activeEvolution.AmountToHealAfterStunned;
-        playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth, activeEvolution.TimeTakenToBeDevoured, activeEvolution.healthRegenAmount, activeEvolution.DemonKingScoreWorth);
+        playerHealthManager.SetPlayerValuesOnEvolve(activeEvolution.MaxHealth, activeEvolution.ExpWorth, activeEvolution.ScoreWorth, activeEvolution.TimeTakenToBeDevoured, activeEvolution.healthRegenAmount, activeEvolution.DemonKingScoreWorth, activeEvolution.TimeTakenToBeDesinegrated);
         playerHealthManager.Heal(activeEvolution.AmountToHealWhenEvolveing);
         leaderboardManager.RaiseUpdateLeaderboardEvent();
     }

@@ -231,13 +231,8 @@ public class PlayerHealthManager : HealthManager
     protected override void OnBeingDevourEnd(int attackerID)
     {
         debuffTimer.StopBeingDevouredTimer();
-        StopDevourEffect();
-        PlayerWhoDevouredMeController = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
-        PlayerWhoDevouredMeController.vCam.m_Priority = 12;
-        KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
 
-        KilledByUIPanel.SetActive(true);
-        Respawn(true);
+        Respawn(true, attackerID);
     }
 
     void PlayDevourEffect()
@@ -258,9 +253,9 @@ public class PlayerHealthManager : HealthManager
     {
         float lerpTime = 0;
 
-        while (lerpTime < (TimeTakenToBeDevoured / 2))
+        while (lerpTime < TimeTakenToBeDevoured)
         {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDevoured));
             lerpTime += Time.deltaTime;
             evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", valToBeLerped);
             yield return null;
@@ -276,9 +271,9 @@ public class PlayerHealthManager : HealthManager
     {
         float lerpTime = 0;
 
-        while (lerpTime < (TimeTakenToBeDevoured / 2))
+        while (lerpTime < TimeTakenToBeDesinegrated)
         {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDesinegrated));
             lerpTime += Time.deltaTime;
             evolutionManager.activeEvolution.myMatInstance.SetFloat("_DisintegrateEffectTime", valToBeLerped);
             yield return null;
@@ -318,7 +313,7 @@ public class PlayerHealthManager : HealthManager
         if (beingDevourEffectCo != null)
             StopCoroutine(beingDevourEffectCo);
         evolutionManager.activeEvolution.myMatInstance.SetFloat("_BeingDevouredEffectTime", 0);
-        evolutionManager.activeEvolution.myMatInstance.SetFloat("DisintegrateEffectTime", 0);
+        evolutionManager.activeEvolution.myMatInstance.SetFloat("_DisintegrateEffectTime", 0);
 
     }
 
@@ -414,26 +409,19 @@ public class PlayerHealthManager : HealthManager
 
     #region PlayerRespawn
 
-    public void Respawn(bool DidIDieFromPlayer)
+    public void Respawn(bool DidIDieFromPlayer, int attackerID)
     {
         if (photonView.IsMine)
-            photonView.RPC("Respawn_RPC", RpcTarget.All, DidIDieFromPlayer);
+            photonView.RPC("Respawn_RPC", RpcTarget.All, DidIDieFromPlayer, attackerID);
     }
 
     [PunRPC]
-    public void Respawn_RPC(bool DidIDieFromPlayer)
+    public void Respawn_RPC(bool DidIDieFromPlayer, int attackerID)
     {
         StartCoroutine(ResetPlayer());
 
         IEnumerator ResetPlayer()
         {
-            Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
-            currentActiveEvolution?.gameObject.SetActive(false);
-            canBeDevoured = false;
-            beingDevoured = false;
-            isStunned = false;
-            isRespawning = true;
-
             if (photonView.IsMine)
             {
                 player.onLaunchPad = false;
@@ -450,12 +438,11 @@ public class PlayerHealthManager : HealthManager
                 PlayerDeaths.Add("PlayerDeaths", playerDeaths);
                 PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerDeaths);
 
-                stunnedTimer = 0;
-
-                CheckIfIWasTheDemonKing(DidIDieFromPlayer);
+                //CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
-                DisablePlayerOnRespawn();
+                //DisablePlayerOnRespawn();
 
+                DisablePlayerOnRespawn();
 
                 if (PlayerWhoDevouredMeController != null)
                 {
@@ -489,8 +476,43 @@ public class PlayerHealthManager : HealthManager
             {
                 overheadHealthBar.SetActive(false);
                 namebarTxt.SetActive(false);
+            }
+
+            yield return new WaitForSeconds(TimeTakenToBeDesinegrated);
+
+
+            if (photonView.IsMine)
+            {
+                if (attackerID != -1)
+                {
+                    PlayerWhoDevouredMeController = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
+                    PlayerWhoDevouredMeController.vCam.m_Priority = 12;
+                    KilledByText.text = "Killed By: " + PlayerWhoDevouredMeController.photonPlayer.NickName;
+
+                    KilledByUIPanel.SetActive(true);
+                }
+
+                //Teleport player to spawn pos and set correct look at direction
+                player.cc.enabled = false;
+                transform.position = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.position;
+                player._cinemachineTargetYaw = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.y;
+                player._cinemachineTargetPitch = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.z;
+                player.cc.enabled = true;
+
+                CheckIfIWasTheDemonKing(DidIDieFromPlayer);
+                player.currentAnim.SetBool("Stunned", false);
 
             }
+
+            Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
+            currentActiveEvolution?.gameObject.SetActive(false);
+            canBeDevoured = false;
+            beingDevoured = false;
+            isStunned = false;
+            isRespawning = true;
+            StopDevourEffect();
+
+
 
             yield return new WaitForSeconds(RespawnTime);
 
@@ -535,14 +557,6 @@ public class PlayerHealthManager : HealthManager
         stunnedTimer = 0;
         IncrementSpawnPos();
         player.DisableMovement();
-        player.cc.enabled = false;
-
-        transform.position = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.position;
-        player._cinemachineTargetYaw = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.y;
-        player._cinemachineTargetPitch = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.z;
-
-        player.cc.enabled = true;
-        player.currentAnim.SetBool("Stunned", false);
     }
 
     public void IncrementSpawnPos()
@@ -592,13 +606,13 @@ public class PlayerHealthManager : HealthManager
     #endregion
 
     #region HealthBar
-    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount, int demonKingScoreWorth)
+    public void SetPlayerValuesOnEvolve(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount, int demonKingScoreWorth, float timeTakenToBeDesinegrated)
     {
-        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth, timeTakenToBeDevoured, healthRegenAmount, demonKingScoreWorth);
+        photonView.RPC("SetPlayerValuesOnEvolve_RPC", RpcTarget.All, MaxHealthValue, expWorth, scoreWorth, timeTakenToBeDevoured, healthRegenAmount, demonKingScoreWorth, timeTakenToBeDesinegrated);
     }
 
     [PunRPC]
-    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount, int demonKingScoreWorth)
+    protected void SetPlayerValuesOnEvolve_RPC(int MaxHealthValue, float expWorth, int scoreWorth, float timeTakenToBeDevoured, int healthRegenAmount, int demonKingScoreWorth, float timeTakenToBeDesinegrated)
     {
         //Run following on everyone
         MaxHealth = MaxHealthValue;
@@ -608,6 +622,7 @@ public class PlayerHealthManager : HealthManager
         myDemonKingScoreWorth = demonKingScoreWorth;
         this.healthRegenAmount = healthRegenAmount;
         TimeTakenToBeDevoured = timeTakenToBeDevoured;
+        TimeTakenToBeDesinegrated = timeTakenToBeDesinegrated;
 
 
         //Run following if not local player

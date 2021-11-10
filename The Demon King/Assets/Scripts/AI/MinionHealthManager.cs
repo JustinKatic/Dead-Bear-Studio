@@ -246,8 +246,7 @@ public class MinionHealthManager : HealthManager
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
-        Respawn();
-        StopDevourEffect();
+        Respawn();      
     }
 
     void PlayDevourEffect()
@@ -268,9 +267,9 @@ public class MinionHealthManager : HealthManager
     {
         float lerpTime = 0;
 
-        while (lerpTime < (TimeTakenToBeDevoured / 2))
+        while (lerpTime < TimeTakenToBeDevoured)
         {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDevoured));
             lerpTime += Time.deltaTime;
             myMatInstance.SetFloat("_BeingDevouredEffectTime", valToBeLerped);
             yield return null;
@@ -285,12 +284,10 @@ public class MinionHealthManager : HealthManager
     {
         float lerpTime = 0;
 
-        while (lerpTime < (TimeTakenToBeDevoured / 2))
+        while (lerpTime < TimeTakenToBeDesinegrated)
         {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / (TimeTakenToBeDevoured / 2)));
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / TimeTakenToBeDesinegrated));
             lerpTime += Time.deltaTime;
-            Debug.Log(valToBeLerped);
-            Debug.Log(lerpTime);
             myMatInstance.SetFloat("_DisintegrateEffectTime", valToBeLerped);
             yield return null;
         }
@@ -337,14 +334,17 @@ public class MinionHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
-            myModel.SetActive(false);
+            yield return new WaitForSeconds(TimeTakenToBeDesinegrated);
+
             col.enabled = false;
             hudCanvas.enabled = false;
-            isStunned = false;
             beingDevoured = false;
             canBeDevoured = false;
-            stunnedTimer = 0;
             reviving = true;
+            stunnedTimer = 0;
+            isStunned = false;
+            myModel.SetActive(false);
+            StopDevourEffect();
 
             if (PhotonNetwork.IsMasterClient)
             {
@@ -366,6 +366,8 @@ public class MinionHealthManager : HealthManager
             reviving = false;
         }
     }
+
+
     #endregion
 
     #region Stun
