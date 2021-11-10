@@ -85,7 +85,6 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
             yield return new WaitForSeconds(TimeBetweenEachAnim);
         }
         chainSoundInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
-
     }
 
     GameObject GetPlayerModel(string modelName)
