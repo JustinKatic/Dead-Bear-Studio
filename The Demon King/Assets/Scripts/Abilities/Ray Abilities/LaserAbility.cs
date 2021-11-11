@@ -56,9 +56,18 @@ public class LaserAbility : MonoBehaviourPun
     private PlayerController player;
     [SerializeField] private PlayerTimers timers;
 
+    [SerializeField] private GameObject laserChargeUpParent;
+    [SerializeField] private ParticleSystem laserGatheringParticle;
+
+    private Material ChargeUpMat;
+    [SerializeField] ParticleSystemRenderer chargeUpPS;
+    [SerializeField] private float laserShrinkSpeed = 50;
 
     private void Start()
     {
+        ChargeUpMat = Instantiate(chargeUpPS.material);
+        chargeUpPS.material = ChargeUpMat;
+
         LaserLine = GetComponent<LineRenderer>();
         if (photonView.IsMine)
         {
@@ -114,6 +123,8 @@ public class LaserAbility : MonoBehaviourPun
     {
         if (canShoot)
         {
+            laserGatheringParticle.gameObject.transform.localScale = Vector3.one;
+            laserGatheringParticle.gameObject.SetActive(true);
             chargingUp = true;
             timers.StartRayAbilityTimer(ChargeupTime);
         }
@@ -154,6 +165,13 @@ public class LaserAbility : MonoBehaviourPun
         {
             chargeUpTimer += Time.deltaTime;
 
+            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            laserChargeUpParent.transform.position = ray.GetPoint(5f);
+            laserChargeUpParent.transform.eulerAngles = cam.transform.eulerAngles;
+
+            float valToBeLerped = Mathf.Lerp(0, 1, (chargeUpTimer / ChargeupTime));
+            ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
+
             PlayerSoundManager.Instance.PlayRayChargeUpSound();
 
             if (chargeUpTimer >= ChargeupTime)
@@ -167,6 +185,7 @@ public class LaserAbility : MonoBehaviourPun
         }
     }
 
+
     void FireingLaser()
     {
         //Fireing laser state
@@ -175,6 +194,9 @@ public class LaserAbility : MonoBehaviourPun
             //shoot laser
             ShootLaser();
             currentLaserTime += Time.deltaTime;
+
+            float valToBeLerped = Mathf.Lerp(1, 0, (currentLaserTime / laserDuration));
+            ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
 
             //end laser reset its values ready for next shot
             if (currentLaserTime >= laserDuration || playerHealthManager.isStunned)
@@ -188,6 +210,7 @@ public class LaserAbility : MonoBehaviourPun
                 StartCoroutine(CanShoot(shootCooldown));
                 damageFrequencyTimer = damageFrequency;
                 timers.StopRayAbilityTimer();
+                StartCoroutine(SetChargeUpEffectFalse());
             }
         }
     }
@@ -240,6 +263,28 @@ public class LaserAbility : MonoBehaviourPun
         isFireing = true;
         player.currentAnim.SetTrigger("Attack");
     }
+    IEnumerator SetChargeUpEffectFalse()
+    {
+        StartCoroutine(DecreaseChargeupScale());
+        yield return new WaitForSeconds(0.5f);
+        laserGatheringParticle.gameObject.SetActive(false);
+    }
+
+    IEnumerator DecreaseChargeupScale()
+    {
+        float timer = 0;
+
+        while (timer < 0.5f)
+        {
+            timer += Time.deltaTime;
+            laserGatheringParticle.gameObject.transform.localScale = Vector3.Lerp(laserGatheringParticle.gameObject.transform.localScale, Vector3.zero, laserShrinkSpeed * Time.deltaTime);
+
+            yield return null;
+        }
+    }
+
+
+
 
 
     //Shoot cooldown
