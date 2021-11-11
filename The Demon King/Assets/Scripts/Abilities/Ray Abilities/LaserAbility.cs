@@ -54,14 +54,13 @@ public class LaserAbility : MonoBehaviourPun
     private Devour devour;
     private Camera cam;
     private PlayerController player;
-    [SerializeField] private PlayerTimers timers;
 
     [SerializeField] private GameObject laserChargeUpParent;
     [SerializeField] private ParticleSystem laserGatheringParticle;
 
     private Material ChargeUpMat;
     [SerializeField] ParticleSystemRenderer chargeUpPS;
-    [SerializeField] private float laserShrinkSpeed = 50;
+    [SerializeField] private float laserShrinkSpeed = 10;
 
     private void Start()
     {
@@ -90,7 +89,7 @@ public class LaserAbility : MonoBehaviourPun
             isFireing = false;
             LaserLine.enabled = false;
             rayEndVFX.SetActive(false);
-            CancelLinerender();
+            CancelShooting();
             currentLaserTime = 0;
         }
     }
@@ -101,7 +100,6 @@ public class LaserAbility : MonoBehaviourPun
         {
             if (devour.IsDevouring || playerHealthManager.beingDevoured)
             {
-                timers.StopRayAbilityTimer();
                 DisableLaser();
             }
             else
@@ -115,7 +113,6 @@ public class LaserAbility : MonoBehaviourPun
 
     private void OnDisable()
     {
-        timers.StopRayAbilityTimer();
         canShoot = false;
     }
 
@@ -125,8 +122,8 @@ public class LaserAbility : MonoBehaviourPun
         {
             laserGatheringParticle.gameObject.transform.localScale = Vector3.one;
             laserGatheringParticle.gameObject.SetActive(true);
+            StartChargeUpLaser();
             chargingUp = true;
-            timers.StartRayAbilityTimer(ChargeupTime);
         }
     }
 
@@ -136,7 +133,7 @@ public class LaserAbility : MonoBehaviourPun
         LaserLine.enabled = false;
         rayEndVFX.SetActive(false);
         chargedUp = false;
-        CancelLinerender();
+        CancelShooting();
         currentLaserTime = 0;
         StartCoroutine(CanShoot(shootCooldown));
         damageFrequencyTimer = damageFrequency;
@@ -149,7 +146,6 @@ public class LaserAbility : MonoBehaviourPun
             SetFireingTrue();
             PlayerSoundManager.Instance.StopRayChargeUpSound();
 
-            timers.StartRayAbilityBackwardsTimer(laserDuration);
 
             if (chargedUp)
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
@@ -172,17 +168,31 @@ public class LaserAbility : MonoBehaviourPun
             float valToBeLerped = Mathf.Lerp(0, 1, (chargeUpTimer / ChargeupTime));
             ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
 
+            UpdateChargeUpEffect(valToBeLerped, laserChargeUpParent.transform.position, laserChargeUpParent.transform.eulerAngles);
+
             PlayerSoundManager.Instance.PlayRayChargeUpSound();
 
             if (chargeUpTimer >= ChargeupTime)
             {
                 PlayerSoundManager.Instance.StopRayChargeUpSound();
                 PlayerSoundManager.Instance.PlayRayFullyChargedUpShootSound();
-                timers.StartRayAbilityBackwardsTimer(laserDuration);
                 SetFireingTrue();
                 chargedUp = true;
             }
         }
+    }
+
+
+    void StartChargeUpLaser()
+    {
+        photonView.RPC("StartChargeUpLaser_RPC", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    void StartChargeUpLaser_RPC()
+    {
+        laserGatheringParticle.gameObject.transform.localScale = Vector3.one;
+        laserGatheringParticle.gameObject.SetActive(true);
     }
 
 
@@ -198,6 +208,7 @@ public class LaserAbility : MonoBehaviourPun
             float valToBeLerped = Mathf.Lerp(1, 0, (currentLaserTime / laserDuration));
             ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
 
+
             //end laser reset its values ready for next shot
             if (currentLaserTime >= laserDuration || playerHealthManager.isStunned)
             {
@@ -205,11 +216,10 @@ public class LaserAbility : MonoBehaviourPun
                 LaserLine.enabled = false;
                 rayEndVFX.SetActive(false);
                 chargedUp = false;
-                CancelLinerender();
+                CancelShooting();
                 currentLaserTime = 0;
                 StartCoroutine(CanShoot(shootCooldown));
                 damageFrequencyTimer = damageFrequency;
-                timers.StopRayAbilityTimer();
                 StartCoroutine(SetChargeUpEffectFalse());
             }
         }
@@ -227,7 +237,7 @@ public class LaserAbility : MonoBehaviourPun
             LaserLine.SetPosition(1, hit.point);
             if (rayEndVFX.activeInHierarchy)
                 rayEndVFX.transform.position = hit.point;
-            DisplayLinerender(hit.point.x, hit.point.y, hit.point.z);
+            DisplayLaserShooting(hit.point.x, hit.point.y, hit.point.z);
 
 
             if (damageFrequencyTimer >= damageFrequency)
@@ -284,9 +294,6 @@ public class LaserAbility : MonoBehaviourPun
     }
 
 
-
-
-
     //Shoot cooldown
     public IEnumerator CanShoot(float timer)
     {
@@ -325,15 +332,29 @@ public class LaserAbility : MonoBehaviourPun
         }
     }
 
+    void UpdateChargeUpEffect(float chargeUpVal, Vector3 chargePos, Vector3 ChargeRot)
+    {
+        photonView.RPC("UpdateChargeUpEffect_RPC", RpcTarget.Others, chargeUpVal, chargePos.x, chargePos.y, chargePos.z, ChargeRot.x, ChargeRot.y, ChargeRot.z);
+    }
+
+    [PunRPC]
+    void UpdateChargeUpEffect_RPC(float chargeUpVal, float chargeX, float chargeY, float chargeZ, float chargeRotX, float chargeRotY, float chargeRotZ)
+    {
+        ChargeUpMat.SetFloat("_RadialEffectTime", chargeUpVal);
+
+        laserChargeUpParent.transform.position = new Vector3(chargeX, chargeY, chargeZ);
+        laserChargeUpParent.transform.eulerAngles = new Vector3(chargeRotX, chargeRotY, chargeRotZ);
+    }
+
 
     #region Display LineRedner
-    void DisplayLinerender(float L1X, float L1Y, float L1Z)
+    void DisplayLaserShooting(float L1X, float L1Y, float L1Z)
     {
         photonView.RPC("DisplayLinerender_RPC", RpcTarget.Others, L1X, L1Y, L1Z);
     }
 
     [PunRPC]
-    void DisplayLinerender_RPC(float L1X, float L1Y, float L1Z)
+    void DisplayLaserShooting_RPC(float L1X, float L1Y, float L1Z)
     {
         rayEndVFX.SetActive(true);
         LaserLine.SetPosition(0, shootPoint.position);
@@ -343,13 +364,13 @@ public class LaserAbility : MonoBehaviourPun
     }
 
 
-    void CancelLinerender()
+    void CancelShooting()
     {
         photonView.RPC("CancelLinerender_RPC", RpcTarget.Others);
     }
 
     [PunRPC]
-    void CancelLinerender_RPC()
+    void CancelShooting_RPC()
     {
         LaserLine.enabled = false;
         rayEndVFX.SetActive(false);
