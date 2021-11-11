@@ -206,9 +206,14 @@ public class LaserAbility : MonoBehaviourPun
             ShootLaser();
             currentLaserTime += Time.deltaTime;
 
-            float valToBeLerped = Mathf.Lerp(1, 0, (currentLaserTime / laserDuration));
+            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            laserChargeUpParent.transform.position = ray.GetPoint(5f);
+            laserChargeUpParent.transform.eulerAngles = cam.transform.eulerAngles;
+
+            float valToBeLerped = Mathf.Lerp(1, 0, (ChargeupTime / laserDuration));
             ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
 
+            UpdateChargeUpEffect(valToBeLerped, laserChargeUpParent.transform.position, laserChargeUpParent.transform.eulerAngles);
 
             //end laser reset its values ready for next shot
             if (currentLaserTime >= laserDuration || playerHealthManager.isStunned)
@@ -278,15 +283,13 @@ public class LaserAbility : MonoBehaviourPun
     {
         float timer = 0;
 
-        while (timer < 0.5f)
+        while (timer < 0.25f)
         {
             timer += Time.deltaTime;
             laserGatheringParticle.gameObject.transform.localScale = Vector3.Lerp(laserGatheringParticle.gameObject.transform.localScale, Vector3.zero, laserShrinkSpeed * Time.deltaTime);
 
             yield return null;
         }
-
-        yield return new WaitForSeconds(0.5f);
 
         laserGatheringParticle.gameObject.SetActive(false);
     }
