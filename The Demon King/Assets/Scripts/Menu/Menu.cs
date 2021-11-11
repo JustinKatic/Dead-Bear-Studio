@@ -68,7 +68,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [FMODUnity.EventRef]
     public string ButtonClickSound;
-
+    char infiniteSymbol = (char)236;
 
     void Start()
     {
@@ -260,8 +260,16 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         if (propertiesThatChanged.ContainsKey(roomData.GameTimeLimitString))
         {
             roomData.GameTimeLimit = (float)propertiesThatChanged[roomData.GameTimeLimitString];
-            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
-            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            if (roomData.GameTimeLimit == 0)
+            {
+                createRoomTimeLimitText.text = "\u221E";
+                lobbyTimeLimitText.text = "\u221E";
+            }
+            else
+            {
+                createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+                lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            }
         }
         if (propertiesThatChanged.ContainsKey(roomData.PointsToWinString))
         {
@@ -307,8 +315,18 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             if (roomData.GameTimeLimit > roomData.minGameTimeLimit)
                 roomData.GameTimeLimit -= 60;
         }
-        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
-        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+
+        if (roomData.GameTimeLimit == 0)
+        {
+            createRoomTimeLimitText.text = "\u221E";
+            lobbyTimeLimitText.text = "\u221E";
+        }
+        else
+        {
+            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+        }
+
     }
 
     public void UpdateRoomProperties()
@@ -367,8 +385,17 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void UpdateRoomHashsOnJoinInvoke()
     {
-        createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
-        lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+
+        if (roomData.GameTimeLimit == 0)
+        {
+            createRoomTimeLimitText.text = "\u221E";
+            lobbyTimeLimitText.text = "\u221E";
+        }
+        else
+        {
+            createRoomTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+            lobbyTimeLimitText.text = FormatTime(roomData.GameTimeLimit);
+        }
 
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
         lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
