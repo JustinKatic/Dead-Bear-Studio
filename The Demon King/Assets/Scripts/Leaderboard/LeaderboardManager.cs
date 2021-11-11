@@ -54,6 +54,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
     [SerializeField] private GameObject doubleScoreWarningFX;
+    [SerializeField] private GameObject kingNearWinWarning;
+    [SerializeField] private int percentToActivateNearWinWarning = 80;
 
     private bool doubleScoreProced;
 
@@ -204,6 +206,14 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
                 DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(true);
                 DemonKingPanel.CurrentEvolutionImg.sprite = data.EvolutionSprite;
+
+                if (data.PlayerScore >= (percentToActivateNearWinWarning * roomData.PointsToWin) / 100)
+                {
+                    kingNearWinWarning.SetActive(true);
+                }
+                else
+                    kingNearWinWarning.SetActive(false);
+
 
             }
             if (data.PlayerScore >= roomData.PointsToWin)
