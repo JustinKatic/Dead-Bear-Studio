@@ -89,6 +89,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
+        createNewRoomButton.interactable = false;
         findRoomButton.interactable = false;
         tutorialButton.interactable = false;
         roomData.InTutorial = false;

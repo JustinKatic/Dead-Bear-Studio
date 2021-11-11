@@ -75,7 +75,6 @@ public class AoeExplosionProjectileController : MonoBehaviourPun
             foreach (Collider col in colliders)
             {
                 DealDamageToPlayersAndMinions(col, aoeDamage, true);
-                Debug.Log("Dealing aoe dmg");
             }
             GameObject impactFX = PhotonNetwork.Instantiate("LionImpactFX", transform.position, Quaternion.identity);
             impactFX.GetComponent<LionExplosionVFX>().Init(aoeRadius);
