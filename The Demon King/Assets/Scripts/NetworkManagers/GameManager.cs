@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviourPun
     public PlayerControllerRuntimeSet playerControllerRuntimeSet;
     public Sprite[] startGameTimerPrefabs;
     public Image startGameTimerImg;
+    [SerializeField] private Image loadingScreenMat;
+
 
     void Awake()
     {
@@ -80,6 +82,25 @@ public class GameManager : MonoBehaviourPun
     [PunRPC]
     void SpawnPlayer_RPC()
     {
+        StartCoroutine(LerpLoadingScreenImg());
+    }
+
+
+    IEnumerator LerpLoadingScreenImg()
+    {
+        loadingBar.gameObject.SetActive(false);
+        float lerpTime = 0;
+
+
+        while (lerpTime < 2)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / 2));
+            lerpTime += Time.deltaTime;
+            loadingScreenMat.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        loadingScreenMat.material.SetFloat("_EffectTime", 1);
+
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == true)
         {
             //LOAD SPECTAOR PREFAB
@@ -98,9 +119,10 @@ public class GameManager : MonoBehaviourPun
             playerController.DisableMovement();
             if (SceneManager.GetActiveScene().name != "Tutorial")
                 StartCoroutine(CountDown());
+            LoadingScreen.SetActive(false);
         }
-        LoadingScreen.SetActive(false);
     }
+
 
     IEnumerator CountDown()
     {
@@ -114,4 +136,6 @@ public class GameManager : MonoBehaviourPun
         playerControllerRuntimeSet.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).EnableMovement();
         startGameTimerImg.gameObject.SetActive(false);
     }
+
+
 }
