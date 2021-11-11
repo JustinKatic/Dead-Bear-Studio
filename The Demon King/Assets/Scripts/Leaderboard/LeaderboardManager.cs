@@ -85,6 +85,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         Hashtable DemonKingScoreHash = new Hashtable();
         DemonKingScoreHash.Add("PlayerScore", PlayerScore);
         PhotonNetwork.LocalPlayer.SetCustomProperties(DemonKingScoreHash);
+
+        if (roomData.GameTimeLimit == 0)
+            matchTimeText.text = "\u221E";
     }
 
     private Sprite GetSprite(MinionType minionType)
@@ -327,6 +330,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         {
             yield return new WaitForEndOfFrame();
             roomData.GameTimeLimit -= Time.deltaTime;
+        
             matchTimeText.text = FormatTime(roomData.GameTimeLimit);
 
             if (roomData.GameTimeLimit <= timeToAwardDoubleScore && !doubleScoreProced)
