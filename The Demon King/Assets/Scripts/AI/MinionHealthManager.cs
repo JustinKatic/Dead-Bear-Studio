@@ -246,7 +246,7 @@ public class MinionHealthManager : HealthManager
 
     protected override void OnBeingDevourEnd(int attackerID)
     {
-        Respawn();      
+        Respawn();
     }
 
     void PlayDevourEffect()
@@ -334,10 +334,14 @@ public class MinionHealthManager : HealthManager
 
         IEnumerator ResetPlayer()
         {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                Stun(false);
+            }
+            hudCanvas.enabled = false;
             yield return new WaitForSeconds(TimeTakenToBeDesinegrated);
 
             col.enabled = false;
-            hudCanvas.enabled = false;
             beingDevoured = false;
             canBeDevoured = false;
             reviving = true;
@@ -348,7 +352,6 @@ public class MinionHealthManager : HealthManager
 
             if (PhotonNetwork.IsMasterClient)
             {
-                Stun(false);
                 agent.Warp(RespawnPositions[Random.Range(0, RespawnPositions.Length)].position);
                 Respawned = true;
             }
