@@ -89,6 +89,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         // disable the menu buttons at the start
         createRoomButton.interactable = false;
+        createNewRoomButton.interactable = false;
         findRoomButton.interactable = false;
         tutorialButton.interactable = false;
         roomData.InTutorial = false;
@@ -229,7 +230,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnTutorialButton()
     {
-        currentRoomName = "Tutorial" + Guid.NewGuid().ToString();
+        currentRoomName = "Tutorial" + Guid.NewGuid();
 
         RoomOptions options = new RoomOptions();
         options.MaxPlayers = 1;
