@@ -305,11 +305,6 @@ public class PlayerController : MonoBehaviourPun
             RotatePlayerToFaceCamDirection();
     }
 
-    private void FixedUpdate()
-    {
-        //Run following if local player
-    }
-
     private void LateUpdate()
     {
         if (photonView.IsMine)
