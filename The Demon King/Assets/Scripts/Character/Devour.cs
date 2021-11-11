@@ -221,7 +221,6 @@ public class Devour : MonoBehaviourPun
 
                 if (!healthManager.isStunned || IsDevouring)
                 {
-                    Debug.Log("devouring completed via devour script");
                     DevouringHasCompleted(false);
                 }
             }

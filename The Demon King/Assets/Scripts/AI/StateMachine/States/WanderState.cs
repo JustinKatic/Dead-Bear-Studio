@@ -77,7 +77,6 @@ public class WanderState : State
             }
             if (numberOfChecks >= 20)
             {
-                Debug.Log("20 Checks");
                 if (NavMesh.SamplePosition(defaultPos, out hit, 1.0f, NavMesh.AllAreas))
                 {
                     agent.CalculatePath(hit.position, path);

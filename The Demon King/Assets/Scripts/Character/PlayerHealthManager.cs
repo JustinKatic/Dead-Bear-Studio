@@ -341,9 +341,7 @@ public class PlayerHealthManager : HealthManager
 
         //Remove health
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
-
-        Debug.Log("att ID " + attackerID);
-
+        
         if (SetPlayerWhoLastShotMeLastNullCo != null)
             StopCoroutine(SetPlayerWhoLastShotMeLastNullCo);
 

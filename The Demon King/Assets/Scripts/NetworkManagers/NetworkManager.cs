@@ -21,33 +21,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        if (SceneManager.GetActiveScene().name == "Menu")
+        if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("A Player the lobby room");
-        }
-        else
-        {
-            if (PhotonNetwork.IsMasterClient)
+
+            bool IsThereAKing = false;
+            foreach (Player player in PhotonNetwork.PlayerList)
             {
-                Debug.Log("A Player left the game room");
-
-                bool IsThereAKing = false;
-                foreach (Player player in PhotonNetwork.PlayerList)
+                if (playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing)
                 {
-                    if (playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing)
-                    {
-                        IsThereAKing = true;
-                    }
+                    IsThereAKing = true;
                 }
-
-                RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                SendOptions sendOptions = new SendOptions { Reliability = true };
-                object[] data = new object[] { otherPlayer.NickName };
-                PhotonNetwork.RaiseEvent(DisplayPlayerLeftLobby, data, raiseEventOptions, sendOptions);
-
-                if (!IsThereAKing)
-                    GameObject.FindGameObjectWithTag("DemonKingCrown").GetComponent<CrownHealthManager>().CrownRespawn(true);
             }
+
+            RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            SendOptions sendOptions = new SendOptions { Reliability = true };
+            object[] data = new object[] { otherPlayer.NickName };
+            PhotonNetwork.RaiseEvent(DisplayPlayerLeftLobby, data, raiseEventOptions, sendOptions);
+
+            if (!IsThereAKing)
+                GameObject.FindGameObjectWithTag("DemonKingCrown").GetComponent<CrownHealthManager>().CrownRespawn(true);
         }
+        
     }
 }

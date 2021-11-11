@@ -247,10 +247,10 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
     }
     public void ShowChannel(string channelName)
     {
+        
         if (string.IsNullOrEmpty(channelName))
-        {
             return;
-        }
+        
 
         if (SubscribedChannel == null)
         {
@@ -261,7 +261,7 @@ public class ChatManager : MonoBehaviourPun, IChatClientListener
             }
         }
 
-        this.currentChatRoom = channelName;
+        currentChatRoom = channelName;
         ToStringMessages(SubscribedChannel);
     }
 

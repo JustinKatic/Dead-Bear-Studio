@@ -122,7 +122,6 @@ public class HealthManager : MonoBehaviourPun
         {
             if (!coRunning)
             {
-                Debug.Log("Entered co");
                 coRunning = true;
                 myDevourCo = DevourCorutine();
                 StartCoroutine(myDevourCo);
@@ -142,7 +141,6 @@ public class HealthManager : MonoBehaviourPun
 
             coRunning = false;
             CurAttackerId = 0;
-            Debug.Log("attacker id on devour end = " + attackerID);
             OnBeingDevourEnd(attackerID);
         }
     }
