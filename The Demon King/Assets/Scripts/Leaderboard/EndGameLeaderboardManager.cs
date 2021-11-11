@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EndGameLeaderboardManager : MonoBehaviourPun
 {
@@ -32,19 +33,38 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
     private FMOD.Studio.EventInstance chainSoundInstance;
 
+    [SerializeField] private Image fadeInImg;
+    private float fadeInLerpTime = 2;
+
+
 
 
     private void Start()
     {
         StartCoroutine(DisplayEndGameBoard());
         StartCoroutine(ReturnToLobby());
+        StartCoroutine(LerpFadeoutScreenImg());
     }
+
+    IEnumerator LerpFadeoutScreenImg()
+    {
+        fadeInImg.gameObject.SetActive(true);
+        float lerpTime = 0;
+
+        while (lerpTime < fadeInLerpTime)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / fadeInLerpTime));
+            lerpTime += Time.deltaTime;
+            fadeInImg.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        fadeInImg.material.SetFloat("_EffectTime", 1);
+    }
+
 
     IEnumerator DisplayEndGameBoard()
     {
         chainSoundInstance = FMODUnity.RuntimeManager.CreateInstance(ChainSound);
-        chainSoundInstance.start();
-
 
         List<LeaderboardData> sortedPlayerScoreList = leaderboardDataList.Data.OrderByDescending(o => o.PlayerScore).ToList();
         List<LeaderboardData> sortedPlayerConsumesList = leaderboardDataList.Data.OrderByDescending(o => o.playersConsumed).ToList();
@@ -54,6 +74,22 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
         playerNameDisplayPrefab.text = sortedPlayerScoreList[0].PlayerNickName;
 
         int i = 0;
+
+        foreach (LeaderboardData data in sortedPlayerScoreList)
+        {
+            GameObject model = Instantiate(GetPlayerModel(data.currentModelName + "EndGame"), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
+            model.GetComponentInChildren<TextMeshProUGUI>().text = data.PlayerNickName;
+            if (i >= 3)
+                model.GetComponent<Animator>().SetBool("4thPlaceAnim", true);
+
+            i++;
+        }
+
+        yield return new WaitForSeconds(fadeInLerpTime);
+
+        chainSoundInstance.start();
+
+        i = 0;
         foreach (LeaderboardData data in sortedPlayerScoreList)
         {
             playerEndGameLeaderboardPanel[i].DemonKingScoreText.text = data.PlayerScore.ToString();
@@ -76,11 +112,6 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
 
             playerEndGameLeaderboardPanel[i].gameObject.SetActive(true);
 
-
-            GameObject model = Instantiate(GetPlayerModel(data.currentModelName + "EndGame"), spawnPositions[i].transform.position, spawnPositions[i].transform.rotation);
-            model.GetComponentInChildren<TextMeshProUGUI>().text = data.PlayerNickName;
-            if (i >= 3)
-                model.GetComponent<Animator>().SetBool("4thPlaceAnim", true);
             i++;
             yield return new WaitForSeconds(TimeBetweenEachAnim);
         }

@@ -65,6 +65,9 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     public PlayerControllerRuntimeSet playerControllerRuntimeSet;
 
+    [SerializeField] private Image fadeoutImg;
+
+
 
     private void Start()
     {
@@ -272,10 +275,24 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
             leaderboardDataList.Data.Add(leaderboardData);
         }
-
-        ChangeScene("EndGame");
+        StartCoroutine(LerpFadeoutScreenImg());
     }
 
+    IEnumerator LerpFadeoutScreenImg()
+    {
+        fadeoutImg.gameObject.SetActive(true);
+        float lerpTime = 0;
+
+        while (lerpTime < 2)
+        {
+            float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / 2));
+            lerpTime += Time.deltaTime;
+            fadeoutImg.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        fadeoutImg.material.SetFloat("_EffectTime", 0);
+        ChangeScene("EndGame");
+    }
 
 
     public void ChangeScene(string sceneName)
