@@ -52,7 +52,6 @@ public class DragonGasEffect : MonoBehaviour
                 if (playerHealth.PlayerId != attackerId)
                 {
                     playerHealth.ApplyGasEffect(damageOverTimeDamage, attackerId, damageFrequency, gasDurationOnPlayer);
-                    Debug.Log("GasAPPLIED");
                 }
             }
             //If tag is Minion
