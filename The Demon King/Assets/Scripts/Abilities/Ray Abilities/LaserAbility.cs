@@ -122,6 +122,7 @@ public class LaserAbility : MonoBehaviourPun
         {
             laserGatheringParticle.gameObject.transform.localScale = Vector3.one;
             laserGatheringParticle.gameObject.SetActive(true);
+            ChargeUpMat.SetFloat("_RadialEffectTime", 1);
             StartChargeUpLaser();
             chargingUp = true;
         }
@@ -275,13 +276,6 @@ public class LaserAbility : MonoBehaviourPun
     }
     IEnumerator SetChargeUpEffectFalse()
     {
-        StartCoroutine(DecreaseChargeupScale());
-        yield return new WaitForSeconds(0.5f);
-        laserGatheringParticle.gameObject.SetActive(false);
-    }
-
-    IEnumerator DecreaseChargeupScale()
-    {
         float timer = 0;
 
         while (timer < 0.5f)
@@ -291,7 +285,12 @@ public class LaserAbility : MonoBehaviourPun
 
             yield return null;
         }
+
+        yield return new WaitForSeconds(0.5f);
+
+        laserGatheringParticle.gameObject.SetActive(false);
     }
+
 
 
     //Shoot cooldown
@@ -372,6 +371,7 @@ public class LaserAbility : MonoBehaviourPun
     [PunRPC]
     void CancelShooting_RPC()
     {
+        StartCoroutine(SetChargeUpEffectFalse());
         LaserLine.enabled = false;
         rayEndVFX.SetActive(false);
     }
