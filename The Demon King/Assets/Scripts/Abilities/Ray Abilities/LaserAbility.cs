@@ -350,7 +350,7 @@ public class LaserAbility : MonoBehaviourPun
     #region Display LineRedner
     void DisplayLaserShooting(float L1X, float L1Y, float L1Z)
     {
-        photonView.RPC("DisplayLinerender_RPC", RpcTarget.Others, L1X, L1Y, L1Z);
+        photonView.RPC("DisplayLaserShooting_RPC", RpcTarget.Others, L1X, L1Y, L1Z);
     }
 
     [PunRPC]
@@ -366,7 +366,7 @@ public class LaserAbility : MonoBehaviourPun
 
     void CancelShooting()
     {
-        photonView.RPC("CancelLinerender_RPC", RpcTarget.Others);
+        photonView.RPC("CancelShooting_RPC", RpcTarget.Others);
     }
 
     [PunRPC]
