@@ -62,6 +62,8 @@ public class LaserAbility : MonoBehaviourPun
     [SerializeField] ParticleSystemRenderer chargeUpPS;
     [SerializeField] private float laserShrinkSpeed = 10;
 
+    float DecreaseChargeTimer = 0;
+
     private void Start()
     {
         ChargeUpMat = Instantiate(chargeUpPS.material);
@@ -210,7 +212,10 @@ public class LaserAbility : MonoBehaviourPun
             laserChargeUpParent.transform.position = ray.GetPoint(5f);
             laserChargeUpParent.transform.eulerAngles = cam.transform.eulerAngles;
 
-            float valToBeLerped = Mathf.Lerp(1, 0, (ChargeupTime / laserDuration));
+
+            DecreaseChargeTimer -= Time.deltaTime;
+
+            float valToBeLerped = Mathf.Lerp(0, 1, (DecreaseChargeTimer / ChargeupTime));
             ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
 
             UpdateChargeUpEffect(valToBeLerped, laserChargeUpParent.transform.position, laserChargeUpParent.transform.eulerAngles);
@@ -277,6 +282,7 @@ public class LaserAbility : MonoBehaviourPun
         chargingUp = false;
         canShoot = false;
         isFireing = true;
+        DecreaseChargeTimer = chargeUpTimer;
         player.currentAnim.SetTrigger("Attack");
     }
     IEnumerator SetChargeUpEffectFalse()
