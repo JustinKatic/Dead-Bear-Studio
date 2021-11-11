@@ -53,6 +53,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     [SerializeField] private float timeToAwardDoubleScore = 300;
     [SerializeField] private TextMeshProUGUI matchTimeText;
     [SerializeField] private GameObject doubleScorePanel;
+    [SerializeField] private GameObject doubleScoreWarningFX;
 
     private bool doubleScoreProced;
 
@@ -305,6 +306,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             {
                 doubleScoreProced = true;
                 doubleScorePanel.SetActive(true);
+                doubleScoreWarningFX.SetActive(true);
             }
             if (PhotonNetwork.IsMasterClient)
             {
