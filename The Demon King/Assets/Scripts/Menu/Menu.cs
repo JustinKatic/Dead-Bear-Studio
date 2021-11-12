@@ -644,8 +644,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
 
     [PunRPC]
-    public void ChangeScene_RPC(string sceneName)
+    public void ChangeScene_RPC(string currentSceneName)
     {
+        sceneName = currentSceneName;
         StartCoroutine(LerpLoadScreenImg());
     }
 
