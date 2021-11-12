@@ -14,6 +14,12 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 {
+    [SerializeField] private Image fadeImg;
+    [SerializeField] private Image loadScreenImg;
+    [SerializeField] private GameObject loadingBarSliderImg;
+
+
+
     [SerializeField] private SOMenuData roomData;
 
     [SerializeField] private List<GameObject> screens;
@@ -74,6 +80,9 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         Camera.main.transform.position = new Vector3(1098.39f, -862.333f, 1792.887f);
         Camera.main.transform.eulerAngles = new Vector3(12.92f, 47.58f, -0.004f);
+
+        StartCoroutine(LerpFadeScreenImg());
+
         // connect to the master server
         PhotonNetwork.ConnectUsingSettings();
 
@@ -122,6 +131,21 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         playerNameInput.text = PlayerPrefs.GetString("PlayerName", null);
     }
 
+    IEnumerator LerpFadeScreenImg()
+    {
+        fadeImg.gameObject.SetActive(true);
+        float lerpTime = 0;
+
+        while (lerpTime < 2)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / 2));
+            lerpTime += Time.deltaTime;
+            fadeImg.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        fadeImg.material.SetFloat("_EffectTime", 1);
+        fadeImg.gameObject.SetActive(false);
+    }
 
     // joins a room of the requested room name
     public override void OnConnectedToMaster()
@@ -622,6 +646,24 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [PunRPC]
     public void ChangeScene_RPC(string sceneName)
     {
+        StartCoroutine(LerpLoadScreenImg());
+    }
+
+    IEnumerator LerpLoadScreenImg()
+    {
+        loadScreenImg.gameObject.SetActive(true);
+        float lerpTime = 0;
+
+        while (lerpTime < 2)
+        {
+            float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / 2));
+            lerpTime += Time.deltaTime;
+            loadScreenImg.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        loadScreenImg.material.SetFloat("_EffectTime", 0);
+        loadingBarSliderImg.SetActive(true);
+
         //Checks if the scene is found within the build settings, otherwise load game as default
         if (Application.CanStreamedLevelBeLoaded(sceneName))
         {
@@ -632,6 +674,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             Debug.Log("Scene Not Found in Build Settings");
         }
     }
+
 
 
     public void PlayOnButtonClickSound()

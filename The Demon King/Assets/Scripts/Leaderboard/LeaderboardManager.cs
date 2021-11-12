@@ -196,6 +196,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             playerLeaderboardPanel[i].UpdateSliderValue(data.PlayerScore);
             playerLeaderboardPanel[i].CurrentEvolutionImg.sprite = data.EvolutionSprite;
 
+            if (i == 0 && data.PlayerScore >= (percentToActivateNearWinWarning * roomData.PointsToWin) / 100)
+                playerLeaderboardPanel[i].NearWinVFX.SetActive(true);
+            else
+                playerLeaderboardPanel[i].NearWinVFX.SetActive(false);
+
+
 
             if (data.AmITheDemonKing)
             {
@@ -213,13 +219,12 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
                 DemonKingPanel.CurrentEvolutionImg.gameObject.SetActive(true);
                 DemonKingPanel.CurrentEvolutionImg.sprite = data.EvolutionSprite;
 
-                if (data.PlayerScore >= (percentToActivateNearWinWarning * roomData.PointsToWin) / 100)
+                if (i == 0 && data.PlayerScore >= (percentToActivateNearWinWarning * roomData.PointsToWin) / 100)
                 {
                     kingNearWinWarning.SetActive(true);
                 }
                 else
                     kingNearWinWarning.SetActive(false);
-
 
             }
             if (data.PlayerScore >= roomData.PointsToWin)
@@ -330,7 +335,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         {
             yield return new WaitForEndOfFrame();
             roomData.GameTimeLimit -= Time.deltaTime;
-        
+
             matchTimeText.text = FormatTime(roomData.GameTimeLimit);
 
             if (roomData.GameTimeLimit <= timeToAwardDoubleScore && !doubleScoreProced)
