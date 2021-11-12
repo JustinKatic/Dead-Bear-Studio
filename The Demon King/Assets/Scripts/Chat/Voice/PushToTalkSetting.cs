@@ -13,7 +13,7 @@ public class PushToTalkSetting : MonoBehaviour
     void Start()
     {
         voiceManager = FindObjectOfType<VoiceManager>();
-        toggleCheck.isOn = PlayerPrefs.GetInt("PushToTalkOn", 0) > 0;
+        toggleCheck.isOn = PlayerPrefs.GetInt("PushToTalkOn", 1) > 0;
         toggleCheck.onValueChanged.AddListener(PushToTalkChange);
     }
 
