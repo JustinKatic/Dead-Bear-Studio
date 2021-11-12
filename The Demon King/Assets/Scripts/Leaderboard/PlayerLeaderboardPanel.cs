@@ -11,15 +11,21 @@ public class PlayerLeaderboardPanel : MonoBehaviour
     public Image FillImg;
     public SOMenuData roomData;
     public Image CurrentEvolutionImg;
+    private Material material;
     public GameObject NearWinVFX;
 
     private void Awake()
     {
-        FillImg.fillAmount = 0;
+        material = Instantiate(FillImg.material);
+        FillImg.material = material;
+
+        FillImg.material.SetFloat("_MaxHealth", roomData.PointsToWin);
+        FillImg.material.SetFloat("_CurrentHealth", 0);
+        FillImg.fillAmount = 1;
     }
 
     public void UpdateSliderValue(int NewValue)
     {
-        FillImg.fillAmount = NewValue / (float)roomData.PointsToWin;
+        FillImg.material.SetFloat("_CurrentHealth", NewValue);
     }
 }
