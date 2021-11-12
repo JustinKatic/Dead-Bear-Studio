@@ -11,6 +11,7 @@ public class PlayerLeaderboardPanel : MonoBehaviour
     public Image FillImg;
     public SOMenuData roomData;
     public Image CurrentEvolutionImg;
+    public GameObject NearWinVFX;
 
     private void Awake()
     {
