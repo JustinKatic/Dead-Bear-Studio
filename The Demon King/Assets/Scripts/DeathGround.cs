@@ -20,8 +20,9 @@ public class DeathGround : MonoBehaviour
     IEnumerator RespawnPlayer(Collider other, PlayerController pc)
     {
         yield return new WaitForSeconds(2f);
-        pc.drowningInLava = false;
         other.gameObject.GetComponent<PlayerHealthManager>().Respawn(false, -1);
+        yield return new WaitForSeconds(.5f);
+        pc.drowningInLava = false;
     }
 }
 
