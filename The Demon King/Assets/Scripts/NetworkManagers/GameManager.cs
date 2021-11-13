@@ -89,17 +89,6 @@ public class GameManager : MonoBehaviourPun
     IEnumerator LerpLoadingScreenImg()
     {
         loadingBar.gameObject.SetActive(false);
-        float lerpTime = 0;
-
-
-        while (lerpTime < 2)
-        {
-            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / 2));
-            lerpTime += Time.deltaTime;
-            loadingScreenMat.material.SetFloat("_EffectTime", valToBeLerped);
-            yield return null;
-        }
-        loadingScreenMat.material.SetFloat("_EffectTime", 1);
 
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == true)
         {
@@ -117,10 +106,24 @@ public class GameManager : MonoBehaviourPun
             // initialize the player for all other players
             playerController.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.z);
             playerController.DisableMovement();
-            if (SceneManager.GetActiveScene().name != "Tutorial")
-                StartCoroutine(CountDown());
-            LoadingScreen.SetActive(false);
         }
+
+        float lerpTime = 0;
+
+
+        while (lerpTime < 2)
+        {
+            float valToBeLerped = Mathf.Lerp(0, 1, (lerpTime / 2));
+            lerpTime += Time.deltaTime;
+            loadingScreenMat.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        loadingScreenMat.material.SetFloat("_EffectTime", 1);
+
+        LoadingScreen.SetActive(false);
+
+        if (SceneManager.GetActiveScene().name != "Tutorial" && ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == false))
+            StartCoroutine(CountDown());
     }
 
 
