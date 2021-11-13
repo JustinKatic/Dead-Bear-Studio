@@ -15,8 +15,8 @@ public class GraphicsSettingsMenu : MonoBehaviour
     void Start()
     {
         Application.targetFrameRate = PlayerPrefs.GetInt("FramesPerSecond", 300);
-        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality", 3));
-        QualitySettings.renderPipeline = Quality[PlayerPrefs.GetInt("Quality", 3)];
+        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality", 2));
+        QualitySettings.renderPipeline = Quality[PlayerPrefs.GetInt("Quality", 2)];
 
         FPSSlider.minValue = 60f;
         FPSSlider.maxValue = 300f;
