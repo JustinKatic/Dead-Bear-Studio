@@ -74,7 +74,7 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
         else if (photonEvent.Code == DisplayPlayerKilledSelfMessage)
         {
             object[] data = (object[])photonEvent.CustomData;
-            DisplayMessage(data[0].ToString() + DeathByLavaMessageList[Random.Range(0, killedMessageList.Length)], MessageType.Death);
+            DisplayMessage(data[0].ToString() + " " + DeathByLavaMessageList[Random.Range(0, DeathByLavaMessageList.Length)], MessageType.Death);
         }
         else if (photonEvent.Code == DisplayPlayerLeftLobby)
         {
