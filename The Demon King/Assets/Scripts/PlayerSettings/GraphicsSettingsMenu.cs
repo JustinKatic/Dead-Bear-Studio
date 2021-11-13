@@ -7,33 +7,48 @@ using UnityEngine.UI;
 
 public class GraphicsSettingsMenu : MonoBehaviour
 {
-    public RenderPipelineAsset[] qualityLevels;
-    public TMP_Dropdown qualityDropDown;
-    [SerializeField]private TMP_Text FPSText;
-    [SerializeField]private Slider FPSSlider;
+    [SerializeField] private TMP_Text FPSText;
+    [SerializeField] private Slider FPSSlider;
+    [SerializeField] private RenderPipelineAsset[] Quality;
 
     // Start is called before the first frame update
     void Start()
     {
-        Application.targetFrameRate = PlayerPrefs.GetInt("FramesPerSecond",300);
+        Application.targetFrameRate = PlayerPrefs.GetInt("FramesPerSecond", 300);
+        QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality", 3));
+        QualitySettings.renderPipeline = Quality[PlayerPrefs.GetInt("Quality", 3)];
+
+        FPSSlider.minValue = 60f;
+        FPSSlider.maxValue = 300f;
+
         FPSSlider.value = Application.targetFrameRate;
         FPSText.text = FPSSlider.value.ToString();
-        qualityDropDown.value = QualitySettings.GetQualityLevel();
-        FPSSlider.onValueChanged.AddListener(OnFramesSliderChange);
     }
 
-    private void OnFramesSliderChange(float newFPSValue)
+    public void OnFramesSliderChange(Slider newFPSValue)
     {
-        PlayerPrefs.SetInt("FramesPerSecond", (int)newFPSValue);
-        FPSText.text = newFPSValue.ToString();
-
-        Application.targetFrameRate = (int)newFPSValue;
+        PlayerPrefs.SetInt("FramesPerSecond", (int)newFPSValue.value);
+        FPSText.text = newFPSValue.value.ToString();
+        Application.targetFrameRate = (int)newFPSValue.value;
     }
 
-    public void ChangeQualityLevel(int value)
+
+    public void SetQualityLow()
     {
-        QualitySettings.SetQualityLevel(value);
-        QualitySettings.renderPipeline = qualityLevels[value];
+        QualitySettings.SetQualityLevel(0);
+        QualitySettings.renderPipeline = Quality[0];
+        PlayerPrefs.SetInt("Quality", 0);
     }
-    
+    public void SetQualityMedium()
+    {
+        QualitySettings.SetQualityLevel(1);
+        QualitySettings.renderPipeline = Quality[1];
+        PlayerPrefs.SetInt("Quality", 1);
+    }
+    public void SetQualityHigh()
+    {
+        QualitySettings.SetQualityLevel(2);
+        QualitySettings.renderPipeline = Quality[2];
+        PlayerPrefs.SetInt("Quality", 2);
+    }
 }
