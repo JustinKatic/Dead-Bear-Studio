@@ -15,6 +15,10 @@ public class InGameSettings : MonoBehaviourPun
     public bool optionsCanOpenOnPress = true;
     public List<GameObject> menus = new List<GameObject>();
     [SerializeField] private Image fadeoutImg;
+    [FMODUnity.EventRef]
+    [SerializeField] private string ButtonClickSound;
+
+
 
     private void Start()
     {
@@ -154,4 +158,10 @@ public class InGameSettings : MonoBehaviourPun
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("Menu");
     }
+
+    public void PlayOnButtonClickSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(ButtonClickSound, gameObject);
+    }
+
 }
