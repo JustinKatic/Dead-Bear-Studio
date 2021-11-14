@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviourPun
 
     [Header("In Air Varaibles")]
     [SerializeField] float gravity;
-    [SerializeField] float DrowningInLavaGravity;
+    [HideInInspector] public float DrowningInLavaGravity;
     public float MaxAirMoveSpeed = 5f;
     [SerializeField] float InAirAcceleration = 7f;
     [SerializeField] float InAirDrag = 2f;
@@ -149,16 +149,16 @@ public class PlayerController : MonoBehaviourPun
             MouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", MouseSensitivity);
 
             // Re-enable when controllers are reimplemented
-            
+
             //Subsribes to the on action change event and detects what the current activecontroller is
             //InputSystem.onActionChange += (obj, change) =>
-           //{
-                //if (change == InputActionChange.ActionPerformed)
-                //{
-                    //var inputAction = (InputAction)obj;
-                    //var lastControl = inputAction.activeControl;
-                    //CurrentInputDevice = lastControl.device;
-                //}
+            //{
+            //if (change == InputActionChange.ActionPerformed)
+            //{
+            //var inputAction = (InputAction)obj;
+            //var lastControl = inputAction.activeControl;
+            //CurrentInputDevice = lastControl.device;
+            //}
             //};
         }
     }
