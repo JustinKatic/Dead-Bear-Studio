@@ -10,9 +10,13 @@ public class DeathGround : MonoBehaviour
         if (other.tag == "PlayerParent")
         {
             PlayerController pc = other.GetComponent<PlayerController>();
+            if (pc.drowningInLava)
+                return;
+
             pc.drowningInLava = true;
-            pc.playerJumpVelocity.y = 0;
             pc.DisableMovement();
+            pc.playerJumpVelocity.y = 0;
+            pc.playerMoveVelocity = Vector3.zero;
             pc.PlayMyDeathInLavaSound();
             StartCoroutine(RespawnPlayer(other, pc));
         }
@@ -21,7 +25,7 @@ public class DeathGround : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         other.gameObject.GetComponent<PlayerHealthManager>().Respawn(false, -1);
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1.2f);
         pc.drowningInLava = false;
     }
 }
