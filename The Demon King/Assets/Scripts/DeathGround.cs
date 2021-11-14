@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class DeathGround : MonoBehaviour
 {
+
+    public float drowningSpeed = -0.2f;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "PlayerParent")
@@ -16,6 +19,7 @@ public class DeathGround : MonoBehaviour
             pc.drowningInLava = true;
             pc.DisableMovement();
             pc.playerJumpVelocity.y = 0;
+            pc.DrowningInLavaGravity = drowningSpeed;
             pc.playerMoveVelocity = Vector3.zero;
             pc.PlayMyDeathInLavaSound();
             StartCoroutine(RespawnPlayer(other, pc));
