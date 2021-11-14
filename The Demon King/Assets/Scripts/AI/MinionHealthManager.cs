@@ -135,7 +135,7 @@ public class MinionHealthManager : HealthManager
     [PunRPC]
     public void ApplyGasEffect_RPC(int damageOverTimeDamage, int attackerId, float gasFrequency, float gasDurationOnPlayer)
     {
-        if (isStunned || !photonView.IsMine)
+        if (isStunned)
             return;
 
         gasTimer = 0;

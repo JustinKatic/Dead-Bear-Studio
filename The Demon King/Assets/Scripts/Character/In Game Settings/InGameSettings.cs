@@ -14,6 +14,12 @@ public class InGameSettings : MonoBehaviourPun
     private PlayerController playerController;
     public bool optionsCanOpenOnPress = true;
     public List<GameObject> menus = new List<GameObject>();
+    [SerializeField] private Image fadeoutImg;
+    [FMODUnity.EventRef]
+    [SerializeField] private string ButtonClickSound;
+
+
+
     private void Start()
     {
         if (photonView.IsMine)
@@ -37,7 +43,7 @@ public class InGameSettings : MonoBehaviourPun
         {
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(PauseMenu.GetComponentInChildren<Selectable>().gameObject);
-            
+
             if (optionsCanOpenOnPress)
             {
                 playerController.inMenus = true;
@@ -48,7 +54,7 @@ public class InGameSettings : MonoBehaviourPun
 
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                
+
                 PauseMenu.SetActive(true);
 
             }
@@ -67,9 +73,9 @@ public class InGameSettings : MonoBehaviourPun
 
                 }
                 playerController.CharacterInputs.PlayerLook.Enable();
-                
+
                 PauseMenu.SetActive(false);
-                
+
                 foreach (var menu in menus)
                 {
                     menu.SetActive(false);
@@ -93,14 +99,14 @@ public class InGameSettings : MonoBehaviourPun
             }
             playerController.CharacterInputs.PlayerLook.Enable();
 
-            
+
         }
     }
     public void OnButtonClickActivateMenu(GameObject menuToActivate)
     {
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(menuToActivate.GetComponentInChildren<Selectable>().gameObject);
-        
+
         menuToActivate.SetActive(true);
     }
     public void OnButtonClickDeactivateMenu(GameObject menuToActivate)
@@ -110,7 +116,7 @@ public class InGameSettings : MonoBehaviourPun
     public void OnButtonClickResumeGame(GameObject menuToActivate)
     {
         menuToActivate.SetActive(false);
-        
+
         optionsCanOpenOnPress = true;
         playerController.inMenus = false;
 
@@ -127,13 +133,35 @@ public class InGameSettings : MonoBehaviourPun
     public void OnClickQuitGame()
     {
         PauseMenu.SetActive(false);
-        
+
         foreach (var menu in menus)
         {
             menu.SetActive(false);
         }
-        
+        StartCoroutine(LerpFadeoutScreenImg());
+
+    }
+
+    IEnumerator LerpFadeoutScreenImg()
+    {
+        fadeoutImg.gameObject.SetActive(true);
+        float lerpTime = 0;
+
+        while (lerpTime < 2)
+        {
+            float valToBeLerped = Mathf.Lerp(1, 0, (lerpTime / 2));
+            lerpTime += Time.deltaTime;
+            fadeoutImg.material.SetFloat("_EffectTime", valToBeLerped);
+            yield return null;
+        }
+        fadeoutImg.material.SetFloat("_EffectTime", 0);
         PhotonNetwork.LeaveRoom();
         PhotonNetwork.LoadLevel("Menu");
     }
+
+    public void PlayOnButtonClickSound()
+    {
+        FMODUnity.RuntimeManager.PlayOneShotAttached(ButtonClickSound, gameObject);
+    }
+
 }
