@@ -341,7 +341,7 @@ public class PlayerHealthManager : HealthManager
 
         //Remove health
         CurrentHealth = Mathf.Clamp(CurrentHealth - damage, 0, MaxHealth);
-        
+
         if (SetPlayerWhoLastShotMeLastNullCo != null)
             StopCoroutine(SetPlayerWhoLastShotMeLastNullCo);
 
@@ -436,39 +436,11 @@ public class PlayerHealthManager : HealthManager
                 PlayerDeaths.Add("PlayerDeaths", playerDeaths);
                 PhotonNetwork.LocalPlayer.SetCustomProperties(PlayerDeaths);
 
-                //CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 PlayerSoundManager.Instance.StopStunnedSound();
-                //DisablePlayerOnRespawn();
 
                 DisablePlayerOnRespawn();
 
-                if (PlayerWhoDevouredMeController != null)
-                {
-                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                    SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
-                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
-                }
-                else if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
-                //killed self but a player shot me recently
-                {
-                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                    SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
-                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
 
-                    //Give the last player who hit exp
-                    AwardLastPlayerWhoShotMe(photonView.ViewID);
-                    playerWhoLastShotMeHealthManager = null;
-                }
-                //Commited suicide no one shot me recently
-                else
-                {
-                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                    SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
-                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSelfMessage, data, raiseEventOptions, sendOptions);
-                }
             }
             else
             {
@@ -499,6 +471,34 @@ public class PlayerHealthManager : HealthManager
 
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
                 player.currentAnim.SetBool("Stunned", false);
+
+                if (PlayerWhoDevouredMeController != null)
+                {
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
+                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
+                }
+                else if (!DidIDieFromPlayer && playerWhoLastShotMeHealthManager != null)
+                //killed self but a player shot me recently
+                {
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
+                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
+
+                    //Give the last player who hit exp
+                    AwardLastPlayerWhoShotMe(photonView.ViewID);
+                    playerWhoLastShotMeHealthManager = null;
+                }
+                //Commited suicide no one shot me recently
+                else
+                {
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
+                    PhotonNetwork.RaiseEvent(DisplayPlayerKilledSelfMessage, data, raiseEventOptions, sendOptions);
+                }
 
             }
 
