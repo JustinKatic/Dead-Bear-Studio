@@ -111,9 +111,10 @@ public class ExperienceManager : MonoBehaviourPun
 
     void UpdateBranchType(ExperienceBranch branchType, float value)
     {
+        float prevExp = branchType.ExpBar.CurrentExp;
         //Update current exp value and sliders
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
-        branchType.ExpBar.UpdateExpBar(branchType.ExpBar.CurrentExp);
+        StartCoroutine(branchType.ExpBar.UpdateExpBar(branchType.ExpBar.CurrentExp, prevExp));
         //Set UI to show active branch type
         UpdateActiveBranchUI(branchType);
 
@@ -258,8 +259,9 @@ public class ExperienceManager : MonoBehaviourPun
     //Decreases all exp my given % and updates exp sliders
     void UpdateExpBarOnDecrease(ExperienceBranch branchToUpdate, float decreaseValue)
     {
+        float prevExp = branchToUpdate.ExpBar.CurrentExp;
         branchToUpdate.ExpBar.CurrentExp = Mathf.Clamp(branchToUpdate.ExpBar.CurrentExp - (branchToUpdate.ExpBar.CurrentExp * decreaseValue), 0, branchToUpdate.ExpBar.level2ExpNeeded.value);
-        branchToUpdate.ExpBar.UpdateExpBar(branchToUpdate.ExpBar.CurrentExp);
+        StartCoroutine(branchToUpdate.ExpBar.UpdateExpBar(branchToUpdate.ExpBar.CurrentExp, prevExp));
 
         if (branchToUpdate.ExpBar.CurrentExp < branchToUpdate.ExpBar.level1ExpNeeded.value)
             branchToUpdate.ExpBar.expThreshholdBar.SetActive(false);
