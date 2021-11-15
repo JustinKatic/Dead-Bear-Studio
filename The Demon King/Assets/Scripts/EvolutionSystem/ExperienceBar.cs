@@ -37,9 +37,21 @@ public class ExperienceBar
         ActiveExpBarCanEvolveTxt.GetComponentInChildren<TextMeshProUGUI>().text = key;
     }
 
-    //Upates exp bar slider to current 
-    public void UpdateExpBar(float CurrentExp)
+    ////Upates exp bar slider to current 
+    //public void UpdateExpBar(float CurrentExp, float prevExp)
+    //{
+    //    expMaterialCopy.SetFloat("_CurrentHealth", CurrentExp);
+    //}
+
+    public IEnumerator UpdateExpBar(float CurrentExp, float prevExp)
     {
+        float lerpVal = prevExp;
+        while (Mathf.Abs(lerpVal - CurrentExp) > 0.05)
+        {
+            lerpVal = Mathf.Lerp(lerpVal, CurrentExp, 5 * Time.deltaTime);
+            expMaterialCopy.SetFloat("_CurrentHealth", lerpVal);
+            yield return null;
+        }
         expMaterialCopy.SetFloat("_CurrentHealth", CurrentExp);
     }
 }
