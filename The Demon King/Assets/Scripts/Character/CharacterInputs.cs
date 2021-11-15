@@ -432,6 +432,33 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""DevShortCuts"",
+            ""id"": ""8e1ea1b7-41e6-4826-931e-3e9c2d78bee1"",
+            ""actions"": [
+                {
+                    ""name"": ""ToggleUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""cec08845-2c54-4bc8-ac48-30746f92cb55"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""82bde3da-011f-4aea-9d22-b694f58499fe"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard/Mouse"",
+                    ""action"": ""ToggleUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -488,6 +515,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         // VoiceChat
         m_VoiceChat = asset.FindActionMap("VoiceChat", throwIfNotFound: true);
         m_VoiceChat_PushForTalk = m_VoiceChat.FindAction("PushForTalk", throwIfNotFound: true);
+        // DevShortCuts
+        m_DevShortCuts = asset.FindActionMap("DevShortCuts", throwIfNotFound: true);
+        m_DevShortCuts_ToggleUI = m_DevShortCuts.FindAction("ToggleUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -779,6 +809,39 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
         }
     }
     public VoiceChatActions @VoiceChat => new VoiceChatActions(this);
+
+    // DevShortCuts
+    private readonly InputActionMap m_DevShortCuts;
+    private IDevShortCutsActions m_DevShortCutsActionsCallbackInterface;
+    private readonly InputAction m_DevShortCuts_ToggleUI;
+    public struct DevShortCutsActions
+    {
+        private @CharacterInputs m_Wrapper;
+        public DevShortCutsActions(@CharacterInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ToggleUI => m_Wrapper.m_DevShortCuts_ToggleUI;
+        public InputActionMap Get() { return m_Wrapper.m_DevShortCuts; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(DevShortCutsActions set) { return set.Get(); }
+        public void SetCallbacks(IDevShortCutsActions instance)
+        {
+            if (m_Wrapper.m_DevShortCutsActionsCallbackInterface != null)
+            {
+                @ToggleUI.started -= m_Wrapper.m_DevShortCutsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.performed -= m_Wrapper.m_DevShortCutsActionsCallbackInterface.OnToggleUI;
+                @ToggleUI.canceled -= m_Wrapper.m_DevShortCutsActionsCallbackInterface.OnToggleUI;
+            }
+            m_Wrapper.m_DevShortCutsActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ToggleUI.started += instance.OnToggleUI;
+                @ToggleUI.performed += instance.OnToggleUI;
+                @ToggleUI.canceled += instance.OnToggleUI;
+            }
+        }
+    }
+    public DevShortCutsActions @DevShortCuts => new DevShortCutsActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -826,5 +889,9 @@ public class @CharacterInputs : IInputActionCollection, IDisposable
     public interface IVoiceChatActions
     {
         void OnPushForTalk(InputAction.CallbackContext context);
+    }
+    public interface IDevShortCutsActions
+    {
+        void OnToggleUI(InputAction.CallbackContext context);
     }
 }
