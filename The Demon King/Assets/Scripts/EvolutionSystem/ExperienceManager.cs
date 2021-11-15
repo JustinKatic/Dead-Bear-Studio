@@ -185,9 +185,9 @@ public class ExperienceManager : MonoBehaviourPun
 
             while (lerpTime < 2)
             {
-                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), ScaleLerpSpeed * Time.deltaTime);
-                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
-                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), 5 * Time.deltaTime);
+                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), 5 * Time.deltaTime);
+                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), 5 * Time.deltaTime);
                 lerpTime += Time.deltaTime;
 
                 yield return null;
@@ -203,9 +203,9 @@ public class ExperienceManager : MonoBehaviourPun
 
             while (lerpTime < 2)
             {
-                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
-                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), ScaleLerpSpeed * Time.deltaTime);
-                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), 5 * Time.deltaTime);
+                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), 5 * Time.deltaTime);
+                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), 5 * Time.deltaTime);
                 lerpTime += Time.deltaTime;
 
                 yield return null;
@@ -221,9 +221,9 @@ public class ExperienceManager : MonoBehaviourPun
 
             while (lerpTime < 2)
             {
-                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
-                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
-                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), ScaleLerpSpeed * Time.deltaTime);
+                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), 5 * Time.deltaTime);
+                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), 5 * Time.deltaTime);
+                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), 5 * Time.deltaTime);
                 lerpTime += Time.deltaTime;
 
                 yield return null;
