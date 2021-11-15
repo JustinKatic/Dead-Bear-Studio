@@ -121,6 +121,8 @@ public class ExperienceManager : MonoBehaviourPun
         if (branchType == CurrentActiveEvolutionTypeBranch && !demonKingEvolution.AmITheDemonKing)
             ScaleSize(branchType.ExpBar.CurrentExp);
 
+        SetCanEvolveFalse();
+
 
         // if experience is greater than level 2
         if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level2ExpNeeded.value)
@@ -131,8 +133,6 @@ public class ExperienceManager : MonoBehaviourPun
                 evolutionManager.nextEvolution = branchType.Level2Evolution;
                 SetCanEvolveTrue(branchType);
             }
-            else
-                SetCanEvolveFalse();
         }
         // if experience is greater than level 1
         else if (branchType.ExpBar.CurrentExp >= branchType.ExpBar.level1ExpNeeded.value)
@@ -144,9 +144,6 @@ public class ExperienceManager : MonoBehaviourPun
                 SetCanEvolveTrue(branchType);
                 branchType.ExpBar.expThreshholdBar.SetActive(true);
             }
-            else
-                SetCanEvolveFalse();
-
         }
 
     }
