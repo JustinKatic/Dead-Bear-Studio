@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 3567835692317388219}
   - component: {fileID: -8763100567238467979}
   - component: {fileID: 8134958989462789160}
+  - component: {fileID: 6181888183681959588}
   m_Layer: 9
   m_Name: DefaultAI
   m_TagString: Minion
@@ -79,7 +80,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TimeBeforeHealthRegen: 3
   healthRegenTickrate: 0.5
-  RespawnTime: 6
+  RespawnTime: 10
   stunnedDuration: 3
   healthRegenAmount: 1
   TimeTakenToBeDevoured: 1
@@ -282,6 +283,19 @@ MonoBehaviour:
   AttackRange: 2
   FleeUntilThisHealth: 3
   FleeAtThisHealth: 0
+--- !u!114 &6181888183681959588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1534572014928822935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a889cc57f44188d48932b50c8c2f6a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UIToToggle: {fileID: 6338676838965392140}
 --- !u!1 &1850511451300895471
 GameObject:
   m_ObjectHideFlags: 0
