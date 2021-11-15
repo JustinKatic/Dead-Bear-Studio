@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Cinemachine;
+using System.Collections;
 
 public class ExperienceManager : MonoBehaviourPun
 {
@@ -145,7 +146,7 @@ public class ExperienceManager : MonoBehaviourPun
             }
             else
                 SetCanEvolveFalse();
-            
+
         }
 
     }
@@ -170,15 +171,29 @@ public class ExperienceManager : MonoBehaviourPun
     //Sets the UI to show witch branch is currently active
     void UpdateActiveBranchUI(ExperienceBranch branchType)
     {
+        StartCoroutine(lerpBarScale(branchType));
+    }
+
+
+    IEnumerator lerpBarScale(ExperienceBranch branchType)
+    {
         if (branchType == redBranch)
         {
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
 
-            redBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1.1f, 1.2f, 1);
-            greenBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
-            blueBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
+            float lerpTime = 0;
+
+            while (lerpTime < 2)
+            {
+                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), ScaleLerpSpeed * Time.deltaTime);
+                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                lerpTime += Time.deltaTime;
+
+                yield return null;
+            }
         }
         else if (branchType == greenBranch)
         {
@@ -186,9 +201,17 @@ public class ExperienceManager : MonoBehaviourPun
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
 
-            redBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
-            greenBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1.1f, 1.2f, 1);
-            blueBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
+            float lerpTime = 0;
+
+            while (lerpTime < 2)
+            {
+                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), ScaleLerpSpeed * Time.deltaTime);
+                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                lerpTime += Time.deltaTime;
+
+                yield return null;
+            }
         }
         else if (branchType == blueBranch)
         {
@@ -196,9 +219,17 @@ public class ExperienceManager : MonoBehaviourPun
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
 
-            redBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
-            greenBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1f, 1f, 1);
-            blueBranch.ExpBar.expBarParent.transform.localScale = new Vector3(1.1f, 1.2f, 1);
+            float lerpTime = 0;
+
+            while (lerpTime < 2)
+            {
+                redBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(redBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                greenBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(greenBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1f, 1f, 1), ScaleLerpSpeed * Time.deltaTime);
+                blueBranch.ExpBar.expBarParent.transform.localScale = Vector3.Lerp(blueBranch.ExpBar.expBarParent.transform.localScale, new Vector3(1.1f, 1.2f, 1), ScaleLerpSpeed * Time.deltaTime);
+                lerpTime += Time.deltaTime;
+
+                yield return null;
+            }
         }
     }
 
@@ -242,7 +273,7 @@ public class ExperienceManager : MonoBehaviourPun
     //Sets can evolve based of branch type passed in
     public void SetCanEvolveTrue(ExperienceBranch branch)
     {
-        
+
         if (branch == redBranch)
         {
             redBranch.CanEvolve = true;
@@ -283,7 +314,7 @@ public class ExperienceManager : MonoBehaviourPun
 
     }
     //This runs inside the evolution Manager when the evolution button has been pressed
-    public bool  CanEvolve()
+    public bool CanEvolve()
     {
         //Check if I can evolve into any of these types is yes reset can evolve and return true else return false
         if (redBranch.CanEvolve || blueBranch.CanEvolve || greenBranch.CanEvolve)

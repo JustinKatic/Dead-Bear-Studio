@@ -426,7 +426,6 @@ public class PlayerHealthManager : HealthManager
                 player.knockback = false;
                 debuffTimer.StopStunTimer();
                 debuffTimer.StopBeingDevouredTimer();
-                debuffTimer.StartRespawnTimer(RespawnTime);
                 HealthBarContainer.gameObject.SetActive(false);
                 ExperienceBarContainer.SetActive(false);
 
@@ -453,6 +452,8 @@ public class PlayerHealthManager : HealthManager
 
             if (photonView.IsMine)
             {
+                debuffTimer.StartRespawnTimer(RespawnTime);
+
                 if (attackerID != -1)
                 {
                     PlayerWhoDevouredMeController = playerControllerRuntimeSet.GetPlayer(attackerID).gameObject.GetComponent<PlayerController>();
