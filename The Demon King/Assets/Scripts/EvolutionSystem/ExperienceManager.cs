@@ -272,14 +272,17 @@ public class ExperienceManager : MonoBehaviourPun
     //Sets can evolve based of branch type passed in
     public void SetCanEvolveTrue(ExperienceBranch branch)
     {
-
         if (branch == redBranch)
         {
             redBranch.CanEvolve = true;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = false;
+
             if (!demonKingEvolution.AmITheDemonKing)
             {
+                redBranch.ExpBar.childDisplayImg.SetActive(false);
+                redBranch.ExpBar.adultDisplayImg.SetActive(false);
+
                 redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
                 greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
                 blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
@@ -293,6 +296,9 @@ public class ExperienceManager : MonoBehaviourPun
 
             if (!demonKingEvolution.AmITheDemonKing)
             {
+                greenBranch.ExpBar.childDisplayImg.SetActive(false);
+                greenBranch.ExpBar.adultDisplayImg.SetActive(false);
+
                 redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
                 greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
                 blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
@@ -303,8 +309,12 @@ public class ExperienceManager : MonoBehaviourPun
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = true;
+
             if (!demonKingEvolution.AmITheDemonKing)
             {
+                blueBranch.ExpBar.childDisplayImg.SetActive(false);
+                blueBranch.ExpBar.adultDisplayImg.SetActive(false);
+
                 redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
                 greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
                 blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
@@ -381,6 +391,17 @@ public class ExperienceManager : MonoBehaviourPun
         redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
         greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
         blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+
+        if (CurrentActiveEvolutionTypeBranch.ExpBar.CurrentExp > CurrentActiveEvolutionTypeBranch.ExpBar.level1ExpNeeded.value)
+        {
+            CurrentActiveEvolutionTypeBranch.ExpBar.adultDisplayImg.SetActive(true);
+            CurrentActiveEvolutionTypeBranch.ExpBar.childDisplayImg.SetActive(false);
+        }
+        else
+        {
+            CurrentActiveEvolutionTypeBranch.ExpBar.adultDisplayImg.SetActive(false);
+            CurrentActiveEvolutionTypeBranch.ExpBar.childDisplayImg.SetActive(true);
+        }
     }
     #endregion
 }
