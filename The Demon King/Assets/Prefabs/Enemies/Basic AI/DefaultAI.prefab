@@ -82,7 +82,7 @@ MonoBehaviour:
   healthRegenTickrate: 0.5
   RespawnTime: 10
   stunnedDuration: 3
-  healthRegenAmount: 1
+  healthRegenAmount: 3
   TimeTakenToBeDevoured: 1
   TimeTakenToBeDesinegrated: 1
   MyExperienceWorth: 1
@@ -103,7 +103,7 @@ MonoBehaviour:
   isStunned: 0
   healthOffsetTime: 5
   playerControllerRuntimeSet: {fileID: 11400000, guid: 1b5235893161fbe43939768798897e76, type: 2}
-  MaxHealth: 15
+  MaxHealth: 30
   myModel: {fileID: 0}
   AmountOfHealthAddedAfterStunned: 5
   PlayerWhoShotMe: {fileID: 0}
@@ -277,12 +277,12 @@ MonoBehaviour:
   WanderingMovementSpeed: 3.5
   ChasingOrFleeingMovementSpeed: 4.5
   ChasePlayerForX: 3
-  healthToFleeAt: 5
+  healthToFleeAt: 10
   RadiusDistanceToStartChasingPlayer: 5
   TimeTillNextAttack: 1
   AttackRange: 2
-  FleeUntilThisHealth: 3
-  FleeAtThisHealth: 0
+  FleeUntilThisHealth: 25
+  FleeAtThisHealth: 10
 --- !u!114 &6181888183681959588
 MonoBehaviour:
   m_ObjectHideFlags: 0
