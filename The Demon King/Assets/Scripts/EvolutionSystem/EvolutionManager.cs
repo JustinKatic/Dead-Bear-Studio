@@ -147,7 +147,7 @@ public class EvolutionManager : MonoBehaviourPun
             activeEvolution = experienceManager.greenBranch.Level0Evolution;
 
         //Set experince managers current active evolution type to our active type
-        experienceManager.UpdateCurrentActiveEvolutionTypeBranch(activeEvolution.MyMinionType);
+        experienceManager.UpdateCurrentActiveEvolutionTypeBranch(activeEvolution.MyMinionType, true);
         healthBarCurrentDisplayImg.sprite = activeEvolution.MyHealthBarDisplaySprite;
     }
 
@@ -297,18 +297,7 @@ public class EvolutionManager : MonoBehaviourPun
         //Update current active evolution
         activeEvolution = evolution;
 
-        experienceManager.UpdateCurrentActiveEvolutionTypeBranch(evolution.MyMinionType);
-
-        if (experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.CurrentExp > experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.level1ExpNeeded.value)
-        {
-            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.adultDisplayImg.SetActive(true);
-            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.childDisplayImg.SetActive(false);
-        }
-        else
-        {
-            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.adultDisplayImg.SetActive(false);
-            experienceManager.CurrentActiveEvolutionTypeBranch.ExpBar.childDisplayImg.SetActive(true);
-        }
+        experienceManager.UpdateCurrentActiveEvolutionTypeBranch(evolution.MyMinionType, false);
 
         healthBarCurrentDisplayImg.sprite = activeEvolution.MyHealthBarDisplaySprite;
 

@@ -44,7 +44,7 @@ public class ExperienceManager : MonoBehaviourPun
     [SerializeField] private MinionType greenMinion;
     [SerializeField] private MinionType blueMinion;
 
-    [HideInInspector] public ExperienceBranch CurrentActiveEvolutionTypeBranch;
+    public ExperienceBranch CurrentActiveEvolutionTypeBranch;
 
     private Cinemachine3rdPersonFollow vCam;
 
@@ -112,11 +112,11 @@ public class ExperienceManager : MonoBehaviourPun
     void UpdateBranchType(ExperienceBranch branchType, float value)
     {
         float prevExp = branchType.ExpBar.CurrentExp;
+
         //Update current exp value and sliders
         branchType.ExpBar.CurrentExp = Mathf.Clamp(branchType.ExpBar.CurrentExp + value, 0, branchType.ExpBar.level2ExpNeeded.value);
         StartCoroutine(branchType.ExpBar.UpdateExpBar(branchType.ExpBar.CurrentExp, prevExp));
         //Set UI to show active branch type
-        UpdateActiveBranchUI(branchType);
 
         //Scale size of player if eating same type as our evolution
         if (branchType == CurrentActiveEvolutionTypeBranch && !demonKingEvolution.AmITheDemonKing)
@@ -147,39 +147,87 @@ public class ExperienceManager : MonoBehaviourPun
             }
         }
 
+        StartCoroutine(UpdateBranchUI(branchType));
     }
 
     //keep track of what branch the current evolution is (Only changed when evolve)
-    public void UpdateCurrentActiveEvolutionTypeBranch(MinionType minionType)
+    public void UpdateCurrentActiveEvolutionTypeBranch(MinionType minionType, bool startValues)
     {
         if (minionType == redMinion)
         {
             CurrentActiveEvolutionTypeBranch = redBranch;
+            if (!startValues)
+                StartCoroutine(UpdateBranchUI(redBranch));
         }
         else if (minionType == greenMinion)
         {
             CurrentActiveEvolutionTypeBranch = greenBranch;
+            if (!startValues)
+                StartCoroutine(UpdateBranchUI(greenBranch));
+
         }
         else if (minionType == blueMinion)
         {
             CurrentActiveEvolutionTypeBranch = blueBranch;
+            if (!startValues)
+                StartCoroutine(UpdateBranchUI(blueBranch));
         }
     }
 
-    //Sets the UI to show witch branch is currently active
-    void UpdateActiveBranchUI(ExperienceBranch branchType)
-    {
-        StartCoroutine(lerpBarScale(branchType));
-    }
 
 
-    IEnumerator lerpBarScale(ExperienceBranch branchType)
+    IEnumerator UpdateBranchUI(ExperienceBranch branchType)
     {
         if (branchType == redBranch)
         {
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
+
+            if (redBranch.CanEvolve && !demonKingEvolution.AmITheDemonKing)
+
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                redBranch.ExpBar.adultDisplayImg.SetActive(false);
+                redBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else
+            {
+                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                if (redBranch.ExpBar.CurrentExp >= redBranch.ExpBar.level1ExpNeeded.value)
+                {
+                    redBranch.ExpBar.adultDisplayImg.SetActive(true);
+                    redBranch.ExpBar.childDisplayImg.SetActive(false);
+                }
+                else if (redBranch.ExpBar.CurrentExp >= redBranch.ExpBar.level2ExpNeeded.value)
+                {
+                    redBranch.ExpBar.adultDisplayImg.SetActive(false);
+                    redBranch.ExpBar.childDisplayImg.SetActive(true);
+                }
+            }
+
+            if (greenBranch.ExpBar.CurrentExp >= greenBranch.ExpBar.level1ExpNeeded.value)
+            {
+                greenBranch.ExpBar.adultDisplayImg.SetActive(true);
+                greenBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else if (greenBranch.ExpBar.CurrentExp >= greenBranch.ExpBar.level2ExpNeeded.value)
+            {
+                greenBranch.ExpBar.adultDisplayImg.SetActive(false);
+                greenBranch.ExpBar.childDisplayImg.SetActive(true);
+            }
+
+            if (blueBranch.ExpBar.CurrentExp >= blueBranch.ExpBar.level1ExpNeeded.value)
+            {
+                blueBranch.ExpBar.adultDisplayImg.SetActive(true);
+                blueBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else if (blueBranch.ExpBar.CurrentExp >= blueBranch.ExpBar.level2ExpNeeded.value)
+            {
+                blueBranch.ExpBar.adultDisplayImg.SetActive(false);
+                blueBranch.ExpBar.childDisplayImg.SetActive(true);
+            }
+
 
             float lerpTime = 0;
 
@@ -193,11 +241,55 @@ public class ExperienceManager : MonoBehaviourPun
                 yield return null;
             }
         }
-        else if (branchType == greenBranch)
+        else if (branchType == greenBranch && !demonKingEvolution.AmITheDemonKing)
         {
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
+
+            if (greenBranch.CanEvolve)
+            {
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                greenBranch.ExpBar.adultDisplayImg.SetActive(false);
+                greenBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else
+            {
+                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                if (greenBranch.ExpBar.CurrentExp >= greenBranch.ExpBar.level1ExpNeeded.value)
+                {
+                    greenBranch.ExpBar.adultDisplayImg.SetActive(true);
+                    greenBranch.ExpBar.childDisplayImg.SetActive(false);
+                }
+                else if (greenBranch.ExpBar.CurrentExp >= greenBranch.ExpBar.level2ExpNeeded.value)
+                {
+                    greenBranch.ExpBar.adultDisplayImg.SetActive(false);
+                    greenBranch.ExpBar.childDisplayImg.SetActive(true);
+                }
+            }
+
+            if (redBranch.ExpBar.CurrentExp >= redBranch.ExpBar.level1ExpNeeded.value)
+            {
+                redBranch.ExpBar.adultDisplayImg.SetActive(true);
+                redBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else if (redBranch.ExpBar.CurrentExp >= redBranch.ExpBar.level2ExpNeeded.value)
+            {
+                redBranch.ExpBar.adultDisplayImg.SetActive(false);
+                redBranch.ExpBar.childDisplayImg.SetActive(true);
+            }
+
+            if (blueBranch.ExpBar.CurrentExp >= blueBranch.ExpBar.level1ExpNeeded.value)
+            {
+                blueBranch.ExpBar.adultDisplayImg.SetActive(true);
+                blueBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else if (blueBranch.ExpBar.CurrentExp >= blueBranch.ExpBar.level2ExpNeeded.value)
+            {
+                blueBranch.ExpBar.adultDisplayImg.SetActive(false);
+                blueBranch.ExpBar.childDisplayImg.SetActive(true);
+            }
+
 
             float lerpTime = 0;
 
@@ -211,11 +303,54 @@ public class ExperienceManager : MonoBehaviourPun
                 yield return null;
             }
         }
-        else if (branchType == blueBranch)
+        else if (branchType == blueBranch && !demonKingEvolution.AmITheDemonKing)
         {
             redBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             greenBranch.ExpBar.ActiveExpBarBackground.SetActive(false);
             blueBranch.ExpBar.ActiveExpBarBackground.SetActive(true);
+
+            if (blueBranch.CanEvolve)
+            {
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
+                blueBranch.ExpBar.adultDisplayImg.SetActive(false);
+                blueBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else
+            {
+                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
+                if (blueBranch.ExpBar.CurrentExp >= blueBranch.ExpBar.level1ExpNeeded.value)
+                {
+                    blueBranch.ExpBar.adultDisplayImg.SetActive(true);
+                    blueBranch.ExpBar.childDisplayImg.SetActive(false);
+                }
+                else if (blueBranch.ExpBar.CurrentExp >= blueBranch.ExpBar.level2ExpNeeded.value)
+                {
+                    blueBranch.ExpBar.adultDisplayImg.SetActive(false);
+                    blueBranch.ExpBar.childDisplayImg.SetActive(true);
+                }
+            }
+
+            if (greenBranch.ExpBar.CurrentExp >= greenBranch.ExpBar.level1ExpNeeded.value)
+            {
+                greenBranch.ExpBar.adultDisplayImg.SetActive(true);
+                greenBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else if (greenBranch.ExpBar.CurrentExp >= greenBranch.ExpBar.level2ExpNeeded.value)
+            {
+                greenBranch.ExpBar.adultDisplayImg.SetActive(false);
+                greenBranch.ExpBar.childDisplayImg.SetActive(true);
+            }
+
+            if (redBranch.ExpBar.CurrentExp >= redBranch.ExpBar.level1ExpNeeded.value)
+            {
+                redBranch.ExpBar.adultDisplayImg.SetActive(true);
+                redBranch.ExpBar.childDisplayImg.SetActive(false);
+            }
+            else if (redBranch.ExpBar.CurrentExp >= redBranch.ExpBar.level2ExpNeeded.value)
+            {
+                redBranch.ExpBar.adultDisplayImg.SetActive(false);
+                redBranch.ExpBar.childDisplayImg.SetActive(true);
+            }
 
             float lerpTime = 0;
 
@@ -250,7 +385,7 @@ public class ExperienceManager : MonoBehaviourPun
     public void DecreaseExperince(float decreaseValue)
     {
         SetCanEvolveFalse();
-        UpdateActiveBranchUI(CurrentActiveEvolutionTypeBranch);
+        StartCoroutine(UpdateBranchUI(CurrentActiveEvolutionTypeBranch));
         UpdateExpBarOnDecrease(redBranch, decreaseValue);
         UpdateExpBarOnDecrease(greenBranch, decreaseValue);
         UpdateExpBarOnDecrease(blueBranch, decreaseValue);
@@ -277,48 +412,18 @@ public class ExperienceManager : MonoBehaviourPun
             redBranch.CanEvolve = true;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = false;
-
-            if (!demonKingEvolution.AmITheDemonKing)
-            {
-                redBranch.ExpBar.childDisplayImg.SetActive(false);
-                redBranch.ExpBar.adultDisplayImg.SetActive(false);
-
-                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            }
         }
         else if (branch == greenBranch)
         {
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = true;
             blueBranch.CanEvolve = false;
-
-            if (!demonKingEvolution.AmITheDemonKing)
-            {
-                greenBranch.ExpBar.childDisplayImg.SetActive(false);
-                greenBranch.ExpBar.adultDisplayImg.SetActive(false);
-
-                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-            }
         }
         else if (branch == blueBranch)
         {
             redBranch.CanEvolve = false;
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = true;
-
-            if (!demonKingEvolution.AmITheDemonKing)
-            {
-                blueBranch.ExpBar.childDisplayImg.SetActive(false);
-                blueBranch.ExpBar.adultDisplayImg.SetActive(false);
-
-                redBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                greenBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(false);
-                blueBranch.ExpBar.ActiveExpBarCanEvolveTxt.SetActive(true);
-            }
         }
 
     }
