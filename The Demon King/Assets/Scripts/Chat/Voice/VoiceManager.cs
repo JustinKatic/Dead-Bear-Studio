@@ -5,6 +5,7 @@ using UnityEngine;
 using Photon.Voice.PUN;
 using Photon.Pun;
 using Photon.Voice.Unity;
+using Photon.Voice.Unity.UtilityScripts;
 
 public class VoiceManager : MonoBehaviourPun
 {
@@ -15,6 +16,7 @@ public class VoiceManager : MonoBehaviourPun
     private PhotonView PV;
     private PhotonVoiceView VV;
     private CharacterInputs CharacterInputs;
+    public MicAmplifier mic;
 
     void Awake()
     {
@@ -32,13 +34,15 @@ public class VoiceManager : MonoBehaviourPun
                 VV = gameObject.AddComponent<PhotonVoiceView>();
                 VV.RecorderInUse = Recorder;
                 VV.SpeakerInUse = Speaker;
+                VV.UsePrimaryRecorder = true;
 
                 CharacterInputs = InputManager.inputActions;
                 CharacterInputs.VoiceChat.Enable();
                 CharacterInputs.VoiceChat.PushForTalk.performed += PushForTalkPerformed;
                 CharacterInputs.VoiceChat.PushForTalk.canceled += PushForTalkCancelled;
-                
+
                 Recorder.TransmitEnabled = PlayerPrefs.GetInt("PushToTalkOn") == 0;
+                mic.AmplificationFactor = 5;
             }
         }
         DontDestroyOnLoad(gameObject);
@@ -48,14 +52,14 @@ public class VoiceManager : MonoBehaviourPun
     {
         if (PlayerPrefs.GetInt("PushToTalkOn") == 1)
             Recorder.TransmitEnabled = true;
-        
+
         Debug.Log("Talking");
     }
     private void PushForTalkCancelled(InputAction.CallbackContext obj)
     {
         if (PlayerPrefs.GetInt("PushToTalkOn") == 1)
             Recorder.TransmitEnabled = false;
-        
+
         Debug.Log("Stop Talking");
     }
 }
