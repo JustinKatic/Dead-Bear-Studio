@@ -61,9 +61,6 @@ public class UIMessageDisplay : MonoBehaviourPun, IOnEventCallback
         t.text = message;
     }
 
-
-
-
     public void OnEvent(EventData photonEvent)
     {
         if (photonEvent.Code == DisplayPlayerKilledSomeoneMessage)
