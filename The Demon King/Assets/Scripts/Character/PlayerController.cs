@@ -176,6 +176,7 @@ public class PlayerController : MonoBehaviourPun
         //Sets player id inside of gameManager = to this
         id = photonPlayer.ActorNumber;
         GetComponent<PlayerHealthManager>().PlayerId = id;
+
     }
 
 

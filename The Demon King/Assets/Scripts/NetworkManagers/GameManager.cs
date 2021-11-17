@@ -13,7 +13,8 @@ public class GameManager : MonoBehaviourPun
     public string playerPrefabLocation;
     public string spectatorPrefabLocation;
 
-    public SpawnPointRuntimeSet spawnPoints;
+    public GameObject[] spawnPoints;
+    public int currentSpawnIndex = 0;
 
     private int playersInGame;
     private int startGameTimer = 5;
@@ -93,18 +94,18 @@ public class GameManager : MonoBehaviourPun
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"] == true)
         {
             //LOAD SPECTAOR PREFAB
-            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints.GetItemIndex(mySpawnIndex).transform.position, spawnPoints.GetItemIndex(mySpawnIndex).transform.rotation);
+            GameObject spectatorPrefab = PhotonNetwork.Instantiate(spectatorPrefabLocation, spawnPoints[mySpawnIndex].transform.position, spawnPoints[mySpawnIndex].transform.rotation);
             SpectatorCamera spectatorCamera = spectatorPrefab.GetComponent<SpectatorCamera>();
 
             spectatorCamera.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
         }
         else
         {
-            GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints.GetItemIndex(mySpawnIndex).transform.position, spawnPoints.GetItemIndex(mySpawnIndex).transform.rotation);
+            GameObject playerObj = PhotonNetwork.Instantiate(playerPrefabLocation, spawnPoints[mySpawnIndex].transform.position, spawnPoints[mySpawnIndex].transform.rotation);
 
             PlayerController playerController = playerObj.GetComponent<PlayerController>();
             // initialize the player for all other players
-            playerController.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.y, spawnPoints.GetItemIndex(mySpawnIndex).transform.eulerAngles.z);
+            playerController.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer, spawnPoints[mySpawnIndex].transform.eulerAngles.y, spawnPoints[mySpawnIndex].transform.eulerAngles.z);
             playerController.DisableMovement();
         }
 
@@ -139,6 +140,4 @@ public class GameManager : MonoBehaviourPun
         playerControllerRuntimeSet.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).EnableMovement();
         startGameTimerImg.gameObject.SetActive(false);
     }
-
-
 }

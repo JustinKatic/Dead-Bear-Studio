@@ -63,9 +63,10 @@ public class PlayerHealthManager : HealthManager
     [SerializeField] float TimeToLerpOutOfDmgEffect = .5f;
 
     private IEnumerator beingDevourEffectCo;
-    [SerializeField] private SpawnPointRuntimeSet spawnPoints;
 
     [SerializeField] private float TimeToTrackLastPlayerWhoShotMe = 10;
+
+    private GameManager gameManager;
 
 
 
@@ -81,6 +82,8 @@ public class PlayerHealthManager : HealthManager
         PlayerHudHealthBarImg.material = playerHudHealthBarMat;
 
         evolutionManager = GetComponent<EvolutionManager>();
+        gameManager = FindObjectOfType<GameManager>();
+
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -465,9 +468,9 @@ public class PlayerHealthManager : HealthManager
 
                 //Teleport player to spawn pos and set correct look at direction
                 player.cc.enabled = false;
-                transform.position = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.position;
-                player._cinemachineTargetYaw = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.y;
-                player._cinemachineTargetPitch = spawnPoints.GetItemIndex(spawnPoints.CurrentSpawnIndex).transform.eulerAngles.z;
+                transform.position = gameManager.spawnPoints[gameManager.currentSpawnIndex].transform.position;
+                player._cinemachineTargetYaw = gameManager.spawnPoints[gameManager.currentSpawnIndex].transform.eulerAngles.y;
+                player._cinemachineTargetPitch = gameManager.spawnPoints[gameManager.currentSpawnIndex].transform.eulerAngles.z;
                 player.cc.enabled = true;
 
                 CheckIfIWasTheDemonKing(DidIDieFromPlayer);
@@ -567,10 +570,10 @@ public class PlayerHealthManager : HealthManager
     [PunRPC]
     public void IncrementSpawnPos_RPC()
     {
-        spawnPoints.CurrentSpawnIndex++;
+        gameManager.currentSpawnIndex++;
 
-        if (spawnPoints.CurrentSpawnIndex >= spawnPoints.Length())
-            spawnPoints.CurrentSpawnIndex = 0;
+        if (gameManager.currentSpawnIndex >= gameManager.spawnPoints.Length)
+            gameManager.currentSpawnIndex = 0;
     }
 
 
