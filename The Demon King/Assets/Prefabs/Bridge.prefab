@@ -1,19 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!64 &2039297728602779889
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1775623607516351498}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4495491838148767573, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!64 &3058960024791016527
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -21,6 +7,20 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1290710731370504025}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4495491838148767573, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+--- !u!64 &2039297728602779889
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1775623607516351498}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -96,27 +96,13 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &630627111322715855
+--- !u!64 &7128130688462239939
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4344693443781653409}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -4495491838148767573, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
---- !u!64 &713560458185447819
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4090752287742798834}
+  m_GameObject: {fileID: 3839468380054503391}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -138,13 +124,27 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -4495491838148767573, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
---- !u!64 &7128130688462239939
+--- !u!64 &713560458185447819
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3839468380054503391}
+  m_GameObject: {fileID: 4090752287742798834}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4495491838148767573, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+--- !u!64 &630627111322715855
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4344693443781653409}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
@@ -275,6 +275,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Chain_Round_01 (9)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!4 &1436534962554607280 stripped
@@ -341,6 +345,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
       propertyPath: m_Name
       value: SM_Chain_Round_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
@@ -567,6 +575,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Chain_Round_01 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!1 &4344693443781653409 stripped
@@ -646,6 +658,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Chain_Round_01 (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!1 &4090752287742798834 stripped
@@ -712,6 +728,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
       propertyPath: m_Name
       value: SM_Chain_Round_01 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
@@ -780,6 +800,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Chain_Round_01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!1 &3839468380054503391 stripped
@@ -847,6 +871,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Chain_Round_01 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!4 &5220805482404435418 stripped
@@ -913,6 +941,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
       propertyPath: m_Name
       value: SM_Chain_Round_01 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
@@ -993,6 +1025,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Chain_Round_01 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
 --- !u!4 &7403422487244102351 stripped
@@ -1071,6 +1107,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
       propertyPath: m_Name
       value: SM_Chain_Round_01 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3df97cd75355bbe449a8e602bf509aaa, type: 3}
