@@ -60,11 +60,11 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 637721778125946770
+  lastModified: 637727783731551093
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 2380
+    Value: 2434
   Exists: 1
 --- !u!114 &-7445281122716638500
 MonoBehaviour:
@@ -306,7 +306,7 @@ MonoBehaviour:
   Path: Assets/Audio/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 637721778126465376
+  lastModified: 637727783731441397
   LoadResult: 0
   FileSizes: []
   Exists: 1
@@ -782,6 +782,29 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 0
+--- !u!114 &-98236803124928554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/ScoreBoardMusic
+  m_EditorClassIdentifier: 
+  Path: event:/Music/ScoreBoardMusic
+  guid: 4fbf36d7d715de468ad522ce4e360459
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 0
 --- !u!114 &-282265689770731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -846,19 +869,19 @@ MonoBehaviour:
   - {fileID: 7992565703786766377}
   - {fileID: -2020335954518749340}
   - {fileID: -282265689770731}
-  - {fileID: 8528595617260936831}
   - {fileID: -2871598962141049542}
   - {fileID: -924604035373540288}
   - {fileID: 8925966514069176817}
   - {fileID: -821781688603792069}
-  - {fileID: 8248548370199453331}
-  - {fileID: 6772827453428423412}
+  - {fileID: 739803742002910355}
+  - {fileID: 3825224209851889207}
+  - {fileID: -98236803124928554}
   EditorParameters: []
   MasterBanks:
   - {fileID: -5429546343494386849}
   StringsBanks:
   - {fileID: -8580872373707632746}
-  stringsBankWriteTime: 637721778125946770
+  stringsBankWriteTime: 637727783731551093
   cacheVersion: 6
 --- !u!114 &321025694129688686
 MonoBehaviour:
@@ -950,6 +973,29 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+  Length: 0
+--- !u!114 &739803742002910355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UiSFX/ScoreBarDrop
+  m_EditorClassIdentifier: 
+  Path: event:/UiSFX/ScoreBarDrop
+  guid: 5a23a94a2d326046a7f3ba68829bfda0
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
   Length: 0
 --- !u!114 &1026321579327427602
 MonoBehaviour:
@@ -1084,6 +1130,29 @@ MonoBehaviour:
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
+  Length: 0
+--- !u!114 &3825224209851889207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UiSFX/MenuUIOnClick
+  m_EditorClassIdentifier: 
+  Path: event:/UiSFX/MenuUIOnClick
+  guid: e88569030b873e4f98d72baea7cf4109
+  Banks:
+  - {fileID: -5429546343494386849}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
   Length: 0
 --- !u!114 &4445861911189020633
 MonoBehaviour:
@@ -1255,8 +1324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/UI/Chain
   guid: fe44cd3bec9a7d4e9d9c246ad4ea7774
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1368,8 +1436,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: event:/UI/EndGameScoredBoard
   guid: 67e73c4882773b40b614d93592b241f3
-  Banks:
-  - {fileID: -5429546343494386849}
+  Banks: []
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
