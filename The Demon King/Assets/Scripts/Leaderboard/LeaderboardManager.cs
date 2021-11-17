@@ -41,7 +41,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
 
     [SerializeField] private PlayerControllerRuntimeSet players;
-    [SerializeField] private SpawnPointRuntimeSet playerCount;
+    [SerializeField] private GameObjectRuntimeSet playerCount;
 
 
 

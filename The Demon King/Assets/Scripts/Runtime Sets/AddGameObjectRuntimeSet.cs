@@ -5,7 +5,7 @@ using UnityEngine;
 public class AddGameObjectRuntimeSet : MonoBehaviour
 {
 
-    public SpawnPointRuntimeSet gameObjectRuntimeSet;
+    public GameObjectRuntimeSet gameObjectRuntimeSet;
     private void OnEnable()
     {
         gameObjectRuntimeSet.AddToList(gameObject);
