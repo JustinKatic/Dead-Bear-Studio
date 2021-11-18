@@ -140,7 +140,7 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""595e9fa9-8e16-407e-b57e-e0700fdda508"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -151,7 +151,7 @@ public class @SpectatorControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""c929f440-3ffc-4b60-9af4-956977f99f0c"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
