@@ -28,6 +28,7 @@ public class TutorialManager : MonoBehaviourPun
 
     [Header("Third Task")]
     public string EvolveToLionDisplayMessage;
+    public string ChangeEvolutionnDisplayMessage;
     public MinionHealthManager[] StunnedAI;
 
     [Header("Fourth Task")]
@@ -111,7 +112,7 @@ public class TutorialManager : MonoBehaviourPun
         foreach (var stunnedAI in StunnedAI)
         {
             stunnedAI.gameObject.SetActive(true);
-            stunnedAI.TakeDamage(20, 1);
+            stunnedAI.TakeDamage(40, 1);
             StartCoroutine(ConsumedTutorialCheckForCompletion());
         }
     }
@@ -128,7 +129,11 @@ public class TutorialManager : MonoBehaviourPun
                     consumed++;
             }
             if (consumed >= 3)
+            {
                 AllConsumed = true;
+                popupText.text = ChangeEvolutionnDisplayMessage;
+            }
+
             yield return null;
         }
 
