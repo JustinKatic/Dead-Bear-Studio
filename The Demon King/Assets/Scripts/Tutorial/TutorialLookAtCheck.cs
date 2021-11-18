@@ -27,7 +27,7 @@ public class TutorialLookAtCheck : MonoBehaviour
             if (hit.collider.gameObject.tag == "LookAtObj")
             {
                 count++;
-                hit.collider.gameObject.SetActive(false);
+                hit.collider.transform.parent.gameObject.SetActive(false);
             }
         }
 
