@@ -67,14 +67,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     public bool roomIsPublic = true;
     [HideInInspector] public string sceneName;
     private string currentRoomName;
-    private float roomMaxPlayers = 8;
+    private float roomMaxPlayers = 10;
 
     public bool spectatorMode = false;
     private GameObject lastActiveMenu;
 
     [FMODUnity.EventRef]
     public string ButtonClickSound;
-    char infiniteSymbol = (char)236;
+
 
     void Start()
     {
