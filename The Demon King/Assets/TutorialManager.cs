@@ -11,17 +11,23 @@ public class TutorialManager : MonoBehaviourPun
     public SOMenuData roomdata;
     PlayerController ourPlayer;
 
+    [SerializeField] private GameObject GreenAIEvolveTut;
+    public string FirstEvolutionDisplayMessage;
+
+    [SerializeField] private GameObject BlueAIEvolveTut;
+    public string SecondEvolutionDisplayMessage;
+
     [Header("First Task")]
     public GameObject[] LookAroundObjects;
-    public string FirstTaskDisplayMessage;
+    public string LookAtObjectsDisplayMessage;
 
 
     [Header("Second Task")]
-    public string SecondTaskDisplayMessage;
+    public string MoveToNextIslandDisplayMessage;
 
 
     [Header("Third Task")]
-    public string ThirdTaskDisplayMessage;
+    public string EvolveToLionDisplayMessage;
     public MinionHealthManager[] StunnedAI;
 
     [Header("Fourth Task")]
@@ -47,10 +53,7 @@ public class TutorialManager : MonoBehaviourPun
     public GameObject JumpPad2;
     public GameObject ScoreAI;
 
-
-
-
-
+    int evolutionTutorialIndex = 0;
 
     private void Start()
     {
@@ -75,7 +78,7 @@ public class TutorialManager : MonoBehaviourPun
         evolutionManager = ourPlayer.GetComponent<EvolutionManager>();
         //START FIRST TASK LOOK AT OBJECTS
         popupText.gameObject.SetActive(true);
-        popupText.text = FirstTaskDisplayMessage;
+        popupText.text = LookAtObjectsDisplayMessage;
     }
 
     IEnumerator CheckIfAllObjectesHaveBeenLookedAt()
@@ -94,7 +97,7 @@ public class TutorialManager : MonoBehaviourPun
             yield return null;
         }
         //START SECOND TASK MOVE AND JUMP TO NEXT ISLAND
-        popupText.text = SecondTaskDisplayMessage;
+        popupText.text = MoveToNextIslandDisplayMessage;
         ourPlayer.EnableMovement();
     }
 
@@ -103,7 +106,7 @@ public class TutorialManager : MonoBehaviourPun
     //START THIRD TASK CONSUME 3 Minions
     public void StartConsumeTutorial()
     {
-        popupText.text = ThirdTaskDisplayMessage;
+        popupText.text = EvolveToLionDisplayMessage;
 
         foreach (var stunnedAI in StunnedAI)
         {
@@ -128,29 +131,50 @@ public class TutorialManager : MonoBehaviourPun
                 AllConsumed = true;
             yield return null;
         }
+
         //START FOURTH TASK
-        ShootingTutorial();
+        StartCoroutine(EvolvedTutorialCheck(null, EvolveToLionDisplayMessage));
     }
 
     //FOURTH TASK SHOOTING/EVOLVING
-    public void ShootingTutorial()
-    {
-        popupText.text = FourthTaskDisplayMessage;
-        LearnToShootAI.SetActive(true);
-        StartCoroutine(EvolvedTutorialCheck());
-    }
 
-    IEnumerator EvolvedTutorialCheck()
+    IEnumerator EvolvedTutorialCheck(GameObject AIToActive, string messageToDisplay)
     {
+        if (AIToActive != null)
+        {
+            AIToActive.SetActive(true);
+        }
+
         bool hasEvolved = false;
         while (!hasEvolved)
         {
-            if (evolutionManager.evolving)
+            if (evolutionManager.evolved)
+            {
                 hasEvolved = true;
+                evolutionManager.evolved = false;
+            }
             yield return null;
         }
-        //START Fifth TASK
-        JumpPadTask();
+        evolutionTutorialIndex++;
+
+        if (evolutionTutorialIndex == 1)
+        {
+            popupText.text = messageToDisplay;
+            StartCoroutine(EvolvedTutorialCheck(BlueAIEvolveTut, SecondEvolutionDisplayMessage));
+        }
+        else if (evolutionTutorialIndex == 2)
+        {
+            popupText.text = messageToDisplay;
+            StartCoroutine(EvolvedTutorialCheck(GreenAIEvolveTut, FourthTaskDisplayMessage));
+        }
+        else if (evolutionTutorialIndex == 3)
+        {
+            popupText.text = messageToDisplay;
+            LearnToShootAI.SetActive(true);
+            //START Fifth TASK
+            JumpPadTask();
+        }
+
     }
 
     //FIFTH TASK JUMP PAD
