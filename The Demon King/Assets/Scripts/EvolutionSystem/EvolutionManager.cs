@@ -38,8 +38,9 @@ public class EvolutionManager : MonoBehaviourPun
     private LeaderboardManager leaderboardManager;
 
     [HideInInspector] public bool evolving = false;
-    private KnockBackPlayer knockBackPlayer;
+    [HideInInspector] public bool evolved = false;
 
+    private KnockBackPlayer knockBackPlayer;
 
     private IEnumerator changeEvolutionCo;
     private IEnumerator EvolutionEffectCo;
@@ -264,6 +265,7 @@ public class EvolutionManager : MonoBehaviourPun
             playerController.currentAnim.SetBool("Evolve", false);
             EvolveUIAnim.SetBool("Evolve", false);
 
+            evolved = true;
             //Stop UI timer for evolving
             playerTimers.StopEvolveTimer();
 
