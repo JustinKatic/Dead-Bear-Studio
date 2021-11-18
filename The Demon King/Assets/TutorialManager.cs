@@ -112,7 +112,7 @@ public class TutorialManager : MonoBehaviourPun
         foreach (var stunnedAI in StunnedAI)
         {
             stunnedAI.gameObject.SetActive(true);
-            stunnedAI.TakeDamage(40, 1);
+            stunnedAI.TakeDamage(100, 1);
             StartCoroutine(ConsumedTutorialCheckForCompletion());
         }
     }
