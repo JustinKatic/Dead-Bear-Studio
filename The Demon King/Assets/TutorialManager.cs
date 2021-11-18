@@ -138,7 +138,7 @@ public class TutorialManager : MonoBehaviourPun
         }
 
         //START FOURTH TASK
-        StartCoroutine(EvolvedTutorialCheck(null, EvolveToLionDisplayMessage));
+        StartCoroutine(EvolvedTutorialCheck(null, FirstEvolutionDisplayMessage));
     }
 
     //FOURTH TASK SHOOTING/EVOLVING
@@ -165,12 +165,12 @@ public class TutorialManager : MonoBehaviourPun
         if (evolutionTutorialIndex == 1)
         {
             popupText.text = messageToDisplay;
-            StartCoroutine(EvolvedTutorialCheck(BlueAIEvolveTut, SecondEvolutionDisplayMessage));
+            StartCoroutine(EvolvedTutorialCheck(GreenAIEvolveTut, SecondEvolutionDisplayMessage));
         }
         else if (evolutionTutorialIndex == 2)
         {
             popupText.text = messageToDisplay;
-            StartCoroutine(EvolvedTutorialCheck(GreenAIEvolveTut, FourthTaskDisplayMessage));
+            StartCoroutine(EvolvedTutorialCheck(BlueAIEvolveTut, FourthTaskDisplayMessage));
         }
         else if (evolutionTutorialIndex == 3)
         {
