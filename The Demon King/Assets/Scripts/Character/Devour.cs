@@ -171,8 +171,7 @@ public class Devour : MonoBehaviourPun
                 if (targetCanDevour == null)
                 {
                     targetCanDevour = hitHealthManager;
-                    if (!photonView.IsMine)
-                        targetCanDevour.DevourTargetIcon.SetActive(true);
+                    targetCanDevour.DevourTargetIcon.SetActive(true);
                 }
                 //If target is already our target
                 else if (targetCanDevour == hitHealthManager)
@@ -183,8 +182,7 @@ public class Devour : MonoBehaviourPun
                 {
                     targetCanDevour.DevourTargetIcon.SetActive(false);
                     targetCanDevour = hitHealthManager;
-                    if (!photonView.IsMine)
-                        targetCanDevour.DevourTargetIcon.SetActive(true);
+                    targetCanDevour.DevourTargetIcon.SetActive(true);
                 }
             }
             else if (hitHealthManager != null && !hitHealthManager.canBeDevoured && targetCanDevour != null)

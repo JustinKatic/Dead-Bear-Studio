@@ -68,8 +68,7 @@ public class LaserAbility : MonoBehaviourPun
 
     private void Start()
     {
-        ChargeUpMat = Instantiate(chargeUpPS.material);
-        chargeUpPS.material = ChargeUpMat;
+
 
         LaserLine = GetComponent<LineRenderer>();
         if (photonView.IsMine)
@@ -80,11 +79,14 @@ public class LaserAbility : MonoBehaviourPun
             player.CharacterInputs.Player.Ability1.canceled += Ability1_cancelled;
             playerHealthManager = GetComponentInParent<PlayerHealthManager>();
             devour = GetComponentInParent<Devour>();
+
         }
     }
 
     private void OnEnable()
     {
+        ChargeUpMat = Instantiate(chargeUpPS.material);
+        chargeUpPS.material = ChargeUpMat;
         canShoot = true;
         damageFrequencyTimer = damageFrequency;
         if (isFireing)
@@ -128,7 +130,7 @@ public class LaserAbility : MonoBehaviourPun
                 StopCoroutine(cancelRayCo);
             laserGatheringParticle.gameObject.transform.localScale = Vector3.one;
             laserGatheringParticle.gameObject.SetActive(true);
-            ChargeUpMat.SetFloat("_RadialEffectTime", 1);
+            ChargeUpMat.SetFloat("_RadialEffectTime", 0);
             StartChargeUpLaser();
             chargingUp = true;
         }
@@ -173,6 +175,7 @@ public class LaserAbility : MonoBehaviourPun
             //laserChargeUpParent.transform.eulerAngles = cam.transform.eulerAngles;
 
             float valToBeLerped = Mathf.Lerp(0, 1, (chargeUpTimer / ChargeupTime));
+            Debug.Log(valToBeLerped);
             ChargeUpMat.SetFloat("_RadialEffectTime", valToBeLerped);
 
             UpdateChargeUpEffect(valToBeLerped);
