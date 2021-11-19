@@ -488,7 +488,7 @@ public class PlayerHealthManager : HealthManager
                 {
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    object[] data = new object[] { PlayerWhoDevouredMeController.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
+                    object[] data = new object[] { playerWhoLastShotMeHealthManager.player.photonPlayer.NickName, PhotonNetwork.LocalPlayer.NickName };
                     PhotonNetwork.RaiseEvent(DisplayPlayerKilledSomeoneMessage, data, raiseEventOptions, sendOptions);
 
                     //Give the last player who hit exp
@@ -503,7 +503,6 @@ public class PlayerHealthManager : HealthManager
                     object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
                     PhotonNetwork.RaiseEvent(DisplayPlayerKilledSelfMessage, data, raiseEventOptions, sendOptions);
                 }
-
             }
 
             Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
@@ -530,6 +529,8 @@ public class PlayerHealthManager : HealthManager
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
             isRespawning = false;
+            evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTime", 0);
+
         }
     }
 

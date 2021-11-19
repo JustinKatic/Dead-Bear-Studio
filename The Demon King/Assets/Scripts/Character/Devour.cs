@@ -13,7 +13,7 @@ public class Devour : MonoBehaviourPun
     public bool IsDevouring;
     private bool isTargetPlayer = false;
 
-    [SerializeField]private int demonKingPointExtraPoints;
+    [SerializeField] private int demonKingPointExtraPoints;
     //Components
     private Camera cam;
     private PlayerController playerController;
@@ -114,13 +114,13 @@ public class Devour : MonoBehaviourPun
     void CheckForDevour()
     {
         GameObject ClosestTarget = null;
-        
+
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5F, 0.5F, 0));
         RaycastHit hit;
-        
-        if (Physics.Raycast(ray, out hit, devourRange,LayersCanDevour))
+
+        if (Physics.Raycast(ray, out hit, devourRange, LayersCanDevour))
         {
-            if (hit.transform.CompareTag("PlayerParent") ||hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
+            if (hit.transform.CompareTag("PlayerParent") || hit.transform.CompareTag("Minion") || hit.transform.CompareTag("DemonKingCrown"))
             {
                 if (hit.transform.GetComponent<HealthManager>().canBeDevoured)
                 {
@@ -150,10 +150,10 @@ public class Devour : MonoBehaviourPun
                         }
                     }
                 }
-            
+
             }
         }
-       
+
         if (targetCanDevour != null)
         {
             targetCanDevour.DevourTargetIcon.SetActive(false);
@@ -171,7 +171,8 @@ public class Devour : MonoBehaviourPun
                 if (targetCanDevour == null)
                 {
                     targetCanDevour = hitHealthManager;
-                    targetCanDevour.DevourTargetIcon.SetActive(true);
+                    if (!photonView.IsMine)
+                        targetCanDevour.DevourTargetIcon.SetActive(true);
                 }
                 //If target is already our target
                 else if (targetCanDevour == hitHealthManager)
@@ -182,7 +183,8 @@ public class Devour : MonoBehaviourPun
                 {
                     targetCanDevour.DevourTargetIcon.SetActive(false);
                     targetCanDevour = hitHealthManager;
-                    targetCanDevour.DevourTargetIcon.SetActive(true);
+                    if (!photonView.IsMine)
+                        targetCanDevour.DevourTargetIcon.SetActive(true);
                 }
             }
             else if (hitHealthManager != null && !hitHealthManager.canBeDevoured && targetCanDevour != null)
