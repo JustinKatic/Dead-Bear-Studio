@@ -503,7 +503,6 @@ public class PlayerHealthManager : HealthManager
                     object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
                     PhotonNetwork.RaiseEvent(DisplayPlayerKilledSelfMessage, data, raiseEventOptions, sendOptions);
                 }
-
             }
 
             Evolutions currentActiveEvolution = gameObject.GetComponentInChildren<Evolutions>();
@@ -530,6 +529,8 @@ public class PlayerHealthManager : HealthManager
             if (gameObject.GetComponentInChildren<Evolutions>() == null)
                 currentActiveEvolution?.gameObject.SetActive(true);
             isRespawning = false;
+            evolutionManager.activeEvolution.myMatInstance.SetFloat("_DamageEffectTime", 0);
+
         }
     }
 
