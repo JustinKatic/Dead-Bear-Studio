@@ -261,7 +261,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             if ((bool)player.CustomProperties["IsSpectator"])
                 continue;
 
-            LeaderboardData leaderboardData = new LeaderboardData();
+            LeaderboardData leaderboardData = (LeaderboardData)ScriptableObject.CreateInstance("LeaderboardData");
 
             leaderboardData.PlayerNickName = player.NickName;
             //get players score as demon king
