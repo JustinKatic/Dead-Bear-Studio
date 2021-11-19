@@ -14,6 +14,7 @@ public class PlayerHealthManager : HealthManager
 
     [Header("Player Hud UI")]
     [SerializeField] protected Canvas MyHUDCanvas;
+    [SerializeField] protected GameObject MyOverheadHUDCanvas;
     [SerializeField] protected Transform HealthBarContainer;
     [SerializeField] private GameObject ExperienceBarContainer;
     [SerializeField] GameObject playerHealVfx;
@@ -92,6 +93,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
+            MyOverheadHUDCanvas.SetActive(false);
             debuffTimer = GetComponentInChildren<PlayerTimers>();
             overheadHealthBar.gameObject.SetActive(false);
             CurrentHealth = MaxHealth;
