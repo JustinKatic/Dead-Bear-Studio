@@ -10,9 +10,9 @@ public class AudioSettings : MonoBehaviour
     private FMOD.Studio.Bus Music;
     private FMOD.Studio.Bus SFX;
 
-    private float MasterVolume = 1f;
-    private float SFXVolume = 1f;
-    private float MusicVolume = 1f;
+    private float MasterVolume;
+    private float SFXVolume;
+    private float MusicVolume;
 
     public Slider SFXSlider;
     public Slider MusicSlider;
@@ -24,6 +24,10 @@ public class AudioSettings : MonoBehaviour
         Music = FMODUnity.RuntimeManager.GetBus("bus:/Master/Music");
         Master = FMODUnity.RuntimeManager.GetBus("bus:/Master");
 
+        MasterVolume = PlayerPrefs.GetFloat("MasterVolume", 1);
+        MusicVolume = PlayerPrefs.GetFloat("MusicVolume", 1);
+        SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1);
+
         SFXSlider.maxValue = 1;
         MusicSlider.maxValue = 1;
         MasterSlider.maxValue = 1;
@@ -31,7 +35,13 @@ public class AudioSettings : MonoBehaviour
         SFXSlider.value = SFXVolume;
         MusicSlider.value = MusicVolume;
         MasterSlider.value = MasterVolume;
-        
+
+
+        Music.setVolume(MusicVolume);
+        SFX.setVolume(SFXVolume);
+        Master.setVolume(MasterVolume);
+
+
         SFXSlider.onValueChanged.AddListener(SFXVolumeLevel);
         MasterSlider.onValueChanged.AddListener(MasterVolumeLevel);
         MusicSlider.onValueChanged.AddListener(MusicVolumeLevel);
@@ -48,13 +58,18 @@ public class AudioSettings : MonoBehaviour
     public void SFXVolumeLevel(float newSFXVolume)
     {
         SFXVolume = newSFXVolume;
+        PlayerPrefs.SetFloat("SFXVolume", newSFXVolume);
+
     }
     public void MasterVolumeLevel(float newMasterVolume)
     {
         MasterVolume = newMasterVolume;
-    }    
+        PlayerPrefs.SetFloat("MasterVolume", newMasterVolume);
+
+    }
     public void MusicVolumeLevel(float newMusicVolume)
     {
         MusicVolume = newMusicVolume;
+        PlayerPrefs.SetFloat("MusicVolume", newMusicVolume);
     }
 }
