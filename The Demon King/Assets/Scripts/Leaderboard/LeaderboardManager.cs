@@ -67,6 +67,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     [SerializeField] private Image fadeoutImg;
 
+    bool playerWon = false;
+
 
 
     private void Start()
@@ -159,6 +161,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     public void UpdateLeaderboard()
     {
+        if (playerWon)
+            return;
         //Clear current leaderboard data
         if (leaderboardDataList.Data != null)
             leaderboardDataList.Data.Clear();
@@ -255,6 +259,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     void PlayerWon()
     {
+        playerWon = true;
+
         //Clear current leaderboard data
         leaderboardDataList.Data.Clear();
 
