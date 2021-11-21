@@ -71,7 +71,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     private void Start()
     {
-        leaderboardDataList.Data.Clear();
+        if (leaderboardDataList.Data != null)
+            leaderboardDataList.Data.Clear();
 
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
         {
@@ -159,14 +160,15 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     public void UpdateLeaderboard()
     {
         //Clear current leaderboard data
-        leaderboardDataList.Data.Clear();
+        if (leaderboardDataList.Data != null)
+            leaderboardDataList.Data.Clear();
 
         foreach (Player player in PhotonNetwork.PlayerList)
         {
             if ((bool)player.CustomProperties["IsSpectator"])
                 continue;
 
-            LeaderboardData leaderboardData = (LeaderboardData)ScriptableObject.CreateInstance("LeaderboardData");
+            LeaderboardData leaderboardData = new LeaderboardData();
 
             leaderboardData.PlayerNickName = player.NickName;
             //get players score as demon king
@@ -261,7 +263,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             if ((bool)player.CustomProperties["IsSpectator"])
                 continue;
 
-            LeaderboardData leaderboardData = (LeaderboardData)ScriptableObject.CreateInstance("LeaderboardData");
+            LeaderboardData leaderboardData = new LeaderboardData();
 
             leaderboardData.PlayerNickName = player.NickName;
             //get players score as demon king
@@ -273,6 +275,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
             leaderboardData.IslocalPlayer = player.IsLocal;
 
+            Debug.Log(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.gameObject.name);
             leaderboardData.currentModelName = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.gameObject.name;
 
             leaderboardData.playersConsumed = (int)player.CustomProperties["PlayerKills"];

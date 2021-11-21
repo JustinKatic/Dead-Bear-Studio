@@ -60,7 +60,7 @@ public class EndGameLeaderboardManager : MonoBehaviourPun
         }
         fadeInImg.material.SetFloat("_EffectTime", 1);
     }
-
+    
 
     IEnumerator DisplayEndGameBoard()
     {
