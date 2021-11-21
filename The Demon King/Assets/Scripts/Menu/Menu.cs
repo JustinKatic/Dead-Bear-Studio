@@ -18,7 +18,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private Image loadScreenImg;
     [SerializeField] private GameObject loadingBarSliderImg;
 
-
+    [SerializeField] private MenuError menuError;
+    
 
     [SerializeField] private SOMenuData roomData;
 
@@ -212,6 +213,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             findRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
             tutorialButton.interactable = ValidateString(PhotonNetwork.NickName);
         }
+        
         PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
 
@@ -248,6 +250,16 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
         roomNameInput.text = roomNameInput.text.ToUpper();
 
+        foreach (var roominfo in roomList)
+        {
+            if (roomNameInput.text == roominfo.Name)
+            {
+                menuError.DisplayErrorMessage($"{roomNameInput.text} is already in use!!");
+                break;
+            }
+            
+        }
+        
         PhotonNetwork.CreateRoom(roomNameInput.text, options);
 
     }
@@ -269,15 +281,14 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         PhotonNetwork.CreateRoom(currentRoomName, options);
     }
 
-
     public void SetSpectatorMode()
     {
         spectatorMode = !spectatorMode;
         Hashtable SpectatorMode = new Hashtable();
         SpectatorMode.Add("IsSpectator", spectatorMode);
         PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
-    }
 
+    }
 
     public override void OnRoomPropertiesUpdate(Hashtable propertiesThatChanged)
     {
@@ -308,7 +319,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             currentLevelSelectedText.text = scenes[roomData.CurrentSceneIndex].SceneName;
         }
     }
-
     public void OnPointsToWinChanged(bool IncreasePoints)
     {
         if (IncreasePoints)
@@ -325,8 +335,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         createRoomPointsToWinText.text = roomData.PointsToWin.ToString();
         lobbyPointsToWinText.text = roomData.PointsToWin.ToString();
     }
-
-
     public void OnGameTimeChanged(bool InccreaseTime)
     {
         if (InccreaseTime)
@@ -470,7 +478,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnSceneChangeRightButton()
     {
-
         if (roomData.CurrentSceneIndex >= scenes.Count - 1)
             roomData.CurrentSceneIndex = 0;
         else
@@ -480,7 +487,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     }
     public void OnSceneChangeLeftButton()
     {
-
         if (roomData.CurrentSceneIndex <= 0)
             roomData.CurrentSceneIndex = scenes.Count - 1;
         else
@@ -675,9 +681,6 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             Debug.Log("Scene Not Found in Build Settings");
         }
     }
-
-
-
     public void PlayOnButtonClickSound()
     {
         FMODUnity.RuntimeManager.PlayOneShotAttached(ButtonClickSound, gameObject);
