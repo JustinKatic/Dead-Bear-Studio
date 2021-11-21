@@ -7,15 +7,10 @@ using UnityEngine.UI;
 [CreateAssetMenu]
 public class LeaderboardDataList : ScriptableObject
 {
-    public List<LeaderboardData> Data;
+    public List<LeaderboardData> Data = new List<LeaderboardData>();
 
     public int Length()
     {
         return Data.Count;
-    }
-
-    public LeaderboardData GetItemIndex(int index)
-    {
-        return Data[index];
     }
 }

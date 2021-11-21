@@ -41,7 +41,7 @@ public class VoiceManager : MonoBehaviourPun
                 CharacterInputs.VoiceChat.PushForTalk.performed += PushForTalkPerformed;
                 CharacterInputs.VoiceChat.PushForTalk.canceled += PushForTalkCancelled;
 
-                Recorder.TransmitEnabled = PlayerPrefs.GetInt("PushToTalkOn") == 0;
+                Recorder.TransmitEnabled = PlayerPrefs.GetInt("PushToTalkOn") == 1;
                 mic.AmplificationFactor = 1;
             }
         }
