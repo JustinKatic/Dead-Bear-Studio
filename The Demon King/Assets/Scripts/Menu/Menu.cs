@@ -384,7 +384,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     IEnumerator DelayLobbyScreen()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(0.8f);
         SetScreen(lobbyScreen);
 
         photonView.RPC("UpdateLobbyUI", RpcTarget.All);
