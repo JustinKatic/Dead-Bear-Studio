@@ -20,6 +20,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [SerializeField] private MenuError menuError;
 
+    [SerializeField] private Animator createRoomAnimation;
+    
 
     [SerializeField] private SOMenuData roomData;
 
@@ -241,6 +243,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public void OnCreateButton(TMP_InputField roomNameInput)
     {
+        bool roomNameUsed = false;
         currentRoomName = roomNameInput.text.ToUpper();
 
         RoomOptions options = new RoomOptions();
@@ -255,11 +258,15 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             if (roomNameInput.text == roominfo.Name)
             {
                 menuError.DisplayErrorMessage($"{roomNameInput.text} is already in use!!");
+                roomNameUsed = true;
                 break;
             }
         }
 
-        PhotonNetwork.CreateRoom(roomNameInput.text, options);
+        if (!roomNameUsed)
+        {
+            PhotonNetwork.CreateRoom(roomNameInput.text, options);
+        }
 
     }
 
@@ -367,6 +374,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     public override void OnJoinedRoom()
     {
+
         if (currentRoomName.Contains("Tutorial"))
         {
             PhotonNetwork.CurrentRoom.IsVisible = false;
@@ -378,6 +386,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         else
         {
+            createRoomAnimation.Play("ExitCreateRoomAnim");
             StartCoroutine(DelayLobbyScreen());
         }
     }
