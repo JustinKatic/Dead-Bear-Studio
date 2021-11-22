@@ -425,7 +425,6 @@ public class ExperienceManager : MonoBehaviourPun
             greenBranch.CanEvolve = false;
             blueBranch.CanEvolve = true;
         }
-
     }
     //This runs inside the evolution Manager when the evolution button has been pressed
     public bool CanEvolve()
@@ -484,6 +483,50 @@ public class ExperienceManager : MonoBehaviourPun
             evolutionManager.nextEvolution = CurrentActiveEvolutionTypeBranch.Level1Evolution;
             evolutionManager.SwapEvolution(evolutionManager.nextEvolution);
         }
+
+        MinionType currentHighestMinionType = null;
+        float highestBranchExp = 0;
+
+        if (blueBranch.ExpBar.CurrentExp > highestBranchExp)
+        {
+            highestBranchExp = blueBranch.ExpBar.CurrentExp;
+            currentHighestMinionType = blueMinion;
+        }
+        if (redBranch.ExpBar.CurrentExp > highestBranchExp)
+        {
+            highestBranchExp = redBranch.ExpBar.CurrentExp;
+            currentHighestMinionType = redMinion;
+        }
+        if (greenBranch.ExpBar.CurrentExp > highestBranchExp)
+        {
+            highestBranchExp = greenBranch.ExpBar.CurrentExp;
+            currentHighestMinionType = greenMinion;
+        }
+
+        if (currentHighestMinionType != null)
+            UpdateCurrentActiveEvolutionTypeBranch(currentHighestMinionType, false);
+
+        if (CurrentActiveEvolutionTypeBranch.ExpBar.CurrentExp >= CurrentActiveEvolutionTypeBranch.ExpBar.level2ExpNeeded.value)
+        {
+            if (evolutionManager.activeEvolution != CurrentActiveEvolutionTypeBranch.Level2Evolution)
+            {
+                //Update next evolution to exp that just hit threshold
+                evolutionManager.nextEvolution = CurrentActiveEvolutionTypeBranch.Level2Evolution;
+                SetCanEvolveTrue(CurrentActiveEvolutionTypeBranch);
+            }
+        }
+        // if experience is greater than level 1
+        else if (CurrentActiveEvolutionTypeBranch.ExpBar.CurrentExp >= CurrentActiveEvolutionTypeBranch.ExpBar.level1ExpNeeded.value)
+        {
+            if (evolutionManager.activeEvolution != CurrentActiveEvolutionTypeBranch.Level1Evolution)
+            {
+                //Update next evolution to exp that just hit threshold
+                evolutionManager.nextEvolution = CurrentActiveEvolutionTypeBranch.Level1Evolution;
+                SetCanEvolveTrue(CurrentActiveEvolutionTypeBranch);
+                CurrentActiveEvolutionTypeBranch.ExpBar.expThreshholdBar.SetActive(true);
+            }
+        }
+        StartCoroutine(UpdateBranchUI(CurrentActiveEvolutionTypeBranch));
     }
 
     public void SetCanEvolveFalse()
