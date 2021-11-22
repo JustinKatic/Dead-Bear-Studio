@@ -85,6 +85,8 @@ public class PlayerController : MonoBehaviourPun
 
     public DemonKingInGameAnalytics demonKingInGameAnalytics;
 
+
+
     public void IncreaseSlimeDamage(int value)
     {
         demonKingInGameAnalytics.SlimeDamageOutput += value;
@@ -108,6 +110,7 @@ public class PlayerController : MonoBehaviourPun
     private void Awake()
     {
         vCam = GetComponentInChildren<CinemachineVirtualCamera>();
+
         //Run following if not local player
         if (!photonView.IsMine)
         {
@@ -415,6 +418,9 @@ public class PlayerController : MonoBehaviourPun
         // Cinemachine will follow this target
         CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride, _cinemachineTargetYaw, 0.0f);
     }
+
+
+
 
     #endregion
 

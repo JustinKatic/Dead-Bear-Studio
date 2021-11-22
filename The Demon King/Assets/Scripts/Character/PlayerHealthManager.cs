@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
+using Cinemachine;
 
 public class PlayerHealthManager : HealthManager
 {
@@ -69,6 +70,9 @@ public class PlayerHealthManager : HealthManager
 
     private GameManager gameManager;
 
+    private CinemachineVirtualCamera LavaCam;
+
+
 
 
     #region Startup
@@ -93,6 +97,7 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
+            LavaCam = GameObject.Find("LavaCam").GetComponent<CinemachineVirtualCamera>();
             MyOverheadHUDCanvas.SetActive(false);
             debuffTimer = GetComponentInChildren<PlayerTimers>();
             overheadHealthBar.gameObject.SetActive(false);
@@ -443,8 +448,6 @@ public class PlayerHealthManager : HealthManager
                 PlayerSoundManager.Instance.StopStunnedSound();
 
                 DisablePlayerOnRespawn();
-
-
             }
             else
             {
@@ -458,6 +461,8 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 debuffTimer.StartRespawnTimer(RespawnTime);
+                LavaCam.Priority = 1;
+
 
                 if (attackerID != -1)
                 {
@@ -731,6 +736,16 @@ public class PlayerHealthManager : HealthManager
         yield return new WaitForSeconds(invulenerableTimeAfterStun);
         evolutionManager.activeEvolution.myMatInstance.SetFloat("_IsDamageImmune", 0);
         invulnerable = false;
+    }
+
+    public void SetFellInLavaCam()
+    {
+        if (photonView.IsMine)
+        {
+            LavaCam.transform.position = transform.position;
+            LavaCam.LookAt = transform;
+            LavaCam.Priority = 20;
+        }
     }
 }
 
