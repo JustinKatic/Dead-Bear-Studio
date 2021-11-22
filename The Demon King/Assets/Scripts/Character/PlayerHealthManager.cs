@@ -742,7 +742,8 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
-            LavaCam.transform.position = transform.position;
+            LavaCam.transform.position = new Vector3(transform.position.x, transform.position.y + 20, transform.position.z);
+
             LavaCam.LookAt = transform;
             LavaCam.Priority = 20;
         }
