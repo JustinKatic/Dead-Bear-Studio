@@ -93,17 +93,17 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             matchTimeText.text = "\u221E";
     }
 
-    private Sprite GetSprite(MinionType minionType)
-    {
-        if (minionType == redMinion)
-            return lionImg;
-        else if (minionType == greenMinion)
-            return dragonImg;
-        else if (minionType == blueMinion)
-            return rayImg;
-        else
-            return null;
-    }
+    //private Sprite GetSprite(MinionType minionType)
+    //{
+    //    if (minionType == redMinion)
+    //        return lionImg;
+    //    else if (minionType == greenMinion)
+    //        return dragonImg;
+    //    else if (minionType == blueMinion)
+    //        return rayImg;
+    //    else
+    //        return null;
+    //}
 
 
     private void Update()
@@ -178,7 +178,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             //get players score as demon king
             leaderboardData.PlayerScore = (int)player.CustomProperties["PlayerScore"];
 
-            leaderboardData.EvolutionSprite = GetSprite(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+            leaderboardData.EvolutionSprite = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.MyHealthBarDisplaySprite;
 
             leaderboardData.AmITheDemonKing = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
 
@@ -275,7 +275,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
             //get players score as demon king
             leaderboardData.PlayerScore = (int)player.CustomProperties["PlayerScore"];
 
-            leaderboardData.EvolutionSprite = GetSprite(playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<PlayerHealthManager>().MyMinionType);
+            leaderboardData.EvolutionSprite = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<EvolutionManager>().activeEvolution.MyHealthBarDisplaySprite;
 
             leaderboardData.AmITheDemonKing = playerControllerRuntimeSet.GetPlayer(player.ActorNumber).GetComponent<DemonKingEvolution>().AmITheDemonKing;
 
