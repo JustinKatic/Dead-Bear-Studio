@@ -11,7 +11,7 @@ public class CrownVFXBillboard : MonoBehaviour
 
     private void Start()
     {
-        Invoke("FindMainCam", 3);
+        FindMainCam();
     }
     void FindMainCam()
     {
