@@ -13,9 +13,12 @@ public class DeathGround : MonoBehaviour
         if (other.tag == "PlayerParent")
         {
             PlayerController pc = other.GetComponent<PlayerController>();
+            PlayerHealthManager ph = other.GetComponent<PlayerHealthManager>();
+
             if (pc.drowningInLava)
                 return;
 
+            ph.SetFellInLavaCam();
             pc.drowningInLava = true;
             pc.DisableMovement();
             pc.playerJumpVelocity.y = 0;
