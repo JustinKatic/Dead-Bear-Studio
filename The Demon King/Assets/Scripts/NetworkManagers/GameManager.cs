@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using Photon.Pun.UtilityScripts;
 using System.Collections;
 using TMPro;
-
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
 public class GameManager : MonoBehaviourPun
 {
@@ -26,6 +27,9 @@ public class GameManager : MonoBehaviourPun
     public Sprite[] startGameTimerPrefabs;
     public Image startGameTimerImg;
     [SerializeField] private Image loadingScreenMat;
+
+    private const byte StartMatchTimeEvent = 2;
+
 
 
     void Awake()
@@ -137,7 +141,17 @@ public class GameManager : MonoBehaviourPun
             yield return new WaitForSeconds(1);
             startGameTimer--;
         }
+        RaiseStartMatchTimerEvent();
+
         playerControllerRuntimeSet.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).EnableMovement();
         startGameTimerImg.gameObject.SetActive(false);
+    }
+
+    public void RaiseStartMatchTimerEvent()
+    {
+        object[] data = new object[] { PhotonNetwork.Time };
+        RaiseEventOptions raiseEventOption = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+        SendOptions sendOptions = new SendOptions { Reliability = true };
+        PhotonNetwork.RaiseEvent(StartMatchTimeEvent, data, raiseEventOption, sendOptions);
     }
 }
