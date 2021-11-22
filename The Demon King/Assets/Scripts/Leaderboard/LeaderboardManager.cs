@@ -76,6 +76,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         if (leaderboardDataList.Data != null)
             leaderboardDataList.Data.Clear();
 
+        matchTimeText.text = FormatTime(roomData.GameTimeLimit);
+
         if ((bool)PhotonNetwork.LocalPlayer.CustomProperties["IsSpectator"])
         {
             LeaderBoardHUD.SetActive(false);
@@ -125,7 +127,6 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
     void InvokeUpdateLeaderboard()
     {
         RaiseUpdateLeaderboardEvent();
-        RaiseStartMatchTimerEvent();
     }
 
 
@@ -370,13 +371,7 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
         PhotonNetwork.RaiseEvent(PlayerWonEvent, null, raiseEventOption, sendOptions);
     }
 
-    public void RaiseStartMatchTimerEvent()
-    {
-        object[] data = new object[] { PhotonNetwork.Time };
-        RaiseEventOptions raiseEventOption = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-        SendOptions sendOptions = new SendOptions { Reliability = true };
-        PhotonNetwork.RaiseEvent(StartMatchTimeEvent, data, raiseEventOption, sendOptions);
-    }
+
 
     public void RaiseUpdateLeaderboardEvent()
     {

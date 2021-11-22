@@ -19,7 +19,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private GameObject loadingBarSliderImg;
 
     [SerializeField] private MenuError menuError;
-    
+
 
     [SerializeField] private SOMenuData roomData;
 
@@ -213,7 +213,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
             findRoomButton.interactable = ValidateString(PhotonNetwork.NickName);
             tutorialButton.interactable = ValidateString(PhotonNetwork.NickName);
         }
-        
+
         PlayerPrefs.SetString("PlayerName", playerNameInput.text);
     }
 
@@ -257,9 +257,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
                 menuError.DisplayErrorMessage($"{roomNameInput.text} is already in use!!");
                 break;
             }
-            
         }
-        
+
         PhotonNetwork.CreateRoom(roomNameInput.text, options);
 
     }
@@ -379,28 +378,35 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         else
         {
-            SetScreen(lobbyScreen);
-
-            photonView.RPC("UpdateLobbyUI", RpcTarget.All);
-            ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
-            PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
-
-            Hashtable SpectatorMode = new Hashtable();
-            SpectatorMode.Add("IsSpectator", spectatorMode);
-            PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
-
-            roomData.GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[roomData.GameTimeLimitString];
-            roomData.PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.PointsToWinString];
-            roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
-            roomData.RoomName = PhotonNetwork.CurrentRoom.Name;
-
-            Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
-
-            if (roomIsPublic)
-                privacyRoomText.text = "Public";
-            else
-                privacyRoomText.text = "Private";
+            StartCoroutine(DelayLobbyScreen());
         }
+    }
+
+    IEnumerator DelayLobbyScreen()
+    {
+        yield return new WaitForSeconds(2);
+        SetScreen(lobbyScreen);
+
+        photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+        ChatManager.instance.StartChat(currentRoomName, PhotonNetwork.NickName);
+        PhotonNetwork.CurrentRoom.IsVisible = roomIsPublic;
+
+        Hashtable SpectatorMode = new Hashtable();
+        SpectatorMode.Add("IsSpectator", spectatorMode);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(SpectatorMode);
+
+        roomData.GameTimeLimit = (float)PhotonNetwork.CurrentRoom.CustomProperties[roomData.GameTimeLimitString];
+        roomData.PointsToWin = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.PointsToWinString];
+        roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
+        roomData.RoomName = PhotonNetwork.CurrentRoom.Name;
+
+        Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
+
+        if (roomIsPublic)
+            privacyRoomText.text = "Public";
+        else
+            privacyRoomText.text = "Private";
+
     }
 
     void LoadTutorialLevel()
