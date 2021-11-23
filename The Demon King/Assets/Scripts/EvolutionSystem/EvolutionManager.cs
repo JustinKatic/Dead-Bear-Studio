@@ -139,13 +139,14 @@ public class EvolutionManager : MonoBehaviourPun
 
     void SetStartingActiveEvolution()
     {
-        //set our active evolution to our matching minion type
-        if (playerHealthManager.MyMinionType == redMinion)
-            activeEvolution = experienceManager.redBranch.Level0Evolution;
-        else if (playerHealthManager.MyMinionType == blueMinion)
-            activeEvolution = experienceManager.blueBranch.Level0Evolution;
-        else if (playerHealthManager.MyMinionType == greenMinion)
-            activeEvolution = experienceManager.greenBranch.Level0Evolution;
+
+        foreach (var experienceBranch in experienceManager.ExperienceBranches)
+        {
+            //set our active evolution to our matching minion type
+            if (playerHealthManager.MyMinionType == experienceBranch.branchMinionType)
+                activeEvolution = experienceBranch.Level0Evolution;
+        }
+
 
         //Set experince managers current active evolution type to our active type
         experienceManager.UpdateCurrentActiveEvolutionTypeBranch(activeEvolution.MyMinionType, true);

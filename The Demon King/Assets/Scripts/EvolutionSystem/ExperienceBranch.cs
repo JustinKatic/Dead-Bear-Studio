@@ -13,5 +13,6 @@ public class ExperienceBranch
 
     [HideInInspector] public bool CanEvolve = false;
     public ExperienceBar ExpBar;
+    public MinionType branchMinionType;
 
 }
