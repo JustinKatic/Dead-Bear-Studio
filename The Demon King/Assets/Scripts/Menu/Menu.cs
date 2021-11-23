@@ -21,7 +21,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private MenuError menuError;
 
     [SerializeField] private Animator createRoomAnimation;
-    
+
 
     [SerializeField] private SOMenuData roomData;
 
@@ -529,6 +529,12 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     // joins a room of the requested room name
     public void OnJoinRoomButton(string roomName)
     {
+        StartCoroutine(DelayJoinLobbyScreen(roomName));
+    }
+
+    IEnumerator DelayJoinLobbyScreen(string roomName)
+    {
+        yield return new WaitForSeconds(0.8f);
         SetScreen(lobbyScreen);
         currentRoomName = roomName;
         PhotonNetwork.JoinRoom(roomName);
