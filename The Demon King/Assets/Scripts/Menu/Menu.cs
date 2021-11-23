@@ -20,7 +20,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [SerializeField] private MenuError menuError;
 
-    [SerializeField] private Animator createRoomAnimation;
+    [SerializeField] private Animator OnCreateRoomAnimation;
 
 
     [SerializeField] private SOMenuData roomData;
@@ -77,6 +77,11 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     [FMODUnity.EventRef]
     public string ButtonClickSound;
+
+
+    [SerializeField] private Animator OnClickRoomButtonAnim;
+    [SerializeField] private Animator lobbyRoomAnimation;
+
 
 
     void Start()
@@ -386,7 +391,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         }
         else
         {
-            createRoomAnimation.Play("ExitCreateRoomAnim");
+            OnCreateRoomAnimation.Play("ExitCreateRoomAnim");
             StartCoroutine(DelayLobbyScreen());
         }
     }
@@ -534,7 +539,10 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     IEnumerator DelayJoinLobbyScreen(string roomName)
     {
+        OnClickRoomButtonAnim.Play("ExitLobbyBrowser");
         yield return new WaitForSeconds(0.8f);
+        lobbyRoomAnimation.Play("LobbyScene");
+
         SetScreen(lobbyScreen);
         currentRoomName = roomName;
         PhotonNetwork.JoinRoom(roomName);
