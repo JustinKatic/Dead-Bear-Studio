@@ -50,6 +50,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     [SerializeField] private List<Button> masterClientButtons;
 
     [SerializeField] private Button startGameButton;
+    [SerializeField] private Button privacyButton;
     [SerializeField] private TextMeshProUGUI privacyRoomText;
     [SerializeField] private List<SceneInformation> scenes;
     [SerializeField] private Image CurrentSceneDisplayImg;
@@ -414,6 +415,7 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
         roomData.CurrentSceneIndex = (int)PhotonNetwork.CurrentRoom.CustomProperties[roomData.CurrentSceneIndexString];
         roomData.RoomName = PhotonNetwork.CurrentRoom.Name;
 
+
         Invoke("UpdateRoomHashsOnJoinInvoke", 0.2f);
 
         if (roomIsPublic)
@@ -468,6 +470,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
     {
         // enable or disable the start game button depending on if we're the host
         startGameButton.interactable = PhotonNetwork.IsMasterClient;
+        privacyButton.gameObject.SetActive(PhotonNetwork.IsMasterClient);
+
         foreach (var button in masterClientButtons)
         {
             button.gameObject.SetActive(PhotonNetwork.IsMasterClient);
