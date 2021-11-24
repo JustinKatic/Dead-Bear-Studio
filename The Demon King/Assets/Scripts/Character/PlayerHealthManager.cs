@@ -97,7 +97,9 @@ public class PlayerHealthManager : HealthManager
         //Run following if local player
         else
         {
-            LavaCam = GameObject.Find("LavaCam").GetComponent<CinemachineVirtualCamera>();
+
+            LavaCam = GameObject.Find("LavaCam")?.GetComponent<CinemachineVirtualCamera>();
+
             MyOverheadHUDCanvas.SetActive(false);
             debuffTimer = GetComponentInChildren<PlayerTimers>();
             overheadHealthBar.gameObject.SetActive(false);
@@ -461,7 +463,9 @@ public class PlayerHealthManager : HealthManager
             if (photonView.IsMine)
             {
                 debuffTimer.StartRespawnTimer(RespawnTime);
-                LavaCam.Priority = 1;
+
+                if (LavaCam != null)
+                    LavaCam.Priority = 1;
 
 
                 if (attackerID != -1)
@@ -742,10 +746,13 @@ public class PlayerHealthManager : HealthManager
     {
         if (photonView.IsMine)
         {
-            LavaCam.transform.position = new Vector3(transform.position.x, transform.position.y + 20, transform.position.z);
+            if (LavaCam != null)
+            {
+                LavaCam.transform.position = new Vector3(transform.position.x, transform.position.y + 20, transform.position.z);
 
-            LavaCam.LookAt = transform;
-            LavaCam.Priority = 20;
+                LavaCam.LookAt = transform;
+                LavaCam.Priority = 20;
+            }
         }
     }
 }
