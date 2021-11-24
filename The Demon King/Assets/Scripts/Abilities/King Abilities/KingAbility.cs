@@ -18,6 +18,8 @@ public class KingAbility : MonoBehaviourPun
     [SerializeField] private LayerMask AimerLayersToIgnore;
 
     [SerializeField] PlayerTimers PlayerTimers;
+    [SerializeField] GameObject KingAbilityWarningObj;
+
 
     private Vector3 targetPos;
 
@@ -123,7 +125,9 @@ public class KingAbility : MonoBehaviourPun
     {
         canShoot = false;
         PlayerTimers.StartKingAbilityTimer(timer);
+        KingAbilityWarningObj.SetActive(false);
         yield return new WaitForSeconds(timer);
+        KingAbilityWarningObj.SetActive(true);
         canShoot = true;
     }
 }
