@@ -20,7 +20,7 @@ public class PlayerControlSettingsMenu : MonoBehaviour
 
     public void OnMouseSensitivityChange(Slider SensitivitySlider)
     {
-        sliderText.text = SensitivitySlider.value.ToString();
+        sliderText.text = SensitivitySlider.value.ToString("N2");
 
         PlayerPrefs.SetFloat("MouseSensitivity", SensitivitySlider.value);
     }
