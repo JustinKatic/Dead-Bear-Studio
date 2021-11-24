@@ -87,8 +87,8 @@ public class Menu : MonoBehaviourPunCallbacks, ILobbyCallbacks
 
     void Start()
     {
-        //Camera.main.transform.position = new Vector3(1098.39f, -862.333f, 1792.887f);
-        //Camera.main.transform.eulerAngles = new Vector3(12.92f, 47.58f, -0.004f);
+        Camera.main.transform.position = new Vector3(-59.93852f, 50.08446f, 23.3058f);
+        Camera.main.transform.eulerAngles = new Vector3(16.361f, 154.534f, -0.009);
 
         StartCoroutine(LerpFadeScreenImg());
 
