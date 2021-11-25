@@ -335,8 +335,8 @@ public class LeaderboardManager : MonoBehaviourPun, IOnEventCallback
 
     public void StartMatchTime(double matchTimeStart)
     {
-        roomData.GameTimeLimit -= (float)(PhotonNetwork.Time - matchTimeStart);
-        StartCoroutine("MatchTimeCountDown");
+            roomData.GameTimeLimit -= (float)(PhotonNetwork.Time - matchTimeStart);
+            StartCoroutine("MatchTimeCountDown");
     }
 
     IEnumerator MatchTimeCountDown()

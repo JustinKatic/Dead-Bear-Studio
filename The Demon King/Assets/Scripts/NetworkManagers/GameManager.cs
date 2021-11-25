@@ -141,7 +141,8 @@ public class GameManager : MonoBehaviourPun
             yield return new WaitForSeconds(1);
             startGameTimer--;
         }
-        RaiseStartMatchTimerEvent();
+        if (PhotonNetwork.IsMasterClient)
+            RaiseStartMatchTimerEvent();
 
         playerControllerRuntimeSet.GetPlayer(PhotonNetwork.LocalPlayer.ActorNumber).EnableMovement();
         startGameTimerImg.gameObject.SetActive(false);
