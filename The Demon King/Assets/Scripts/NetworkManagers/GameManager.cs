@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviourPun
     public int currentSpawnIndex = 0;
 
     private int playersInGame;
+    private int spawnIndexAssigned;
     private int startGameTimer = 5;
 
     private int mySpawnIndex;
@@ -44,23 +45,9 @@ public class GameManager : MonoBehaviourPun
 
     void Start()
     {
-        StartCoroutine(AssignSpawnIndex());
+        ImInGame();
     }
 
-    IEnumerator AssignSpawnIndex()
-    {
-        bool indexAssigned = false;
-        while (!indexAssigned)
-        {
-            if (PhotonNetwork.LocalPlayer.GetPlayerNumber() != -1)
-            {
-                mySpawnIndex = PhotonNetwork.LocalPlayer.GetPlayerNumber();
-                indexAssigned = true;
-                ImInGame();
-            }
-            yield return null;
-        }
-    }
 
     void ImInGame()
     {
@@ -75,9 +62,28 @@ public class GameManager : MonoBehaviourPun
 
         if (PhotonNetwork.IsMasterClient && playersInGame == PhotonNetwork.PlayerList.Length)
         {
-            SpawnPlayers();
+            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                photonView.RPC("AssignSpawnIndex", PhotonNetwork.PlayerList[i], i);
+            }
         }
     }
+
+    [PunRPC]
+    void AssignSpawnIndex(int index)
+    {
+        mySpawnIndex = index;
+        photonView.RPC("CheckAllSpawnsAssigned", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void CheckAllSpawnsAssigned()
+    {
+        spawnIndexAssigned++;
+        if (PhotonNetwork.IsMasterClient && spawnIndexAssigned == PhotonNetwork.PlayerList.Length)
+            SpawnPlayers();
+    }
+
 
     public void SpawnPlayers()
     {
