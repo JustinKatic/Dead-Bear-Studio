@@ -219,15 +219,15 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 6110978608495188982}
-    m_Position: {x: 340, y: 110, z: 0}
+    m_Position: {x: 0, y: -200, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: -290, y: -290, z: 0}
+  m_EntryPosition: {x: 0, y: -300, z: 0}
+  m_ExitPosition: {x: 760, y: -130, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 6110978608495188982}
 --- !u!1102 &-6958399059411513902
@@ -491,7 +491,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Evolve
+  m_Name: Stun
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -505,7 +505,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: d5595cdc5448371459e08179ec12390a, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: 196f5e509278d2a48945356bc8cf597e, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -897,7 +897,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AC_LionEvolve_Portfolio
+  m_Name: AC_DisintegrateRay_Portfolio
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: InputX
@@ -1053,10 +1053,36 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 730, y: -440, z: 0}
-  m_EntryPosition: {x: -280, y: -190, z: 0}
+  m_EntryPosition: {x: 0, y: -300, z: 0}
   m_ExitPosition: {x: 1710, y: 160, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: -4114955979900179587}
+--- !u!1102 &468361158559358357
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ray_Anim_Stun
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 1827226128182048838, guid: 196f5e509278d2a48945356bc8cf597e, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1102 &501474040978655685
 AnimatorState:
   serializedVersion: 6
@@ -1482,7 +1508,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LionEvolveShader
+  m_Name: RayDisintegrateShader
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -1495,7 +1521,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 55bb9c2e8932df740876c643792636b3, type: 2}
+  m_Motion: {fileID: 7400000, guid: a0ddb9fd3e4051a4cb401cbe3081b3f1, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1533,7 +1559,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: EvolveLoop
+  m_Name: StunLoop
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -1547,7 +1573,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 1827226128182048838, guid: d5595cdc5448371459e08179ec12390a, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: 196f5e509278d2a48945356bc8cf597e, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
